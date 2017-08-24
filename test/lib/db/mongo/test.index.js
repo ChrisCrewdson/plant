@@ -26,6 +26,7 @@ const mongo = proxyquire('../../../../lib/db/mongo', {
 describe('/lib/db/mongo/', () => {
   let userId;
   let fbUser;
+  let locationId;
 
   before('should create a user account by starting the server', (done) => {
     helper.startServerAuthenticated((err, data) => {
@@ -33,6 +34,7 @@ describe('/lib/db/mongo/', () => {
       fbUser = data.user;
       userId = fbUser._id;
       assert(userId);
+      locationId = data.user.locationIds[0]._id;
       assert.equal(typeof userId, 'string');
       Object.freeze(fbUser);
       done();
@@ -89,6 +91,10 @@ describe('/lib/db/mongo/', () => {
       plantedOn: 20150701,
     };
     let plantId;
+
+    before(() => {
+      plant.locationId = locationId;
+    });
 
     it('should create a plant', (done) => {
       plant.userId = userId;

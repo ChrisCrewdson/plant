@@ -20,7 +20,7 @@ function loadLocationsSuccess(state, action) {
 // Some of the fields:
 // _id
 // title
-// userId
+// createdBy
 function createPlantRequest(state, action) {
   // payload is an object of new plant being POSTed to server
   // an _id has already been assigned to this object
@@ -36,7 +36,7 @@ function createPlantRequest(state, action) {
   return state;
 }
 
-const isSet = Immutable.Set.isSet;
+const { isSet } = Immutable.Set;
 function merger(a, b) {
   if (isSet(a) && isSet(b)) {
     return a.union(b);
@@ -78,6 +78,13 @@ function deletePlantRequest(state, action) {
   return state;
 }
 
+function modifyLocationSuccess(state, action) {
+  // eslint-disable-next-line no-console
+  console.log('reducers.locations.modifyLocationSuccess action', action);
+  // TODO: Fix this
+  return state;
+}
+
 const reducers = {
   // [actions.CREATE_LOCATION_REQUEST]: createLocationRequest,
   [actions.CREATE_PLANT_REQUEST]: createPlantRequest,
@@ -86,7 +93,15 @@ const reducers = {
   [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
   [actions.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
   [actions.LOAD_UNLOADED_PLANTS_SUCCESS]: loadPlantsSuccess,
+  [actions.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
+
+if (reducers.undefined) {
+  // eslint-disable-next-line no-console
+  console.error(
+    `Missing action type in locations.js - these are the reducers keys:
+${Object.keys(reducers).join()}`);
+}
 
 module.exports = (state = new Immutable.Map(), action) => {
   if (reducers[action.type]) {
@@ -107,13 +122,10 @@ module.exports = (state = new Immutable.Map(), action) => {
 /*
 {
   "_id" : ObjectId("5851d7..."),
-  "userId" : ObjectId("57b4e9..."),
-  "userIds" : [
-  {
-    "id" : ObjectId("57b4e90d9..."),
-    "role" : "owner"
-  }
-  ],
+  "createdBy" : ObjectId("57b4e9..."),
+  "members" : {
+    "57b4e90d9...": "owner",
+  },
   "title" : "The Orchard",
   "loc" : {
     "type" : "Point",

@@ -177,6 +177,13 @@ const reducers = {
   [actions.UPSERT_NOTE_SUCCESS]: upsertNoteSuccess,
 };
 
+if (reducers.undefined) {
+  // eslint-disable-next-line no-console
+  console.error(
+    `Missing action type in plants.js - these are the reducers keys:
+${Object.keys(reducers).join()}`);
+}
+
 module.exports = (state = new Immutable.Map(), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);

@@ -46,7 +46,7 @@
       "name": "TestPad",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/devops/locations-creator.js",
+      "program": "${workspaceRoot}/devops/locations-converter.js",
       "stopOnEntry": false,
       "args": [],
       "cwd": "${workspaceRoot}",

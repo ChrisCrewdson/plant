@@ -30,11 +30,13 @@ function logout() {
 
 // The action.payload are the returned locations from the server.
 function loadLocationsSuccess(state, action) {
+  const { payload: locations = [] } = action;
   if (state.get('isLoggedIn', false) && !state.get('activeLocationId', '')) {
     const _id = state.get('_id');
 
-    const location = (action.payload || []).find(loc =>
-      loc.userIds.some(userId => userId.id === _id));
+    // Find the first location that this user is a member of
+    const location = locations.find(l => l.members[_id]);
+
     if (location) {
       // console.log('found location');
       return state.set('activeLocationId', location._id);
@@ -51,6 +53,13 @@ const reducers = {
   [actions.LOGIN_SUCCESS]: loginSuccess,
   [actions.LOGOUT]: logout,
 };
+
+if (reducers.undefined) {
+  // eslint-disable-next-line no-console
+  console.error(
+    `Missing action type in user.js - these are the reducers keys:
+${Object.keys(reducers).join()}`);
+}
 
 // The login reducer
 module.exports = (state, action) => {

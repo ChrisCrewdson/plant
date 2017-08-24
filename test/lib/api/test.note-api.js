@@ -13,6 +13,7 @@ describe('note-api', () => {
 
   before('it should start the server and setup auth token', (done) => {
     helper.startServerAuthenticated((err, data) => {
+      assert(!err);
       assert(data.userId);
       userId = data.user._id;
       locationId = data.user.locationIds[0]._id;

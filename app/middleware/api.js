@@ -261,6 +261,31 @@ function loadUnloadedPlantsRequest(store, action) {
   ajax(store, options);
 }
 
+/**
+ * Entry point for inserting/updating/deleting a part of a location document.
+ * @param {Object?} store 
+ * @param {Object} action
+ * @param {Object} action.payload
+ * @param {string} action.payload.locationId
+ * @param {string} action.payload.userId
+ * @param {string} action.payload.role
+ * @param {Function} next
+ */
+function modifyLocationRequest(store, action, next) {
+  const { payload: data } = action;
+
+  const options = {
+    data,
+    failure: actions.modifyLocationFailure,
+    success: actions.modifyLocationSuccess,
+    type: 'POST',
+    url: '/api/location',
+  };
+
+  ajax(store, options);
+  return next(action);
+}
+
 const apis = {
   [actions.CREATE_PLANT_REQUEST]: createPlant,
   [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
@@ -275,6 +300,7 @@ const apis = {
   [actions.LOGIN_REQUEST]: loginRequest,
   [actions.UPDATE_PLANT_REQUEST]: updatePlant,
   [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
+  [actions.MODIFY_LOCATION_REQUEST]: modifyLocationRequest,
 };
 
 module.exports = store => next => (action) => {

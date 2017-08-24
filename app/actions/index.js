@@ -383,10 +383,42 @@ function editPlantChange(payload) {
   };
 }
 
+const UPSERT_LOCATION_MEMBER = 'UPSERT_LOCATION_MEMBER';
+const UPSERT_LOCATION_WEATHER = 'UPSERT_LOCATION_WEATHER';
+const DELETE_LOCATION_MEMBER = 'DELETE_LOCATION_MEMBER';
+const DELETE_LOCATION_WEATHER = 'DELETE_LOCATION_WEATHER';
+
+const MODIFY_LOCATION_FAILURE = 'MODIFY_LOCATION_FAILURE';
+const MODIFY_LOCATION_REQUEST = 'MODIFY_LOCATION_REQUEST';
+const MODIFY_LOCATION_SUCCESS = 'MODIFY_LOCATION_SUCCESS';
+
+function modifyLocationRequest(payload) {
+  return {
+    type: MODIFY_LOCATION_REQUEST,
+    payload,
+  };
+}
+
+function modifyLocationFailure(payload) {
+  return {
+    type: MODIFY_LOCATION_FAILURE,
+    payload,
+  };
+}
+
+function modifyLocationSuccess(payload) {
+  return {
+    type: MODIFY_LOCATION_SUCCESS,
+    payload,
+  };
+}
+
 module.exports = {
   CREATE_PLANT_FAILURE,
   CREATE_PLANT_REQUEST,
   CREATE_PLANT_SUCCESS,
+  DELETE_LOCATION_MEMBER,
+  DELETE_LOCATION_WEATHER,
   DELETE_NOTE_FAILURE,
   DELETE_NOTE_REQUEST,
   DELETE_NOTE_SUCCESS,
@@ -399,6 +431,7 @@ module.exports = {
   EDIT_PLANT_CHANGE,
   EDIT_PLANT_CLOSE,
   EDIT_PLANT_OPEN,
+  UPSERT_LOCATION_MEMBER,
   LOAD_LOCATIONS_FAILURE,
   LOAD_LOCATIONS_REQUEST,
   LOAD_LOCATIONS_SUCCESS,
@@ -424,6 +457,10 @@ module.exports = {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGOUT,
+  MODIFY_LOCATION_FAILURE,
+  MODIFY_LOCATION_REQUEST,
+  MODIFY_LOCATION_SUCCESS,
+  UPSERT_LOCATION_WEATHER,
   UPDATE_PLANT_FAILURE,
   UPDATE_PLANT_REQUEST,
   UPDATE_PLANT_SUCCESS,
@@ -470,6 +507,9 @@ module.exports = {
   loginRequest,
   loginSuccess,
   logout,
+  modifyLocationFailure,
+  modifyLocationRequest,
+  modifyLocationSuccess,
   updatePlantFailure,
   updatePlantRequest,
   updatePlantSuccess,

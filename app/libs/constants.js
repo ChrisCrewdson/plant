@@ -7,4 +7,5 @@ module.exports = {
   imageSizeNames: ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'],
   // eslint-disable-next-line no-restricted-properties
   gisMultiplier: Math.pow(10, 7),
+  roles: ['owner', 'manager', 'member'],
 };

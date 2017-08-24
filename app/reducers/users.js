@@ -2,15 +2,16 @@
 const actions = require('../actions');
 const Immutable = require('immutable');
 
-// The action.payload are the returned users from the server.
+// The action.payload are the users returned users from the server.
 function loadUsersSuccess(state, action) {
-  const users = (action.payload || []).reduce((acc, user) => {
-    // eslint-disable-next-line no-param-reassign
-    user.locationIds = Immutable.Set(user.locationIds || []);
-    acc[user._id] = user;
+  const { payload: users = [] } = action;
+  const usersSet = users.reduce((acc, user) => {
+    acc[user._id] = Object.assign({}, user, {
+      locationIds: Immutable.Set(user.locationIds || []),
+    });
     return acc;
   }, {});
-  const newState = state.mergeDeep(users);
+  const newState = state.mergeDeep(usersSet);
   return newState;
 }
 
@@ -28,21 +29,23 @@ function loadUserSuccess(state, action) {
 // _id
 // title
 // userId
-function createLocationRequest(state, action) {
-  // payload is an object of new location being POSTed to server
-  // an _id has already been assigned to this object
-  const location = action.payload;
-  const user = state.get(location.userId);
-  if (user) {
-    const locationIds = user.get('locationIds', Immutable.Set()).add({
-      id: location._id,
-      role: 'owner',
-    });
-    return state.set(location.userId, user.set('locationIds', locationIds));
-  }
-  // console.warn(`No user found in users createLocationRequest reducer ${location.userId}`);
-  return state;
-}
+// function createLocationRequest(state, action) {
+//   // eslint-disable-next-line no-console
+//   console.error('crateLocationRequest is not ready to use yet');
+//   // payload is an object of new location being POSTed to server
+//   // an _id has already been assigned to this object
+//   const { payload: location } = action;
+//   const user = state.get(location.createdBy);
+//   if (user) {
+//     const locationIds = user.get('locationIds', Immutable.Set()).add({
+//       id: location._id,
+//       role: 'owner',
+//     });
+//     return state.set(location.userId, user.set('locationIds', locationIds));
+//   }
+//   // console.warn(`No user found in users createLocationRequest reducer ${location.userId}`);
+//   return state;
+// }
 
 // If a bunch of locations are loaded then check that the location
 // is on the user's locationIds list
@@ -91,12 +94,19 @@ function createLocationRequest(state, action) {
 // }
 
 const reducers = {
-  [actions.CREATE_LOCATION_REQUEST]: createLocationRequest,
+  // [actions.CREATE_LOCATION_REQUEST]: createLocationRequest,
   // [actions.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
   // [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
   [actions.LOAD_USER_SUCCESS]: loadUserSuccess,
   [actions.LOAD_USERS_SUCCESS]: loadUsersSuccess,
 };
+
+if (reducers.undefined) {
+  // eslint-disable-next-line no-console
+  console.error(
+    `Missing action type in users.js - these are the reducers keys:
+${Object.keys(reducers).join()}`);
+}
 
 module.exports = (state = new Immutable.Map(), action) => {
   if (reducers[action.type]) {

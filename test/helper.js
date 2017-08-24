@@ -78,16 +78,34 @@ function startServerAuthenticated(cb) {
     };
 
     mongo.findOrCreateUser(fbUser, (err, user) => {
-      // logger.trace('findOrCreateUser callback', {err, user, fbUser});
-
       assert(!err);
       assert(user);
       assert(user._id);
       assert(constants.mongoIdRE.test(user._id));
       assert(constants.mongoIdRE.test(user.locationIds[0]._id));
-      assert.equal(user.locationIds[0].title, 'John Smith Yard');
-      assert.equal(user.locationIds[0].role, 'owner');
-      assert.deepEqual(_.omit(user, ['_id', 'locationIds']), fbUser);
+
+      const expectedUser = {
+        facebook: fbUser.facebook,
+        name: 'John Smith',
+        email: 'test@test.com',
+        createdAt: '2016-01-28T14:59:32.989Z',
+        updatedAt: '2016-01-28T14:59:32.989Z',
+        _id: user._id,
+        locationIds: [
+          {
+            _id: user.locationIds[0]._id,
+            createdBy: user._id,
+            members: {
+              [user._id]: 'owner',
+            },
+            stations: {},
+            title: 'John Smith Yard',
+            plantIds: [],
+          },
+        ],
+      };
+
+      assert.deepStrictEqual(user, expectedUser);
 
       // eslint-disable-next-line no-param-reassign
       waterfallData.user = user;

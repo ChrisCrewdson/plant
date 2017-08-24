@@ -16,6 +16,7 @@ function cancelSaveButtons(props = {}) {
 
   const {
     clickAddPhoto,
+    mini,
   } = props;
 
   return (
@@ -26,6 +27,7 @@ function cancelSaveButtons(props = {}) {
             onClick={clickAddPhoto}
             secondary
             title="Upload Photo"
+            mini={mini}
           >
             <AddPhotoIcon />
           </FloatingActionButton>
@@ -36,6 +38,7 @@ function cancelSaveButtons(props = {}) {
           secondary
           style={{ marginLeft: '10px' }}
           title="Cancel"
+          mini={mini}
         >
           <ClearIcon />
         </FloatingActionButton>
@@ -44,6 +47,7 @@ function cancelSaveButtons(props = {}) {
           onClick={props.clickSave}
           style={{ marginLeft: '10px' }}
           title="Save"
+          mini={mini}
         >
           <DoneIcon />
         </FloatingActionButton>
@@ -60,10 +64,12 @@ cancelSaveButtons.propTypes = {
   clickCancel: PropTypes.func.isRequired,
   clickSave: PropTypes.func.isRequired,
   showButtons: PropTypes.bool.isRequired,
+  mini: PropTypes.bool,
 };
 
 cancelSaveButtons.defaultProps = {
   clickAddPhoto: null,
+  mini: false,
 };
 
 module.exports = cancelSaveButtons;

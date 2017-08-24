@@ -2,11 +2,12 @@
 // Only the logged in user can get to their profile page.
 
 const Base = require('../base/Base');
-const React = require('react');
-const RadioButton = require('material-ui/RadioButton').RadioButton;
-const RadioButtonGroup = require('material-ui/RadioButton').RadioButtonGroup;
+const Immutable = require('immutable');
 const LocationsManager = require('../location/LocationsManager');
 const PropTypes = require('prop-types');
+const RadioButton = require('material-ui/RadioButton').RadioButton;
+const RadioButtonGroup = require('material-ui/RadioButton').RadioButtonGroup;
+const React = require('react');
 
 // Responsible for:
 // 1. Current user: /profile
@@ -27,8 +28,9 @@ function profile(props, context) {
   const { userSettings } = props;
   const { imperial } = userSettings;
   const { store } = context;
-  const state = store.getState();
-  const locations = state.getIn(['user', 'locationIds']);
+  const { getState, dispatch } = store;
+  const users = getState().get('users', Immutable.Map());
+  const locations = getState().getIn(['user', 'locationIds']);
 
   const unitOfMeasurement = imperial ? 'imperial' : 'metric';
 
@@ -55,7 +57,11 @@ function profile(props, context) {
             value="metric"
           />
         </RadioButtonGroup>
-        <LocationsManager locations={locations} />
+        <LocationsManager
+          locations={locations}
+          users={users}
+          dispatch={dispatch}
+        />
       </div>
     </Base>
   );

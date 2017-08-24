@@ -21,10 +21,10 @@ db.user.createIndex({'email': 1}, {unique: true, sparse: true, name: 'email'})
 ## Location
 
 - _id (MongoId)
-- userId - MongoId of the user that created this document
-- userIds (array of user objects) each object:
-  - id (MongoId) of user in user collection
-  - role (string) - one of 'owner', 'manager'
+- createdBy - MongoId of the user that created this document
+- members (object of user roles) each object:
+  - key (MongoId string) of user in user collection
+  - value (string) - one of 'owner', 'manager'
 - title (name of the location)
 - loc (an Object - Geo location of the Location)
   - type: 'Point'
@@ -32,6 +32,7 @@ db.user.createIndex({'email': 1}, {unique: true, sparse: true, name: 'email'})
     "0": Floating Point Number - longitute,
     "1": Floating Point Number - latitude,
   }
+- stations (object of weather stations) - not implemented yet
 - public - a boolean flag which is missing (implied `false`) by default. Indicates if the geo location of these plants can be made public.
 - password - an array of objects - allows user with the password access to the geo positions at this location.
   - (expire-)date - date integer (locale based)

@@ -6,22 +6,23 @@ const constants = require('../../../app/libs/constants');
 
 describe('plant-api', () => {
   let user;
+  let plantId;
+  let initialPlant;
+
   before('it should start the server and setup auth token', (done) => {
     helper.startServerAuthenticated((err, data) => {
       assert(!err);
+      assert(data.userId);
       user = data.user;
+      initialPlant = Object.freeze({
+        title: 'Plant Title',
+        price: 19.99,
+        tags: ['north-east', 'citrus'],
+        locationId: data.user.locationIds[0]._id,
+      });
       done();
     });
   });
-
-  const initialPlant = Object.freeze({
-    title: 'Plant Title',
-    price: 19.99,
-    tags: ['north-east', 'citrus'],
-    // userId: makeMongoId(),
-    locationId: 'cf885bf372488977ae0d6475',
-  });
-  let plantId;
 
   it('should fail to create a plant record if user is not authenticated', (done) => {
     const reqOptions = {

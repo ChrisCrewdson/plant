@@ -12,20 +12,21 @@ class RemoveConfirm extends React.Component {
   }
 
   reallyDelete() {
-    this.props.confirmFn(true);
+    this.props.confirmFn(true, this.props.deleteData);
   }
 
   cancelDelete() {
-    this.props.confirmFn(false);
+    this.props.confirmFn(false, this.props.deleteData);
   }
 
   render() {
-    const title = this.props.title;
+    const { title, mini, confirmMsg } = this.props;
 
     return (
       <div style={{ textAlign: 'right' }}>
-        <strong className="lead">{'Really delete? (This cannot be undone.)'}</strong>
+        <strong className="lead">{confirmMsg}</strong>
         <FloatingActionButton
+          mini={mini}
           onClick={this.cancelDelete}
           secondary
           style={{ marginLeft: '10px' }}
@@ -34,6 +35,7 @@ class RemoveConfirm extends React.Component {
           <ClearIcon />
         </FloatingActionButton>
         <FloatingActionButton
+          mini={mini}
           onClick={this.reallyDelete}
           style={{ marginLeft: '10px' }}
           title={`Delete ${title}`}
@@ -47,10 +49,14 @@ class RemoveConfirm extends React.Component {
 
 RemoveConfirm.propTypes = {
   confirmFn: PropTypes.func.isRequired,
+  confirmMsg: PropTypes.string.isRequired,
+  deleteData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  mini: PropTypes.bool.isRequired,
   title: PropTypes.string,
 };
 
 RemoveConfirm.defaultProps = {
+  deleteData: {},
   title: '',
 };
 
