@@ -68,7 +68,7 @@
     "eslint-plugin-security": "1.4.0",
     "jsdom": "11.2.0",
     "mocha": "3.5.3",
-    "nodemon": "1.11.1",
+    "nodemon": "1.12.1",
     "npm-update-outdated": "0.1.6",
     "nyc": "11.2.1",
     "pre-commit": "1.2.2",
