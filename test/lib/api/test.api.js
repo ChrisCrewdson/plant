@@ -2,7 +2,7 @@ const _ = require('lodash');
 const helper = require('../../helper');
 const assert = require('assert');
 
-const logger = require('../../../lib/logging/logger').create('test..plants-api');
+const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
 describe('api', () => {
   before('it should start the server and setup auth token', (done) => {
