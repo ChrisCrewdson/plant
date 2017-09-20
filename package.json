@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "async": "2.5.0",
-    "aws-sdk": "2.119.0",
+    "aws-sdk": "2.120.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
