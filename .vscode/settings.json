@@ -4,5 +4,8 @@
         "**/bower_components": true,
         "**/coverage": true,
         "**/.nyc_output": true
-    }
+    },
+    "cSpell.words": [
+        "polyfill"
+    ]
 }

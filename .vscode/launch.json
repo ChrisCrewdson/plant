@@ -71,8 +71,7 @@
         "./test/**/*.js"
       ],
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": null,
-      "runtimeExecutable": null,
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
       "runtimeArgs": [
         "--nolazy"
       ],
@@ -87,7 +86,8 @@
         "PLANT_GOOGLE_SECRET": "google-app-secret"
       },
       "console": "internalConsole",
-      "sourceMaps": true
+      "sourceMaps": true,
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ],
   "compounds": [
