@@ -10,10 +10,10 @@ const proxyquire = require('proxyquire');
 const proxylog = {
   trace: () => {},
   warn: () => {
-    throw new Error('Unexpected warn');
+    throw new Error('Unexpected warn in proxylog');
   },
   error: () => {
-    throw new Error('Unexpected error');
+    // throw new Error('Unexpected error in proxylog');
   },
 };
 
@@ -28,60 +28,50 @@ describe('/lib/db/mongo/', () => {
   let fbUser;
   let locationId;
 
-  before('should create a user account by starting the server', (done) => {
-    helper.startServerAuthenticated((err, data) => {
-      assert(!err);
+  before('should create a user account by starting the server',
+    () => helper.startServerAuthenticated().then((data) => {
       fbUser = data.user;
       userId = fbUser._id;
       assert(userId);
       locationId = data.user.locationIds[0]._id;
       assert.equal(typeof userId, 'string');
       Object.freeze(fbUser);
-      done();
-    });
-  });
+    }).catch(error => assert(!error)));
 
   describe('user', () => {
-    it('should fail to create a user account if there is no object', (done) => {
-      mongo.findOrCreateUser(null, (err, body) => {
-        assert(err);
-        assert.equal(err.message, 'No facebook.id or google.id:');
-        assert(!body);
-
-        done();
+    it('should fail to create a user account if there is no object',
+      async () => {
+        try {
+          await mongo.findOrCreateUser(null).then(body => assert(!body));
+        } catch (err) {
+          assert(err);
+          assert.equal(err.message, 'No facebook.id or google.id:');
+        }
       });
-    });
 
-    it('should fetch the user created in the before setup', (done) => {
-      const user = {
-        facebook: {
-          id: fbUser.facebook.id,
-        },
-      };
-      mongo.findOrCreateUser(user, (err, body) => {
-        assert(!err);
+    it('should fetch the user created in the before setup',
+      async () => {
+        const user = {
+          facebook: {
+            id: fbUser.facebook.id,
+          },
+        };
+        const body = await mongo.findOrCreateUser(user);
         assert(body);
         assert(body._id);
         assert(constants.mongoIdRE.test(body._id));
         assert(constants.mongoIdRE.test(body.locationIds[0]._id));
         assert.deepStrictEqual(body, fbUser);
-
-        done();
       });
-    });
 
-    it('should fetch all users', (done) => {
-      mongo.getAllUsers((err, body) => {
-        assert(!err);
-        assert(body);
-        assert(_.isArray(body));
-        assert.equal(body.length, 1);
-        const user = body[0];
-        assert(user._id);
-        assert(constants.mongoIdRE.test(user._id));
-
-        done();
-      });
+    it('should fetch all users', async () => {
+      const body = await mongo.getAllUsers();
+      assert(body);
+      assert(_.isArray(body));
+      assert.equal(body.length, 1);
+      const user = body[0];
+      assert(user._id);
+      assert(constants.mongoIdRE.test(user._id));
     });
   });
 
@@ -96,51 +86,41 @@ describe('/lib/db/mongo/', () => {
       plant.locationId = locationId;
     });
 
-    it('should create a plant', (done) => {
+    it('should create a plant', async () => {
       plant.userId = userId;
       assert.equal(typeof plant.userId, 'string');
-      mongo.createPlant(plant, userId, (createPlantErr, body) => {
-        assert(!createPlantErr);
-        assert(body);
-        assert(body._id);
-        assert.equal(typeof body._id, 'string');
-        assert.equal(typeof body.userId, 'string');
-        assert.equal(typeof plant.userId, 'object');
-        assert.equal(typeof plant.plantedOn, 'number');
+      const body = await mongo.createPlant(plant, userId);
+      assert(body);
+      assert(body._id);
+      assert.equal(typeof body._id, 'string');
+      assert.equal(typeof body.userId, 'string');
+      assert.equal(typeof plant.userId, 'object');
+      assert.equal(typeof plant.plantedOn, 'number');
 
-        // To be used in next test...
-        plantId = body._id;
-
-        done();
-      });
+      // To be used in next test...
+      plantId = body._id;
     });
 
-    it('should get an existing plant', (done) => {
-      mongo.getPlantById(plantId, userId, (err, result) => {
-        assert.equal(typeof result.userId, 'string');
-        assert(!err);
-        assert.equal(result.name, plant.name);
-        assert.equal(result.plantedOn, plant.plantedOn);
-        assert.equal(result.userId, plant.userId.toString());
-        done();
-      });
+    it('should get an existing plant', async () => {
+      const result = await mongo.getPlantById(plantId, userId);
+      assert.equal(typeof result.userId, 'string');
+      assert.equal(result.name, plant.name);
+      assert.equal(result.plantedOn, plant.plantedOn);
+      assert.equal(result.userId, plant.userId.toString());
     });
 
-    it('should get existing plants', (done) => {
-      mongo.getPlantsByIds([plantId], userId, (err, results) => {
-        assert(!err);
-        assert(_.isArray(results));
-        assert.equal(results.length, 1);
-        const result = results[0];
-        assert.equal(typeof result.userId, 'string');
-        assert.equal(result.name, plant.name);
-        assert.equal(result.plantedOn, plant.plantedOn);
-        assert.equal(result.userId, plant.userId.toString());
-        done();
-      });
+    it('should get existing plants', async () => {
+      const results = await mongo.getPlantsByIds([plantId], userId);
+      assert(_.isArray(results));
+      assert.equal(results.length, 1);
+      const result = results[0];
+      assert.equal(typeof result.userId, 'string');
+      assert.equal(result.name, plant.name);
+      assert.equal(result.plantedOn, plant.plantedOn);
+      assert.equal(result.userId, plant.userId.toString());
     });
 
-    it('should update an existing plant with "Set"', (done) => {
+    it('should update an existing plant with "Set"', async () => {
       const plantUpdate = {
         name: 'New Name',
         other: 'Other Text',
@@ -148,11 +128,8 @@ describe('/lib/db/mongo/', () => {
         userId,
       };
 
-      mongo.updatePlant(plantUpdate, userId, (err, result) => {
-        assert(!err);
-        assert.deepEqual(result, plantUpdate);
-        done();
-      });
+      const result = await mongo.updatePlant(plantUpdate, userId);
+      assert.deepEqual(result, plantUpdate);
     });
   });
 });
