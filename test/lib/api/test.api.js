@@ -5,14 +5,12 @@ const assert = require('assert');
 const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
 describe('api', () => {
-  before('it should start the server and setup auth token', (done) => {
-    helper.startServerAuthenticated((err, data) => {
+  before('it should start the server and setup auth token',
+    () => helper.startServerAuthenticated().then((data) => {
       assert(data.userId);
-      done();
-    });
-  });
+    }).catch(error => assert(!error)));
 
-  it('should get a 404 if the path is not recognized', (done) => {
+  it('should get a 404 if the path is not recognized', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
@@ -20,14 +18,10 @@ describe('api', () => {
       url: '/unknown',
     };
 
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      assert(!error, error);
-      assert.equal(httpMsg.statusCode, 404);
-      const docType = '<!DOCTYPE html>';
-      logger.trace('response:', { response });
-      assert(_.includes(response, docType), `Expected ${response} to have ${docType}`);
-
-      done();
-    });
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    assert.equal(httpMsg.statusCode, 404);
+    const docType = '<!DOCTYPE html>';
+    logger.trace('response:', { response });
+    assert(_.includes(response, docType), `Expected ${response} to have ${docType}`);
   });
 });

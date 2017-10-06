@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const assert = require('assert');
-const async = require('async');
 const constants = require('../app/libs/constants');
 const FakePassport = require('./fake-passport');
 const mongo = require('../lib/db/mongo');
@@ -19,7 +18,7 @@ function getUrl(url) {
 }
 
 let jwt;
-function makeRequest(opts, cb) {
+async function makeRequest(opts) {
   const auth = opts.authenticate
     ? { Authorization: `Bearer ${jwt}` }
     : {};
@@ -39,26 +38,29 @@ function makeRequest(opts, cb) {
   );
 
   // cb will get (error, httpMsg, response);
-  request(options, cb);
+  return new Promise((resolve, reject) => {
+    request(options, (err, httpMsg, response) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve({ httpMsg, response });
+    });
+  });
 }
 
 const data = {};
 
-function startServerAuthenticated(cb) {
-  function emptyDatabase(done) {
-    mongo.GetDb((dbGetError, db) => {
-      assert(!dbGetError);
-      async.each(['user', 'location', 'plant', 'note'], (collection, callback) => {
-        const coll = db.collection(collection);
-        coll.deleteMany({}, callback);
-      }, (err) => {
-        assert(!err);
-        done(err, data);
-      });
+async function startServerAuthenticated() {
+  async function emptyDatabase() {
+    const db = await mongo.GetDb();
+    const promises = ['user', 'location', 'plant', 'note'].map((collection) => {
+      const coll = db.collection(collection);
+      return coll.deleteMany({});
     });
+    return Promise.all(promises);
   }
 
-  function createUser(waterfallData, done) {
+  async function createUser() {
     const fbUser = {
       facebook: {
         id: makeMongoId(),
@@ -77,112 +79,99 @@ function startServerAuthenticated(cb) {
       updatedAt: '2016-01-28T14:59:32.989Z',
     };
 
-    mongo.findOrCreateUser(fbUser, (err, user) => {
-      assert(!err);
-      assert(user);
-      assert(user._id);
-      assert(constants.mongoIdRE.test(user._id));
-      assert(constants.mongoIdRE.test(user.locationIds[0]._id));
+    const user = await mongo.findOrCreateUser(fbUser);
 
-      const expectedUser = {
-        facebook: fbUser.facebook,
-        name: 'John Smith',
-        email: 'test@test.com',
-        createdAt: '2016-01-28T14:59:32.989Z',
-        updatedAt: '2016-01-28T14:59:32.989Z',
-        _id: user._id,
-        locationIds: [
-          {
-            _id: user.locationIds[0]._id,
-            createdBy: user._id,
-            members: {
-              [user._id]: 'owner',
-            },
-            stations: {},
-            title: 'John Smith Yard',
-            plantIds: [],
+    assert(user);
+    assert(user._id);
+    assert(constants.mongoIdRE.test(user._id));
+    assert(constants.mongoIdRE.test(user.locationIds[0]._id));
+
+    const expectedUser = {
+      facebook: fbUser.facebook,
+      name: 'John Smith',
+      email: 'test@test.com',
+      createdAt: '2016-01-28T14:59:32.989Z',
+      updatedAt: '2016-01-28T14:59:32.989Z',
+      _id: user._id,
+      locationIds: [
+        {
+          _id: user.locationIds[0]._id,
+          createdBy: user._id,
+          members: {
+            [user._id]: 'owner',
           },
-        ],
-      };
+          stations: {},
+          title: 'John Smith Yard',
+          plantIds: [],
+        },
+      ],
+    };
 
-      assert.deepStrictEqual(user, expectedUser);
+    assert.deepStrictEqual(user, expectedUser);
 
-      // eslint-disable-next-line no-param-reassign
-      waterfallData.user = user;
-      done(err, waterfallData);
-    });
+    return user;
   }
 
-  function createPassport(waterfallData, done) {
-    if (waterfallData.passport) {
-      waterfallData.passport.setUser(waterfallData.user);
+  function createPassport(passport, user) {
+    if (passport) {
+      passport.setUser(user);
     } else {
       // eslint-disable-next-line no-param-reassign
-      waterfallData.passport = new FakePassport(waterfallData.user);
+      passport = new FakePassport(user);
     }
-    done(null, waterfallData);
+    return passport;
   }
 
-  function createServer(waterfallData, done) {
-    if (!waterfallData.server) {
+  function createServer(server, passport) {
+    if (!server) {
       // eslint-disable-next-line no-param-reassign
-      waterfallData.server = proxyquire('../lib/server', { passport: waterfallData.passport });
+      server = proxyquire('../lib/server', { passport });
     }
-    done(null, waterfallData);
+    return server;
   }
 
-  function startServer(waterfallData, done) {
-    if (waterfallData.app) {
-      return done(null, waterfallData);
+  async function startServer(app, server) {
+    if (app) {
+      return app;
     }
-    return waterfallData.server((err, application) => {
-      assert(!err);
-
-      // eslint-disable-next-line no-param-reassign
-      waterfallData.app = application;
-      return done(null, waterfallData);
-    });
+    return server(); // returns a Promise
   }
 
-  function authenticateUser(waterfallData, done) {
-    makeRequest({
+  async function authenticateUser(passport) {
+    const { httpMsg } = await makeRequest({
       url: '/auth/facebook/callback',
-    }, (error, httpMsg) => {
-      assert(!error);
-      assert(httpMsg.headers);
-      assert(httpMsg.headers.location);
-      const parts = httpMsg.headers.location.split('=');
-      jwt = parts[1];
-      // logger.trace('Test jwt:', {jwt});
-      assert(jwt);
-      // eslint-disable-next-line no-param-reassign
-      waterfallData.userId = waterfallData.passport.getUserId();
-      return done(null, waterfallData);
     });
+    assert(httpMsg.headers);
+    assert(httpMsg.headers.location);
+    const parts = httpMsg.headers.location.split('=');
+    jwt = parts[1];
+    // logger.trace('Test jwt:', {jwt});
+    assert(jwt);
+    // eslint-disable-next-line no-param-reassign
+    return passport.getUserId();
   }
 
-  async.waterfall([
-    emptyDatabase,
-    createUser,
-    createPassport,
-    createServer,
-    startServer,
-    authenticateUser,
-  ], (err, waterfallData) => {
-    assert(!err);
-    // logger.trace('waterfallData:', {waterfallData});
-    cb(err, waterfallData);
-  });
+  try {
+    await emptyDatabase();
+    data.user = await createUser();
+    data.passport = createPassport(data.passport, data.user);
+    data.server = createServer(data.server, data.passport);
+    data.app = await startServer(data.app, data.server);
+    data.userId = await authenticateUser(data.passport);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 }
 
-function createPlants(numPlants, userId, locationId, cb) {
+async function createPlants(numPlants, userId, locationId) {
   const plantTemplate = {
     title: 'Plant Title',
     userId,
     locationId,
   };
 
-  function createPlant(count, callback) {
+  async function createPlant(count) {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
@@ -191,29 +180,20 @@ function createPlants(numPlants, userId, locationId, cb) {
       url: '/api/plant',
     };
 
-    makeRequest(reqOptions, (error, httpMsg, plant) => {
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 200);
+    const { httpMsg, response: plant } = await makeRequest(reqOptions);
+    assert.equal(httpMsg.statusCode, 200);
 
-      assert(plant.title);
+    assert(plant.title);
 
-      callback(null, plant);
-    });
+    return plant;
   }
 
   // generate some plants
-  async.times(numPlants, (n, next) => {
-    createPlant(n, next);
-  }, (err, plants) => {
-    assert(!err);
-    // we should now have 'numPlants' plants
-    assert.equal(plants.length, numPlants);
-
-    cb(err, plants);
-  });
+  const promises = [...Array(numPlants).keys()].map(a => createPlant(a));
+  return Promise.all(promises);
 }
 
-function createNote(plantIds, noteOverride = {}, cb) {
+async function createNote(plantIds, noteOverride = {}) {
   assert(_.isArray(plantIds));
   const noteTemplate = Object.assign({
     note: 'This is a note',
@@ -230,16 +210,14 @@ function createNote(plantIds, noteOverride = {}, cb) {
     url: '/api/note',
   };
 
-  makeRequest(reqOptions, (error, httpMsg, response) => {
-    logger.trace('createNote', { response });
-    assert(!error);
-    assert.equal(httpMsg.statusCode, 200);
-    assert.equal(response.success, true);
-    const { note } = response;
-    assert(note._id);
+  const { httpMsg, response } = await makeRequest(reqOptions);
+  logger.trace('createNote', { response });
+  assert.equal(httpMsg.statusCode, 200);
+  assert.equal(response.success, true);
+  const { note } = response;
+  assert(note._id);
 
-    cb(null, response);
-  });
+  return response;
 }
 
 module.exports = {
