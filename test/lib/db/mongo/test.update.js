@@ -1,13 +1,12 @@
 const utils = require('../../../../app/libs/utils');
 const assert = require('assert');
-const async = require('async');
 const mongo = require('../../../../lib/db/mongo');
 
 // const logger = require('../../../../lib/logging/logger').create('test:mongo-update');
 
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {
-    it('should update the image sizes in a note', (done) => {
+    it('should update the image sizes in a note', async () => {
       const note = {
         userId: utils.makeMongoId(),
         images: [{
@@ -30,46 +29,22 @@ describe('/lib/db/mongo/update', () => {
         { width: 2000, name: 'xl' },
       ];
 
-      function createNote(data, cb) {
-        mongo.upsertNote(note, (err, createdNote) => {
-          assert(!err);
-          assert(createdNote);
+      const createdNote = await mongo.upsertNote(note);
+      assert(createdNote);
 
-          cb(err, Object.assign({}, data, { createdNote }));
-        });
-      }
+      const noteUpdate = {
+        _id: createdNote._id,
+        userId: note.userId,
+        imageId: note.images[0].id,
+        sizes,
+      };
 
-      function addSizesToNoteImage(data, cb) {
-        const noteUpdate = {
-          _id: data.createdNote._id,
-          userId: note.userId,
-          imageId: note.images[0].id,
-          sizes,
-        };
-        mongo.addSizesToNoteImage(noteUpdate, (err) => {
-          assert(!err);
-          cb(err, data);
-        });
-      }
+      await mongo.addSizesToNoteImage(noteUpdate);
 
-      function getNote(data, cb) {
-        mongo.getNoteById(data.createdNote._id, (err, fetchedNote) => {
-          assert(!err);
-          assert.deepEqual(fetchedNote.images[0].sizes, sizes);
-          assert(!fetchedNote.images[1].sizes);
-          cb(err, data);
-        });
-      }
+      const fetchedNote = await mongo.getNoteById(createdNote._id);
 
-      async.waterfall([
-        createNote.bind(null, {}),
-        addSizesToNoteImage,
-        getNote,
-      ], (err, data) => {
-        assert(!err);
-        assert(data);
-        done();
-      });
+      assert.deepEqual(fetchedNote.images[0].sizes, sizes);
+      assert(!fetchedNote.images[1].sizes);
     });
   });
 });

@@ -7,32 +7,29 @@ describe('plants-api', () => {
   let userId;
   let locationId;
 
-  before('it should start the server and setup auth token', (done) => {
-    helper.startServerAuthenticated((err, data) => {
-      assert(data.user);
-      assert(data.user._id);
-      assert(data.user.locationIds);
-      assert(data.user.locationIds.length);
-      userId = data.user._id;
-      locationId = data.user.locationIds[0]._id;
-      done();
-    });
+  before('it should start the server and setup auth token', async () => {
+    const data = await helper.startServerAuthenticated();
+    assert(data.user);
+    assert(data.user._id);
+    assert(data.user.locationIds);
+    assert(data.user.locationIds.length);
+    userId = data.user._id;
+    locationId = data.user.locationIds[0]._id;
   });
+
 
   let insertedPlants;
   const numPlants = 2;
 
-  before('should create multiple plants to use in test', (done) => {
-    helper.createPlants(numPlants, userId, locationId, (err, plants) => {
-      insertedPlants = plants;
-      done();
-    });
+  before('should create multiple plants to use in test', async () => {
+    const plants = await helper.createPlants(numPlants, userId, locationId);
+    insertedPlants = plants;
   });
 
   describe('plants by locationId', () => {
     // it('should return an empty list if locationId exists and has no plants');
 
-    it('should retrieve the just created plants by locationId', (done) => {
+    it('should retrieve the just created plants by locationId', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
@@ -40,26 +37,22 @@ describe('plants-api', () => {
         url: `/api/plants/${locationId}`,
       };
 
-      helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-        logger.trace('response:', { response });
-        assert(!error);
-        assert.equal(httpMsg.statusCode, 200);
-        assert(response);
+      const { httpMsg, response } = await helper.makeRequest(reqOptions);
+      logger.trace('response:', { response });
+      assert.equal(httpMsg.statusCode, 200);
+      assert(response);
 
-        assert.equal(response.length, numPlants);
-        // assert that all plants exist
-        insertedPlants.forEach((plant) => {
-          const some = response.some(r => r._id === plant._id);
-          assert(some);
-        });
-
-        done();
+      assert.equal(response.length, numPlants);
+      // assert that all plants exist
+      insertedPlants.forEach((plant) => {
+        const some = response.some(r => r._id === plant._id);
+        assert(some);
       });
     });
   });
 
   describe('failures', () => {
-    it('should get a 404 if there is no locationId', (done) => {
+    it('should get a 404 if there is no locationId', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
@@ -67,29 +60,21 @@ describe('plants-api', () => {
         url: '/api/plants',
       };
 
-      helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-        assert(!error);
-        assert.equal(httpMsg.statusCode, 404);
-        assert(response);
-
-        done();
-      });
+      const { httpMsg, response } = await helper.makeRequest(reqOptions);
+      assert.equal(httpMsg.statusCode, 404);
+      assert(response);
     });
 
-    it('should fail to retrieve any plants if the locationId does not exist', (done) => {
+    it('should fail to retrieve any plants if the locationId does not exist', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
         json: true,
         url: '/api/plants/does-not-exist',
       };
-      helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-        assert(!error);
-        assert.equal(httpMsg.statusCode, 404);
-        assert(!response);
-
-        done();
-      });
+      const { httpMsg, response } = await helper.makeRequest(reqOptions);
+      assert.equal(httpMsg.statusCode, 404);
+      assert(!response);
     });
   });
 });

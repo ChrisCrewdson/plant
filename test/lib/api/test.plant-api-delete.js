@@ -1,6 +1,5 @@
 const helper = require('../../helper');
 const assert = require('assert');
-const async = require('async');
 const mongo = require('../../../lib/db/mongo');
 const utils = require('../../../app/libs/utils');
 
@@ -10,36 +9,30 @@ describe('plant-api-delete', () => {
   let userId;
   let locationId;
 
-  before('it should start the server and setup auth token', (done) => {
-    helper.startServerAuthenticated((err, data) => {
+  before('it should start the server and setup auth token',
+    async () => {
+      const data = await helper.startServerAuthenticated();
       assert(data.userId);
       userId = data.user._id;
       locationId = data.user.locationIds[0]._id;
-      done();
     });
-  });
 
   describe('simple plant deletion', () => {
-    it('should delete a plant without notes', (done) => {
-      helper.createPlants(1, userId, locationId, (err, plants) => {
-        assert(!err);
-        const reqOptions = {
-          method: 'DELETE',
-          authenticate: true,
-          json: true,
-          url: `/api/plant/${plants[0]._id}`,
-        };
+    it('should delete a plant without notes', async () => {
+      const plants = await helper.createPlants(1, userId, locationId);
+      const reqOptions = {
+        method: 'DELETE',
+        authenticate: true,
+        json: true,
+        url: `/api/plant/${plants[0]._id}`,
+      };
 
-        helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-          assert(!error);
-          assert.equal(httpMsg.statusCode, 200);
-          assert.deepStrictEqual(response, { message: 'Deleted' });
-          done();
-        });
-      });
+      const { httpMsg, response } = await helper.makeRequest(reqOptions);
+      assert.equal(httpMsg.statusCode, 200);
+      assert.deepStrictEqual(response, { message: 'Deleted' });
     });
 
-    it('should return a 404 if plant id does not exist', (done) => {
+    it('should return a 404 if plant id does not exist', async () => {
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
@@ -47,17 +40,14 @@ describe('plant-api-delete', () => {
         url: `/api/plant/${utils.makeMongoId()}`,
       };
 
-      helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-        assert(!error);
-        assert.equal(httpMsg.statusCode, 404);
-        assert.equal(response.message, 'Not Found');
-        done();
-      });
+      const { httpMsg, response } = await helper.makeRequest(reqOptions);
+      assert.equal(httpMsg.statusCode, 404);
+      assert.equal(response.message, 'Not Found');
     });
   });
 
   describe('plant/note deletion', () => {
-    it('should delete notes when a plant is deleted', (done) => {
+    it('should delete notes when a plant is deleted', async () => {
       // 1. Create 2 plants
       // 2. Create 3 notes:
       //    Note #1: plantIds reference plant #1
@@ -67,115 +57,75 @@ describe('plant-api-delete', () => {
       // 4. Confirm that Note #1 is no longer in DB
       // 5. Retrieve plant #2 and confirm that both notes are attached.
 
-      async.waterfall([
 
-        // 1. Create 2 plants
-        async.apply(helper.createPlants, 2, userId, locationId),
+      // 1. Create 2 plants
+      const plants = await helper.createPlants(2, userId, locationId);
+      assert.equal(plants.length, 2);
 
-        // 2. Create 3 notes, part 1.1:
-        //    Note #1: plantIds reference plant #1
-        (plants, cb) => {
-          assert(plants.length, 2);
-          helper.createNote([plants[0]._id], { note: 'Note #1' }, (err, response) => {
-            const { note } = response;
-            assert.equal(response.success, true);
-            assert(note);
-            cb(err, plants, [note]);
-          });
-        },
+      // 2. Create 3 notes, part 1.1:
+      //    Note #1: plantIds reference plant #1
 
-        // 2. Create 3 notes, part 1.2:
-        //    Update Note #1
-        (plants, notes, cb) => {
-          const updatedNote = Object.assign({}, notes[0], { x: 'random' });
-          mongo.upsertNote(updatedNote, (err, note) => {
-            assert(!err);
-            assert(note);
-            cb(err, plants, notes);
-          });
-        },
+      const response = await helper.createNote([plants[0]._id], { note: 'Note #1' });
+      const { note } = response;
+      assert.equal(response.success, true);
+      assert(note);
+      const notes = [note];
 
-        // 2. Create 3 notes, part 2:
-        //    Note #2: plantIds reference plant #1 & #2
-        (plants, notes, cb) => {
-          helper.createNote([plants[0]._id, plants[1]._id], { note: 'Note #2' }, (err, response) => {
-            assert.equal(response.success, true);
-            const { note } = response;
-            notes.push(note);
-            cb(err, plants, notes);
-          });
-        },
+      // 2. Create 3 notes, part 1.2:
+      //    Update Note #1
+      const updatedNote = Object.assign({}, notes[0], { x: 'random' });
+      const upsertedNote = await mongo.upsertNote(updatedNote);
+      assert(upsertedNote);
 
-        // 2. Create 3 notes, part 3:
-        //    Note #3: plantIds reference plant #2
-        (plants, notes, cb) => {
-          helper.createNote([plants[1]._id], { note: 'Note #3' }, (err, response) => {
-            assert.equal(response.success, true);
-            const { note } = response;
-            notes.push(note);
-            cb(err, plants, notes);
-          });
-        },
+      // 2. Create 3 notes, part 2:
+      //    Note #2: plantIds reference plant #1 & #2
+      const response2 = await helper.createNote([plants[0]._id, plants[1]._id], { note: 'Note #2' });
+      assert.equal(response2.success, true);
+      const { note: note2 } = response2;
+      notes.push(note2);
 
-        // 3. Delete plant #1
-        (plants, notes, cb) => {
-          const reqOptions = {
-            method: 'DELETE',
-            authenticate: true,
-            json: true,
-            url: `/api/plant/${plants[0]._id}`,
-          };
-          helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-            assert(!error);
-            assert.equal(httpMsg.statusCode, 200);
+      // 2. Create 3 notes, part 3:
+      //    Note #3: plantIds reference plant #2
+      const response3 = await helper.createNote([plants[1]._id], { note: 'Note #3' });
+      assert.equal(response3.success, true);
+      const { note: note3 } = response3;
+      notes.push(note3);
 
-            assert.deepStrictEqual(response, { message: 'Deleted' });
-            cb(error, plants, notes);
-          });
-        },
+      // 3. Delete plant #1
+      const reqOptions = {
+        method: 'DELETE',
+        authenticate: true,
+        json: true,
+        url: `/api/plant/${plants[0]._id}`,
+      };
+      const { response: response4 } = await helper.makeRequest(reqOptions);
+      assert.deepStrictEqual(response4, { message: 'Deleted' });
 
-        // 4. Confirm that Note #1 is no longer in DB
-        (plants, notes, cb) => {
-          mongo.getNoteById(notes[0]._id, (err, result) => {
-            assert(!err);
-            assert(!result);
-            cb(null, plants, notes);
-          });
-        },
+      // 4. Confirm that Note #1 is no longer in DB
+      const result2 = await mongo.getNoteById(notes[0]._id);
+      assert(!result2);
 
-        // 5. Retrieve plant #2 and confirm that both notes are attached.
-        (plants, notes, cb) => {
-          const reqOptions = {
-            method: 'GET',
-            authenticate: true,
-            json: true,
-            url: `/api/plant/${plants[1]._id}`,
-          };
+      // 5. Retrieve plant #2 and confirm that both notes are attached.
+      const reqOptions2 = {
+        method: 'GET',
+        authenticate: true,
+        json: true,
+        url: `/api/plant/${plants[1]._id}`,
+      };
 
-          helper.makeRequest(reqOptions, (error, httpMsg, plant) => {
-            assert(!error);
-            assert.equal(httpMsg.statusCode, 200);
-            assert(plant);
-            assert.equal(plant._id, plants[1]._id);
-            assert.equal(plant.notes.length, 2);
+      const { response: plant } = await helper.makeRequest(reqOptions2);
+      // assert.equal(httpMsg.statusCode, 200);
+      assert(plant);
+      assert.equal(plant._id, plants[1]._id);
+      assert.equal(plant.notes.length, 2);
 
-            // The notes array should be asc date order.
-            const noteIds = [notes[1]._id, notes[2]._id];
-            assert(noteIds.indexOf(plant.notes[0]) >= 0);
-            assert(noteIds.indexOf(plant.notes[1]) >= 0);
+      // The notes array should be asc date order.
+      const noteIds = [notes[1]._id, notes[2]._id];
+      assert(noteIds.indexOf(plant.notes[0]) >= 0);
+      assert(noteIds.indexOf(plant.notes[1]) >= 0);
 
-            cb(error, plants, notes);
-          });
-        },
-      ],
-
-      // Final callback
-      (err, plants, notes) => {
-        assert(!err);
-        assert.equal(plants.length, 2);
-        assert.equal(notes.length, 3);
-        done();
-      });
+      assert.equal(plants.length, 2);
+      assert.equal(notes.length, 3);
     });
   });
 });

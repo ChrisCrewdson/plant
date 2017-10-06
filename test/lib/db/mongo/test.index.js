@@ -29,20 +29,22 @@ describe('/lib/db/mongo/', () => {
   let locationId;
 
   before('should create a user account by starting the server',
-    () => helper.startServerAuthenticated().then((data) => {
+    async () => {
+      const data = await helper.startServerAuthenticated();
       fbUser = data.user;
       userId = fbUser._id;
       assert(userId);
       locationId = data.user.locationIds[0]._id;
       assert.equal(typeof userId, 'string');
       Object.freeze(fbUser);
-    }).catch(error => assert(!error)));
+    });
 
   describe('user', () => {
     it('should fail to create a user account if there is no object',
       async () => {
         try {
-          await mongo.findOrCreateUser(null).then(body => assert(!body));
+          await mongo.findOrCreateUser(null);
+          assert(false, 'findOrCreateUser() should have thrown in this test');
         } catch (err) {
           assert(err);
           assert.equal(err.message, 'No facebook.id or google.id:');

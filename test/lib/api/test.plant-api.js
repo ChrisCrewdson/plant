@@ -9,9 +9,9 @@ describe('plant-api', () => {
   let plantId;
   let initialPlant;
 
-  before('it should start the server and setup auth token', (done) => {
-    helper.startServerAuthenticated((err, data) => {
-      assert(!err);
+  before('it should start the server and setup auth token',
+    async () => {
+      const data = await helper.startServerAuthenticated();
       assert(data.userId);
       user = data.user;
       initialPlant = Object.freeze({
@@ -20,11 +20,9 @@ describe('plant-api', () => {
         tags: ['north-east', 'citrus'],
         locationId: data.user.locationIds[0]._id,
       });
-      done();
     });
-  });
 
-  it('should fail to create a plant record if user is not authenticated', (done) => {
+  it('should fail to create a plant record if user is not authenticated', async () => {
     const reqOptions = {
       method: 'POST',
       authenticate: false,
@@ -32,17 +30,13 @@ describe('plant-api', () => {
       json: true,
       url: '/api/plant',
     };
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 401);
-      assert(response);
-      assert.equal(response.error, 'Not Authenticated');
-
-      done();
-    });
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    assert.equal(httpMsg.statusCode, 401);
+    assert(response);
+    assert.equal(response.error, 'Not Authenticated');
   });
 
-  it('should fail server validation if title is missing', (done) => {
+  it('should fail server validation if title is missing', async () => {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
@@ -50,20 +44,16 @@ describe('plant-api', () => {
       json: true,
       url: '/api/plant',
     };
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      // response should look like:
-      // { title: [ 'Title can\'t be blank' ] }
-      // ...and status should be 400
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 400);
-      assert(response);
-      assert.equal(response.title, 'Title is too short (minimum is 1 characters)');
-
-      done();
-    });
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    // response should look like:
+    // { title: [ 'Title can\'t be blank' ] }
+    // ...and status should be 400
+    assert.equal(httpMsg.statusCode, 400);
+    assert(response);
+    assert.equal(response.title, 'Title is too short (minimum is 1 characters)');
   });
 
-  it('should create a plant', (done) => {
+  it('should create a plant', async () => {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
@@ -71,69 +61,57 @@ describe('plant-api', () => {
       json: true,
       url: '/api/plant',
     };
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      // response should look like:
-      // {  title: 'Plant Title',
-      //    userId: '6d73133d02d14058ac5f86fa',
-      //    _id: 'b19d854e0dc045feabd31b3b' }
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
-      assert.equal(response.title, 'Plant Title');
-      assert.equal(response.userId, user._id);
-      assert(constants.mongoIdRE.test(response._id));
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    // response should look like:
+    // {  title: 'Plant Title',
+    //    userId: '6d73133d02d14058ac5f86fa',
+    //    _id: 'b19d854e0dc045feabd31b3b' }
+    assert.equal(httpMsg.statusCode, 200);
+    assert(response);
+    assert.equal(response.title, 'Plant Title');
+    assert.equal(response.userId, user._id);
+    assert(constants.mongoIdRE.test(response._id));
 
-      plantId = response._id;
-
-      done();
-    });
+    plantId = response._id;
   });
 
-  it('should retrieve the just created plant', (done) => {
+  it('should retrieve the just created plant', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
       json: true,
       url: `/api/plant/${plantId}`,
     };
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      // response should look like:
-      // { _id: 'e5fc6fff0a8f48ad90636b3cea6e4f93',
-      // title: 'Plant Title',
-      // userId: '241ff27e28c7448fb22c4f6fb2580923'}
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
-      assert(response.userId);
-      assert.equal(response._id, plantId);
-      assert.equal(response.title, initialPlant.title);
-      assert(response.notes);
-      assert(response.locationId);
-      assert.equal(response.notes.length, 0);
-
-      done();
-    });
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    // response should look like:
+    // { _id: 'e5fc6fff0a8f48ad90636b3cea6e4f93',
+    // title: 'Plant Title',
+    // userId: '241ff27e28c7448fb22c4f6fb2580923'}
+    assert.equal(httpMsg.statusCode, 200);
+    assert(response);
+    assert(response.userId);
+    assert.equal(response._id, plantId);
+    assert.equal(response.title, initialPlant.title);
+    assert(response.notes);
+    assert(response.locationId);
+    assert.equal(response.notes.length, 0);
   });
 
-  it('should fail to retrieve a plant if the id does not exist', (done) => {
+  it('should fail to retrieve a plant if the id does not exist', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
       json: true,
       url: '/api/plant/does-not-exist',
     };
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 404);
-      assert(response);
-      assert.equal(response.error, 'missing');
-
-      done();
-    });
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    assert.equal(httpMsg.statusCode, 404);
+    assert(response);
+    assert.equal(response.error, 'missing');
   });
 
   let updatedPlant;
-  it('should update the just created plant', (done) => {
+  it('should update the just created plant', async () => {
     updatedPlant = Object.assign({},
       initialPlant, {
         title: 'A New Title',
@@ -148,18 +126,14 @@ describe('plant-api', () => {
       url: '/api/plant',
     };
 
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      const { locationId } = response;
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 200);
-      const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId });
-      assert.deepEqual(response, expected);
-
-      done();
-    });
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    const { locationId } = response;
+    assert.equal(httpMsg.statusCode, 200);
+    const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId });
+    assert.deepEqual(response, expected);
   });
 
-  it('should retrieve the just updated plant', (done) => {
+  it('should retrieve the just updated plant', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
@@ -167,16 +141,12 @@ describe('plant-api', () => {
       url: `/api/plant/${plantId}`,
     };
 
-    helper.makeRequest(reqOptions, (error, httpMsg, response) => {
-      assert(!error);
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
+    const { httpMsg, response } = await helper.makeRequest(reqOptions);
+    assert.equal(httpMsg.statusCode, 200);
+    assert(response);
 
-      assert(response.userId);
-      assert.equal(response._id, plantId);
-      assert.equal(response.title, updatedPlant.title);
-
-      done();
-    });
+    assert(response.userId);
+    assert.equal(response._id, plantId);
+    assert.equal(response.title, updatedPlant.title);
   });
 });
