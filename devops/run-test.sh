@@ -18,4 +18,4 @@ export PLANT_DB_NAME=plant-test
 
 # node_modules/mocha/bin/_mocha test/**/*.js --recursive --require babel-core/register --require test/setup.js
 
-nyc --require babel-register mocha ./test/**/*.js
+nyc --require babel-register mocha ./test/**/*.js --exit
