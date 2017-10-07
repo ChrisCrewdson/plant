@@ -6,8 +6,9 @@
         "**/.nyc_output": true
     },
     "cSpell.words": [
-        "polyfill",
+        "Plaaant",
         "originalname",
+        "polyfill",
         "upsert"
     ]
 }
