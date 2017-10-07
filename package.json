@@ -66,6 +66,7 @@
     "eslint-plugin-jsx-a11y": "5.x",
     "eslint-plugin-react": "7.4.0",
     "eslint-plugin-security": "1.4.0",
+    "jest": "21.2.1",
     "jsdom": "11.3.0",
     "mocha": "4.0.1",
     "nodemon": "1.12.1",
