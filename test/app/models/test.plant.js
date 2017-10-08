@@ -7,7 +7,7 @@ const plantValidator = validators.plant;
 const logger = require('../../../lib/logging/logger').create('plant:test.plant');
 
 describe('/app/models/plant', () => {
-  it('should pass minimum validation', (done) => {
+  test('should pass minimum validation', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       locationId: 'cf885bf372488977ae0d6475',
@@ -28,7 +28,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should pass full validation', (done) => {
+  test('should pass full validation', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -57,7 +57,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should fail validation', (done) => {
+  test('should fail validation', (done) => {
     // All items in plant should be invalid
     const plant = {
       _id: '0e55d91cb33d42', // Not a MongoId
@@ -95,7 +95,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should strip out props not in the schema', (done) => {
+  test('should strip out props not in the schema', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       fakeName1: 'Common Name',
@@ -121,7 +121,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should add _id if it is a new record', (done) => {
+  test('should add _id if it is a new record', (done) => {
     const plant = {
       locationId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
@@ -141,7 +141,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should fail if userId is missing', (done) => {
+  test('should fail if userId is missing', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       locationId: 'cf885bf372488977ae0d6475',
@@ -163,7 +163,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should fail if locationId is missing', (done) => {
+  test('should fail if locationId is missing', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       userId: 'cf885bf372488977ae0d6475',
@@ -185,7 +185,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should fail if a tag element is over its maximum length', (done) => {
+  test('should fail if a tag element is over its maximum length', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -213,7 +213,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should fail if a tags is not an array', (done) => {
+  test('should fail if a tags is not an array', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -241,7 +241,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should fail if a tag element has invalid characters', (done) => {
+  test('should fail if a tag element has invalid characters', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -269,7 +269,7 @@ describe('/app/models/plant', () => {
     });
   });
 
-  it('should lowercase tags', (done) => {
+  test('should lowercase tags', (done) => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',

@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const assert = require('assert');
-const proxyquire = require('proxyquire');
 
 // const logger = require('../../../lib/logging/logger').create('test.ajax');
 
@@ -8,10 +7,18 @@ const ajaxStub = {
   jquery: {},
 };
 
-const ajax = proxyquire('../../../app/middleware/ajax', ajaxStub);
+let callCounter = 0;
+jest.mock('jquery', {
+  count: 0,
+  ajax: () => {
+    callCounter += 1;
+  },
+});
+
+const ajax = require('../../../app/middleware/ajax');
 
 describe('/app/middleware/ajax', () => {
-  it('should return an object if data is object', (done) => {
+  test('should return an object if data is object', (done) => {
     const store = {};
     const options = {
       url: '/something',
@@ -29,13 +36,14 @@ describe('/app/middleware/ajax', () => {
     };
 
     ajax(store, options);
+    expect(callCounter).toBe(1);
 
     assert(jqueryAjaxCalled);
 
     done();
   });
 
-  it('should not change a native data type', (done) => {
+  test('should not change a native data type', (done) => {
     const store = {};
     const options = {
       url: '/something',

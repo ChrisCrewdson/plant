@@ -9,7 +9,7 @@ describe('plant-api-delete', () => {
   let userId;
   let locationId;
 
-  before(
+  beforeAll(
     'it should start the server and setup auth token',
     async () => {
       const data = await helper.startServerAuthenticated();
@@ -20,7 +20,7 @@ describe('plant-api-delete', () => {
   );
 
   describe('simple plant deletion', () => {
-    it('should delete a plant without notes', async () => {
+    test('should delete a plant without notes', async () => {
       const plants = await helper.createPlants(1, userId, locationId);
       const reqOptions = {
         method: 'DELETE',
@@ -34,7 +34,7 @@ describe('plant-api-delete', () => {
       assert.deepStrictEqual(response, { message: 'Deleted' });
     });
 
-    it('should return a 404 if plant id does not exist', async () => {
+    test('should return a 404 if plant id does not exist', async () => {
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
@@ -49,7 +49,7 @@ describe('plant-api-delete', () => {
   });
 
   describe('plant/note deletion', () => {
-    it('should delete notes when a plant is deleted', async () => {
+    test('should delete notes when a plant is deleted', async () => {
       // 1. Create 2 plants
       // 2. Create 3 notes:
       //    Note #1: plantIds reference plant #1

@@ -9,36 +9,36 @@ describe('plant-api', () => {
   let plantId;
   let initialPlant;
 
-  before(
-    'it should start the server and setup auth token',
+  beforeAll('it should start the server and setup auth token', async () => {
+    const data = await helper.startServerAuthenticated();
+    assert(data.userId);
+    ({ user } = data);
+    initialPlant = Object.freeze({
+      title: 'Plant Title',
+      price: 19.99,
+      tags: ['north-east', 'citrus'],
+      locationId: data.user.locationIds[0]._id,
+    });
+  });
+
+  test(
+    'should fail to create a plant record if user is not authenticated',
     async () => {
-      const data = await helper.startServerAuthenticated();
-      assert(data.userId);
-      ({ user } = data);
-      initialPlant = Object.freeze({
-        title: 'Plant Title',
-        price: 19.99,
-        tags: ['north-east', 'citrus'],
-        locationId: data.user.locationIds[0]._id,
-      });
+      const reqOptions = {
+        method: 'POST',
+        authenticate: false,
+        body: initialPlant,
+        json: true,
+        url: '/api/plant',
+      };
+      const { httpMsg, response } = await helper.makeRequest(reqOptions);
+      assert.equal(httpMsg.statusCode, 401);
+      assert(response);
+      assert.equal(response.error, 'Not Authenticated');
     },
   );
 
-  it('should fail to create a plant record if user is not authenticated', async () => {
-    const reqOptions = {
-      method: 'POST',
-      authenticate: false,
-      body: initialPlant,
-      json: true,
-      url: '/api/plant',
-    };
-    const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    assert.equal(httpMsg.statusCode, 401);
-    assert(response);
-    assert.equal(response.error, 'Not Authenticated');
-  });
-
-  it('should fail server validation if title is missing', async () => {
+  test('should fail server validation if title is missing', async () => {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
@@ -55,7 +55,7 @@ describe('plant-api', () => {
     assert.equal(response.title, 'Title is too short (minimum is 1 characters)');
   });
 
-  it('should create a plant', async () => {
+  test('should create a plant', async () => {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
@@ -77,7 +77,7 @@ describe('plant-api', () => {
     plantId = response._id;
   });
 
-  it('should retrieve the just created plant', async () => {
+  test('should retrieve the just created plant', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
@@ -99,7 +99,7 @@ describe('plant-api', () => {
     assert.equal(response.notes.length, 0);
   });
 
-  it('should fail to retrieve a plant if the id does not exist', async () => {
+  test('should fail to retrieve a plant if the id does not exist', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
@@ -113,7 +113,7 @@ describe('plant-api', () => {
   });
 
   let updatedPlant;
-  it('should update the just created plant', async () => {
+  test('should update the just created plant', async () => {
     updatedPlant = Object.assign(
       {},
       initialPlant, {
@@ -137,7 +137,7 @@ describe('plant-api', () => {
     assert.deepEqual(response, expected);
   });
 
-  it('should retrieve the just updated plant', async () => {
+  test('should retrieve the just updated plant', async () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,

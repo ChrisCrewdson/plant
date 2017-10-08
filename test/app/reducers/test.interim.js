@@ -5,7 +5,7 @@ const Immutable = require('immutable');
 
 describe('/app/reducers/interim', () => {
   describe('sanity check', () => {
-    it('should check that all the reducers are in the actions file', (done) => {
+    test('should check that all the reducers are in the actions file', (done) => {
       Object.keys(interim.reducers).forEach((reducerKey) => {
         // If any of the actions being used in the reducer haven't been defined
         // in the actions file then this test will fail.
@@ -25,21 +25,21 @@ describe('/app/reducers/interim', () => {
   }
 
   describe('editNoteOpen', () => {
-    it('should reduce from empty state and empty payload', () => {
+    test('should reduce from empty state and empty payload', () => {
       const state = Immutable.fromJS({});
       const payload = {};
       const expected = Immutable.fromJS({ note: {} });
       checkReducer('editNoteOpen', state, payload, expected);
     });
 
-    it('should reduce from empty state and populated payload', () => {
+    test('should reduce from empty state and populated payload', () => {
       const state = Immutable.fromJS({});
       const payload = { a: 1, b: 2 };
       const expected = Immutable.fromJS({ note: { a: 1, b: 2 } });
       checkReducer('editNoteOpen', state, payload, expected);
     });
 
-    it('should reduce from existing state and populated payload', () => {
+    test('should reduce from existing state and populated payload', () => {
       const state = Immutable.fromJS({ plant: { a: 1 } });
       const payload = { a: 1, b: 2 };
       const expected = Immutable.fromJS({ note: { a: 1, b: 2 }, plant: { a: 1 } });
@@ -48,21 +48,21 @@ describe('/app/reducers/interim', () => {
   });
 
   describe('editNoteClose', () => {
-    it('should reduce from empty state and empty payload', () => {
+    test('should reduce from empty state and empty payload', () => {
       const state = Immutable.fromJS({});
       const payload = {};
       const expected = Immutable.fromJS({});
       checkReducer('editNoteClose', state, payload, expected);
     });
 
-    it('should reduce from empty state and populated payload', () => {
+    test('should reduce from empty state and populated payload', () => {
       const state = Immutable.fromJS({});
       const payload = { a: 1, b: 2 };
       const expected = Immutable.fromJS({});
       checkReducer('editNoteClose', state, payload, expected);
     });
 
-    it('should reduce from existing state and populated payload', () => {
+    test('should reduce from existing state and populated payload', () => {
       const state = Immutable.fromJS({ plant: { a: 1 } });
       const payload = { a: 1, b: 2 };
       const expected = Immutable.fromJS({ plant: { a: 1 } });
@@ -71,21 +71,21 @@ describe('/app/reducers/interim', () => {
   });
 
   describe('editNoteChange', () => {
-    it('should reduce from empty state and empty payload', () => {
+    test('should reduce from empty state and empty payload', () => {
       const state = Immutable.fromJS({ note: { note: {}, plant: {} } });
       const payload = {};
       const expected = Immutable.fromJS({ note: { note: {}, plant: {} } });
       checkReducer('editNoteChange', state, payload, expected);
     });
 
-    it('should reduce from empty state and populated payload', () => {
+    test('should reduce from empty state and populated payload', () => {
       const state = Immutable.fromJS({ note: { note: {}, plant: {} } });
       const payload = { a: 1, b: 2 };
       const expected = Immutable.fromJS({ note: { note: { a: 1, b: 2 }, plant: {} } });
       checkReducer('editNoteChange', state, payload, expected);
     });
 
-    it('should reduce from existing state and populated payload', () => {
+    test('should reduce from existing state and populated payload', () => {
       const state = Immutable.fromJS({ note: { note: { a: 11, c: 3 }, plant: {} } });
       const payload = { a: 1, b: 2 };
       const expected = Immutable.fromJS({ note: { note: { a: 1, b: 2, c: 3 }, plant: {} } });

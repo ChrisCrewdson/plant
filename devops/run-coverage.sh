@@ -16,6 +16,4 @@ export DEBUG=plant:*
 export PLANT_DB_URL=127.0.0.1:27017
 export PLANT_DB_NAME=plant-test
 
-node_modules/.bin/nyc --require babel-register cover node_modules/mocha/bin/_mocha -- --require test/setup.js test/**/*.js --recursive
-
-# node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --require test/setup.js test/**/*.js --recursive
+node_modules/.bin/jest --coverage

@@ -6,7 +6,7 @@ const mongo = require('../../../../lib/db/mongo');
 
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {
-    it('should update the image sizes in a note', async () => {
+    test('should update the image sizes in a note', async () => {
       const note = {
         userId: utils.makeMongoId(),
         images: [{

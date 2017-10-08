@@ -5,7 +5,7 @@ const Immutable = require('immutable');
 
 describe('/app/reducers/notes', () => {
   describe('sanity check', () => {
-    it('should check that all the reducers are in the actions file', () => {
+    test('should check that all the reducers are in the actions file', () => {
       Object.keys(notes.reducers).forEach((reducerKey) => {
         // If any of the actions being used in the reducer haven't been defined
         // in the actions file then this test will fail.
@@ -21,7 +21,7 @@ describe('/app/reducers/notes', () => {
   }
 
   describe('reduction', () => {
-    it('should upsertNoteRequestSuccess', () => {
+    test('should upsertNoteRequestSuccess', () => {
       const state = Immutable.fromJS({ id1: { _id: 'id1', date: 20160101 } });
       const payload = { note: { _id: 'id2', date: 20160202 } };
       const expected = Immutable.fromJS({
@@ -32,7 +32,7 @@ describe('/app/reducers/notes', () => {
       checkReducer('upsertNoteRequest', state, payload, expected);
     });
 
-    it('should upsertNoteRequestSuccess with plantIds', () => {
+    test('should upsertNoteRequestSuccess with plantIds', () => {
       const state = Immutable.fromJS({ id1: { _id: 'id1', date: 20160101, plantIds: ['p1', 'p2'] } });
       const payload = { note: { _id: 'id1', date: 20160202, plantIds: ['p2', 'p3'] } };
       const expected = Immutable.fromJS({
@@ -41,7 +41,7 @@ describe('/app/reducers/notes', () => {
       checkReducer('upsertNoteSuccess', state, payload, expected);
     });
 
-    it('should loadNotesSuccess', () => {
+    test('should loadNotesSuccess', () => {
       const state = Immutable.fromJS({ id1: { _id: 'id1', date: 20160101 } });
       const payload = [{ _id: 'id2', date: 20160202 }, { _id: 'id3', date: 20160303 }];
       const expected = Immutable.fromJS({

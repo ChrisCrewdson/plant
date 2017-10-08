@@ -4,7 +4,7 @@ const Immutable = require('immutable');
 
 describe('/app/libs/gis', () => {
   describe('scaling to canvas', () => {
-    it('should scale zero plants', () => {
+    test('should scale zero plants', () => {
       const width = 700;
       const immutablePlants = Immutable.Map();
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
@@ -13,7 +13,7 @@ describe('/app/libs/gis', () => {
       assert.equal(scaledPlants.canvasHeight, 0);
     });
 
-    it('should scale a single plant', () => {
+    test('should scale a single plant', () => {
       const plants = {
         1: {
           _id: '1',
@@ -31,7 +31,7 @@ describe('/app/libs/gis', () => {
       assert.equal(scaledPlants.canvasHeight, width);
     });
 
-    it('should scale two plants on the same latitude', () => {
+    test('should scale two plants on the same latitude', () => {
       const plants = {
         1: {
           _id: '1',
@@ -56,7 +56,7 @@ describe('/app/libs/gis', () => {
       assert.equal(scaledPlants.canvasHeight, width);
     });
 
-    it('should scale two plants on the same longitude', () => {
+    test('should scale two plants on the same longitude', () => {
       const plants = {
         1: {
           _id: '1',

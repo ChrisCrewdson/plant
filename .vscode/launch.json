@@ -62,19 +62,11 @@
       "console": "internalConsole",
       "sourceMaps": true
     }, {
-      "name": "Mocha",
+      "name": "Unit Test",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/node_modules/.bin/_mocha",
-      "stopOnEntry": false,
-      "args": [
-        "./test/**/*.js"
-      ],
-      "cwd": "${workspaceRoot}",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
-      "runtimeArgs": [
-        "--nolazy"
-      ],
+      "program": "${workspaceRoot}/node_modules/.bin/jest",
+      "args": ["-i"],
       "env": {
         "NODE_ENV": "development",
         "PLANT_TOKEN_SECRET": "json-web-token-secret",
@@ -85,9 +77,18 @@
         "PLANT_GOOGLE_ID": "google-app-id",
         "PLANT_GOOGLE_SECRET": "google-app-secret"
       },
-      "console": "internalConsole",
-      "sourceMaps": true,
-      "internalConsoleOptions": "openOnSessionStart"
+      "cwd": "${workspaceRoot}"
+    }, {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ],
   "compounds": [

@@ -5,7 +5,7 @@ const logger = require('../../../../lib/logging/logger').create('test.mongo-help
 
 describe('/lib/db/mongo/helper', () => {
   describe('removeEmtpy', () => {
-    it('should remove empty string values', () => {
+    test('should remove empty string values', () => {
       const doc = {
         one: 'one',
         two: '',

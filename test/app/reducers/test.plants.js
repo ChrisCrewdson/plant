@@ -15,7 +15,7 @@ describe('/app/reducers/plants', () => {
       'loadPlantFailure',
     ];
 
-    it('should reduce using replace in place', () => {
+    test('should reduce using replace in place', () => {
       const state = Immutable.fromJS({
         1: {
           _id: '1',
@@ -34,7 +34,7 @@ describe('/app/reducers/plants', () => {
       });
     });
 
-    it('should reduce with existing with replace in place', () => {
+    test('should reduce with existing with replace in place', () => {
       const state = Immutable.fromJS({
         1: {
           _id: '1',
@@ -58,7 +58,7 @@ describe('/app/reducers/plants', () => {
     });
   });
 
-  it('should delete a plant', () => {
+  test('should delete a plant', () => {
     const current = Immutable.fromJS({
       1: {
         _id: '1',
@@ -77,7 +77,7 @@ describe('/app/reducers/plants', () => {
     assert.deepEqual(actual.toJS(), expected);
   });
 
-  it('should delete a note', () => {
+  test('should delete a note', () => {
     const current = Immutable.fromJS({
       1: {
         _id: '1',
@@ -99,7 +99,7 @@ describe('/app/reducers/plants', () => {
     assert.deepEqual(actual.toJS(), expected);
   });
 
-  it('should load a plant', () => {
+  test('should load a plant', () => {
     const current = Immutable.fromJS({
       1: {
         _id: '1',
@@ -125,7 +125,7 @@ describe('/app/reducers/plants', () => {
     assert.deepEqual(actual.toJS(), expected);
   });
 
-  it('should load multiple plants', () => {
+  test('should load multiple plants', () => {
     const current = Immutable.fromJS({
       1: {
         _id: '1',
@@ -150,7 +150,7 @@ describe('/app/reducers/plants', () => {
     assert.deepEqual(actual.toJS(), expected);
   });
 
-  it('should add a new noteId to the plant\'s notes List', () => {
+  test('should add a new noteId to the plant\'s notes List', () => {
     const current = Immutable.fromJS({
       p1: {
         _id: 'p1',
@@ -177,7 +177,7 @@ describe('/app/reducers/plants', () => {
     assert.deepEqual(actual.toJS(), expected);
   });
 
-  it('should remove a removed noteId to the plant\'s notes List', () => {
+  test('should remove a removed noteId to the plant\'s notes List', () => {
     const current = Immutable.fromJS({
       p1: {
         _id: 'p1',

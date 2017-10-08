@@ -3,7 +3,7 @@ const actions = require('../../../app/actions');
 const assert = require('assert');
 
 describe('/app/actions', () => {
-  it('should create a logout action', (done) => {
+  test('should create a logout action', (done) => {
     const expected = {
       type: actions.LOGOUT,
     };
@@ -12,7 +12,7 @@ describe('/app/actions', () => {
     done();
   });
 
-  it('should create a login request action', (done) => {
+  test('should create a login request action', (done) => {
     const payload = { one: 1, two: 2 };
     const expected = {
       type: actions.LOGIN_REQUEST,
@@ -23,7 +23,7 @@ describe('/app/actions', () => {
     done();
   });
 
-  it('should create a login failure action', (done) => {
+  test('should create a login failure action', (done) => {
     const payload = { one: 1, two: 2 };
     const expected = {
       type: actions.LOGIN_FAILURE,

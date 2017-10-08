@@ -6,7 +6,7 @@ const moment = require('moment');
 
 describe('/app/libs/utils', () => {
   describe('slugs', () => {
-    it('should create a slug', () => {
+    test('should create a slug', () => {
       const given = '  I/am(a)slug  ';
       const actual = utils.makeSlug(given);
       const expected = 'i-am-a-slug';
@@ -15,7 +15,7 @@ describe('/app/libs/utils', () => {
   });
 
   describe('mongo', () => {
-    it('should create a mongo id', () => {
+    test('should create a mongo id', () => {
       const mongoId = utils.makeMongoId();
       assert.equal(mongoId.length, 24);
       assert(!_.includes(mongoId, '-'));
@@ -25,7 +25,7 @@ describe('/app/libs/utils', () => {
   });
 
   describe('dateToInt()', () => {
-    it('should create an Integer date from moment object', () => {
+    test('should create an Integer date from moment object', () => {
       let actual = utils.dateToInt(moment(new Date('1/1/2016')));
       assert.equal(actual, 20160101);
 
@@ -36,7 +36,7 @@ describe('/app/libs/utils', () => {
       assert.equal(actual, 20161231);
     });
 
-    it('should create an Integer date from date object', () => {
+    test('should create an Integer date from date object', () => {
       let actual = utils.dateToInt(new Date('1/1/2016'));
       assert.equal(actual, 20160101);
 
@@ -47,7 +47,7 @@ describe('/app/libs/utils', () => {
       assert.equal(actual, 20161231);
     });
 
-    it('should create an Integer date from a string', () => {
+    test('should create an Integer date from a string', () => {
       let actual = utils.dateToInt('1/1/2016');
       assert.equal(actual, 20160101);
 
@@ -61,7 +61,7 @@ describe('/app/libs/utils', () => {
       assert(_.isNaN(actual));
     });
 
-    it('should create an Integer date from a string', () => {
+    test('should create an Integer date from a string', () => {
       let actual = utils.dateToInt('1/1/2016');
       assert.equal(actual, 20160101);
 
@@ -72,7 +72,7 @@ describe('/app/libs/utils', () => {
       assert.equal(actual, 20161231);
     });
 
-    it('should return an Integer date from an Integer', () => {
+    test('should return an Integer date from an Integer', () => {
       let actual = utils.dateToInt(20160101);
       assert.equal(actual, 20160101);
 
@@ -80,7 +80,7 @@ describe('/app/libs/utils', () => {
       assert.equal(actual, 20160229);
     });
 
-    it('should throw and Error for an unknown type', (done) => {
+    test('should throw and Error for an unknown type', (done) => {
       try {
         utils.dateToInt({});
       } catch (e) {
@@ -92,7 +92,7 @@ describe('/app/libs/utils', () => {
   });
 
   describe('intToDate()', () => {
-    it('should create a Date from an Integer', () => {
+    test('should create a Date from an Integer', () => {
       function compareDates(act, exp) {
         assert.equal(act.toString(), exp.toString());
       }
@@ -112,7 +112,7 @@ describe('/app/libs/utils', () => {
   });
 
   describe('rebaseLocations', () => {
-    it('should rebase the locations', () => {
+    test('should rebase the locations', () => {
       const plants = [{
         _id: '1',
         loc: { coordinates: [5.5, 10.1] },
@@ -134,7 +134,7 @@ describe('/app/libs/utils', () => {
   });
 
   describe('metrics', () => {
-    it('should prepare note body and remove unknow metrics', () => {
+    test('should prepare note body and remove unknow metrics', () => {
       const body = {
         date: '20160101',
         metrics: {
@@ -156,7 +156,7 @@ describe('/app/libs/utils', () => {
       assert.deepEqual(actual, expected);
     });
 
-    it('should prepare note body and remove invalid metrics', () => {
+    test('should prepare note body and remove invalid metrics', () => {
       const body = {
         date: '20160101',
         metrics: {
@@ -174,22 +174,24 @@ describe('/app/libs/utils', () => {
   });
 
   describe('constantEquals', () => {
-    it('should fail if user supplied is longer than internal', () => {
+    test('should fail if user supplied is longer than internal', () => {
       assert.equal(utils.constantEquals('123', '12'), false);
     });
-    it('should fail if user supplied is shorter than internal', () => {
+    test('should fail if user supplied is shorter than internal', () => {
       assert.equal(utils.constantEquals('12', '123'), false);
     });
-    it('should fail if 1st param is not a string', () => {
+    test('should fail if 1st param is not a string', () => {
       assert.equal(utils.constantEquals(123, '123'), false);
     });
-    it('should fail if 2nd param is not a string', () => {
+    test('should fail if 2nd param is not a string', () => {
       assert.equal(utils.constantEquals('123', 123), false);
     });
-    it('should fail if 1st and 2nd params are equal length and not the same', () => {
-      assert.equal(utils.constantEquals('123', '124'), false);
-    });
-    it('should pass if 1st and 2nd are equal', () => {
+    test(
+      'should fail if 1st and 2nd params are equal length and not the same',
+      () => {
+        assert.equal(utils.constantEquals('123', '124'), false);
+      });
+    test('should pass if 1st and 2nd are equal', () => {
       assert.equal(utils.constantEquals('123', '123'), true);
     });
   });

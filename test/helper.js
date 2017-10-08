@@ -1,11 +1,42 @@
 const _ = require('lodash');
 const assert = require('assert');
 const constants = require('../app/libs/constants');
-const FakePassport = require('./fake-passport');
+// const FakePassport = require('./fake-passport');
 const mongo = require('../lib/db/mongo');
-const proxyquire = require('proxyquire');
 const request = require('request');
 const { makeMongoId } = require('../app/libs/utils');
+
+const fakePassport = jest.mock('passport', () => new (function FakePassport() {
+  this.setUser = (user) => {
+    this.user = user;
+  };
+
+  this.getUserId = () => this.user._id;
+
+  this.initialize = () =>
+    (req, res, next) => {
+      next();
+    }
+  ;
+
+  this.authenticate = (type, cb) => {
+    if (cb) {
+      const err = null;
+      const info = {};
+      return () =>
+        cb(err, this.user, info);
+    }
+    return (req, res, next) =>
+      next();
+  };
+
+  this.use = (/* strategy */) => {
+    // debug('fake fb use:', arguments.length);
+  };
+})());
+
+// eslint-disable-next-line no-param-reassign, global-require
+const serverModule = require('../lib/server');
 
 const logger = require('../lib/logging/logger').create('test.helper');
 
@@ -14,7 +45,7 @@ function getUrl(url) {
     return url;
   }
 
-  return `http://127.0.0.1:3001${url}`;
+  return `${'http'}://127.0.0.1:3001${url}`;
 }
 
 let jwt;
@@ -114,22 +145,12 @@ async function startServerAuthenticated() {
     return user;
   }
 
-  function createPassport(passport, user) {
-    if (passport) {
-      passport.setUser(user);
-    } else {
-      // eslint-disable-next-line no-param-reassign
-      passport = new FakePassport(user);
-    }
-    return passport;
+  function createPassport(user) {
+    fakePassport.setUser(user);
   }
 
-  function createServer(server, passport) {
-    if (!server) {
-      // eslint-disable-next-line no-param-reassign
-      server = proxyquire('../lib/server', { passport });
-    }
-    return server;
+  function createServer(server) {
+    return server || serverModule;
   }
 
   async function startServer(app, server) {
@@ -139,7 +160,7 @@ async function startServerAuthenticated() {
     return server(); // returns a Promise
   }
 
-  async function authenticateUser(passport) {
+  async function authenticateUser() {
     const { httpMsg } = await makeRequest({
       url: '/auth/facebook/callback',
     });
@@ -150,16 +171,16 @@ async function startServerAuthenticated() {
     // logger.trace('Test jwt:', {jwt});
     assert(jwt);
     // eslint-disable-next-line no-param-reassign
-    return passport.getUserId();
+    return fakePassport.getUserId();
   }
 
   try {
     await emptyDatabase();
     data.user = await createUser();
-    data.passport = createPassport(data.passport, data.user);
-    data.server = createServer(data.server, data.passport);
+    createPassport(data.user);
+    data.server = createServer(data.server);
     data.app = await startServer(data.app, data.server);
-    data.userId = await authenticateUser(data.passport);
+    data.userId = await authenticateUser();
     return data;
   } catch (error) {
     throw error;

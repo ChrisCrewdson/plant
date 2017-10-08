@@ -6,7 +6,7 @@ const logger = require('../../../lib/logging/logger').create('test.server-render
 
 describe('lib/render/plant', () => {
   let data;
-  before(
+  beforeAll(
     'it should start the server and setup auth token',
     async () => {
       data = await helper.startServerAuthenticated();
@@ -14,7 +14,7 @@ describe('lib/render/plant', () => {
     },
   );
 
-  before('create a plant and a note', async () => {
+  beforeAll(async () => {
     const { userId } = data;
     const locationId = data.user.locationIds[0]._id;
     // 1. Create 2 plants
@@ -34,7 +34,7 @@ describe('lib/render/plant', () => {
     data.plant = plant;
   });
 
-  it('should get a 200 on a happy-path server render', async () => {
+  test('should get a 200 on a happy-path server render', async () => {
     // /plant/thai-sapodilla/57dd70e583d8030000354fb0?noteid=5830b656b6a2c9000041f323
     const { note: { _id: noteId }, plant: { _id: plantId } } = data;
     const reqOptions = {

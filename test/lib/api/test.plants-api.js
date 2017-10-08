@@ -7,7 +7,7 @@ describe('plants-api', () => {
   let userId;
   let locationId;
 
-  before('it should start the server and setup auth token', async () => {
+  beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
     assert(data.user);
     assert(data.user._id);
@@ -21,7 +21,7 @@ describe('plants-api', () => {
   let insertedPlants;
   const numPlants = 2;
 
-  before('should create multiple plants to use in test', async () => {
+  beforeAll(async () => {
     const plants = await helper.createPlants(numPlants, userId, locationId);
     insertedPlants = plants;
   });
@@ -29,7 +29,7 @@ describe('plants-api', () => {
   describe('plants by locationId', () => {
     // it('should return an empty list if locationId exists and has no plants');
 
-    it('should retrieve the just created plants by locationId', async () => {
+    test('should retrieve the just created plants by locationId', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
@@ -52,7 +52,7 @@ describe('plants-api', () => {
   });
 
   describe('failures', () => {
-    it('should get a 404 if there is no locationId', async () => {
+    test('should get a 404 if there is no locationId', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
@@ -65,16 +65,18 @@ describe('plants-api', () => {
       assert(response);
     });
 
-    it('should fail to retrieve any plants if the locationId does not exist', async () => {
-      const reqOptions = {
-        method: 'GET',
-        authenticate: false,
-        json: true,
-        url: '/api/plants/does-not-exist',
-      };
-      const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 404);
-      assert(!response);
-    });
+    test(
+      'should fail to retrieve any plants if the locationId does not exist',
+      async () => {
+        const reqOptions = {
+          method: 'GET',
+          authenticate: false,
+          json: true,
+          url: '/api/plants/does-not-exist',
+        };
+        const { httpMsg, response } = await helper.makeRequest(reqOptions);
+        assert.equal(httpMsg.statusCode, 404);
+        assert(!response);
+      });
   });
 });

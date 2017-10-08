@@ -10,7 +10,7 @@ describe('note-api', () => {
   let userId;
   let locationId;
 
-  before(
+  beforeAll(
     'it should start the server and setup auth token',
     async () => {
       const data = await helper.startServerAuthenticated();
@@ -30,7 +30,7 @@ describe('note-api', () => {
   };
   let noteId;
 
-  before('it should create a plant', async () => {
+  beforeAll(async () => {
     const howMany = 1;
     const plants = await helper.createPlants(howMany, userId, locationId);
     [initialPlant] = plants;
@@ -40,7 +40,7 @@ describe('note-api', () => {
   });
 
   describe('create failures', () => {
-    it('should fail to create a note if user is not authenticated', async () => {
+    test('should fail to create a note if user is not authenticated', async () => {
       const reqOptions = {
         method: 'POST',
         authenticate: false,
@@ -54,7 +54,7 @@ describe('note-api', () => {
       assert.equal(response.error, 'Not Authenticated');
     });
 
-    it('should fail server validation if plantIds are missing', async () => {
+    test('should fail server validation if plantIds are missing', async () => {
       const reqOptions = {
         method: 'POST',
         authenticate: true,
@@ -72,7 +72,7 @@ describe('note-api', () => {
   });
 
   describe('note-api create/retrieve notes', () => {
-    it('should create a note', async () => {
+    test('should create a note', async () => {
       const reqOptions = {
         method: 'POST',
         authenticate: true,
@@ -93,7 +93,7 @@ describe('note-api', () => {
       // logger.trace('note created', {note});
     });
 
-    it('should retrieve the just created noteId plant', async () => {
+    test('should retrieve the just created noteId plant', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
@@ -117,7 +117,7 @@ describe('note-api', () => {
     });
 
     let updatedNote;
-    it('should update the just created note', async () => {
+    test('should update the just created note', async () => {
       updatedNote = Object.assign(
         {},
         initialNote, {
@@ -144,73 +144,82 @@ describe('note-api', () => {
       assert.equal(response.success, true);
     });
 
-    it('should retrieve the just updated noteId as part of a plant request', async () => {
-      const reqOptions = {
-        method: 'GET',
-        authenticate: false,
-        json: true,
-        url: `/api/plant/${plantId}`,
-      };
+    test(
+      'should retrieve the just updated noteId as part of a plant request',
+      async () => {
+        const reqOptions = {
+          method: 'GET',
+          authenticate: false,
+          json: true,
+          url: `/api/plant/${plantId}`,
+        };
 
-      const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
+        const { httpMsg, response } = await helper.makeRequest(reqOptions);
+        assert.equal(httpMsg.statusCode, 200);
+        assert(response);
 
-      assert(response.userId);
-      assert.equal(response._id, plantId);
-      assert.equal(response.title, initialPlant.title);
+        assert(response.userId);
+        assert.equal(response._id, plantId);
+        assert.equal(response.title, initialPlant.title);
 
 
-      // Check notes
-      assert(response.notes);
-      assert.equal(response.notes.length, 1);
-      assert.equal(response.notes[0], noteId);
-      assert(constants.mongoIdRE.test(response.notes[0]));
-    });
+        // Check notes
+        assert(response.notes);
+        assert.equal(response.notes.length, 1);
+        assert.equal(response.notes[0], noteId);
+        assert(constants.mongoIdRE.test(response.notes[0]));
+      },
+    );
 
-    it('should retrieve the noteId as part of a multiple note request', async () => {
-      const reqOptions = {
-        method: 'POST',
-        authenticate: true,
-        body: { noteIds: [noteId] },
-        json: true,
-        url: '/api/notes',
-      };
+    test(
+      'should retrieve the noteId as part of a multiple note request',
+      async () => {
+        const reqOptions = {
+          method: 'POST',
+          authenticate: true,
+          body: { noteIds: [noteId] },
+          json: true,
+          url: '/api/notes',
+        };
 
-      const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 200);
+        const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
+        assert.equal(httpMsg.statusCode, 200);
 
-      assert(notes);
-      assert.equal(notes.length, 1);
-      const note = notes[0];
-      assert.equal(note._id, noteId);
-      assert(constants.mongoIdRE.test(note._id));
-      assert.equal(note.date, 20160101);
-      assert.equal(note.note, 'A New Note');
-    });
+        assert(notes);
+        assert.equal(notes.length, 1);
+        const note = notes[0];
+        assert.equal(note._id, noteId);
+        assert(constants.mongoIdRE.test(note._id));
+        assert.equal(note.date, 20160101);
+        assert.equal(note.note, 'A New Note');
+      },
+    );
 
-    it('should retrieve the noteId as part of a plantId note request', async () => {
-      const reqOptions = {
-        method: 'POST',
-        authenticate: true,
-        body: { plantId },
-        json: true,
-        url: '/api/notes',
-      };
+    test(
+      'should retrieve the noteId as part of a plantId note request',
+      async () => {
+        const reqOptions = {
+          method: 'POST',
+          authenticate: true,
+          body: { plantId },
+          json: true,
+          url: '/api/notes',
+        };
 
-      const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 200);
+        const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
+        assert.equal(httpMsg.statusCode, 200);
 
-      assert(notes);
-      assert.equal(notes.length, 1);
-      const note = notes[0];
-      assert.equal(note._id, noteId);
-      assert(constants.mongoIdRE.test(note._id));
-      assert.equal(note.date, 20160101);
-      assert.equal(note.note, 'A New Note');
-    });
+        assert(notes);
+        assert.equal(notes.length, 1);
+        const note = notes[0];
+        assert.equal(note._id, noteId);
+        assert(constants.mongoIdRE.test(note._id));
+        assert.equal(note.date, 20160101);
+        assert.equal(note.note, 'A New Note');
+      },
+    );
 
-    it('should delete the note', async () => {
+    test('should delete the note', async () => {
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
@@ -234,7 +243,7 @@ describe('note-api', () => {
       assert.equal(response.success, true);
     });
 
-    it('should confirm that the note has been deleted', async () => {
+    test('should confirm that the note has been deleted', async () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
@@ -257,7 +266,7 @@ describe('note-api', () => {
   });
 
   describe('note-api /api/image-complete', () => {
-    it('should confirm a complete image', async () => {
+    test('should confirm a complete image', async () => {
       const note = {
         userId: utils.makeMongoId(),
         images: [{

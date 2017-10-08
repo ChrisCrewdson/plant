@@ -12,7 +12,7 @@ function checkReducer(actionName, state, payload, expected) {
 }
 
 describe('/app/reducers/users', () => {
-  it('should reduce loadUserSuccess action', () => {
+  test('should reduce loadUserSuccess action', () => {
     const state = Immutable.fromJS({});
     const payload = { _id: '1', name: 'john' };
     const expected = Immutable.fromJS({
@@ -21,7 +21,7 @@ describe('/app/reducers/users', () => {
     checkReducer('loadUserSuccess', state, payload, expected);
   });
 
-  it('should reduce loadUsersSuccess action', () => {
+  test('should reduce loadUsersSuccess action', () => {
     const state = Immutable.fromJS({});
     const payload = [{ _id: '1', name: 'john' }];
     const expected = Immutable.fromJS({
@@ -30,7 +30,7 @@ describe('/app/reducers/users', () => {
     checkReducer('loadUsersSuccess', state, payload, expected);
   });
 
-  it('should reduce createPlantRequest action', () => {
+  test('should reduce createPlantRequest action', () => {
     const state = Immutable.fromJS({ u1: { _id: 'u1', name: 'john', locationIds: Immutable.Set(['p1']) } });
     const payload = { _id: 'p2', title: 'pt', userId: 'u1' };
     const expected = Immutable.fromJS({
@@ -39,7 +39,7 @@ describe('/app/reducers/users', () => {
     checkReducer('createPlantRequest', state, payload, expected);
   });
 
-  it('should reduce loadPlantsSuccess action', () => {
+  test('should reduce loadPlantsSuccess action', () => {
     const state = Immutable.fromJS({
       u1: {
         _id: 'u1',
@@ -66,7 +66,7 @@ describe('/app/reducers/users', () => {
     checkReducer('loadPlantsSuccess', state, payload, expected);
   });
 
-  it('should delete a plant', () => {
+  test('should delete a plant', () => {
     const state = Immutable.fromJS({
       l1: {
         _id: 'l1',

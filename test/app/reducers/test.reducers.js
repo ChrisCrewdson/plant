@@ -4,7 +4,7 @@ const assert = require('assert');
 const Immutable = require('immutable');
 
 describe('/app/reducers', () => {
-  it('should reduce a logout action', (done) => {
+  test('should reduce a logout action', (done) => {
     const expected = {
       interim: {},
       locations: {},

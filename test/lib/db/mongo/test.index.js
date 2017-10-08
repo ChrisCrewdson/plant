@@ -1,34 +1,28 @@
-const _ = require('lodash');
 
+jest.mock('../../../../lib/logging/logger', () => ({
+  create: () => ({
+    trace: () => {},
+    warn: () => {
+      throw new Error('Unexpected warn in proxylog');
+    },
+    error: () => {
+      // throw new Error('Unexpected error in proxylog');
+    },
+  }),
+}));
+
+const _ = require('lodash');
 const assert = require('assert');
 const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
-const proxyquire = require('proxyquire');
-
-// const logger = require('../../../../lib/logging/logger').create('test.mongo-index');
-
-const proxylog = {
-  trace: () => {},
-  warn: () => {
-    throw new Error('Unexpected warn in proxylog');
-  },
-  error: () => {
-    // throw new Error('Unexpected error in proxylog');
-  },
-};
-
-const mongo = proxyquire('../../../../lib/db/mongo', {
-  '../../logging/logger': {
-    create: () => proxylog,
-  },
-});
+const mongo = require('../../../../lib/db/mongo');
 
 describe('/lib/db/mongo/', () => {
   let userId;
   let fbUser;
   let locationId;
 
-  before(
+  beforeAll(
     'should create a user account by starting the server',
     async () => {
       const data = await helper.startServerAuthenticated();
@@ -42,7 +36,7 @@ describe('/lib/db/mongo/', () => {
   );
 
   describe('user', () => {
-    it(
+    test(
       'should fail to create a user account if there is no object',
       async () => {
         try {
@@ -55,24 +49,21 @@ describe('/lib/db/mongo/', () => {
       },
     );
 
-    it(
-      'should fetch the user created in the before setup',
-      async () => {
-        const user = {
-          facebook: {
-            id: fbUser.facebook.id,
-          },
-        };
-        const body = await mongo.findOrCreateUser(user);
-        assert(body);
-        assert(body._id);
-        assert(constants.mongoIdRE.test(body._id));
-        assert(constants.mongoIdRE.test(body.locationIds[0]._id));
-        assert.deepStrictEqual(body, fbUser);
-      },
-    );
+    test('should fetch the user created in the before setup', async () => {
+      const user = {
+        facebook: {
+          id: fbUser.facebook.id,
+        },
+      };
+      const body = await mongo.findOrCreateUser(user);
+      assert(body);
+      assert(body._id);
+      assert(constants.mongoIdRE.test(body._id));
+      assert(constants.mongoIdRE.test(body.locationIds[0]._id));
+      assert.deepStrictEqual(body, fbUser);
+    });
 
-    it('should fetch all users', async () => {
+    test('should fetch all users', async () => {
       const body = await mongo.getAllUsers();
       assert(body);
       assert(_.isArray(body));
@@ -90,11 +81,11 @@ describe('/lib/db/mongo/', () => {
     };
     let plantId;
 
-    before(() => {
+    beforeAll(() => {
       plant.locationId = locationId;
     });
 
-    it('should create a plant', async () => {
+    test('should create a plant', async () => {
       plant.userId = userId;
       assert.equal(typeof plant.userId, 'string');
       const body = await mongo.createPlant(plant, userId);
@@ -109,7 +100,7 @@ describe('/lib/db/mongo/', () => {
       plantId = body._id;
     });
 
-    it('should get an existing plant', async () => {
+    test('should get an existing plant', async () => {
       const result = await mongo.getPlantById(plantId, userId);
       assert.equal(typeof result.userId, 'string');
       assert.equal(result.name, plant.name);
@@ -117,7 +108,7 @@ describe('/lib/db/mongo/', () => {
       assert.equal(result.userId, plant.userId.toString());
     });
 
-    it('should get existing plants', async () => {
+    test('should get existing plants', async () => {
       const results = await mongo.getPlantsByIds([plantId], userId);
       assert(_.isArray(results));
       assert.equal(results.length, 1);
@@ -128,7 +119,7 @@ describe('/lib/db/mongo/', () => {
       assert.equal(result.userId, plant.userId.toString());
     });
 
-    it('should update an existing plant with "Set"', async () => {
+    test('should update an existing plant with "Set"', async () => {
       const plantUpdate = {
         name: 'New Name',
         other: 'Other Text',

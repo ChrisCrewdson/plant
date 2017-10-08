@@ -10,7 +10,7 @@ const noteValidator = validators.note;
 // const logger = require('../../../lib/logging/logger').create('test.model-note');
 
 describe('/app/models/note', () => {
-  it('should pass minimum validation', (done) => {
+  test('should pass minimum validation', (done) => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -28,7 +28,7 @@ describe('/app/models/note', () => {
     });
   });
 
-  it('should fail validation', (done) => {
+  test('should fail validation', (done) => {
     // All items in note should be invalid
     const note = {
       _id: '0e55d91cb33d42', // Not a MongoId
@@ -50,7 +50,7 @@ describe('/app/models/note', () => {
     });
   });
 
-  it('should strip out props not in the schema', (done) => {
+  test('should strip out props not in the schema', (done) => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -76,7 +76,7 @@ describe('/app/models/note', () => {
     });
   });
 
-  it('should add _id if it is a new record', (done) => {
+  test('should add _id if it is a new record', (done) => {
     const note = {
       date: 20160101,
       plantIds: [makeMongoId()],
@@ -97,7 +97,7 @@ describe('/app/models/note', () => {
     });
   });
 
-  it('should fail if plantIds is empty', (done) => {
+  test('should fail if plantIds is empty', (done) => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -118,7 +118,7 @@ describe('/app/models/note', () => {
     });
   });
 
-  it('should fail if plantIds is missing', (done) => {
+  test('should fail if plantIds is missing', (done) => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -138,7 +138,7 @@ describe('/app/models/note', () => {
     });
   });
 
-  it('should fail if plantIds is not an array', (done) => {
+  test('should fail if plantIds is not an array', (done) => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -167,7 +167,7 @@ describe('/app/models/note', () => {
       size: 123456,
     };
 
-    it('should pass with an empty images array', (done) => {
+    test('should pass with an empty images array', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -188,7 +188,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should pass with valid images', (done) => {
+    test('should pass with valid images', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -208,7 +208,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should pass with valid images and an empty note', (done) => {
+    test('should pass with valid images and an empty note', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -228,7 +228,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should pass with valid images and a missing note', (done) => {
+    test('should pass with valid images and a missing note', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -246,7 +246,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should fail if images is not an array', (done) => {
+    test('should fail if images is not an array', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -268,7 +268,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should fail if images id is not a mongoId', (done) => {
+    test('should fail if images id is not a mongoId', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -290,7 +290,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should fail if images ext is not a string', (done) => {
+    test('should fail if images ext is not a string', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -312,7 +312,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should fail if images originalname is not a string', (done) => {
+    test('should fail if images originalname is not a string', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -334,7 +334,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should convert image size if it is a string number', (done) => {
+    test('should convert image size if it is a string number', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -356,7 +356,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should fail if images ext is longer than 20', (done) => {
+    test('should fail if images ext is longer than 20', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -378,7 +378,7 @@ describe('/app/models/note', () => {
       });
     });
 
-    it('should fail if images has extra props', (done) => {
+    test('should fail if images has extra props', (done) => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
