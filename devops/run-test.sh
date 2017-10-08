@@ -16,4 +16,4 @@ export DEBUG=plant:*
 export PLANT_DB_URL=127.0.0.1:27017
 export PLANT_DB_NAME=plant-test
 
-jest --coverage
+jest
