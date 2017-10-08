@@ -1,5 +1,5 @@
 module.exports = {
-  verbose: true,
+  verbose: false,
   collectCoverageFrom: [
     '!**/.vscode/**',
     '!**/build/**',

@@ -1,39 +1,19 @@
 const _ = require('lodash');
 const assert = require('assert');
 const constants = require('../app/libs/constants');
-// const FakePassport = require('./fake-passport');
 const mongo = require('../lib/db/mongo');
 const request = require('request');
 const { makeMongoId } = require('../app/libs/utils');
 
-const fakePassport = jest.mock('passport', () => new (function FakePassport() {
-  this.setUser = (user) => {
-    this.user = user;
-  };
+let fakePassport;
 
-  this.getUserId = () => this.user._id;
-
-  this.initialize = () =>
-    (req, res, next) => {
-      next();
-    }
-  ;
-
-  this.authenticate = (type, cb) => {
-    if (cb) {
-      const err = null;
-      const info = {};
-      return () =>
-        cb(err, this.user, info);
-    }
-    return (req, res, next) =>
-      next();
-  };
-
-  this.use = (/* strategy */) => {
-    // debug('fake fb use:', arguments.length);
-  };
-})());
+jest.mock('passport', () => {
+  // eslint-disable-next-line global-require
+  const FakePassport = require('./fake-passport');
+  const mockFakePassport = new FakePassport();
+  fakePassport = mockFakePassport;
+  return mockFakePassport;
+});
 
 // eslint-disable-next-line no-param-reassign, global-require
 const serverModule = require('../lib/server');
