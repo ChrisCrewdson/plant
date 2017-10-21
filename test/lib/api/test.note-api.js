@@ -10,14 +10,16 @@ describe('note-api', () => {
   let userId;
   let locationId;
 
-  before('it should start the server and setup auth token',
+  before(
+    'it should start the server and setup auth token',
     async () => {
       const data = await helper.startServerAuthenticated();
       assert(data.userId);
       userId = data.user._id;
       locationId = data.user.locationIds[0]._id;
       logger.trace('startServerAuthenticated userId:', { userId });
-    });
+    },
+  );
 
   let initialPlant;
   let plantId;
@@ -31,7 +33,7 @@ describe('note-api', () => {
   before('it should create a plant', async () => {
     const howMany = 1;
     const plants = await helper.createPlants(howMany, userId, locationId);
-    initialPlant = plants[0];
+    [initialPlant] = plants;
     plantId = initialPlant._id;
     initialNote.plantIds = [plantId];
     logger.trace('plant created:', { initialPlant });
@@ -116,7 +118,8 @@ describe('note-api', () => {
 
     let updatedNote;
     it('should update the just created note', async () => {
-      updatedNote = Object.assign({},
+      updatedNote = Object.assign(
+        {},
         initialNote, {
           note: 'A New Note',
           _id: noteId,

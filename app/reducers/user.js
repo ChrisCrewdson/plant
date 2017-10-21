@@ -9,19 +9,23 @@ function loginRequest() {
 }
 
 function loginSuccess(state, action) {
-  return Immutable.fromJS(Object.assign({}, {
-    status: 'success',
-    isLoggedIn: true },
-  action.payload),
-  );
+  return Immutable.fromJS(Object.assign(
+    {}, {
+      status: 'success',
+      isLoggedIn: true,
+    },
+    action.payload,
+  ));
 }
 
 function loginFailure(state, action) {
-  return Immutable.fromJS(Object.assign({}, {
-    status: 'failed',
-    isLoggedIn: false },
-  action.payload),
-  );
+  return Immutable.fromJS(Object.assign(
+    {}, {
+      status: 'failed',
+      isLoggedIn: false,
+    },
+    action.payload,
+  ));
 }
 
 function logout() {
@@ -56,8 +60,7 @@ const reducers = {
 
 if (reducers.undefined) {
   // eslint-disable-next-line no-console
-  console.error(
-    `Missing action type in user.js - these are the reducers keys:
+  console.error(`Missing action type in user.js - these are the reducers keys:
 ${Object.keys(reducers).join()}`);
 }
 

@@ -98,8 +98,7 @@ const reducers = {
 
 if (reducers.undefined) {
   // eslint-disable-next-line no-console
-  console.error(
-    `Missing action type in locations.js - these are the reducers keys:
+  console.error(`Missing action type in locations.js - these are the reducers keys:
 ${Object.keys(reducers).join()}`);
 }
 

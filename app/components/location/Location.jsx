@@ -73,7 +73,9 @@ class Location extends React.Component {
     const interim = store.getState().get('interim');
     const authUser = store.getState().get('user');
     const users = store.getState().get('users');
-    const state = { locations, allLoadedPlants, interim, authUser, users };
+    const state = {
+      locations, allLoadedPlants, interim, authUser, users,
+    };
     this.setState(state);
   }
 
@@ -108,7 +110,7 @@ class Location extends React.Component {
         <div>
           {Location.renderTitle(location)}
           <h3 style={{ textAlign: 'center' }}>
-            <div style={{ marginTop: '100px' }}>{'No plants added yet...'}</div>
+            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
             <AddPlantButton
               show={this.isOwner()}
               style={{ marginTop: '10px' }}
@@ -190,15 +192,13 @@ class Location extends React.Component {
       if (plant) {
         const _id = plant.get('_id');
         const isOwner = loggedIn && plant.get('userId') === authUser.get('_id');
-        acc.found.push(
-          <PlantItem
-            key={_id}
-            dispatch={store.dispatch}
-            createNote={this.createNote}
-            isOwner={isOwner}
-            plant={plant}
-          />,
-        );
+        acc.found.push(<PlantItem
+          key={_id}
+          dispatch={store.dispatch}
+          createNote={this.createNote}
+          isOwner={isOwner}
+          plant={plant}
+        />);
       } else {
         acc.unloaded.push(plantId);
       }
@@ -212,15 +212,16 @@ class Location extends React.Component {
     const filterInput = (<InputCombo
       changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
       label="Filter"
-      placeholder={'Type a plant name to filter...'}
+      placeholder="Type a plant name to filter..."
       value={filter}
       name="filter"
     />);
 
-    const stats = (<div>
-      <p>{`Total: ${plantStats.total}`}</p>
-      <p>{`Alive: ${plantStats.alive}`}</p>
-    </div>);
+    const stats = (
+      <div>
+        <p>{`Total: ${plantStats.total}`}</p>
+        <p>{`Alive: ${plantStats.alive}`}</p>
+      </div>);
 
     return (
       <Base>

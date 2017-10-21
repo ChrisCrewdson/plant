@@ -13,6 +13,7 @@ function scaleToCanvas(immutablePlants, width) {
   const minMax = immutablePlants.reduce((acc, plant) => {
     const long = plant.getIn(['loc', 'coordinates', '0']);
     const lat = plant.getIn(['loc', 'coordinates', '1']);
+    // eslint-disable-next-line no-restricted-globals
     if (isNaN(long) || isNaN(lat)) {
       // console.warn(`NaN found in getting min/max of long/lat ${long} / ${lat}`);
     } else {
@@ -62,7 +63,9 @@ function scaleToCanvas(immutablePlants, width) {
 
     const title = plant.get('title');
     const _id = plant.get('_id');
-    return { _id, title, x, y };
+    return {
+      _id, title, x, y,
+    };
   });
   return {
     plants,

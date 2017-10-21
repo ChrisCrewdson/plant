@@ -121,7 +121,7 @@ class Navbar extends React.Component {
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <Link to={'/'} className="navbar-brand">Plant</Link>
+            <Link to="/" className="navbar-brand">Plant</Link>
             <AddPlantButton
               mini
               show={!!(loggedIn && notEditing)}
@@ -153,7 +153,7 @@ class Navbar extends React.Component {
                       </li>
                     }
                     <li>
-                      <Link to={'/profile'}>Profile</Link>
+                      <Link to="/profile">Profile</Link>
                     </li>
                     <li>
                       <a href="/" onClick={this.logout} title="Logout">Logout</a>
@@ -167,7 +167,7 @@ class Navbar extends React.Component {
                 </li>
               }
               <li>
-                <Link to={'/help'} title="help">Help</Link>
+                <Link to="/help" title="help">Help</Link>
               </li>
             </ul>
           </div>

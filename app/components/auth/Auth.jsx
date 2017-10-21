@@ -74,8 +74,4 @@ Auth.propTypes = {
   }).isRequired,
 };
 
-Auth.defaultProps = {
-  location: {},
-};
-
 module.exports = withRouter(Auth);

@@ -9,13 +9,15 @@ describe('plant-api-delete', () => {
   let userId;
   let locationId;
 
-  before('it should start the server and setup auth token',
+  before(
+    'it should start the server and setup auth token',
     async () => {
       const data = await helper.startServerAuthenticated();
       assert(data.userId);
       userId = data.user._id;
       locationId = data.user.locationIds[0]._id;
-    });
+    },
+  );
 
   describe('simple plant deletion', () => {
     it('should delete a plant without notes', async () => {

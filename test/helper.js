@@ -23,14 +23,16 @@ async function makeRequest(opts) {
     ? { Authorization: `Bearer ${jwt}` }
     : {};
 
-  const headers = Object.assign({},
+  const headers = Object.assign(
+    {},
     opts.headers || {},
     auth,
   );
 
   const followRedirect = opts.followRedirect || false;
 
-  const options = Object.assign({},
+  const options = Object.assign(
+    {},
     opts,
     { url: getUrl(opts.url) },
     { headers },
@@ -144,7 +146,7 @@ async function startServerAuthenticated() {
     assert(httpMsg.headers);
     assert(httpMsg.headers.location);
     const parts = httpMsg.headers.location.split('=');
-    jwt = parts[1];
+    [, jwt] = parts; // 2nd element is jwt
     // logger.trace('Test jwt:', {jwt});
     assert(jwt);
     // eslint-disable-next-line no-param-reassign
@@ -195,11 +197,13 @@ async function createPlants(numPlants, userId, locationId) {
 
 async function createNote(plantIds, noteOverride = {}) {
   assert(_.isArray(plantIds));
-  const noteTemplate = Object.assign({
-    note: 'This is a note',
-    date: 20160101 },
-  { plantIds },
-  noteOverride,
+  const noteTemplate = Object.assign(
+    {
+      note: 'This is a note',
+      date: 20160101,
+    },
+    { plantIds },
+    noteOverride,
   );
 
   const reqOptions = {

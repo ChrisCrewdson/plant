@@ -143,7 +143,9 @@ class LocationsManager extends React.Component {
     const [userId, role] = row.values;
     const action = actions.UPSERT_LOCATION_MEMBER;
 
-    const payload = { locationId, userId, role, action };
+    const payload = {
+      locationId, userId, role, action,
+    };
     this.props.dispatch(actions.modifyLocationRequest(payload));
   }
 
@@ -152,7 +154,9 @@ class LocationsManager extends React.Component {
     const [stationId, name, enabled] = row.values;
     const action = actions.UPSERT_LOCATION_WEATHER;
 
-    const payload = { locationId, stationId, name, enabled, action };
+    const payload = {
+      locationId, stationId, name, enabled, action,
+    };
     this.props.dispatch(actions.modifyLocationRequest(payload));
   }
 
@@ -200,7 +204,7 @@ class LocationsManager extends React.Component {
                 insert={this.upsertLocationMember}
                 meta={{ location }}
                 rows={getMembers(location.members)}
-                title={'Users'}
+                title="Users"
                 update={this.upsertLocationMember}
                 validate={LocationsManager.validateLocationMember}
               />
@@ -210,7 +214,7 @@ class LocationsManager extends React.Component {
                 insert={this.upsertLocationWeather}
                 meta={{ location }}
                 rows={getStations(location.stations)}
-                title={'Weather Stations'}
+                title="Weather Stations"
                 update={this.upsertLocationWeather}
                 validate={LocationsManager.validateLocationWeather}
               />

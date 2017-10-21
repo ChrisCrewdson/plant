@@ -89,7 +89,7 @@ class Locations extends React.Component {
       <div>
         {Locations.renderTitle(user.get('name'))}
         <h3 style={{ textAlign: 'center' }}>
-          <div style={{ marginTop: '100px' }}>{'No locations added yet...'}</div>
+          <div style={{ marginTop: '100px' }}>No locations added yet...</div>
           <AddLocationButton
             show={this.isOwner(user)}
             style={{ marginTop: '10px' }}

@@ -41,7 +41,7 @@ function noteReadMetrics(props) {
 
   return (
     <div>
-      <h5>{'Metrics:'}</h5>
+      <h5>Metrics:</h5>
       <ul>
         {renderedMetrics}
       </ul>

@@ -51,17 +51,18 @@ function inputCombo(props = {}) {
     onToggle={changeHandler}
   />);
 
-  const select = () => (<SelectField
-    errorText={error}
-    floatingLabelText={label}
-    value={value}
-    onChange={changeHandler}
-  >
-    {
-      Object.keys(options).map(key =>
-        <MenuItem key={key} value={key} primaryText={options[key]} />)
-    }
-  </SelectField>);
+  const select = () => (
+    <SelectField
+      errorText={error}
+      floatingLabelText={label}
+      value={value}
+      onChange={changeHandler}
+    >
+      {
+        Object.keys(options).map(key =>
+          <MenuItem key={key} value={key} primaryText={options[key]} />)
+      }
+    </SelectField>);
 
   switch (type) {
     case 'text':

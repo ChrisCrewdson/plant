@@ -6,7 +6,7 @@ const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const List = Immutable.List;
+const { List } = Immutable;
 
 class NotesRead extends React.Component {
   componentWillMount() {
@@ -62,7 +62,9 @@ class NotesRead extends React.Component {
 
     const metricNotes = metrics.notesToMetricNotes(sortedIds, notes);
     const renderedNotes = metricNotes.map((metricNote) => {
-      const { noteId, note, sinceLast, change } = metricNote;
+      const {
+        noteId, note, sinceLast, change,
+      } = metricNote;
       switch (metricNote.type) {
         case 'note':
           return (<NoteRead
@@ -71,13 +73,15 @@ class NotesRead extends React.Component {
             note={note}
           />);
         case 'since':
-          return (<Paper key={`${noteId}-sincelast`} style={paperStyle} zDepth={1}>
-            {sinceLast}
-          </Paper>);
+          return (
+            <Paper key={`${noteId}-sincelast`} style={paperStyle} zDepth={1}>
+              {sinceLast}
+            </Paper>);
         case 'metric':
-          return (<Paper key={`${noteId}-change`} style={paperStyle} zDepth={1}>
-            {change}
-          </Paper>);
+          return (
+            <Paper key={`${noteId}-change`} style={paperStyle} zDepth={1}>
+              {change}
+            </Paper>);
         case 'unfound':
           return (<CircularProgress key={noteId} />);
         default:

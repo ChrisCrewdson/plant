@@ -5,7 +5,9 @@ require('bootstrap.css');
 require('konva');
 require('./stylesheets/main.css');
 
-const { BrowserRouter, Route, Redirect, Switch } = require('react-router-dom');
+const {
+  BrowserRouter, Route, Redirect, Switch,
+} = require('react-router-dom');
 const { deepOrange500 } = require('material-ui/styles/colors');
 const { Provider } = require('react-redux');
 const App = require('./components/App');
@@ -76,15 +78,17 @@ const routes = (
 function render() {
   const content = document.getElementById('wrapper');
 
-  ReactDOM.render((
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <Provider store={store}>
-        <App>
-          {routes}
-        </App>
-      </Provider>
-    </MuiThemeProvider>
-  ), content);
+  ReactDOM.render(
+    (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <Provider store={store}>
+          <App>
+            {routes}
+          </App>
+        </Provider>
+      </MuiThemeProvider>
+    ), content,
+  );
 }
 
 function main() {

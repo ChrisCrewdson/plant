@@ -202,7 +202,7 @@ class Grid extends React.Component {
                   <TableHeaderColumn key={column.title}>{column.title}</TableHeaderColumn>
                 ))
               }
-              <TableHeaderColumn key={'action'}>{'Action'}</TableHeaderColumn>
+              <TableHeaderColumn key="action">Action</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -225,7 +225,7 @@ class Grid extends React.Component {
                         />
                       </TableRowColumn>))
                   }
-                  <TableRowColumn key={'action'}>
+                  <TableRowColumn key="action">
                     {editId === row._id
                       ? <CancelSaveButtons
                         clickCancel={this.cancelEdit}
@@ -237,9 +237,9 @@ class Grid extends React.Component {
                         clickDelete={this.checkDelete}
                         clickEdit={this.editRow}
                         confirmDelete={this.confirmDelete}
-                        confirmMsg={'Really?'}
+                        confirmMsg="Really?"
                         deleteData={{ id: row._id }}
-                        deleteTitle={''}
+                        deleteTitle=""
                         disabled={!!editId}
                         mini
                         showButtons={isOwner}

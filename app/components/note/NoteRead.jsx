@@ -11,7 +11,7 @@ const NoteReadMetrics = require('./NoteReadMetrics');
 const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 
-const List = Immutable.List;
+const { List } = Immutable;
 
 class NoteRead extends React.Component {
   static renderImages(note) {
@@ -153,7 +153,7 @@ class NoteRead extends React.Component {
           clickDelete={this.checkDelete}
           clickEdit={this.editNote}
           confirmDelete={this.confirmDelete}
-          deleteTitle={''}
+          deleteTitle=""
           showButtons={isOwner}
           showDeleteConfirmation={showDeleteConfirmation}
         />

@@ -263,7 +263,7 @@ function loadUnloadedPlantsRequest(store, action) {
 
 /**
  * Entry point for inserting/updating/deleting a part of a location document.
- * @param {Object?} store 
+ * @param {Object?} store
  * @param {Object} action
  * @param {Object} action.payload
  * @param {string} action.payload.locationId

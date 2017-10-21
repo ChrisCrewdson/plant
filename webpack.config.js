@@ -2,7 +2,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
 
-const TARGET = process.env.TARGET;
+const { TARGET } = process.env;
 const ROOT_PATH = path.resolve(__dirname);
 
 /* eslint-disable security/detect-unsafe-regex */

@@ -77,7 +77,7 @@
 //       }
 //       const image = note.images.find(img => img.id === item.imageId);
 //       if (!image) {
-//         logger.error('Image not found in note', 
+//         logger.error('Image not found in note',
 //            { imageId: item.imageId, 'note.images': note.images });
 //         return done('No image');
 //       }

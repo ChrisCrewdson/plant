@@ -143,10 +143,11 @@ class PlantEdit extends React.Component {
     const errorDivs = isEmpty(errors)
       ? []
       : Object.keys(errors).map(key =>
-        (<div key={key}>
-          {`${key} - ${errors[key]}`}
-        </div>),
-      );
+        (
+          <div key={key}>
+            {`${key} - ${errors[key]}`}
+          </div>
+        ));
 
     return (
       <Paper style={paperStyle} zDepth={1}>
@@ -157,7 +158,7 @@ class PlantEdit extends React.Component {
           error={errors.title}
           label="Title"
           name="title"
-          placeholder={'How do you refer to this plant? (e.g. Washington Navel)'}
+          placeholder="How do you refer to this plant? (e.g. Washington Navel)"
           value={title}
         />
         <Divider />
@@ -168,7 +169,7 @@ class PlantEdit extends React.Component {
           extraClasses="col-sm-6"
           label="Botanical Name"
           name="botanicalName"
-          placeholder={'e.g. Citrus sinensis \'Washington Navel\''}
+          placeholder="e.g. Citrus sinensis \'Washington Navel\'"
           value={botanicalName}
         />
         <Divider />
@@ -179,7 +180,7 @@ class PlantEdit extends React.Component {
           extraClasses="col-sm-6"
           label="Common Name"
           name="commonName"
-          placeholder={'e.g. Washington Navel Orange'}
+          placeholder="e.g. Washington Navel Orange"
           value={commonName}
         />
         <Divider />
@@ -190,7 +191,7 @@ class PlantEdit extends React.Component {
           label="Description"
           multiLine
           name="description"
-          placeholder={'Describe this plant and/or the location in your yard'}
+          placeholder="Describe this plant and/or the location in your yard"
           style={textAreaStyle}
           value={description}
         />
@@ -224,7 +225,7 @@ class PlantEdit extends React.Component {
           extraClasses="col-sm-4"
           label="Price"
           name="price"
-          placeholder={'$9.99'}
+          placeholder="$9.99"
           type="number"
           value={price}
         />
@@ -249,7 +250,7 @@ class PlantEdit extends React.Component {
               extraClasses="col-sm-4"
               label="Geo Position"
               name="geoPosition"
-              placeholder={'Location of this plant'}
+              placeholder="Location of this plant"
               value={geoPosDisplay}
             />
             <Divider />
@@ -258,7 +259,7 @@ class PlantEdit extends React.Component {
 
         {!isEmpty(errors) &&
           <div>
-            <p className="text-danger col-xs-12">{'There were errors. Please check your input.'}</p>
+            <p className="text-danger col-xs-12">There were errors. Please check your input.</p>
             {errorDivs}
             <Divider />
           </div>

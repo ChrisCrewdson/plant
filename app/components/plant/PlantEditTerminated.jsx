@@ -4,8 +4,8 @@ const Immutable = require('immutable');
 const Toggle = require('material-ui/Toggle').default;
 const InputCombo = require('../common/InputCombo');
 const Divider = require('material-ui/Divider').default;
-const RadioButton = require('material-ui/RadioButton').RadioButton;
-const RadioButtonGroup = require('material-ui/RadioButton').RadioButtonGroup;
+const { RadioButton } = require('material-ui/RadioButton');
+const { RadioButtonGroup } = require('material-ui/RadioButton');
 const PropTypes = require('prop-types');
 
 class PlantEditTerminated extends React.Component {
@@ -101,7 +101,7 @@ class PlantEditTerminated extends React.Component {
               error={errors.terminatedDescription}
               label="Termination Description"
               name="terminatedDescription"
-              placeholder={'(Optional) Describe why this plant was terminated.'}
+              placeholder="(Optional) Describe why this plant was terminated."
               value={terminatedDescription}
             />
 

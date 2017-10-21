@@ -5,8 +5,8 @@ const Base = require('../base/Base');
 const Immutable = require('immutable');
 const LocationsManager = require('../location/LocationsManager');
 const PropTypes = require('prop-types');
-const RadioButton = require('material-ui/RadioButton').RadioButton;
-const RadioButtonGroup = require('material-ui/RadioButton').RadioButtonGroup;
+const { RadioButton } = require('material-ui/RadioButton');
+const { RadioButtonGroup } = require('material-ui/RadioButton');
 const React = require('react');
 
 // Responsible for:
@@ -40,7 +40,7 @@ function profile(props, context) {
         <h2 style={{ textAlign: 'center' }}>
           User Profile
         </h2>
-        <h3>{'Unit of Measurement'}</h3>
+        <h3>Unit of Measurement</h3>
         <RadioButtonGroup
           defaultSelected={unitOfMeasurement}
           name="unitOfMeasurement"

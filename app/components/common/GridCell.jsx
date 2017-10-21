@@ -23,14 +23,16 @@ class GridCell extends React.Component {
         value = index;
         break;
       default:
-        value = e.target.value;
+        ({ value } = e.target);
         break;
     }
     this.props.editCell(this.props.rowId, this.props.index, value);
   }
 
   render() {
-    const { editId, rowId, value, type, title, options, error } = this.props;
+    const {
+      editId, rowId, value, type, title, options, error,
+    } = this.props;
     if (editId === rowId) {
       return (
         <InputCombo
@@ -79,7 +81,6 @@ GridCell.propTypes = {
 GridCell.defaultProps = {
   editId: '',
   options: {},
-  rows: [],
 };
 
 module.exports = GridCell;

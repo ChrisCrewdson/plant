@@ -16,7 +16,7 @@ function addLocationButton(props) {
   }
 
   return (
-    <Link to={'/location'}>
+    <Link to="/location">
       <FloatingActionButton
         title="Add Location"
         mini={mini}

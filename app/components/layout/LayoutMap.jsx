@@ -7,7 +7,9 @@ const actions = require('../../actions');
 const gis = require('../../libs/gis');
 const Immutable = require('immutable');
 // const {Layer, Rect, Stage, Group} = require('react-konva');
-const { Layer, Text: KonvaText, Circle, Stage, Group } = require('react-konva');
+const {
+  Layer, Text: KonvaText, Circle, Stage, Group,
+} = require('react-konva');
 const PropTypes = require('prop-types');
 
 class LayoutMap extends React.Component {
@@ -167,14 +169,16 @@ class LayoutMap extends React.Component {
         <div>
           {this.renderTitle()}
           {plantLocations
-            ? <Stage width={canvasWidth} height={plantLocations.canvasHeight}>
-              <Layer>
-                {plantLocations.plants.valueSeq().toJS()}
-              </Layer>
-            </Stage>
-            : <h3 style={{ textAlign: 'center' }}>
-              <div style={{ marginTop: '100px' }}>{'No plants have been mapped yet...'}</div>
-            </h3>
+            ?
+              <Stage width={canvasWidth} height={plantLocations.canvasHeight}>
+                <Layer>
+                  {plantLocations.plants.valueSeq().toJS()}
+                </Layer>
+              </Stage>
+            :
+              <h3 style={{ textAlign: 'center' }}>
+                <div style={{ marginTop: '100px' }}>No plants have been mapped yet...</div>
+              </h3>
           }
         </div>
       </Base>

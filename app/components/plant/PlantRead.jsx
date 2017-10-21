@@ -100,18 +100,19 @@ class PlantRead extends React.Component {
         return null;
       }
       const renderText = `${title.text ? `${title.text}: ` : ''}${value}`;
-      return (<div key={title.name}>
-        {renderText}
-      </div>);
+      return (
+        <div key={title.name}>
+          {renderText}
+        </div>);
     });
 
     const plantedDateTitle = this.plantedDateTitle(plant);
     if (plantedDateTitle) {
+      // eslint-disable-next-line function-paren-newline
       basicTitles.push(
         <div key="plantedDate">
           {plantedDateTitle}
-        </div>,
-      );
+        </div>);
     }
 
     const isTerminated = plant.get('isTerminated');
@@ -121,21 +122,21 @@ class PlantRead extends React.Component {
         ? utils.intToMoment(terminatedDate)
         : null;
 
+      // eslint-disable-next-line function-paren-newline
       basicTitles.push(
         <div key="terminatedDate">
           {`This plant was terminated${terminatedDate ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`}
-        </div>,
-      );
+        </div>);
 
       const plantedDate = plant.get('plantedDate');
       if (plantedDate && dateTerminated) {
         const datePlanted = utils.intToMoment(plantedDate);
         if (datePlanted.isBefore(dateTerminated)) {
+          // eslint-disable-next-line function-paren-newline
           basicTitles.push(
             <div key="terminatedDaysAfterPlanting">
               {`${datePlanted.from(dateTerminated, true)} after it was planted.`}
-            </div>,
-          );
+            </div>);
         }
       }
 
@@ -143,20 +144,20 @@ class PlantRead extends React.Component {
       if (terminatedReason === 'unknown') {
         // console.error('terminatedReason not set', plant.toJS());
       } else {
+      // eslint-disable-next-line function-paren-newline
         basicTitles.push(
           <div key="terminatedReason">
             {`Reason: ${terminatedReason}`}
-          </div>,
-        );
+          </div>);
       }
 
       const terminatedDescription = plant.get('terminatedDescription');
       if (terminatedDescription) {
+      // eslint-disable-next-line function-paren-newline
         basicTitles.push(
           <div key="terminatedDescription">
             {`(${terminatedDescription})`}
-          </div>,
-        );
+          </div>);
       }
     }
 
@@ -210,7 +211,7 @@ class PlantRead extends React.Component {
             />
           </div>
           :
-          <div>{'Plant not found or still loading...'}</div>
+          <div>Plant not found or still loading...</div>
         }
       </div>
     );

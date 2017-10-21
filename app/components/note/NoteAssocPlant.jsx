@@ -74,22 +74,23 @@ class NoteAssocPlant extends React.Component {
       ? this.renderPlantButtons(uncheckedPlantIds, plants, false)
       : null;
 
-    const arrow = (<FloatingActionButton
-      mini
-      onClick={this.expand}
-      secondary
-      title="Expand/Collapse Unchecked Plants"
-    >
-      {expanded
-        ? <ArrowLeft />
-        : <ArrowRight />
-      }
-    </FloatingActionButton>);
+    const arrow = (
+      <FloatingActionButton
+        mini
+        onClick={this.expand}
+        secondary
+        title="Expand/Collapse Unchecked Plants"
+      >
+        {expanded
+          ? <ArrowLeft />
+          : <ArrowRight />
+        }
+      </FloatingActionButton>);
 
     const filterInput = (<InputCombo
       changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
       label="Filter"
-      placeholder={'Filter...'}
+      placeholder="Filter..."
       value={filter}
       name="filter"
     />);

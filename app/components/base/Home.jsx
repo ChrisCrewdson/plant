@@ -53,7 +53,7 @@ class Home extends React.Component {
         {existingUsers &&
           <section>
             <Link
-              to={'/users'}
+              to="/users"
             >
               {'...exlore Farmers and Gardeners...'}
             </Link>
@@ -62,7 +62,7 @@ class Home extends React.Component {
         {existingLocations &&
           <section>
             <Link
-              to={'/locations'}
+              to="/locations"
             >
               {'...exlore Orchards, Gardens, Yards and Farms...'}
             </Link>
@@ -70,7 +70,7 @@ class Home extends React.Component {
         }
         {!isLoggedIn(store) &&
           <section>
-            <div><Link to={'/login'}>{'Login to get started'}</Link></div>
+            <div><Link to="/login">Login to get started</Link></div>
           </section>
         }
       </div>

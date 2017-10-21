@@ -9,18 +9,20 @@ describe('plant-api', () => {
   let plantId;
   let initialPlant;
 
-  before('it should start the server and setup auth token',
+  before(
+    'it should start the server and setup auth token',
     async () => {
       const data = await helper.startServerAuthenticated();
       assert(data.userId);
-      user = data.user;
+      ({ user } = data);
       initialPlant = Object.freeze({
         title: 'Plant Title',
         price: 19.99,
         tags: ['north-east', 'citrus'],
         locationId: data.user.locationIds[0]._id,
       });
-    });
+    },
+  );
 
   it('should fail to create a plant record if user is not authenticated', async () => {
     const reqOptions = {
@@ -112,11 +114,13 @@ describe('plant-api', () => {
 
   let updatedPlant;
   it('should update the just created plant', async () => {
-    updatedPlant = Object.assign({},
+    updatedPlant = Object.assign(
+      {},
       initialPlant, {
         title: 'A New Title',
         _id: plantId,
-      });
+      },
+    );
 
     const reqOptions = {
       method: 'PUT',

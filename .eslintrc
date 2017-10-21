@@ -18,6 +18,8 @@
     "no-shadow": [2, {"allow": [
       "Location"
     ]}],
-    "security/detect-object-injection": 0
+    "security/detect-object-injection": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "react/no-unused-state": 0
   }
 }

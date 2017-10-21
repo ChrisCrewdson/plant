@@ -34,7 +34,8 @@ function editDeleteButtons(props) {
           mini={props.mini}
           title={props.deleteTitle}
         />
-        : <div style={{ textAlign: 'right' }}>
+        :
+        <div style={{ textAlign: 'right' }}>
           <FloatingActionButton
             disabled={disabled}
             mini={props.mini}

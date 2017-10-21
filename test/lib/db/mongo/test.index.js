@@ -28,7 +28,8 @@ describe('/lib/db/mongo/', () => {
   let fbUser;
   let locationId;
 
-  before('should create a user account by starting the server',
+  before(
+    'should create a user account by starting the server',
     async () => {
       const data = await helper.startServerAuthenticated();
       fbUser = data.user;
@@ -37,10 +38,12 @@ describe('/lib/db/mongo/', () => {
       locationId = data.user.locationIds[0]._id;
       assert.equal(typeof userId, 'string');
       Object.freeze(fbUser);
-    });
+    },
+  );
 
   describe('user', () => {
-    it('should fail to create a user account if there is no object',
+    it(
+      'should fail to create a user account if there is no object',
       async () => {
         try {
           await mongo.findOrCreateUser(null);
@@ -49,9 +52,11 @@ describe('/lib/db/mongo/', () => {
           assert(err);
           assert.equal(err.message, 'No facebook.id or google.id:');
         }
-      });
+      },
+    );
 
-    it('should fetch the user created in the before setup',
+    it(
+      'should fetch the user created in the before setup',
       async () => {
         const user = {
           facebook: {
@@ -64,7 +69,8 @@ describe('/lib/db/mongo/', () => {
         assert(constants.mongoIdRE.test(body._id));
         assert(constants.mongoIdRE.test(body.locationIds[0]._id));
         assert.deepStrictEqual(body, fbUser);
-      });
+      },
+    );
 
     it('should fetch all users', async () => {
       const body = await mongo.getAllUsers();

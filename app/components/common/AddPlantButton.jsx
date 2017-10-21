@@ -16,7 +16,7 @@ function addPlantButton(props) {
   }
 
   return (
-    <Link to={'/plant'}>
+    <Link to="/plant">
       <FloatingActionButton
         title="Add Plant"
         mini={mini}

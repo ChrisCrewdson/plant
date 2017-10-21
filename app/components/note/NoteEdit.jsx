@@ -122,7 +122,7 @@ class NoteEdit extends React.Component {
           }
           {value === max &&
             <div style={{ display: 'flex', fontSize: 'xx-large', justifyContent: 'space-between' }}>
-              <h1>{'Upload complete... Finishing up... Hang on...'}</h1>
+              <h1>Upload complete... Finishing up... Hang on...</h1>
               <CircularProgress />
             </div>
           }
@@ -178,7 +178,7 @@ class NoteEdit extends React.Component {
           error={errors.get('date')}
           floatingLabelText="Date"
           name="date"
-          placeholder={'MM/DD/YYYY'}
+          placeholder="MM/DD/YYYY"
           style={textFieldStyle}
           value={date}
         />
@@ -196,7 +196,7 @@ class NoteEdit extends React.Component {
 
         {!!errors.size &&
           <div>
-            <p className="text-danger col-xs-12">{'There were errors. Please check your input.'}</p>
+            <p className="text-danger col-xs-12">There were errors. Please check your input.</p>
           </div>
         }
 
@@ -213,7 +213,7 @@ class NoteEdit extends React.Component {
           ref={(node) => { this.dropzone = node; }}
           style={dropZoneStyle}
         >
-          <div>{'Drop images here or tap to select images to upload.'}</div>
+          <div>Drop images here or tap to select images to upload.</div>
         </Dropzone>
 
         {!!images.length &&

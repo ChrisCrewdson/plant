@@ -112,23 +112,25 @@ class Plant extends React.Component {
       <Base>
         <div>
           {interimPlant
-            ? <PlantEdit
-              dispatch={store.dispatch}
-              interimPlant={interimPlant}
-              user={user}
-            />
-            : <div>
-              <PlantRead
+            ?
+              <PlantEdit
                 dispatch={store.dispatch}
-                interim={interim}
-                isOwner={owner}
-                locations={locations}
-                notes={notes}
-                plant={plant}
-                plants={plants}
+                interimPlant={interimPlant}
                 user={user}
               />
-              {plant && plant.get('title') &&
+            :
+              <div>
+                <PlantRead
+                  dispatch={store.dispatch}
+                  interim={interim}
+                  isOwner={owner}
+                  locations={locations}
+                  notes={notes}
+                  plant={plant}
+                  plants={plants}
+                  user={user}
+                />
+                {plant && plant.get('title') &&
                 <NoteCreate
                   dispatch={store.dispatch}
                   interimNote={interimNote}
@@ -138,7 +140,7 @@ class Plant extends React.Component {
                   user={user}
                 />
               }
-            </div>
+              </div>
           }
         </div>
       </Base>

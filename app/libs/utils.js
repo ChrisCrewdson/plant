@@ -178,7 +178,8 @@ function transformErrors(errors) {
     return errors;
   }
   return Object.keys(errors).reduce((acc, key) => {
-    acc[key] = errors[key][0];
+    // Assign first element of errors[key] (which is an arry) to acc[key]
+    [acc[key]] = errors[key];
     return acc;
   }, {});
 }
@@ -201,21 +202,23 @@ function getGeo(options, cb) {
     timeout: 30000, // 10 seconds
   }, options);
 
-  return window.navigator.geolocation.getCurrentPosition((position) => {
+  return window.navigator.geolocation.getCurrentPosition(
+    (position) => {
     // { type: "Point", coordinates: [ 40, 5 ] }
     // postion: {coords: {latitude: 11.1, longitude: 22.2}}
-    const geoJson = {
-      type: 'Point',
-      coordinates: [
-        position.coords.longitude,
-        position.coords.latitude,
-      ],
-    };
-    return cb(null, geoJson);
-  }, positionError =>
+      const geoJson = {
+        type: 'Point',
+        coordinates: [
+          position.coords.longitude,
+          position.coords.latitude,
+        ],
+      };
+      return cb(null, geoJson);
+    }, positionError =>
     // console.error('geolcation error:', positionError);
-    cb('There was an error get the geo position', positionError),
-  options);
+      cb('There was an error get the geo position', positionError),
+    options,
+  );
 }
 
 
@@ -356,6 +359,7 @@ function noteFromBody(body) {
             body.metrics[key] = parseFloat(body.metrics[key], 10);
             break;
         }
+        // eslint-disable-next-line no-restricted-globals
         if (isNaN(body.metrics[key])) {
           // eslint-disable-next-line no-param-reassign
           delete body.metrics[key];
