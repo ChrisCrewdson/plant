@@ -77,6 +77,7 @@ describe('plants-api', () => {
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
         assert.equal(httpMsg.statusCode, 404);
         assert(!response);
-      });
+      },
+    );
   });
 });

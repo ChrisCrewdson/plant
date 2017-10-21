@@ -190,7 +190,8 @@ describe('/app/libs/utils', () => {
       'should fail if 1st and 2nd params are equal length and not the same',
       () => {
         assert.equal(utils.constantEquals('123', '124'), false);
-      });
+      },
+    );
     test('should pass if 1st and 2nd are equal', () => {
       assert.equal(utils.constantEquals('123', '123'), true);
     });

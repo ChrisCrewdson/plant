@@ -6,13 +6,10 @@ const logger = require('../../../lib/logging/logger').create('test.server-render
 
 describe('lib/render/plant', () => {
   let data;
-  beforeAll(
-    'it should start the server and setup auth token',
-    async () => {
-      data = await helper.startServerAuthenticated();
-      assert(data.userId);
-    },
-  );
+  beforeAll(async () => {
+    data = await helper.startServerAuthenticated();
+    assert(data.userId);
+  });
 
   beforeAll(async () => {
     const { userId } = data;

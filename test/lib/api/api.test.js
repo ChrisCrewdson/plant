@@ -5,13 +5,10 @@ const assert = require('assert');
 const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
 describe('api', () => {
-  beforeAll(
-    'it should start the server and setup auth token',
-    async () => {
-      const data = await helper.startServerAuthenticated();
-      assert(data.userId);
-    },
-  );
+  beforeAll(async () => {
+    const data = await helper.startServerAuthenticated();
+    assert(data.userId);
+  });
 
   test('should get a 404 if the path is not recognized', async () => {
     const reqOptions = {

@@ -9,7 +9,7 @@ describe('plant-api', () => {
   let plantId;
   let initialPlant;
 
-  beforeAll('it should start the server and setup auth token', async () => {
+  beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
     assert(data.userId);
     ({ user } = data);

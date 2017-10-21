@@ -10,16 +10,13 @@ describe('note-api', () => {
   let userId;
   let locationId;
 
-  beforeAll(
-    'it should start the server and setup auth token',
-    async () => {
-      const data = await helper.startServerAuthenticated();
-      assert(data.userId);
-      userId = data.user._id;
-      locationId = data.user.locationIds[0]._id;
-      logger.trace('startServerAuthenticated userId:', { userId });
-    },
-  );
+  beforeAll(async () => {
+    const data = await helper.startServerAuthenticated();
+    assert(data.userId);
+    userId = data.user._id;
+    locationId = data.user.locationIds[0]._id;
+    logger.trace('startServerAuthenticated userId:', { userId });
+  });
 
   let initialPlant;
   let plantId;

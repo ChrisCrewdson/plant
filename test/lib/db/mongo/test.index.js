@@ -22,18 +22,15 @@ describe('/lib/db/mongo/', () => {
   let fbUser;
   let locationId;
 
-  beforeAll(
-    'should create a user account by starting the server',
-    async () => {
-      const data = await helper.startServerAuthenticated();
-      fbUser = data.user;
-      userId = fbUser._id;
-      assert(userId);
-      locationId = data.user.locationIds[0]._id;
-      assert.equal(typeof userId, 'string');
-      Object.freeze(fbUser);
-    },
-  );
+  beforeAll(async () => {
+    const data = await helper.startServerAuthenticated();
+    fbUser = data.user;
+    userId = fbUser._id;
+    assert(userId);
+    locationId = data.user.locationIds[0]._id;
+    assert.equal(typeof userId, 'string');
+    Object.freeze(fbUser);
+  });
 
   describe('user', () => {
     test(

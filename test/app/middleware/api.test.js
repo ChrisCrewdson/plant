@@ -69,7 +69,8 @@ describe('/app/middleware/api', () => {
       api(store)(next)(action);
 
       assert.equal(callCounter, 1);
-    });
+    },
+  );
 
   test('should check that next gets called if no match', () => {
     const store = {};
