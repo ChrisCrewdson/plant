@@ -1,15 +1,12 @@
-
-jest.mock('../../../../lib/logging/logger', () => ({
-  create: () => ({
-    trace: () => {},
-    warn: () => {
-      throw new Error('Unexpected warn in proxylog');
-    },
-    error: () => {
-      // throw new Error('Unexpected error in proxylog');
-    },
-  }),
+// TODO: Need to setup these two mocks in a setup script?
+jest.mock('loggly', () => ({
+  createClient: () => () => {},
 }));
+
+// 1. jest.mock takes a function
+// 2. debug returns a function that is used to initialize
+// 3. debug initializer returns a function that's used for debugging
+jest.mock('debug', () => () => () => {});
 
 const _ = require('lodash');
 const assert = require('assert');
