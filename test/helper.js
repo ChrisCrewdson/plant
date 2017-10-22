@@ -1,3 +1,4 @@
+const net = require('net');
 const _ = require('lodash');
 const assert = require('assert');
 const constants = require('../app/libs/constants');
@@ -20,12 +21,57 @@ const serverModule = require('../lib/server');
 
 const logger = require('../lib/logging/logger').create('test.helper');
 
+
+/**
+ * Checks to see if port is being used on the system.
+ * @param {number} port - the port to check
+ * @returns a Promise that resolves to true or false
+ */
+function portInUse(port) {
+  return new Promise((resolve) => {
+    const server = net.createServer((socket) => {
+      socket.write('Echo server\r\n');
+      socket.pipe(socket);
+    });
+
+    server.listen(port, '127.0.0.1');
+    server.on('error', () => {
+      resolve(true);
+    });
+    server.on('listening', () => {
+      server.close();
+      resolve(false);
+    });
+  });
+}
+
+
+/**
+ * Recursively checks ports 3001 to 3999 to see if they are in use
+ * and returns the first port that is not in use in that range
+ * @param {number} [port=3001] - the port to check
+ * @returns the first unused port or throws an exception if none found
+ */
+async function findUnusedPort(port = 3001) {
+  if (port > 3999) {
+    throw new Error(`Could not find a free port. Checked up to ${port}`);
+  }
+  const inUse = await portInUse(port);
+  if (!inUse) {
+    return port;
+  }
+
+  return findUnusedPort(port + 1);
+}
+
+const data = {};
+
 function getUrl(url) {
   if (_.startsWith(url, 'http')) {
     return url;
   }
 
-  return `${'http'}://127.0.0.1:3001${url}`;
+  return `${'http'}://127.0.0.1:${data.port}${url}`;
 }
 
 let jwt;
@@ -61,7 +107,6 @@ async function makeRequest(opts) {
   });
 }
 
-const data = {};
 
 async function startServerAuthenticated() {
   async function emptyDatabase() {
@@ -133,11 +178,11 @@ async function startServerAuthenticated() {
     return server || serverModule;
   }
 
-  async function startServer(app, server) {
+  async function startServer(app, server, port) {
     if (app) {
       return app;
     }
-    return server(); // returns a Promise
+    return server(port); // returns a Promise
   }
 
   async function authenticateUser() {
@@ -158,8 +203,9 @@ async function startServerAuthenticated() {
     await emptyDatabase();
     data.user = await createUser();
     createPassport(data.user);
+    data.port = await findUnusedPort();
     data.server = createServer(data.server);
-    data.app = await startServer(data.app, data.server);
+    data.app = await startServer(data.app, data.server, data.port);
     data.userId = await authenticateUser();
     return data;
   } catch (error) {
