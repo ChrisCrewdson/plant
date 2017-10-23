@@ -1,6 +1,6 @@
 const helper = require('../../helper');
 const assert = require('assert');
-const mongo = require('../../../lib/db/mongo');
+const mongo = require('../../../lib/db/mongo')();
 const utils = require('../../../app/libs/utils');
 
 // const logger = require('../../../lib/logging/logger').create('test.plant-api-delete');

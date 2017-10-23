@@ -8,7 +8,7 @@
 // const async = require('async');
 // const AWS = require('aws-sdk');
 // const constants = require('../app/libs/constants');
-// const mongo = require('../lib/db/mongo');
+// const mongo = require('../lib/db/mongo')();
 
 // Logger.setLevel('trace');
 // const logger = Logger.create('plant:reload-images');

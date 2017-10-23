@@ -12,7 +12,7 @@ const _ = require('lodash');
 const assert = require('assert');
 const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
-const mongo = require('../../../../lib/db/mongo');
+const mongo = require('../../../../lib/db/mongo')();
 
 describe('/lib/db/mongo/', () => {
   let userId;

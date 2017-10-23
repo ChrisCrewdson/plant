@@ -39,7 +39,7 @@
 //   },
 // };
 
-// const mongo = require('../lib/db/mongo');
+// const mongo = require('../lib/db/mongo')();
 // const async = require('async');
 // const Logger = require('../lib/logging/logger');
 

@@ -1,6 +1,6 @@
 const utils = require('../../../../app/libs/utils');
 const assert = require('assert');
-const mongo = require('../../../../lib/db/mongo');
+const mongo = require('../../../../lib/db/mongo')();
 
 // const logger = require('../../../../lib/logging/logger').create('test:mongo-update');
 

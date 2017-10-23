@@ -2,7 +2,7 @@ const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
 const assert = require('assert');
 const constants = require('../../../app/libs/constants');
-const mongo = require('../../../lib/db/mongo');
+const mongo = require('../../../lib/db/mongo')();
 
 const logger = require('../../../lib/logging/logger').create('test.note-api');
 

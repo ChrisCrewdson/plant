@@ -2,7 +2,7 @@ const net = require('net');
 const _ = require('lodash');
 const assert = require('assert');
 const constants = require('../app/libs/constants');
-const mongo = require('../lib/db/mongo');
+const mongo = require('../lib/db/mongo')();
 const request = require('request');
 const { makeMongoId } = require('../app/libs/utils');
 

@@ -1,7 +1,7 @@
 // One off for converting / creating the location collection
 // and updating the user and plant collections.
 
-// const mongo = require('../lib/db/mongo');
+// const mongo = require('../lib/db/mongo')();
 // const async = require('async');
 // const Logger = require('../lib/logging/logger');
 
