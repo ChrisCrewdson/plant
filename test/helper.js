@@ -214,6 +214,8 @@ async function startServerAuthenticated() {
     data.server = createServer(data.server);
     data.app = await startServer(data.app, data.server, data.port);
     data.userId = await authenticateUser();
+    // eslint-disable-next-line no-console
+    console.log('*** data object setup complete', JSON.stringify(_.omit(data, ['app', 'server']), null, 2));
     return data;
   } catch (error) {
     throw error;
