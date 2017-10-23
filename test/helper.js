@@ -67,11 +67,18 @@ async function findUnusedPort(port = 3001) {
 const data = {};
 
 function getUrl(url) {
-  if (_.startsWith(url, 'http')) {
+  if ((url || '').startsWith('http')) {
     return url;
   }
 
-  return `${'http'}://127.0.0.1:${data.port}${url}`;
+  if (!data.port) {
+    // eslint-disable-next-line no-console
+    console.error('port is not defined in data object:', JSON.stringify(data, null, 2));
+  }
+
+  const { port = 3001 } = data;
+
+  return `${'http'}://127.0.0.1:${port}${url}`;
 }
 
 let jwt;
