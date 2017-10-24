@@ -1,6 +1,4 @@
-const _ = require('lodash');
 const actions = require('../../../app/actions');
-const assert = require('assert');
 
 let ajax = () => {};
 const mockAjax = (store, options) => {
@@ -20,10 +18,9 @@ describe('/app/middleware/api', () => {
     let callCounter = 0;
 
     ajax = (state, options) => {
-      const message = JSON.stringify(options);
-      assert(_.isString(options.url), `Missing url: ${message}`);
-      assert(_.isFunction(options.success), `Missing success fn: ${message}`);
-      assert(_.isFunction(options.failure), `Missing failure fn: ${message}`);
+      expect(typeof options.url).toBe('string');
+      expect(options.success).toBeInstanceOf(Function);
+      expect(options.failure).toBeInstanceOf(Function);
       callCounter += 1;
     };
 
@@ -38,7 +35,7 @@ describe('/app/middleware/api', () => {
       api(store)(next)(Object.assign({}, action, { type: key }));
     });
 
-    assert.equal(callCounter, Object.keys(api.apis).length);
+    expect(callCounter).toBe(Object.keys(api.apis).length);
   });
 
   test(
@@ -48,13 +45,13 @@ describe('/app/middleware/api', () => {
       const next = () => {};
       let callCounter = 0;
       ajax = (state, options) => {
-        assert.equal(options.contentType, 'multipart/form-data');
-        assert(_.isFunction(options.data.append));
-        assert(_.isFunction(options.failure));
-        assert(_.isFunction(options.success));
-        assert.equal(options.type, 'POST');
-        assert.equal(options.url, '/api/upload');
-        assert.equal(options.fileUpload, true);
+        expect(options.contentType).toBe('multipart/form-data');
+        expect(options.data.append).toBeInstanceOf(Function);
+        expect(options.failure).toBeInstanceOf(Function);
+        expect(options.success).toBeInstanceOf(Function);
+        expect(options.type).toBe('POST');
+        expect(options.url).toBe('/api/upload');
+        expect(options.fileUpload).toBe(true);
         callCounter += 1;
       };
 
@@ -68,7 +65,7 @@ describe('/app/middleware/api', () => {
 
       api(store)(next)(action);
 
-      assert.equal(callCounter, 1);
+      expect(callCounter).toBe(1);
     },
   );
 
@@ -84,6 +81,6 @@ describe('/app/middleware/api', () => {
 
     api(store)(next)(Object.assign({}, action, { type: 'Does not exist' }));
 
-    assert(nextCalled);
+    expect(nextCalled).toBe(true);
   });
 });

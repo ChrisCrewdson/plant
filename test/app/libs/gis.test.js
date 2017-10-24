@@ -1,5 +1,4 @@
 const gis = require('../../../app/libs/gis');
-const assert = require('assert');
 const Immutable = require('immutable');
 
 describe('/app/libs/gis', () => {
@@ -8,9 +7,9 @@ describe('/app/libs/gis', () => {
       const width = 700;
       const immutablePlants = Immutable.Map();
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      assert(Immutable.Map.isMap(scaledPlants.plants));
-      assert.equal(scaledPlants.plants.size, 0);
-      assert.equal(scaledPlants.canvasHeight, 0);
+      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants.plants.size).toBe(0);
+      expect(scaledPlants.canvasHeight).toBe(0);
     });
 
     test('should scale a single plant', () => {
@@ -26,9 +25,9 @@ describe('/app/libs/gis', () => {
       const width = 700;
       const immutablePlants = Immutable.fromJS(plants);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      assert(Immutable.Map.isMap(scaledPlants.plants));
-      assert.equal(scaledPlants.plants.size, 1);
-      assert.equal(scaledPlants.canvasHeight, width);
+      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants.plants.size).toBe(1);
+      expect(scaledPlants.canvasHeight).toBe(width);
     });
 
     test('should scale two plants on the same latitude', () => {
@@ -51,9 +50,9 @@ describe('/app/libs/gis', () => {
       const width = 700;
       const immutablePlants = Immutable.fromJS(plants);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      assert(Immutable.Map.isMap(scaledPlants.plants));
-      assert.equal(scaledPlants.plants.size, 2);
-      assert.equal(scaledPlants.canvasHeight, width);
+      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants.plants.size).toBe(2);
+      expect(scaledPlants.canvasHeight).toBe(width);
     });
 
     test('should scale two plants on the same longitude', () => {
@@ -76,9 +75,9 @@ describe('/app/libs/gis', () => {
       const width = 700;
       const immutablePlants = Immutable.fromJS(plants);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      assert(Immutable.Map.isMap(scaledPlants.plants));
-      assert.equal(scaledPlants.plants.size, 2);
-      assert.equal(scaledPlants.canvasHeight, width);
+      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants.plants.size).toBe(2);
+      expect(scaledPlants.canvasHeight).toBe(width);
     });
   });
 });

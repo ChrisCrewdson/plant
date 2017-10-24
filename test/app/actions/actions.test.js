@@ -1,6 +1,5 @@
 // const _ = require('lodash');
 const actions = require('../../../app/actions');
-const assert = require('assert');
 
 describe('/app/actions', () => {
   test('should create a logout action', (done) => {
@@ -8,7 +7,7 @@ describe('/app/actions', () => {
       type: actions.LOGOUT,
     };
     const actual = actions.logout();
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
     done();
   });
 
@@ -19,7 +18,7 @@ describe('/app/actions', () => {
       payload,
     };
     const actual = actions.loginRequest(payload);
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
     done();
   });
 
@@ -31,7 +30,7 @@ describe('/app/actions', () => {
       error: true,
     };
     const actual = actions.loginFailure(payload);
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
     done();
   });
 });
