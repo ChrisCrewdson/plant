@@ -107,6 +107,7 @@
   },
   "scripts": {
     "build": "TARGET=build webpack --bail",
+    "coverage": "jest -w 1 --forceExit --coverage",
     "csslint": "stylelint app/stylesheets/*.css",
     "dependency-update": "node_modules/.bin/npm-update-outdated",
     "lint": "eslint --ext .js --ext .jsx . --max-warnings 0",
