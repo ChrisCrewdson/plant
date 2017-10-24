@@ -1,6 +1,16 @@
 
 const jsdom = require('jsdom/lib/old-api.js');
 const Logger = require('../lib/logging/logger');
+const uuid = require('uuid');
+const mongo = require('../lib/db/mongo');
+
+// Create a unique database name in the setup file because there
+// may be multiple workers running tests and each worker will
+// need a unique DB so that when all collections are deleted
+// during a test setup other workers are not impacted.
+const dbName = `plant-test-${uuid.v4()}`;
+const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${dbName}`;
+const mongoDb = mongo(mongoConnection);
 
 Logger.setLevel('trace');
 
@@ -40,3 +50,14 @@ global.window.FormData = function appender() {
 // };
 global.navigator = global.window.navigator;
 propagateToGlobal(global.window);
+
+// Weird that I was unable to mark the afterAll() callback as an
+// async function. afterAll() didn't wait on it.
+afterAll((done) => {
+  async function cleanUp() {
+    const db = await mongoDb.GetDb();
+    db.dropDatabase();
+    done();
+  }
+  cleanUp();
+});
