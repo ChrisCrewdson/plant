@@ -2,8 +2,6 @@ const utils = require('../../../../app/libs/utils');
 const assert = require('assert');
 const mongo = require('../../../../lib/db/mongo')();
 
-// const logger = require('../../../../lib/logging/logger').create('test:mongo-update');
-
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {
     test('should update the image sizes in a note', async () => {

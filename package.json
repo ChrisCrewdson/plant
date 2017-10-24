@@ -115,8 +115,8 @@
     "server": ". ./devops/run-server.sh",
     "start": "TARGET=dev webpack-dev-server --progress --colors --hot --inline --history-api-fallback --bail",
     "test": "npm run lint && npm run build && sh ./devops/run-test.sh",
-    "test-only": "jest --forceExit",
-    "test-fast": "jest --forceExit --onlyChanged"
+    "test-only": "jest -w 1 --forceExit",
+    "test-fast": "jest -w 1 --forceExit --onlyChanged"
   },
   "version": "0.0.1"
 }

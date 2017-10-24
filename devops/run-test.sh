@@ -18,4 +18,4 @@ export PLANT_DB_NAME=plant-test
 
 # TODO: --forceExit is being used because test server is not being stopped.
 #       Fix this by stopping server in an afterAll()
-jest --forceExit
+jest -w 1 --forceExit
