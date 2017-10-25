@@ -8,8 +8,10 @@
     "cSpell.words": [
         "Dropzone",
         "Plaaant",
+        "numericality",
         "originalname",
         "polyfill",
-        "upsert"
+        "upsert",
+        "validators"
     ]
 }

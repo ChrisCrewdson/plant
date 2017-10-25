@@ -2,7 +2,6 @@ const _ = require('lodash');
 const validators = require('../../../app/models');
 const constants = require('../../../app/libs/constants');
 const utils = require('../../../app/libs/utils');
-const assert = require('assert');
 
 const { makeMongoId } = utils;
 const noteValidator = validators.note;
@@ -21,9 +20,9 @@ describe('/app/models/note', () => {
     const noteCopy = _.clone(note);
 
     noteValidator(note, (err, transformed) => {
-      assert(!err);
-      assert.equal(transformed.note, note.note);
-      assert.deepEqual(noteCopy, note);
+      expect(err).toBeFalsy();
+      expect(transformed.note).toBe(note.note);
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -40,12 +39,12 @@ describe('/app/models/note', () => {
     const noteCopy = _.clone(note);
 
     noteValidator(note, (err /* , transformed */) => {
-      assert(err);
+      expect(err).toBeTruthy();
 
-      assert.equal(err._id, ' id is invalid');
-      assert.equal(err.date, 'Date must be a number');
-      assert.equal(err.plantIds, 'Plant ids must be MongoIds');
-      assert.deepEqual(noteCopy, note);
+      expect(err._id).toBe(' id is invalid');
+      expect(err.date).toBe('Date must be a number');
+      expect(err.plantIds).toBe('Plant ids must be MongoIds');
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -63,15 +62,15 @@ describe('/app/models/note', () => {
     const noteCopy = _.clone(note);
 
     noteValidator(note, (err, transformed) => {
-      assert(!err);
-      assert.equal(Object.keys(transformed).length, 4);
-      assert.equal(transformed._id, note._id);
-      assert.equal(transformed.note, note.note);
-      assert.equal(transformed.userId, note.userId);
-      assert(!transformed.fakeName1);
-      assert(!transformed.fakeName2);
-      assert(!transformed.plantId);
-      assert.deepEqual(noteCopy, note);
+      expect(err).toBeFalsy();
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.fakeName1).toBeFalsy();
+      expect(transformed.fakeName2).toBeFalsy();
+      expect(transformed.plantId).toBeFalsy();
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -85,14 +84,14 @@ describe('/app/models/note', () => {
     const noteCopy = _.cloneDeep(note);
 
     noteValidator(note, (err, transformed) => {
-      assert(!err);
-      assert.equal(Object.keys(transformed).length, 4);
-      assert(transformed._id);
-      assert(constants.mongoIdRE.test(transformed._id));
-      assert.equal(transformed.note, note.note);
-      assert.equal(transformed.userId, note.userId);
-      assert.deepEqual(transformed.plantIds, note.plantIds);
-      assert.deepEqual(noteCopy, note);
+      expect(err).toBeFalsy();
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBeTruthy();
+      expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.plantIds).toEqual(note.plantIds);
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -107,13 +106,13 @@ describe('/app/models/note', () => {
     const noteCopy = _.clone(note);
 
     noteValidator(note, (err, transformed) => {
-      assert(err);
-      assert.equal(err.plantIds, 'You must select at least 1 plant for this note.');
-      assert.equal(Object.keys(transformed).length, 4);
-      assert.equal(transformed._id, note._id);
-      assert.equal(transformed.note, note.note);
-      assert.equal(transformed.userId, note.userId);
-      assert.deepEqual(noteCopy, note);
+      expect(err).toBeTruthy();
+      expect(err.plantIds).toBe('You must select at least 1 plant for this note.');
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -127,13 +126,13 @@ describe('/app/models/note', () => {
     const noteCopy = _.clone(note);
 
     noteValidator(note, (err, transformed) => {
-      assert(err);
-      assert.equal(err.plantIds, 'Plant ids is required');
-      assert.equal(Object.keys(transformed).length, 3);
-      assert.equal(transformed._id, note._id);
-      assert.equal(transformed.note, note.note);
-      assert.equal(transformed.userId, note.userId);
-      assert.deepEqual(noteCopy, note);
+      expect(err).toBeTruthy();
+      expect(err.plantIds).toBe('Plant ids is required');
+      expect(Object.keys(transformed)).toHaveLength(3);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -148,13 +147,13 @@ describe('/app/models/note', () => {
     const noteCopy = _.clone(note);
 
     noteValidator(note, (err, transformed) => {
-      assert(err);
-      assert.equal(err.plantIds, 'Plant ids must be an array');
-      assert.equal(Object.keys(transformed).length, 4);
-      assert.equal(transformed._id, note._id);
-      assert.equal(transformed.note, note.note);
-      assert.equal(transformed.userId, note.userId);
-      assert.deepEqual(noteCopy, note);
+      expect(err).toBeTruthy();
+      expect(err.plantIds).toBe('Plant ids must be an array');
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
       done();
     });
   });
@@ -179,11 +178,11 @@ describe('/app/models/note', () => {
 
 
       noteValidator(note, (err, transformed) => {
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -199,11 +198,11 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -219,11 +218,11 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -238,10 +237,10 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert.equal(Object.keys(transformed).length, 4);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(Object.keys(transformed)).toHaveLength(4);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -257,13 +256,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(err);
-        assert.equal(err.images, 'Images must be an array');
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeTruthy();
+        expect(err.images).toBe('Images must be an array');
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -279,13 +278,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(err);
-        assert.equal(err.images, 'Images must be valid image objects');
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeTruthy();
+        expect(err.images).toBe('Images must be valid image objects');
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -301,13 +300,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(err);
-        assert.equal(err.images, 'Images must be valid image objects');
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeTruthy();
+        expect(err.images).toBe('Images must be valid image objects');
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -323,13 +322,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(err);
-        assert.equal(err.images, 'Images must be valid image objects');
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeTruthy();
+        expect(err.images).toBe('Images must be valid image objects');
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -345,13 +344,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(!err);
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.equal(transformed.images[0].size, 123);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeFalsy();
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(transformed.images[0].size).toBe(123);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -367,13 +366,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(err);
-        assert.equal(err.images, 'Images must be valid image objects');
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeTruthy();
+        expect(err.images).toBe('Images must be valid image objects');
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });
@@ -389,13 +388,13 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
       noteValidator(note, (err, transformed) => {
-        assert(err);
-        assert.equal(err.images, 'Images must only have the following allowed props: id,ext,originalname,size,sizes and found these props as well: extra');
-        assert.equal(Object.keys(transformed).length, 5);
-        assert.equal(transformed._id, note._id);
-        assert.equal(transformed.note, note.note);
-        assert.equal(transformed.userId, note.userId);
-        assert.deepEqual(noteCopy, note);
+        expect(err).toBeTruthy();
+        expect(err.images).toBe('Images must only have the following allowed props: id,ext,originalname,size,sizes and found these props as well: extra');
+        expect(Object.keys(transformed)).toHaveLength(5);
+        expect(transformed._id).toBe(note._id);
+        expect(transformed.note).toBe(note.note);
+        expect(transformed.userId).toBe(note.userId);
+        expect(noteCopy).toEqual(note);
         done();
       });
     });

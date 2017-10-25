@@ -1,6 +1,5 @@
 const interim = require('../../../app/reducers/interim');
 const actions = require('../../../app/actions');
-const assert = require('assert');
 const Immutable = require('immutable');
 
 describe('/app/reducers/interim', () => {
@@ -9,7 +8,7 @@ describe('/app/reducers/interim', () => {
       Object.keys(interim.reducers).forEach((reducerKey) => {
         // If any of the actions being used in the reducer haven't been defined
         // in the actions file then this test will fail.
-        assert(reducerKey !== 'undefined');
+        expect(reducerKey).not.toBe('undefined');
       });
 
       done();
@@ -20,8 +19,8 @@ describe('/app/reducers/interim', () => {
     const action = actions[actionName](payload);
     const actual = interim(state, action);
     // The following line provides useful debug info which the one after does not
-    assert.deepEqual(actual.toJS(), expected.toJS());
-    assert(Immutable.is(actual, expected));
+    expect(actual.toJS()).toEqual(expected.toJS());
+    expect(Immutable.is(actual, expected)).toBe(true);
   }
 
   describe('editNoteOpen', () => {

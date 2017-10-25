@@ -37,7 +37,7 @@ describe('/lib/db/mongo/', () => {
           await mongo.findOrCreateUser(null);
           assert(false, 'findOrCreateUser() should have thrown in this test');
         } catch (err) {
-          assert(err);
+          expect(err).toBeTruthy();
           assert.equal(err.message, 'No facebook.id or google.id:');
         }
       },

@@ -96,6 +96,7 @@ module.exports = (attributes, { isNew }, cb) => {
     loc: { presence: false },
     'loc.type': { presence: false }, // if loc is present then this must be present and be "Point"
     // if loc is present then the next 2 must be present
+    // See issue #1403 - the follow turn the array into an object in cleanAttributes()
     'loc.coordinates.0': { numericality: { noStrings: true } },
     'loc.coordinates.1': { numericality: { noStrings: true } },
     plantedDate: { intDateValidate: { presence: false, name: 'Planted date' } },
