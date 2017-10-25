@@ -1,5 +1,4 @@
 const helper = require('../../helper');
-const assert = require('assert');
 const constants = require('../../../app/libs/constants');
 
 // const logger = require('../../../lib/logging/logger').create('test.plant-api');
@@ -11,7 +10,7 @@ describe('plant-api', () => {
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
-    assert(data.userId);
+    expect(data.userId).toBeTruthy();
     ({ user } = data);
     initialPlant = Object.freeze({
       title: 'Plant Title',
@@ -32,9 +31,9 @@ describe('plant-api', () => {
         url: '/api/plant',
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 401);
-      assert(response);
-      assert.equal(response.error, 'Not Authenticated');
+      expect(httpMsg.statusCode).toBe(401);
+      expect(response).toBeTruthy();
+      expect(response.error).toBe('Not Authenticated');
     },
   );
 
@@ -50,9 +49,9 @@ describe('plant-api', () => {
     // response should look like:
     // { title: [ 'Title can\'t be blank' ] }
     // ...and status should be 400
-    assert.equal(httpMsg.statusCode, 400);
-    assert(response);
-    assert.equal(response.title, 'Title is too short (minimum is 1 characters)');
+    expect(httpMsg.statusCode).toBe(400);
+    expect(response).toBeTruthy();
+    expect(response.title).toBe('Title is too short (minimum is 1 characters)');
   });
 
   test('should create a plant', async () => {
@@ -68,11 +67,11 @@ describe('plant-api', () => {
     // {  title: 'Plant Title',
     //    userId: '6d73133d02d14058ac5f86fa',
     //    _id: 'b19d854e0dc045feabd31b3b' }
-    assert.equal(httpMsg.statusCode, 200);
-    assert(response);
-    assert.equal(response.title, 'Plant Title');
-    assert.equal(response.userId, user._id);
-    assert(constants.mongoIdRE.test(response._id));
+    expect(httpMsg.statusCode).toBe(200);
+    expect(response).toBeTruthy();
+    expect(response.title).toBe('Plant Title');
+    expect(response.userId).toBe(user._id);
+    expect(constants.mongoIdRE.test(response._id)).toBeTruthy();
 
     plantId = response._id;
   });
@@ -89,14 +88,14 @@ describe('plant-api', () => {
     // { _id: 'e5fc6fff0a8f48ad90636b3cea6e4f93',
     // title: 'Plant Title',
     // userId: '241ff27e28c7448fb22c4f6fb2580923'}
-    assert.equal(httpMsg.statusCode, 200);
-    assert(response);
-    assert(response.userId);
-    assert.equal(response._id, plantId);
-    assert.equal(response.title, initialPlant.title);
-    assert(response.notes);
-    assert(response.locationId);
-    assert.equal(response.notes.length, 0);
+    expect(httpMsg.statusCode).toBe(200);
+    expect(response).toBeTruthy();
+    expect(response.userId).toBeTruthy();
+    expect(response._id).toBe(plantId);
+    expect(response.title).toBe(initialPlant.title);
+    expect(response.notes).toBeTruthy();
+    expect(response.locationId).toBeTruthy();
+    expect(response.notes).toHaveLength(0);
   });
 
   test('should fail to retrieve a plant if the id does not exist', async () => {
@@ -107,9 +106,9 @@ describe('plant-api', () => {
       url: '/api/plant/does-not-exist',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    assert.equal(httpMsg.statusCode, 404);
-    assert(response);
-    assert.equal(response.error, 'missing');
+    expect(httpMsg.statusCode).toBe(404);
+    expect(response).toBeTruthy();
+    expect(response.error).toBe('missing');
   });
 
   let updatedPlant;
@@ -132,9 +131,9 @@ describe('plant-api', () => {
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
     const { locationId } = response;
-    assert.equal(httpMsg.statusCode, 200);
+    expect(httpMsg.statusCode).toBe(200);
     const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId });
-    assert.deepEqual(response, expected);
+    expect(response).toEqual(expected);
   });
 
   test('should retrieve the just updated plant', async () => {
@@ -146,11 +145,11 @@ describe('plant-api', () => {
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    assert.equal(httpMsg.statusCode, 200);
-    assert(response);
+    expect(httpMsg.statusCode).toBe(200);
+    expect(response).toBeTruthy();
 
-    assert(response.userId);
-    assert.equal(response._id, plantId);
-    assert.equal(response.title, updatedPlant.title);
+    expect(response.userId).toBeTruthy();
+    expect(response._id).toBe(plantId);
+    expect(response.title).toBe(updatedPlant.title);
   });
 });

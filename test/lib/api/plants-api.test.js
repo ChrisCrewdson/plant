@@ -1,5 +1,4 @@
 const helper = require('../../helper');
-const assert = require('assert');
 
 const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
@@ -9,10 +8,10 @@ describe('plants-api', () => {
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
-    assert(data.user);
-    assert(data.user._id);
-    assert(data.user.locationIds);
-    assert(data.user.locationIds.length);
+    expect(data.user).toBeTruthy();
+    expect(data.user._id).toBeTruthy();
+    expect(data.user.locationIds).toBeTruthy();
+    expect(data.user.locationIds.length).toBeTruthy();
     userId = data.user._id;
     locationId = data.user.locationIds[0]._id;
   });
@@ -39,14 +38,14 @@ describe('plants-api', () => {
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
       logger.trace('response:', { response });
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toBeTruthy();
 
-      assert.equal(response.length, numPlants);
+      expect(response).toHaveLength(numPlants);
       // assert that all plants exist
       insertedPlants.forEach((plant) => {
         const some = response.some(r => r._id === plant._id);
-        assert(some);
+        expect(some).toBeTruthy();
       });
     });
   });
@@ -61,8 +60,8 @@ describe('plants-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 404);
-      assert(response);
+      expect(httpMsg.statusCode).toBe(404);
+      expect(response).toBeTruthy();
     });
 
     test(
@@ -75,8 +74,8 @@ describe('plants-api', () => {
           url: '/api/plants/does-not-exist',
         };
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
-        assert.equal(httpMsg.statusCode, 404);
-        assert(!response);
+        expect(httpMsg.statusCode).toBe(404);
+        expect(!response).toBeTruthy();
       },
     );
   });

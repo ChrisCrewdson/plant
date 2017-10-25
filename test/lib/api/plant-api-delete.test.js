@@ -1,5 +1,4 @@
 const helper = require('../../helper');
-const assert = require('assert');
 const mongo = require('../../../lib/db/mongo')();
 const utils = require('../../../app/libs/utils');
 
@@ -11,7 +10,7 @@ describe('plant-api-delete', () => {
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
-    assert(data.userId);
+    expect(data.userId).toBeTruthy();
     userId = data.user._id;
     locationId = data.user.locationIds[0]._id;
   });
@@ -27,8 +26,8 @@ describe('plant-api-delete', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 200);
-      assert.deepStrictEqual(response, { message: 'Deleted' });
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toEqual({ message: 'Deleted' });
     });
 
     test('should return a 404 if plant id does not exist', async () => {
@@ -40,8 +39,8 @@ describe('plant-api-delete', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 404);
-      assert.equal(response.message, 'Not Found');
+      expect(httpMsg.statusCode).toBe(404);
+      expect(response.message).toBe('Not Found');
     });
   });
 
@@ -59,34 +58,34 @@ describe('plant-api-delete', () => {
 
       // 1. Create 2 plants
       const plants = await helper.createPlants(2, userId, locationId);
-      assert.equal(plants.length, 2);
+      expect(plants.length).toBe(2);
 
       // 2. Create 3 notes, part 1.1:
       //    Note #1: plantIds reference plant #1
 
       const response = await helper.createNote([plants[0]._id], { note: 'Note #1' });
       const { note } = response;
-      assert.equal(response.success, true);
-      assert(note);
+      expect(response.success).toBe(true);
+      expect(note).toBeTruthy();
       const notes = [note];
 
       // 2. Create 3 notes, part 1.2:
       //    Update Note #1
       const updatedNote = Object.assign({}, notes[0], { x: 'random' });
       const upsertedNote = await mongo.upsertNote(updatedNote);
-      assert(upsertedNote);
+      expect(upsertedNote).toBeTruthy();
 
       // 2. Create 3 notes, part 2:
       //    Note #2: plantIds reference plant #1 & #2
       const response2 = await helper.createNote([plants[0]._id, plants[1]._id], { note: 'Note #2' });
-      assert.equal(response2.success, true);
+      expect(response2.success).toBe(true);
       const { note: note2 } = response2;
       notes.push(note2);
 
       // 2. Create 3 notes, part 3:
       //    Note #3: plantIds reference plant #2
       const response3 = await helper.createNote([plants[1]._id], { note: 'Note #3' });
-      assert.equal(response3.success, true);
+      expect(response3.success).toBe(true);
       const { note: note3 } = response3;
       notes.push(note3);
 
@@ -98,11 +97,11 @@ describe('plant-api-delete', () => {
         url: `/api/plant/${plants[0]._id}`,
       };
       const { response: response4 } = await helper.makeRequest(reqOptions);
-      assert.deepStrictEqual(response4, { message: 'Deleted' });
+      expect(response4).toEqual({ message: 'Deleted' });
 
       // 4. Confirm that Note #1 is no longer in DB
       const result2 = await mongo.getNoteById(notes[0]._id);
-      assert(!result2);
+      expect(!result2).toBeTruthy();
 
       // 5. Retrieve plant #2 and confirm that both notes are attached.
       const reqOptions2 = {
@@ -113,18 +112,18 @@ describe('plant-api-delete', () => {
       };
 
       const { response: plant } = await helper.makeRequest(reqOptions2);
-      // assert.equal(httpMsg.statusCode, 200);
-      assert(plant);
-      assert.equal(plant._id, plants[1]._id);
-      assert.equal(plant.notes.length, 2);
+      // expect(httpMsg.statusCode).toBe(200);
+      expect(plant).toBeTruthy();
+      expect(plant._id).toBe(plants[1]._id);
+      expect(plant.notes).toHaveLength(2);
 
       // The notes array should be asc date order.
       const noteIds = [notes[1]._id, notes[2]._id];
-      assert(noteIds.indexOf(plant.notes[0]) >= 0);
-      assert(noteIds.indexOf(plant.notes[1]) >= 0);
+      expect(noteIds.indexOf(plant.notes[0]) >= 0).toBeTruthy();
+      expect(noteIds.indexOf(plant.notes[1]) >= 0).toBeTruthy();
 
-      assert.equal(plants.length, 2);
-      assert.equal(notes.length, 3);
+      expect(plants).toHaveLength(2);
+      expect(notes).toHaveLength(3);
     });
   });
 });

@@ -1,6 +1,5 @@
 const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
-const assert = require('assert');
 const constants = require('../../../app/libs/constants');
 const mongo = require('../../../lib/db/mongo')();
 
@@ -12,7 +11,7 @@ describe('note-api', () => {
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
-    assert(data.userId);
+    expect(data.userId).toBeTruthy();
     userId = data.user._id;
     locationId = data.user.locationIds[0]._id;
     logger.trace('startServerAuthenticated userId:', { userId });
@@ -46,9 +45,9 @@ describe('note-api', () => {
         url: '/api/note',
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 401);
-      assert(response);
-      assert.equal(response.error, 'Not Authenticated');
+      expect(httpMsg.statusCode).toBe(401);
+      expect(response).toBeTruthy();
+      expect(response.error).toBe('Not Authenticated');
     });
 
     test('should fail server validation if plantIds are missing', async () => {
@@ -62,9 +61,9 @@ describe('note-api', () => {
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
       // response should look like:
       // { plantIds: [ 'Plant ids must be an array' ], note: [ 'Note can\'t be blank' ] }
-      assert.equal(httpMsg.statusCode, 400);
-      assert(response);
-      assert.equal(response.plantIds, 'You must select at least 1 plant for this note.');
+      expect(httpMsg.statusCode).toBe(400);
+      expect(response).toBeTruthy();
+      expect(response.plantIds).toBe('You must select at least 1 plant for this note.');
     });
   });
 
@@ -81,10 +80,10 @@ describe('note-api', () => {
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
       // logger.trace('result of create note', {response});
       const { note } = response;
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
-      assert(note.note);
-      assert(constants.mongoIdRE.test(note._id));
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toBeTruthy();
+      expect(note.note).toBeTruthy();
+      expect(constants.mongoIdRE.test(note._id)).toBeTruthy();
 
       noteId = note._id;
       // logger.trace('note created', {note});
@@ -103,14 +102,14 @@ describe('note-api', () => {
       // title: 'Plant Title',
       // userId: '241ff27e28c7448fb22c4f6fb2580923'}
       logger.trace('note retrieved:', { response });
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
-      assert(response.userId);
-      assert.equal(response._id, plantId);
-      assert.equal(response.title, initialPlant.title);
-      assert(response.notes);
-      assert.equal(response.notes.length, 1);
-      assert(constants.mongoIdRE.test(response.notes[0]));
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toBeTruthy();
+      expect(response.userId).toBeTruthy();
+      expect(response._id).toBe(plantId);
+      expect(response.title).toBe(initialPlant.title);
+      expect(response.notes).toBeTruthy();
+      expect(response.notes).toHaveLength(1);
+      expect(constants.mongoIdRE.test(response.notes[0])).toBeTruthy();
     });
 
     let updatedNote;
@@ -136,9 +135,9 @@ describe('note-api', () => {
       // { ok: 1, nModified: 1, n: 1 }
       // Mongo 2.x does not return nModified which is what Travis uses so do not check this
       // logger.trace('*********** response:', {updatedNote, reqOptions, response});
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
-      assert.equal(response.success, true);
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toBeTruthy();
+      expect(response.success).toBe(true);
     });
 
     test(
@@ -152,19 +151,19 @@ describe('note-api', () => {
         };
 
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
-        assert.equal(httpMsg.statusCode, 200);
-        assert(response);
+        expect(httpMsg.statusCode).toBe(200);
+        expect(response).toBeTruthy();
 
-        assert(response.userId);
-        assert.equal(response._id, plantId);
-        assert.equal(response.title, initialPlant.title);
+        expect(response.userId).toBeTruthy();
+        expect(response._id).toBe(plantId);
+        expect(response.title).toBe(initialPlant.title);
 
 
         // Check notes
-        assert(response.notes);
-        assert.equal(response.notes.length, 1);
-        assert.equal(response.notes[0], noteId);
-        assert(constants.mongoIdRE.test(response.notes[0]));
+        expect(response.notes).toBeTruthy();
+        expect(response.notes).toHaveLength(1);
+        expect(response.notes[0]).toBe(noteId);
+        expect(constants.mongoIdRE.test(response.notes[0])).toBeTruthy();
       },
     );
 
@@ -180,15 +179,15 @@ describe('note-api', () => {
         };
 
         const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
-        assert.equal(httpMsg.statusCode, 200);
+        expect(httpMsg.statusCode).toBe(200);
 
-        assert(notes);
-        assert.equal(notes.length, 1);
+        expect(notes).toBeTruthy();
+        expect(notes).toHaveLength(1);
         const note = notes[0];
-        assert.equal(note._id, noteId);
-        assert(constants.mongoIdRE.test(note._id));
-        assert.equal(note.date, 20160101);
-        assert.equal(note.note, 'A New Note');
+        expect(note._id).toBe(noteId);
+        expect(constants.mongoIdRE.test(note._id)).toBeTruthy();
+        expect(note.date).toBe(20160101);
+        expect(note.note).toBe('A New Note');
       },
     );
 
@@ -204,15 +203,15 @@ describe('note-api', () => {
         };
 
         const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
-        assert.equal(httpMsg.statusCode, 200);
+        expect(httpMsg.statusCode).toBe(200);
 
-        assert(notes);
-        assert.equal(notes.length, 1);
+        expect(notes).toBeTruthy();
+        expect(notes).toHaveLength(1);
         const note = notes[0];
-        assert.equal(note._id, noteId);
-        assert(constants.mongoIdRE.test(note._id));
-        assert.equal(note.date, 20160101);
-        assert.equal(note.note, 'A New Note');
+        expect(note._id).toBe(noteId);
+        expect(constants.mongoIdRE.test(note._id)).toBeTruthy();
+        expect(note.date).toBe(20160101);
+        expect(note.note).toBe('A New Note');
       },
     );
 
@@ -235,9 +234,9 @@ describe('note-api', () => {
       //   userId: 'f5d12193ae674e7ab6d1e106' },
       // ok: 1 }
 
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
-      assert.equal(response.success, true);
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toBeTruthy();
+      expect(response.success).toBe(true);
     });
 
     test('should confirm that the note has been deleted', async () => {
@@ -249,16 +248,16 @@ describe('note-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      assert.equal(httpMsg.statusCode, 200);
-      assert(response);
+      expect(httpMsg.statusCode).toBe(200);
+      expect(response).toBeTruthy();
 
-      assert(response.userId);
-      assert.equal(response._id, plantId);
-      assert.equal(response.title, initialPlant.title);
+      expect(response.userId).toBeTruthy();
+      expect(response._id).toBe(plantId);
+      expect(response.title).toBe(initialPlant.title);
 
 
       // Check that there are no notes
-      assert.equal(response.notes.length, 0);
+      expect(response.notes).toHaveLength(0);
     });
   });
 
@@ -288,7 +287,7 @@ describe('note-api', () => {
 
       async function createNote(data) {
         const createdNote = await mongo.upsertNote(note);
-        assert(createdNote);
+        expect(createdNote).toBeTruthy();
         // logger.trace('createdNote', {createdNote});
         // data.createdNote = body;
         return Object.assign({}, data, { createdNote });
@@ -314,29 +313,29 @@ describe('note-api', () => {
 
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
         const { success } = response;
-        assert.equal(httpMsg.statusCode, 200);
-        assert.equal(success, true);
+        expect(httpMsg.statusCode).toBe(200);
+        expect(success).toBe(true);
         return response;
       }
 
       async function getNote(createdNote) {
         const fetchedNote = await mongo.getNoteById(createdNote._id);
-        assert.deepEqual(fetchedNote.images[0].sizes, sizes);
-        assert(!fetchedNote.images[1].sizes);
+        expect(fetchedNote.images[0].sizes).toEqual(sizes);
+        expect(!fetchedNote.images[1].sizes).toBeTruthy();
         return fetchedNote;
       }
 
       const { createdNote } = await createNote();
-      assert(createdNote);
-      assert.strictEqual(createdNote._id.length, 24);
-      assert.strictEqual(createdNote.images.length, 2);
+      expect(createdNote).toBeTruthy();
+      expect(createdNote._id).toHaveLength(24);
+      expect(createdNote.images).toHaveLength(2);
       const putResponse = await makePutRequest(createdNote);
-      assert(putResponse);
-      assert.strictEqual(putResponse.success, true);
+      expect(putResponse).toBeTruthy();
+      expect(putResponse.success).toBe(true);
       const fetchedNote = await getNote(createdNote);
-      assert(fetchedNote);
-      assert.strictEqual(fetchedNote._id.length, 24);
-      assert.strictEqual(fetchedNote.images.length, 2);
+      expect(fetchedNote).toBeTruthy();
+      expect(fetchedNote._id).toHaveLength(24);
+      expect(fetchedNote.images).toHaveLength(2);
     });
   });
 });
