@@ -1,6 +1,4 @@
-const _ = require('lodash');
 const helper = require('../../helper');
-const assert = require('assert');
 
 const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
@@ -22,9 +20,9 @@ describe('api', () => {
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    assert.equal(httpMsg.statusCode, 404);
+    expect(httpMsg.statusCode).toBe(404);
     const docType = '<!DOCTYPE html>';
     logger.trace('response:', { response });
-    assert(_.includes(response, docType), `Expected ${response} to have ${docType}`);
+    expect(response).toContain(docType);
   });
 });

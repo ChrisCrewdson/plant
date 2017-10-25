@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const validators = require('../../../app/models');
-// const assert = require('assert');
 
 const plantValidator = validators.plant;
 

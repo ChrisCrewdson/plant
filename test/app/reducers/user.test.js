@@ -1,14 +1,13 @@
 const user = require('../../../app/reducers/user');
 const actions = require('../../../app/actions');
-const assert = require('assert');
 const Immutable = require('immutable');
 
 function checkReducer(actionName, state, payload, expected) {
   const action = actions[actionName](payload);
   const actual = user(state, action);
   // The following line provides useful debug info which the one after does not
-  assert.deepEqual(actual.toJS(), expected.toJS());
-  assert(Immutable.is(actual, expected));
+  expect(actual.toJS()).toEqual(expected.toJS());
+  expect(Immutable.is(actual, expected)).toBe(true);
 }
 
 describe('/app/reducers/user', () => {

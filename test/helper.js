@@ -1,6 +1,5 @@
 const net = require('net');
 const _ = require('lodash');
-const assert = require('assert');
 const constants = require('../app/libs/constants');
 const mongo = require('../lib/db/mongo')();
 const request = require('request');
@@ -146,10 +145,10 @@ async function startServerAuthenticated() {
 
     const user = await mongo.findOrCreateUser(fbUser);
 
-    assert(user);
-    assert(user._id);
-    assert(constants.mongoIdRE.test(user._id));
-    assert(constants.mongoIdRE.test(user.locationIds[0]._id));
+    expect(user).toBeTruthy();
+    expect(user._id).toBeTruthy();
+    expect(constants.mongoIdRE.test(user._id)).toBe(true);
+    expect(constants.mongoIdRE.test(user.locationIds[0]._id)).toBe(true);
 
     const expectedUser = {
       facebook: fbUser.facebook,
@@ -172,7 +171,7 @@ async function startServerAuthenticated() {
       ],
     };
 
-    assert.deepStrictEqual(user, expectedUser);
+    expect(user).toEqual(expectedUser);
 
     return user;
   }
@@ -196,12 +195,12 @@ async function startServerAuthenticated() {
     const { httpMsg } = await makeRequest({
       url: '/auth/facebook/callback',
     });
-    assert(httpMsg.headers);
-    assert(httpMsg.headers.location);
+    expect(httpMsg.headers).toBeTruthy();
+    expect(httpMsg.headers.location).toBeTruthy();
     const parts = httpMsg.headers.location.split('=');
     [, jwt] = parts; // 2nd element is jwt
     // logger.trace('Test jwt:', {jwt});
-    assert(jwt);
+    expect(jwt).toBeTruthy();
     // eslint-disable-next-line no-param-reassign
     return fakePassport.getUserId();
   }
@@ -237,9 +236,9 @@ async function createPlants(numPlants, userId, locationId) {
     };
 
     const { httpMsg, response: plant } = await makeRequest(reqOptions);
-    assert.equal(httpMsg.statusCode, 200);
+    expect(httpMsg.statusCode).toBe(200);
 
-    assert(plant.title);
+    expect(plant.title).toBeTruthy();
 
     return plant;
   }
@@ -250,7 +249,7 @@ async function createPlants(numPlants, userId, locationId) {
 }
 
 async function createNote(plantIds, noteOverride = {}) {
-  assert(_.isArray(plantIds));
+  expect(_.isArray(plantIds)).toBeTruthy();
   const noteTemplate = Object.assign(
     {
       note: 'This is a note',
@@ -270,10 +269,10 @@ async function createNote(plantIds, noteOverride = {}) {
 
   const { httpMsg, response } = await makeRequest(reqOptions);
   logger.trace('createNote', { response });
-  assert.equal(httpMsg.statusCode, 200);
-  assert.equal(response.success, true);
+  expect(httpMsg.statusCode).toBe(200);
+  expect(response.success).toBe(true);
   const { note } = response;
-  assert(note._id);
+  expect(note._id).toBeTruthy();
 
   return response;
 }

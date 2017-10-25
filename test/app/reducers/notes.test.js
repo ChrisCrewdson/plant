@@ -1,6 +1,5 @@
 const notes = require('../../../app/reducers/notes');
 const actions = require('../../../app/actions');
-const assert = require('assert');
 const Immutable = require('immutable');
 
 describe('/app/reducers/notes', () => {
@@ -9,7 +8,7 @@ describe('/app/reducers/notes', () => {
       Object.keys(notes.reducers).forEach((reducerKey) => {
         // If any of the actions being used in the reducer haven't been defined
         // in the actions file then this test will fail.
-        assert(reducerKey !== 'undefined');
+        expect(reducerKey).not.toBe('undefined');
       });
     });
   });
@@ -17,7 +16,7 @@ describe('/app/reducers/notes', () => {
   function checkReducer(actionName, state, payload, expected) {
     const action = actions[actionName](payload);
     const actual = notes(state, action);
-    assert.deepEqual(actual.toJS(), expected.toJS());
+    expect(actual.toJS()).toEqual(expected.toJS());
   }
 
   describe('reduction', () => {

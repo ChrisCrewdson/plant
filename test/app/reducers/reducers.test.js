@@ -1,10 +1,10 @@
 const rootReducer = require('../../../app/reducers');
 const actions = require('../../../app/actions');
-const assert = require('assert');
+
 const Immutable = require('immutable');
 
 describe('/app/reducers', () => {
-  test('should reduce a logout action', (done) => {
+  test('should reduce a logout action', () => {
     const expected = {
       interim: {},
       locations: {},
@@ -14,7 +14,6 @@ describe('/app/reducers', () => {
       users: {},
     };
     const actual = rootReducer(new Immutable.Map(), actions.logout());
-    assert.deepEqual(actual.toJS(), expected);
-    done();
+    expect(actual.toJS()).toEqual(expected);
   });
 });

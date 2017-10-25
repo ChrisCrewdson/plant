@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const plants = require('../../../app/reducers/plants');
 const actions = require('../../../app/actions');
-const assert = require('assert');
 const Immutable = require('immutable');
 
 describe('/app/reducers/plants', () => {
@@ -30,7 +29,7 @@ describe('/app/reducers/plants', () => {
 
       methods.forEach((method) => {
         const actual = plants(state, actions[method](payload));
-        assert.deepEqual(actual.toJS(), expected);
+        expect(actual.toJS()).toEqual(expected);
       });
     });
 
@@ -53,7 +52,7 @@ describe('/app/reducers/plants', () => {
 
       methods.forEach((method) => {
         const actual = plants(state, actions[method](payload));
-        assert.deepEqual(actual.toJS(), expected);
+        expect(actual.toJS()).toEqual(expected);
       });
     });
   });
@@ -74,7 +73,7 @@ describe('/app/reducers/plants', () => {
     delete expected['2'];
 
     const actual = plants(current, actions.deletePlantRequest(payload));
-    assert.deepEqual(actual.toJS(), expected);
+    expect(actual.toJS()).toEqual(expected);
   });
 
   test('should delete a note', () => {
@@ -96,7 +95,7 @@ describe('/app/reducers/plants', () => {
     expected['2'].notes.splice(1, 1);
 
     const actual = plants(current, actions.deleteNoteRequest(payload));
-    assert.deepEqual(actual.toJS(), expected);
+    expect(actual.toJS()).toEqual(expected);
   });
 
   test('should load a plant', () => {
@@ -122,7 +121,7 @@ describe('/app/reducers/plants', () => {
 
     const actual = plants(current, actions.loadPlantSuccess(payload));
 
-    assert.deepEqual(actual.toJS(), expected);
+    expect(actual.toJS()).toEqual(expected);
   });
 
   test('should load multiple plants', () => {
@@ -147,7 +146,7 @@ describe('/app/reducers/plants', () => {
     expected['3'].notes = ['n1', 'n2'];
 
     const actual = plants(current, actions.loadPlantsSuccess(payload));
-    assert.deepEqual(actual.toJS(), expected);
+    expect(actual.toJS()).toEqual(expected);
   });
 
   test('should add a new noteId to the plant\'s notes List', () => {
@@ -174,7 +173,7 @@ describe('/app/reducers/plants', () => {
     expected.p2.notes = ['n1', 'n2', 'n5'];
 
     const actual = plants(current, actions.upsertNoteSuccess(payload));
-    assert.deepEqual(actual.toJS(), expected);
+    expect(actual.toJS()).toEqual(expected);
   });
 
   test('should remove a removed noteId to the plant\'s notes List', () => {
@@ -201,6 +200,6 @@ describe('/app/reducers/plants', () => {
     expected.p2.notes = ['n1', 'n2', 'n5'];
 
     const actual = plants(current, actions.upsertNoteSuccess(payload));
-    assert.deepEqual(actual.toJS(), expected);
+    expect(actual.toJS()).toEqual(expected);
   });
 });
