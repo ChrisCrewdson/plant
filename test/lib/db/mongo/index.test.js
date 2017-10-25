@@ -9,7 +9,6 @@ jest.mock('loggly', () => ({
 jest.mock('debug', () => () => () => {});
 
 const _ = require('lodash');
-const assert = require('assert');
 const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
@@ -23,9 +22,9 @@ describe('/lib/db/mongo/', () => {
     const data = await helper.startServerAuthenticated();
     fbUser = data.user;
     userId = fbUser._id;
-    assert(userId);
+    expect(userId).toBeTruthy();
     locationId = data.user.locationIds[0]._id;
-    assert.equal(typeof userId, 'string');
+    expect(typeof userId).toBe('string');
     Object.freeze(fbUser);
   });
 
@@ -35,10 +34,10 @@ describe('/lib/db/mongo/', () => {
       async () => {
         try {
           await mongo.findOrCreateUser(null);
-          assert(false, 'findOrCreateUser() should have thrown in this test');
+          expect(false, 'findOrCreateUser() should have thrown in this test').toBeTruthy();
         } catch (err) {
           expect(err).toBeTruthy();
-          assert.equal(err.message, 'No facebook.id or google.id:');
+          expect(err.message).toBe('No facebook.id or google.id:');
         }
       },
     );
@@ -50,21 +49,21 @@ describe('/lib/db/mongo/', () => {
         },
       };
       const body = await mongo.findOrCreateUser(user);
-      assert(body);
-      assert(body._id);
-      assert(constants.mongoIdRE.test(body._id));
-      assert(constants.mongoIdRE.test(body.locationIds[0]._id));
-      assert.deepStrictEqual(body, fbUser);
+      expect(body).toBeTruthy();
+      expect(body._id).toBeTruthy();
+      expect(constants.mongoIdRE.test(body._id)).toBeTruthy();
+      expect(constants.mongoIdRE.test(body.locationIds[0]._id)).toBeTruthy();
+      expect(body).toEqual(fbUser);
     });
 
     test('should fetch all users', async () => {
       const body = await mongo.getAllUsers();
-      assert(body);
-      assert(_.isArray(body));
-      assert.equal(body.length, 1);
+      expect(body).toBeTruthy();
+      expect(_.isArray(body)).toBeTruthy();
+      expect(body).toHaveLength(1);
       const user = body[0];
-      assert(user._id);
-      assert(constants.mongoIdRE.test(user._id));
+      expect(user._id).toBeTruthy();
+      expect(constants.mongoIdRE.test(user._id)).toBeTruthy();
     });
   });
 
@@ -81,14 +80,14 @@ describe('/lib/db/mongo/', () => {
 
     test('should create a plant', async () => {
       plant.userId = userId;
-      assert.equal(typeof plant.userId, 'string');
+      expect(typeof plant.userId).toBe('string');
       const body = await mongo.createPlant(plant, userId);
-      assert(body);
-      assert(body._id);
-      assert.equal(typeof body._id, 'string');
-      assert.equal(typeof body.userId, 'string');
-      assert.equal(typeof plant.userId, 'object');
-      assert.equal(typeof plant.plantedOn, 'number');
+      expect(body).toBeTruthy();
+      expect(body._id).toBeTruthy();
+      expect(typeof body._id).toBe('string');
+      expect(typeof body.userId).toBe('string');
+      expect(typeof plant.userId).toBe('object');
+      expect(typeof plant.plantedOn).toBe('number');
 
       // To be used in next test...
       plantId = body._id;
@@ -96,21 +95,21 @@ describe('/lib/db/mongo/', () => {
 
     test('should get an existing plant', async () => {
       const result = await mongo.getPlantById(plantId, userId);
-      assert.equal(typeof result.userId, 'string');
-      assert.equal(result.name, plant.name);
-      assert.equal(result.plantedOn, plant.plantedOn);
-      assert.equal(result.userId, plant.userId.toString());
+      expect(typeof result.userId).toBe('string');
+      expect(result.name).toBe(plant.name);
+      expect(result.plantedOn).toBe(plant.plantedOn);
+      expect(result.userId).toBe(plant.userId.toString());
     });
 
     test('should get existing plants', async () => {
       const results = await mongo.getPlantsByIds([plantId], userId);
-      assert(_.isArray(results));
-      assert.equal(results.length, 1);
+      expect(_.isArray(results)).toBeTruthy();
+      expect(results).toHaveLength(1);
       const result = results[0];
-      assert.equal(typeof result.userId, 'string');
-      assert.equal(result.name, plant.name);
-      assert.equal(result.plantedOn, plant.plantedOn);
-      assert.equal(result.userId, plant.userId.toString());
+      expect(typeof result.userId).toBe('string');
+      expect(result.name).toBe(plant.name);
+      expect(result.plantedOn).toBe(plant.plantedOn);
+      expect(result.userId).toBe(plant.userId.toString());
     });
 
     test('should update an existing plant with "Set"', async () => {
@@ -122,7 +121,7 @@ describe('/lib/db/mongo/', () => {
       };
 
       const result = await mongo.updatePlant(plantUpdate, userId);
-      assert.deepEqual(result, plantUpdate);
+      expect(result).toEqual(plantUpdate);
     });
   });
 });

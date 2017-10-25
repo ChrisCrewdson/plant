@@ -1,5 +1,4 @@
 const Helper = require('../../../../lib/db/mongo/helper');
-const assert = require('assert');
 
 const logger = require('../../../../lib/logging/logger').create('test.mongo-helper');
 
@@ -14,7 +13,7 @@ describe('/lib/db/mongo/helper', () => {
       };
       const rDoc = Helper.removeEmpty(doc);
       logger.trace('rDoc:', { rDoc });
-      assert.deepEqual(rDoc, {
+      expect(rDoc).toEqual({
         one: 'one',
         three: 0,
         four: false,

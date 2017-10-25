@@ -1,6 +1,4 @@
-const _ = require('lodash');
 const helper = require('../../helper');
-const assert = require('assert');
 
 const logger = require('../../../lib/logging/logger').create('test.server-render-plant');
 
@@ -8,7 +6,7 @@ describe('lib/render/plant', () => {
   let data;
   beforeAll(async () => {
     data = await helper.startServerAuthenticated();
-    assert(data.userId);
+    expect(data.userId).toBeTruthy();
   });
 
   beforeAll(async () => {
@@ -16,7 +14,7 @@ describe('lib/render/plant', () => {
     const locationId = data.user.locationIds[0]._id;
     // 1. Create 2 plants
     const plants = await helper.createPlants(1, userId, locationId);
-    assert.equal(plants.length, 1);
+    expect(plants.length).toBe(1);
 
     const [plant] = plants;
     // 2. Create 3 notes, part 1.1:
@@ -24,8 +22,8 @@ describe('lib/render/plant', () => {
 
     const response = await helper.createNote([plant._id], { note: 'Note #1' });
     const { note } = response;
-    assert.equal(response.success, true);
-    assert(note);
+    expect(response.success).toBe(true);
+    expect(note).toBeTruthy();
 
     data.note = note;
     data.plant = plant;
@@ -42,9 +40,9 @@ describe('lib/render/plant', () => {
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    assert.equal(httpMsg.statusCode, 200);
+    expect(httpMsg.statusCode).toBe(200);
     const docType = '<!DOCTYPE html>';
     logger.trace('response:', { response });
-    assert(_.includes(response, docType), `Expected ${response} to have ${docType}`);
+    expect(response).toContain(docType);
   });
 });

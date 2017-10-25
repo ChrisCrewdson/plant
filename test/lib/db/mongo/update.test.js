@@ -1,5 +1,4 @@
 const utils = require('../../../../app/libs/utils');
-const assert = require('assert');
 const mongo = require('../../../../lib/db/mongo')();
 
 describe('/lib/db/mongo/update', () => {
@@ -28,7 +27,7 @@ describe('/lib/db/mongo/update', () => {
       ];
 
       const createdNote = await mongo.upsertNote(note);
-      assert(createdNote);
+      expect(createdNote).toBeTruthy();
 
       const noteUpdate = {
         _id: createdNote._id,
@@ -41,8 +40,8 @@ describe('/lib/db/mongo/update', () => {
 
       const fetchedNote = await mongo.getNoteById(createdNote._id);
 
-      assert.deepEqual(fetchedNote.images[0].sizes, sizes);
-      assert(!fetchedNote.images[1].sizes);
+      expect(fetchedNote.images[0].sizes).toEqual(sizes);
+      expect(fetchedNote.images[1].sizes).toBeFalsy();
     });
   });
 });
