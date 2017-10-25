@@ -57,6 +57,7 @@ function inputCombo(props = {}) {
       floatingLabelText={label}
       value={value}
       onChange={changeHandler}
+      style={styler}
     >
       {
         Object.keys(options).map(key =>

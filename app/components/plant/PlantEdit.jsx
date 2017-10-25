@@ -30,6 +30,7 @@ class PlantEdit extends React.Component {
     super(props);
     this.cancel = this.cancel.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onChangeLocation = this.onChangeLocation.bind(this);
     this.save = this.save.bind(this);
     this.addGeo = this.addGeo.bind(this);
   }
@@ -46,9 +47,24 @@ class PlantEdit extends React.Component {
     this.props.dispatch(actions.editPlantClose());
   }
 
-  onChange(e) {
+  /**
+   * Called when the Location dropdown (a Select component) changes
+   * its value
+   * @param {object} e - event - unused
+   * @param {number} index - positional index of new value - unused
+   * @param {string} value - new value - MongoId of new value
+   * @memberof PlantEdit
+   */
+  onChangeLocation(e, index, value) {
     this.props.dispatch(actions.editPlantChange({
-      [e.target.name]: e.target.value,
+      locationId: value,
+    }));
+  }
+
+  onChange(e) {
+    const { name, value } = e.target;
+    this.props.dispatch(actions.editPlantChange({
+      [name]: value,
     }));
   }
 
@@ -83,8 +99,6 @@ class PlantEdit extends React.Component {
     });
 
     plant.userId = this.props.user.get('_id');
-    // TODO: This should be in a drop down one the user is able to add multiple locations
-    plant.locationId = this.props.user.get('activeLocationId');
 
     validate(plant, { isNew }, (errors, transformed) => {
       const { dispatch, history } = this.props;
@@ -107,7 +121,7 @@ class PlantEdit extends React.Component {
   }
 
   render() {
-    const { interimPlant } = this.props;
+    const { interimPlant, user } = this.props;
     const title = interimPlant.get('title', '');
     const botanicalName = interimPlant.get('botanicalName', '');
     const commonName = interimPlant.get('commonName', '');
@@ -116,6 +130,14 @@ class PlantEdit extends React.Component {
     const plantedDate = interimPlant.get('plantedDate', '');
     const price = interimPlant.get('price', '');
     const errors = interimPlant.get('errors', Immutable.Map()).toJS();
+
+    const locationIds = user.get('locationIds', Immutable.List()).toJS() || [];
+    const locations = locationIds.reduce((acc, locationId) => {
+      acc[locationId._id] = locationId.title;
+      return acc;
+    }, {});
+    // TODO: Should be able to mark locationIds with one of them as a default
+    const locationId = interimPlant.get('locationId', '') || (locationIds[0] || {})._id;
 
     const geoPosDisplay = interimPlant.has('loc')
       ? `${interimPlant.getIn(['loc', 'coordinates', '0'])} / ${interimPlant.getIn(['loc', 'coordinates', '1'])}`
@@ -160,6 +182,19 @@ class PlantEdit extends React.Component {
           name="title"
           placeholder="How do you refer to this plant? (e.g. Washington Navel)"
           value={title}
+        />
+        <Divider />
+
+        <InputCombo
+          changeHandler={this.onChangeLocation}
+          error={errors.locationId}
+          label="Location"
+          name="locationId"
+          options={locations}
+          placeholder="Which location is this at?"
+          style={{ textAlign: 'left', width: '100%' }}
+          type="select"
+          value={locationId}
         />
         <Divider />
 
