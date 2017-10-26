@@ -57,7 +57,7 @@ const routes = (
       <Route path="/debug-settings" component={DebugSettings} />
       <Route path="/help" component={Help} />
       <Route path="/layout/:slug/:id" component={LayoutMap} />
-      <Route path="/location" exact component={Location} />
+      <Route path="/locations" exact component={Locations} />
       <Route path="/location/:slug/:id" component={Location} />
       <Route path="/locations/:slug/:id" component={Locations} />
       <Route path="/users" component={Users} />
