@@ -57,7 +57,7 @@ class PlantEditTerminated extends React.Component {
     return (
       <div>
         <Toggle
-          defaultToggled={isTerminated}
+          toggled={isTerminated}
           label="Terminated"
           labelPosition="left"
           name="isTerminated"

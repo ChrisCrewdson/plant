@@ -70,7 +70,7 @@ class NoteEditMetrics extends React.Component {
     const isToggled = value === 'true' || value === true;
     return (
       <Toggle
-        defaultToggled={isToggled}
+        toggled={isToggled}
         key={metaMetric.key}
         label={metaMetric.label}
         labelPosition="left"
