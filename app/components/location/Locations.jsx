@@ -6,13 +6,11 @@
 const actions = require('../../actions');
 const Base = require('../base/Base');
 const React = require('react');
-const { Link, withRouter } = require('react-router-dom');
-const utils = require('../../libs/utils');
+const { withRouter } = require('react-router-dom');
 const Immutable = require('immutable');
 const AddLocationButton = require('./AddLocationButton');
 const PropTypes = require('prop-types');
-
-const { makeSlug } = utils;
+const LocationTile = require('./LocationTile');
 
 class Locations extends React.Component {
   static contextTypes = {
@@ -69,26 +67,19 @@ class Locations extends React.Component {
       return null;
     }
 
+    const plantIds = location.get('plantIds', Immutable.Set());
+    const { size } = plantIds;
+    const { store: { dispatch } } = this.context;
+
     const _id = location.get('_id');
     const title = location.get('title');
-    const link = `/location/${makeSlug(title)}/${_id}`;
 
-    const style = {
-      display: 'flex',
-      alignItems: 'center',
-    };
-
-    return (
-      <div key={_id} style={style}>
-        <Link
-          style={{ margin: '20px' }}
-          to={link}
-          onClick={() => { this.onLinkClick(_id); }}
-        >
-          <span>{title}</span>
-        </Link>
-      </div>
-    );
+    return (<LocationTile
+      _id={_id}
+      title={title}
+      numPlants={size}
+      dispatch={dispatch}
+    />);
   }
 
   renderNoLocations(user) {
@@ -125,7 +116,19 @@ class Locations extends React.Component {
       }
       return this.renderNoLocations(user);
     }
-    return locations.valueSeq().toArray().map(location => this.renderLocation(location));
+    return locations
+      .filter((location) => {
+        const plantIds = location.get('plantIds', Immutable.Set());
+        return plantIds.size > 0;
+      })
+      .valueSeq()
+      .sort((a, b) => {
+        const sizeA = a.get('plantIds', Immutable.Set()).size;
+        const sizeB = b.get('plantIds', Immutable.Set()).size;
+        return sizeB - sizeA;
+      })
+      .toArray()
+      .map(location => this.renderLocation(location));
   }
 
   render() {
