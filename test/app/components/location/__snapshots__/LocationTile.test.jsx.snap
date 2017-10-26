@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LocationTile LocationTile should be rendered 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "center",
+      "display": "flex",
+    }
+  }
+>
+  <a
+    href="/location/i-am-a-title/mongo-id"
+    onClick={[Function]}
+    style={
+      Object {
+        "margin": "20px",
+      }
+    }
+  >
+    <span>
+      I am a title (5)
+    </span>
+  </a>
+</div>
+`;
