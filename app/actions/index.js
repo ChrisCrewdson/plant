@@ -413,7 +413,17 @@ function modifyLocationSuccess(payload) {
   };
 }
 
+const CHANGE_ACTIVE_LOCATION_ID = 'CHANGE_ACTIVE_LOCATION_ID';
+
+function changeActiveLocationId(payload) {
+  return {
+    type: CHANGE_ACTIVE_LOCATION_ID,
+    payload,
+  };
+}
+
 module.exports = {
+  CHANGE_ACTIVE_LOCATION_ID,
   CREATE_PLANT_FAILURE,
   CREATE_PLANT_REQUEST,
   CREATE_PLANT_SUCCESS,
@@ -467,6 +477,7 @@ module.exports = {
   UPSERT_NOTE_FAILURE,
   UPSERT_NOTE_REQUEST,
   UPSERT_NOTE_SUCCESS,
+  changeActiveLocationId,
   createPlantFailure,
   createPlantRequest,
   createPlantSuccess,

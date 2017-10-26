@@ -132,12 +132,14 @@ class PlantEdit extends React.Component {
     const errors = interimPlant.get('errors', Immutable.Map()).toJS();
 
     const locationIds = user.get('locationIds', Immutable.List()).toJS() || [];
+    const activeLocationId = user.get('activeLocationId', '');
     const locations = locationIds.reduce((acc, locationId) => {
       acc[locationId._id] = locationId.title;
       return acc;
     }, {});
     // TODO: Should be able to mark locationIds with one of them as a default
-    const locationId = interimPlant.get('locationId', '') || (locationIds[0] || {})._id;
+    const locationId = interimPlant.get('locationId', '')
+      || activeLocationId || (locationIds[0] || {})._id;
 
     const geoPosDisplay = interimPlant.has('loc')
       ? `${interimPlant.getIn(['loc', 'coordinates', '0'])} / ${interimPlant.getIn(['loc', 'coordinates', '1'])}`

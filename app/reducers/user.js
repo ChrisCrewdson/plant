@@ -50,12 +50,24 @@ function loadLocationsSuccess(state, action) {
   return state;
 }
 
+
+/**
+ * Change the active location id
+ * @param {ImmutableJS} state - existing immutable state
+ * @param {object} action - object with {payload: { _id: <mongo-id}}
+ */
+function changeActiveLocationId(state, { payload }) {
+  const { _id } = payload;
+  return state.set('activeLocationId', _id);
+}
+
 const reducers = {
   [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
   [actions.LOGIN_FAILURE]: loginFailure,
   [actions.LOGIN_REQUEST]: loginRequest,
   [actions.LOGIN_SUCCESS]: loginSuccess,
   [actions.LOGOUT]: logout,
+  [actions.CHANGE_ACTIVE_LOCATION_ID]: changeActiveLocationId,
 };
 
 if (reducers.undefined) {

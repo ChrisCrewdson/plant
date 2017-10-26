@@ -3,6 +3,7 @@
 // or the locations for a specific user
 // Url: /locations/<user-name>/<_user_id>
 
+const actions = require('../../actions');
 const Base = require('../base/Base');
 const React = require('react');
 const { Link, withRouter } = require('react-router-dom');
@@ -18,32 +19,6 @@ class Locations extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  static renderLocation(location) {
-    if (!location) {
-      return null;
-    }
-
-    const _id = location.get('_id');
-    const title = location.get('title');
-    const link = `/location/${makeSlug(title)}/${_id}`;
-
-    const style = {
-      display: 'flex',
-      alignItems: 'center',
-    };
-
-    return (
-      <div key={_id} style={style}>
-        <Link
-          style={{ margin: '20px' }}
-          to={link}
-        >
-          <span>{title}</span>
-        </Link>
-      </div>
-    );
-  }
-
   static renderTitle(title) {
     return (
       <h2 style={{ textAlign: 'center' }}>{`${title}`}</h2>
@@ -53,6 +28,7 @@ class Locations extends React.Component {
   constructor() {
     super();
     this.onChange = this.onChange.bind(this);
+    this.onLinkClick = this.onLinkClick.bind(this);
   }
 
   componentWillMount() {
@@ -64,6 +40,11 @@ class Locations extends React.Component {
 
   componentWillUnmount() {
     this.unsubscribe();
+  }
+
+  onLinkClick(_id) {
+    const { store } = this.context || this.contextTypes;
+    store.dispatch(actions.changeActiveLocationId({ _id }));
   }
 
   onChange() {
@@ -83,6 +64,32 @@ class Locations extends React.Component {
     return !!(user && authUser.get('_id') === user.get('_id'));
   }
 
+  renderLocation(location) {
+    if (!location) {
+      return null;
+    }
+
+    const _id = location.get('_id');
+    const title = location.get('title');
+    const link = `/location/${makeSlug(title)}/${_id}`;
+
+    const style = {
+      display: 'flex',
+      alignItems: 'center',
+    };
+
+    return (
+      <div key={_id} style={style}>
+        <Link
+          style={{ margin: '20px' }}
+          to={link}
+          onClick={() => { this.onLinkClick(_id); }}
+        >
+          <span>{title}</span>
+        </Link>
+      </div>
+    );
+  }
 
   renderNoLocations(user) {
     return (
@@ -113,12 +120,12 @@ class Locations extends React.Component {
       if (locationIds.size) {
         return locationIds.valueSeq().toArray().map((locationId) => {
           const location = locations.get(locationId);
-          return Locations.renderLocation(location);
+          return this.renderLocation(location);
         });
       }
       return this.renderNoLocations(user);
     }
-    return locations.valueSeq().toArray().map(location => Locations.renderLocation(location));
+    return locations.valueSeq().toArray().map(location => this.renderLocation(location));
   }
 
   render() {
