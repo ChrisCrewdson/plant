@@ -75,10 +75,17 @@ class Navbar extends React.Component {
       // console.warn('Navbar.makeMyPlantsMenu no location', locationId);
       return null;
     }
+    const locationTitle = location.get('title', '...');
+    const plantListAt = `Plant List at ${locationTitle}`;
 
     return (
       <li>
-        <Link to={utils.makeLocationUrl(location)} title="My Plants">My Plants</Link>
+        <Link
+          to={utils.makeLocationUrl(location)}
+          title={plantListAt}
+        >
+          {plantListAt}
+        </Link>
       </li>
     );
   }
