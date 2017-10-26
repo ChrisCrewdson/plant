@@ -137,9 +137,13 @@ class PlantEdit extends React.Component {
       acc[locationId._id] = locationId.title;
       return acc;
     }, {});
-    // TODO: Should be able to mark locationIds with one of them as a default
+    // activeLocationId is the one that you last viewed which might not be
+    // one that you own/manage. Only set locationId to this if it's one that
+    // is in the locationIds list.
+    const locationIdsOnly = locationIds.map(locationId => locationId._id);
     const locationId = interimPlant.get('locationId', '')
-      || activeLocationId || (locationIds[0] || {})._id;
+      || (locationIdsOnly.some(locId => locId === activeLocationId) && activeLocationId)
+      || locationIdsOnly[0];
 
     const geoPosDisplay = interimPlant.has('loc')
       ? `${interimPlant.getIn(['loc', 'coordinates', '0'])} / ${interimPlant.getIn(['loc', 'coordinates', '1'])}`

@@ -115,7 +115,6 @@ class Navbar extends React.Component {
     const loggedIn = isLoggedIn(store);
     const notEditing = !interimMap.size;
 
-    const featureFlag = utils.showFeature(user);
     const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${user.get('_id')}`;
 
     return (
@@ -153,12 +152,9 @@ class Navbar extends React.Component {
                     {displayName} <span className="caret" />
                   </a>
                   <ul className="dropdown-menu">
-                    {/* this.makeLayoutMenu(loggedIn) */}
-                    {featureFlag &&
-                      <li>
-                        <Link to={locationsUrl}>Manage Locations</Link>
-                      </li>
-                    }
+                    <li>
+                      <Link to={locationsUrl}>Your Locations</Link>
+                    </li>
                     <li>
                       <Link to="/profile">Profile</Link>
                     </li>

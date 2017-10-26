@@ -76,9 +76,10 @@ class Locations extends React.Component {
 
     return (<LocationTile
       _id={_id}
-      title={title}
-      numPlants={size}
       dispatch={dispatch}
+      key={_id}
+      numPlants={size}
+      title={title}
     />);
   }
 

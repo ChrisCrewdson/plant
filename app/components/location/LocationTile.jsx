@@ -29,7 +29,7 @@ function locationTile(props) {
   };
 
   return (
-    <div key={_id} style={style}>
+    <div style={style}>
       <Link
         style={{ margin: '20px' }}
         to={link}
