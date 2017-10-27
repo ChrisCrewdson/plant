@@ -65,10 +65,23 @@ class Plant extends React.Component {
         store.dispatch(actions.loadPlantRequest({ _id }));
       }
     } else {
+      const user = store.getState().get('user');
+      const locationIds = user.get('locationIds', Immutable.List()).toJS() || [];
+      const activeLocationId = user.get('activeLocationId', '');
+
+      // activeLocationId is the one that you last viewed which might not be
+      // one that you own/manage. Only set locationId to this if it's one that
+      // is in the locationIds list.
+      const locationIdsOnly = locationIds.map(locationId => locationId._id);
+      const locationId =
+        (locationIdsOnly.some(locId => locId === activeLocationId) && activeLocationId)
+        || locationIdsOnly[0];
+
       store.dispatch(actions.editPlantOpen({
         plant: {
           _id: makeMongoId(),
           isNew: true,
+          locationId,
         },
       }));
     }
