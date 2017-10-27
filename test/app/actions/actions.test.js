@@ -27,7 +27,6 @@ describe('/app/actions', () => {
     const expected = {
       type: actions.LOGIN_FAILURE,
       payload,
-      error: true,
     };
     const actual = actions.loginFailure(payload);
     expect(actual).toEqual(expected);
