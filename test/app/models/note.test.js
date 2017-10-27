@@ -4,12 +4,12 @@ const constants = require('../../../app/libs/constants');
 const utils = require('../../../app/libs/utils');
 
 const { makeMongoId } = utils;
-const noteValidator = validators.note;
+const { note: noteValidator } = validators;
 
 // const logger = require('../../../lib/logging/logger').create('test.model-note');
 
 describe('/app/models/note', () => {
-  test('should pass minimum validation', (done) => {
+  test('should pass minimum validation', () => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -19,12 +19,9 @@ describe('/app/models/note', () => {
     };
     const noteCopy = _.clone(note);
 
-    noteValidator(note, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(transformed.note).toBe(note.note);
-      expect(noteCopy).toEqual(note);
-      done();
-    });
+    const transformed = noteValidator(note);
+    expect(transformed.note).toBe(note.note);
+    expect(noteCopy).toEqual(note);
   });
 
   test('should fail validation', (done) => {
@@ -38,7 +35,9 @@ describe('/app/models/note', () => {
 
     const noteCopy = _.clone(note);
 
-    noteValidator(note, (err /* , transformed */) => {
+    try {
+      noteValidator(note);
+    } catch (err) {
       expect(err).toBeTruthy();
 
       expect(err._id).toBe(' id is invalid');
@@ -46,10 +45,10 @@ describe('/app/models/note', () => {
       expect(err.plantIds).toBe('Plant ids must be MongoIds');
       expect(noteCopy).toEqual(note);
       done();
-    });
+    }
   });
 
-  test('should strip out props not in the schema', (done) => {
+  test('should strip out props not in the schema', () => {
     const note = {
       _id: makeMongoId(),
       date: 20160101,
@@ -61,21 +60,18 @@ describe('/app/models/note', () => {
     };
     const noteCopy = _.clone(note);
 
-    noteValidator(note, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBe(note._id);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
-      expect(transformed.fakeName1).toBeFalsy();
-      expect(transformed.fakeName2).toBeFalsy();
-      expect(transformed.plantId).toBeFalsy();
-      expect(noteCopy).toEqual(note);
-      done();
-    });
+    const transformed = noteValidator(note);
+    expect(Object.keys(transformed)).toHaveLength(4);
+    expect(transformed._id).toBe(note._id);
+    expect(transformed.note).toBe(note.note);
+    expect(transformed.userId).toBe(note.userId);
+    expect(transformed.fakeName1).toBeFalsy();
+    expect(transformed.fakeName2).toBeFalsy();
+    expect(transformed.plantId).toBeFalsy();
+    expect(noteCopy).toEqual(note);
   });
 
-  test('should add _id if it is a new record', (done) => {
+  test('should add _id if it is a new record', () => {
     const note = {
       date: 20160101,
       plantIds: [makeMongoId()],
@@ -83,17 +79,15 @@ describe('/app/models/note', () => {
     };
     const noteCopy = _.cloneDeep(note);
 
-    noteValidator(note, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBeTruthy();
-      expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
-      expect(transformed.plantIds).toEqual(note.plantIds);
-      expect(noteCopy).toEqual(note);
-      done();
-    });
+    const transformed = noteValidator(note);
+
+    expect(Object.keys(transformed)).toHaveLength(4);
+    expect(transformed._id).toBeTruthy();
+    expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
+    expect(transformed.note).toBe(note.note);
+    expect(transformed.userId).toBe(note.userId);
+    expect(transformed.plantIds).toEqual(note.plantIds);
+    expect(noteCopy).toEqual(note);
   });
 
   test('should fail if plantIds is empty', (done) => {
@@ -105,16 +99,14 @@ describe('/app/models/note', () => {
     };
     const noteCopy = _.clone(note);
 
-    noteValidator(note, (err, transformed) => {
+    try {
+      noteValidator(note);
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.plantIds).toBe('You must select at least 1 plant for this note.');
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBe(note._id);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
       expect(noteCopy).toEqual(note);
       done();
-    });
+    }
   });
 
   test('should fail if plantIds is missing', (done) => {
@@ -125,16 +117,14 @@ describe('/app/models/note', () => {
     };
     const noteCopy = _.clone(note);
 
-    noteValidator(note, (err, transformed) => {
+    try {
+      noteValidator(note);
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.plantIds).toBe('Plant ids is required');
-      expect(Object.keys(transformed)).toHaveLength(3);
-      expect(transformed._id).toBe(note._id);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
       expect(noteCopy).toEqual(note);
       done();
-    });
+    }
   });
 
   test('should fail if plantIds is not an array', (done) => {
@@ -146,16 +136,14 @@ describe('/app/models/note', () => {
     };
     const noteCopy = _.clone(note);
 
-    noteValidator(note, (err, transformed) => {
+    try {
+      noteValidator(note);
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.plantIds).toBe('Plant ids must be an array');
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBe(note._id);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
       expect(noteCopy).toEqual(note);
       done();
-    });
+    }
   });
 
   describe('note.model/images validation', () => {
@@ -166,7 +154,7 @@ describe('/app/models/note', () => {
       size: 123456,
     };
 
-    test('should pass with an empty images array', (done) => {
+    test('should pass with an empty images array', () => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -177,17 +165,15 @@ describe('/app/models/note', () => {
       const noteCopy = _.clone(note);
 
 
-      noteValidator(note, (err, transformed) => {
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
-        expect(noteCopy).toEqual(note);
-        done();
-      });
+      const transformed = noteValidator(note);
+      expect(Object.keys(transformed)).toHaveLength(5);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
     });
 
-    test('should pass with valid images', (done) => {
+    test('should pass with valid images', () => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -197,17 +183,15 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
-        expect(noteCopy).toEqual(note);
-        done();
-      });
+      const transformed = noteValidator(note);
+      expect(Object.keys(transformed)).toHaveLength(5);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
     });
 
-    test('should pass with valid images and an empty note', (done) => {
+    test('should pass with valid images and an empty note', () => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -217,17 +201,15 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
-        expect(noteCopy).toEqual(note);
-        done();
-      });
+      const transformed = noteValidator(note);
+      expect(Object.keys(transformed)).toHaveLength(5);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
     });
 
-    test('should pass with valid images and a missing note', (done) => {
+    test('should pass with valid images and a missing note', () => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -236,13 +218,11 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
-        expect(Object.keys(transformed)).toHaveLength(4);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.userId).toBe(note.userId);
-        expect(noteCopy).toEqual(note);
-        done();
-      });
+      const transformed = noteValidator(note);
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.userId).toBe(note.userId);
+      expect(noteCopy).toEqual(note);
     });
 
     test('should fail if images is not an array', (done) => {
@@ -255,16 +235,14 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
+      try {
+        noteValidator(note);
+      } catch (err) {
         expect(err).toBeTruthy();
         expect(err.images).toBe('Images must be an array');
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
         expect(noteCopy).toEqual(note);
         done();
-      });
+      }
     });
 
     test('should fail if images id is not a mongoId', (done) => {
@@ -277,16 +255,14 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
+      try {
+        noteValidator(note);
+      } catch (err) {
         expect(err).toBeTruthy();
         expect(err.images).toBe('Images must be valid image objects');
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
         expect(noteCopy).toEqual(note);
         done();
-      });
+      }
     });
 
     test('should fail if images ext is not a string', (done) => {
@@ -299,16 +275,14 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
+      try {
+        noteValidator(note);
+      } catch (err) {
         expect(err).toBeTruthy();
         expect(err.images).toBe('Images must be valid image objects');
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
         expect(noteCopy).toEqual(note);
         done();
-      });
+      }
     });
 
     test('should fail if images originalname is not a string', (done) => {
@@ -321,19 +295,17 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
+      try {
+        noteValidator(note);
+      } catch (err) {
         expect(err).toBeTruthy();
         expect(err.images).toBe('Images must be valid image objects');
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
         expect(noteCopy).toEqual(note);
         done();
-      });
+      }
     });
 
-    test('should convert image size if it is a string number', (done) => {
+    test('should convert image size if it is a string number', () => {
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -343,16 +315,14 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
-        expect(err).toBeFalsy();
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
-        expect(transformed.images[0].size).toBe(123);
-        expect(noteCopy).toEqual(note);
-        done();
-      });
+      const transformed = noteValidator(note);
+
+      expect(Object.keys(transformed)).toHaveLength(5);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.images[0].size).toBe(123);
+      expect(noteCopy).toEqual(note);
     });
 
     test('should fail if images ext is longer than 20', (done) => {
@@ -365,16 +335,14 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
+      try {
+        noteValidator(note);
+      } catch (err) {
         expect(err).toBeTruthy();
         expect(err.images).toBe('Images must be valid image objects');
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
         expect(noteCopy).toEqual(note);
         done();
-      });
+      }
     });
 
     test('should fail if images has extra props', (done) => {
@@ -387,16 +355,14 @@ describe('/app/models/note', () => {
       };
       const noteCopy = _.clone(note);
 
-      noteValidator(note, (err, transformed) => {
+      try {
+        noteValidator(note);
+      } catch (err) {
         expect(err).toBeTruthy();
         expect(err.images).toBe('Images must only have the following allowed props: id,ext,originalname,size,sizes and found these props as well: extra');
-        expect(Object.keys(transformed)).toHaveLength(5);
-        expect(transformed._id).toBe(note._id);
-        expect(transformed.note).toBe(note.note);
-        expect(transformed.userId).toBe(note.userId);
         expect(noteCopy).toEqual(note);
         done();
-      });
+      }
     });
   });
 });

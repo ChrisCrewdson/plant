@@ -86,7 +86,7 @@ function transform(attributes) {
 // Don't need an _id if we're creating a document, db will do this.
 // Don't need a userId if we're in the client, this will get added on the server
 // to prevent tampering with the logged in user.
-module.exports = (attributes, { isNew }, cb) => {
+module.exports = (attributes, { isNew }) => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     botanicalName: { length: { maximum: 100 } },
@@ -125,5 +125,8 @@ module.exports = (attributes, { isNew }, cb) => {
   const errors = validatejs.validate(transformed, constraints);
   // debug('errors:', errors);
   const flatErrors = utils.transformErrors(errors);
-  cb(flatErrors, transformed);
+  if (flatErrors) {
+    throw flatErrors;
+  }
+  return transformed;
 };

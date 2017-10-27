@@ -1,12 +1,12 @@
 const _ = require('lodash');
 const validators = require('../../../app/models');
 
-const plantValidator = validators.plant;
+const { plant: plantValidator } = validators;
 
 const logger = require('../../../lib/logging/logger').create('plant:test.plant');
 
 describe('/app/models/plant', () => {
-  test('should pass minimum validation', (done) => {
+  test('should pass minimum validation', () => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       locationId: 'cf885bf372488977ae0d6475',
@@ -18,16 +18,13 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(transformed.title).toBe(plant.title);
-      expect(plantCopy).toEqual(plant);
-      expect(transformed.price).toBe(19.99);
-      done();
-    });
+    const transformed = plantValidator(plant, { isNew });
+    expect(transformed.title).toBe(plant.title);
+    expect(plantCopy).toEqual(plant);
+    expect(transformed.price).toBe(19.99);
   });
 
-  test('should pass full validation', (done) => {
+  test('should pass full validation', () => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -46,20 +43,17 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(Object.keys(transformed)).toEqual(Object.keys(plant));
-      logger.trace('transformed:', { transformed });
+    const transformed = plantValidator(plant, { isNew });
+    expect(Object.keys(transformed)).toEqual(Object.keys(plant));
+    logger.trace('transformed:', { transformed });
 
-      // Issue 1403 - This expect is failing since switching over to Jest
-      // because we were using deepEqual instead of deepStrictEqual when
-      // using assert.
-      // TODO: Need to solve issue 1403 before re-enabling this
-      // expect(transformed).toEqual(plant);
+    // Issue 1403 - This expect is failing since switching over to Jest
+    // because we were using deepEqual instead of deepStrictEqual when
+    // using assert.
+    // TODO: Need to solve issue 1403 before re-enabling this
+    // expect(transformed).toEqual(plant);
 
-      expect(plantCopy).toEqual(plant);
-      done();
-    });
+    expect(plantCopy).toEqual(plant);
   });
 
   test('should fail validation', (done) => {
@@ -81,7 +75,9 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err /* , transformed */) => {
+    try {
+      plantValidator(plant, { isNew });
+    } catch (err) {
       expect(err).toBeTruthy();
 
       expect(err._id).toBe(' id is invalid');
@@ -97,10 +93,10 @@ describe('/app/models/plant', () => {
       expect(err.locationId).toBe('Location id is invalid');
       expect(plantCopy).toEqual(plant);
       done();
-    });
+    }
   });
 
-  test('should strip out props not in the schema', (done) => {
+  test('should strip out props not in the schema', () => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       fakeName1: 'Common Name',
@@ -113,20 +109,17 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBe(plant._id);
-      expect(transformed.title).toBe(plant.title);
-      expect(transformed.userId).toBe(plant.userId);
-      expect(transformed.fakeName1).toBeFalsy();
-      expect(transformed.fakeName2).toBeFalsy();
-      expect(plantCopy).toEqual(plant);
-      done();
-    });
+    const transformed = plantValidator(plant, { isNew });
+    expect(Object.keys(transformed)).toHaveLength(4);
+    expect(transformed._id).toBe(plant._id);
+    expect(transformed.title).toBe(plant.title);
+    expect(transformed.userId).toBe(plant.userId);
+    expect(transformed.fakeName1).toBeFalsy();
+    expect(transformed.fakeName2).toBeFalsy();
+    expect(plantCopy).toEqual(plant);
   });
 
-  test('should add _id if it is a new record', (done) => {
+  test('should add _id if it is a new record', () => {
     const plant = {
       locationId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
@@ -135,15 +128,12 @@ describe('/app/models/plant', () => {
     const plantCopy = _.clone(plant);
 
     const isNew = true;
-    plantValidator(plant, { isNew }, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBeTruthy();
-      expect(transformed.title).toBe(plant.title);
-      expect(transformed.userId).toBe(plant.userId);
-      expect(plantCopy).toEqual(plant);
-      done();
-    });
+    const transformed = plantValidator(plant, { isNew });
+    expect(Object.keys(transformed)).toHaveLength(4);
+    expect(transformed._id).toBeTruthy();
+    expect(transformed.title).toBe(plant.title);
+    expect(transformed.userId).toBe(plant.userId);
+    expect(plantCopy).toEqual(plant);
   });
 
   test('should fail if userId is missing', (done) => {
@@ -156,16 +146,14 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
+    try {
+      plantValidator(plant, { isNew });
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.userId).toBe('User id can\'t be blank');
-      expect(Object.keys(transformed)).toHaveLength(3);
-      expect(transformed._id).toBe(plant._id);
-      expect(transformed.title).toBe(plant.title);
-      expect(transformed.userId).toBeFalsy();
       expect(plantCopy).toEqual(plant);
       done();
-    });
+    }
   });
 
   test('should fail if locationId is missing', (done) => {
@@ -178,16 +166,14 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
+    try {
+      plantValidator(plant, { isNew });
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.locationId).toBe('Location id can\'t be blank');
-      expect(Object.keys(transformed)).toHaveLength(3);
-      expect(transformed._id).toBe(plant._id);
-      expect(transformed.title).toBe(plant.title);
-      expect(transformed.locationId).toBeFalsy();
       expect(plantCopy).toEqual(plant);
       done();
-    });
+    }
   });
 
   test('should fail if a tag element is over its maximum length', (done) => {
@@ -208,14 +194,14 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
+    try {
+      plantValidator(plant, { isNew });
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.tags).toBe('Tags cannot be more than 20 characters');
-      expect(Object.keys(transformed)).toEqual(Object.keys(plant));
-      expect(transformed).toEqual(plant);
       expect(plantCopy).toEqual(plant);
       done();
-    });
+    }
   });
 
   test('should fail if a tags is not an array', (done) => {
@@ -236,14 +222,14 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
+    try {
+      plantValidator(plant, { isNew });
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.tags).toBe('Tags must be an array');
-      expect(Object.keys(transformed)).toEqual(Object.keys(plant));
-      expect(transformed).toEqual(plant);
       expect(plantCopy).toEqual(plant);
       done();
-    });
+    }
   });
 
   test('should fail if a tag element has invalid characters', (done) => {
@@ -264,17 +250,17 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
+    try {
+      plantValidator(plant, { isNew });
+    } catch (err) {
       expect(err).toBeTruthy();
       expect(err.tags).toBe('Tags can only have alphabetic characters and a dash');
-      expect(Object.keys(transformed)).toEqual(Object.keys(plant));
-      expect(transformed).toEqual(plant);
       expect(plantCopy).toEqual(plant);
       done();
-    });
+    }
   });
 
-  test('should lowercase tags', (done) => {
+  test('should lowercase tags', () => {
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -292,12 +278,9 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    plantValidator(plant, { isNew }, (err, transformed) => {
-      expect(err).toBeFalsy();
-      expect(Object.keys(transformed)).toEqual(Object.keys(plant));
-      expect(transformed.tags).toEqual(['citrus', 'north-west', 'upper']);
-      expect(plantCopy).toEqual(plant);
-      done();
-    });
+    const transformed = plantValidator(plant, { isNew });
+    expect(Object.keys(transformed)).toEqual(Object.keys(plant));
+    expect(transformed.tags).toEqual(['citrus', 'north-west', 'upper']);
+    expect(plantCopy).toEqual(plant);
   });
 });

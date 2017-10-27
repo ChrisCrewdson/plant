@@ -19,7 +19,7 @@ const PlantEditTerminated = require('./PlantEditTerminated');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 
-const validate = validators.plant;
+const { plant: plantValidator } = validators;
 
 class PlantEdit extends React.Component {
   static contextTypes = {
@@ -100,22 +100,20 @@ class PlantEdit extends React.Component {
 
     plant.userId = this.props.user.get('_id');
 
-    validate(plant, { isNew }, (errors, transformed) => {
-      const { dispatch, history } = this.props;
-      if (errors) {
-        // console.warn('Validation errors:', errors);
-        dispatch(actions.editPlantChange({ errors }));
+    const { dispatch, history } = this.props;
+    try {
+      const transformed = plantValidator(plant, { isNew });
+      if (isNew) {
+        dispatch(actions.createPlantRequest(transformed));
       } else {
-        if (isNew) {
-          dispatch(actions.createPlantRequest(transformed));
-        } else {
-          dispatch(actions.updatePlantRequest(transformed));
-        }
-        dispatch(actions.editPlantClose());
-        const newLocation = `/plant/${makeSlug(transformed.title)}/${transformed._id}`;
-        history.push(newLocation);
+        dispatch(actions.updatePlantRequest(transformed));
       }
-    });
+      dispatch(actions.editPlantClose());
+      const newLocation = `/plant/${makeSlug(transformed.title)}/${transformed._id}`;
+      history.push(newLocation);
+    } catch (errors) {
+      dispatch(actions.editPlantChange({ errors }));
+    }
     e.preventDefault();
     e.stopPropagation();
   }

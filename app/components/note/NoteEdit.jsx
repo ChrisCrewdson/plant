@@ -16,7 +16,7 @@ const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 const validators = require('../../models');
 
-const validate = validators.note;
+const { note: noteValidator } = validators;
 
 class NoteEdit extends React.Component {
   constructor(props) {
@@ -66,15 +66,13 @@ class NoteEdit extends React.Component {
     interimNote._id = interimNote._id || utils.makeMongoId();
     interimNote.date = utils.dateToInt(interimNote.date);
 
-    validate(interimNote, (errors, note) => {
-      if (errors) {
-        // console.warn('create: Note validation errors:', errors);
-        this.props.dispatch(actions.editNoteChange({ errors }));
-      } else {
-        this.props.dispatch(actions.upsertNoteRequest({ note, files }));
-        this.props.postSaveSuccess();
-      }
-    });
+    try {
+      const note = noteValidator(interimNote);
+      this.props.dispatch(actions.upsertNoteRequest({ note, files }));
+      this.props.postSaveSuccess();
+    } catch (errors) {
+      this.props.dispatch(actions.editNoteChange({ errors }));
+    }
   }
 
   saveFiles(files) {

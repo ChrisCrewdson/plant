@@ -100,7 +100,7 @@ validatejs.validators.imagesValidate = (value) => {
 // Don't need an _id if we're creating a document, db will do this.
 // Don't need a userId if we're in the client, this will get added on the server
 // to prevent tampering with the logged in user.
-module.exports = (atts, cb) => {
+module.exports = (atts) => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     date: { intDateValidate: { presence: true, name: 'Date' } },
@@ -135,5 +135,8 @@ module.exports = (atts, cb) => {
   // debug('transformed:', transformed);
   const errors = validatejs.validate(transformed, constraints);
   const flatErrors = utils.transformErrors(errors);
-  cb(flatErrors, transformed);
+  if (flatErrors) {
+    throw flatErrors;
+  }
+  return transformed;
 };
