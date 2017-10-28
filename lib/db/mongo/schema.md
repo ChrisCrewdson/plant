@@ -29,10 +29,13 @@ db.user.createIndex({'email': 1}, {unique: true, sparse: true, name: 'email'})
 - loc (an Object - Geo location of the Location)
   - type: 'Point'
   - coordinates: {
-    "0": Floating Point Number - longitute,
+    "0": Floating Point Number - longitude,
     "1": Floating Point Number - latitude,
   }
-- stations (object of weather stations) - not implemented yet
+- stations (object of weather stations)
+  - `<wu-station-id>` - a stationId conforming to WU
+    - name (string) - the name the user gives this weather station
+    - enabled (boolean) - unused
 - public - a boolean flag which is missing (implied `false`) by default. Indicates if the geo location of these plants can be made public.
 - password - an array of objects - allows user with the password access to the geo positions at this location.
   - (expire-)date - date integer (locale based)
@@ -65,3 +68,17 @@ db.user.createIndex({'email': 1}, {unique: true, sparse: true, name: 'email'})
     - width - (int32) pixels wide, e.g. 100, 500, 1000, 1500, 2000
 - metrics - an object with key/value pairs. Values are numbers or boolean.
   - See the app/libs/utils.js file for possible keys in this object and the data types
+
+## Station
+- _id
+- wuId (unique index) - wu station id e.g. KAZSCOTT53
+- stationName - (optional) wu station name e.g. "Paper Street"
+- disabled - (optional) - missing default to false
+- firstDate - an integer (YYYYMMDD) of first date of data available
+- lastDate - an integer (YYYYMMDD) of first date of data available
+
+### Indexes
+
+```
+db.station.createIndex({'wuId': 1}, {unique: true, sparse: false, name: 'wuId'})
+```
