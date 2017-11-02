@@ -79,7 +79,7 @@
     "stylelint": "8.2.0",
     "stylelint-config-standard": "17.0.0",
     "stylelint-order": "^0.7.0",
-    "webpack-dev-server": "2.9.3"
+    "webpack-dev-server": "2.9.4"
   },
   "engines": {
     "node": "8.x"
