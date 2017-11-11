@@ -75,7 +75,7 @@
     "react-hot-loader": "3.1.2",
     "react-log-lifecycle": "1.1.0",
     "react-test-renderer": "15.x",
-    "redux-devtools": "3.4.0",
+    "redux-devtools": "3.4.1",
     "stylelint": "8.2.0",
     "stylelint-config-standard": "17.0.0",
     "stylelint-order": "^0.7.0",
