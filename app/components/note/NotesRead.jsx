@@ -46,7 +46,15 @@ class NotesRead extends React.Component {
   }
 
   render() {
-    const { notes } = this.props;
+    const {
+      dispatch,
+      interim,
+      isOwner,
+      notes,
+      plant,
+      plants,
+      user,
+    } = this.props;
     const { sortedIds } = this.state || {};
     if (!sortedIds || !sortedIds.size) {
       return null;
@@ -68,9 +76,15 @@ class NotesRead extends React.Component {
       switch (metricNote.type) {
         case 'note':
           return (<NoteRead
+            dispatch={dispatch}
+            interim={interim}
+            isOwner={isOwner}
             key={noteId}
-            {...this.props}
             note={note}
+            notes={notes}
+            plant={plant}
+            plants={plants}
+            user={user}
           />);
         case 'since':
           return (
@@ -85,7 +99,7 @@ class NotesRead extends React.Component {
         case 'unfound':
           return (<CircularProgress key={noteId} />);
         default:
-          throw new Error(`Uknown note render type ${metricNote.type}`);
+          throw new Error(`Unknown note render type ${metricNote.type}`);
       }
     });
 
@@ -98,12 +112,23 @@ class NotesRead extends React.Component {
 }
 
 NotesRead.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  interim: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+    getIn: PropTypes.func.isRequired,
+  }).isRequired,
+  isOwner: PropTypes.bool.isRequired,
   notes: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,
-  // Bug in eslint at 6/13/2017:
-  // eslint-disable-next-line react/no-unused-prop-types
   plant: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+  }).isRequired,
+  plants: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+    filter: PropTypes.func.isRequired,
+  }).isRequired,
+  user: PropTypes.shape({ // Immutable.js Map
     get: PropTypes.func.isRequired,
   }).isRequired,
 };

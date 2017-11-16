@@ -5,7 +5,10 @@ module.exports = {
   maxImageFilesPerUpload: 100,
   awsBucketName: 'i.plaaant.com',
   imageSizeNames: ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'],
-  // eslint-disable-next-line no-restricted-properties
-  gisMultiplier: Math.pow(10, 7),
+  gisMultiplier: 10 ** 7,
+
+  // Any user that is a member of a location should have one of these
+  // roles for that location. The roles are, from left to right, most
+  // permissive to least permissive.
   roles: ['owner', 'manager', 'member'],
 };
