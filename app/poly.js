@@ -1,6 +1,9 @@
 const features = [
-  'Promise',
   'fetch',
+  'Map',
+  'Promise',
+  'requestAnimationFrame',
+  'Set',
   'URL',
   'URLSearchParams',
 ];
