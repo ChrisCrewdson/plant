@@ -3,12 +3,12 @@ const actions = require('../../actions');
 const React = require('react');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
 const InputCombo = require('../common/InputCombo');
-const RaisedButton = require('material-ui/RaisedButton').default;
 const ArrowLeft = require('material-ui/svg-icons/hardware/keyboard-arrow-left').default;
 const ArrowRight = require('material-ui/svg-icons/hardware/keyboard-arrow-right').default;
 const Errors = require('../common/Errors');
 const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
+const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
 class NoteAssocPlant extends React.Component {
   constructor() {
@@ -18,6 +18,7 @@ class NoteAssocPlant extends React.Component {
       filter: '',
     };
     this.expand = this.expand.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   toggle(plantId) {
@@ -37,12 +38,11 @@ class NoteAssocPlant extends React.Component {
     const _id = plant.get('_id');
     const title = plant.get('title');
     const secondary = !primary && !!plant.get('isTerminated');
-    const toggleFunc = this.toggle.bind(this, _id);
-    return (<RaisedButton
-      key={_id}
+    return (<NoteAssocPlantToggleButton
+      _id={_id}
       label={title}
       style={{ margin: 12 }}
-      onClick={toggleFunc}
+      toggleFunc={this.toggle}
       primary={primary}
       secondary={secondary}
     />);
