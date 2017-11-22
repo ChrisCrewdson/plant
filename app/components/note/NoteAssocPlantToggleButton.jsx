@@ -18,7 +18,6 @@ class NoteAssocPlantToggleButton extends React.Component {
 
   render() {
     const {
-      _id,
       label,
       primary,
       secondary,
@@ -26,7 +25,6 @@ class NoteAssocPlantToggleButton extends React.Component {
     } = this.props;
 
     return (<RaisedButton
-      key={_id}
       label={label}
       onClick={this.toggle}
       primary={primary}

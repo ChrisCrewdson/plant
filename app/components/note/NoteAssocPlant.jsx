@@ -40,11 +40,12 @@ class NoteAssocPlant extends React.Component {
     const secondary = !primary && !!plant.get('isTerminated');
     return (<NoteAssocPlantToggleButton
       _id={_id}
+      key={_id}
       label={title}
-      style={{ margin: 12 }}
-      toggleFunc={this.toggle}
       primary={primary}
       secondary={secondary}
+      style={{ margin: 12 }}
+      toggleFunc={this.toggle}
     />);
   }
 
