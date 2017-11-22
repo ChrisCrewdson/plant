@@ -317,8 +317,8 @@ class PlantEdit extends React.Component {
 
 PlantEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
   interimPlant: PropTypes.shape({
     get: PropTypes.func.isRequired,

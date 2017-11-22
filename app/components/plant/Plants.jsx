@@ -82,8 +82,8 @@ Plants.propTypes = {
       slug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -220,8 +220,8 @@ class PlantRead extends React.Component {
 
 PlantRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
   interim: PropTypes.shape({
     get: PropTypes.func.isRequired,
