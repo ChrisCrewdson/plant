@@ -57,7 +57,8 @@ class Plant extends React.Component {
     const { store } = this.context;
     const plants = store.getState().get('plants');
 
-    const { id: _id } = props.match.params;
+    const { match = {}, params = {} } = props;
+    const _id = params.id || (match.params && match.params.id);
     let plant;
     if (_id) {
       plant = plants.get(_id);
@@ -97,13 +98,18 @@ class Plant extends React.Component {
 
   render() {
     const { store } = this.context;
+    const { match = {}, params = {} } = this.props;
     const user = store.getState().get('user');
     const locations = store.getState().get('locations');
     const plants = store.getState().get('plants');
 
-    const { params } = this.props.match;
+    const plantId = params.id || (match.params && match.params.id);
+    if (!plantId) {
+      // eslint-disable-next-line no-console
+      console.error('Plant.render: plantId is falsy', this.props);
+    }
 
-    const plant = plants.get(params && params.id);
+    const plant = plants.get(plantId);
 
     const interim = store.getState().get('interim');
     const interimNote = interim.getIn(['note', 'note'], Immutable.Map());
@@ -167,12 +173,16 @@ Plant.propTypes = {
       id: PropTypes.string,
     }),
   }),
+  params: PropTypes.shape({
+    id: PropTypes.string,
+  }),
 };
 
 Plant.defaultProps = {
   match: {
     params: {},
   },
+  params: {},
 };
 
 module.exports = withRouter(Plant);

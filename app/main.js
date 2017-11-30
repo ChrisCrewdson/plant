@@ -78,7 +78,13 @@ const routes = (
 function render() {
   const content = document.getElementById('wrapper');
 
-  ReactDOM.render(
+  const { __SSR__: serverRendered } = window;
+  const renderer = serverRendered
+    ? ReactDOM.hydrate
+    : ReactDOM.render;
+  window.__SSR__ = false;
+
+  renderer(
     (
       <MuiThemeProvider muiTheme={muiTheme}>
         <Provider store={store}>
