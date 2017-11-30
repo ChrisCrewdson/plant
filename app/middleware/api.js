@@ -47,7 +47,7 @@ function createPlant(store, action, next) {
 lastModified: 1472318340000
 lastModifiedDate: Sat Aug 27 2016 10:19:00 GMT-0700 (MST)
 name: "2016-08-27 10.19.00.jpg"
-preview: "blob:http://localhost:8080/43590135-cb1a-42f6-9d75-ea737ea2ce91"
+preview: "blob:http://localhost:9090/43590135-cb1a-42f6-9d75-ea737ea2ce91"
 size: 6674516
 type: "image/jpeg"
 webkitRelativePath:""

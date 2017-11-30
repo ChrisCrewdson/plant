@@ -117,7 +117,7 @@
     "prodstart": "npm run build && pm2 start ../site-ops/pm2/plant.config.js --env production",
     "prodstop": "pm2 stop plant",
     "server": ". ./devops/run-server.sh",
-    "start": "TARGET=dev webpack-dev-server --progress --colors --hot --inline --history-api-fallback --bail",
+    "start": "TARGET=dev webpack-dev-server --port 9090 --progress --colors --hot --inline --history-api-fallback --bail",
     "test": "npm run lint && npm run build && sh ./devops/run-test.sh",
     "test-only": "jest -w 1 --forceExit",
     "test-fast": "jest -w 1 --forceExit --onlyChanged"
