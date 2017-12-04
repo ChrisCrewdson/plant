@@ -28,7 +28,7 @@
     "lodash": "4.17.4",
     "loggly": "1.1.1",
     "marked": "0.3.7",
-    "material-ui": "0.19.4",
+    "material-ui": "0.20.0",
     "method-override": "2.3.10",
     "moment": "2.19.3",
     "mongodb": "2.2.33",
