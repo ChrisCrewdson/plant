@@ -26,7 +26,6 @@
     "jwt-simple": "0.5.1",
     "konva": "1.7.6",
     "lodash": "4.17.4",
-    "loggly": "1.1.1",
     "marked": "0.3.7",
     "material-ui": "0.20.0",
     "method-override": "2.3.10",
@@ -55,7 +54,8 @@
     "uuid": "3.1.0",
     "validate.js": "0.12.0",
     "webpack": "3.10.0",
-    "webpack-merge": "4.1.1"
+    "webpack-merge": "4.1.1",
+    "winston-loggly-bulk": "2.0.1"
   },
   "description": "Plant Tracker",
   "devDependencies": {

@@ -1,6 +1,7 @@
 // TODO: Need to setup these two mocks in a setup script?
-jest.mock('loggly', () => ({
-  createClient: () => () => {},
+jest.mock('winston', () => ({
+  add: () => {},
+  log: () => {},
 }));
 
 // 1. jest.mock takes a function
