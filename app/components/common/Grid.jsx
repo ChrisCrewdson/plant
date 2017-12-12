@@ -174,7 +174,8 @@ class Grid extends React.Component {
       display: 'inline-block',
     };
 
-    const isOwner = true;
+    // TODO: Shouldn't this value be pulled from somewhere?
+    const userCanEdit = true;
 
     const { columns, title } = this.props;
     const {
@@ -242,7 +243,7 @@ class Grid extends React.Component {
                         deleteTitle=""
                         disabled={!!editId}
                         mini
-                        showButtons={isOwner}
+                        showButtons={userCanEdit}
                         showDeleteConfirmation={deleteId === row._id}
                       />
                     }

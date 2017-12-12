@@ -5,7 +5,7 @@ const NoteEdit = require('./NoteEdit');
 const PropTypes = require('prop-types');
 
 function noteUpdate(props) {
-  if (!props.isOwner) {
+  if (!props.userCanEdit) {
     return null;
   }
 
@@ -25,7 +25,7 @@ noteUpdate.propTypes = {
   interimNote: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   plant: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,

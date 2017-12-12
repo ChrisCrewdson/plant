@@ -147,7 +147,7 @@ class Location extends React.Component {
             <h4 style={style}>{`Create a Note for ${plantCreateNote.get('title')}`}</h4>
             <NoteCreate
               dispatch={store.dispatch}
-              isOwner={userCanEdit}
+              userCanEdit={userCanEdit}
               interimNote={interimNote}
               plant={plantCreateNote}
               plants={allLoadedPlants}
@@ -183,7 +183,7 @@ class Location extends React.Component {
           key={_id}
           dispatch={store.dispatch}
           createNote={this.createNote}
-          isOwner={userCanEdit}
+          userCanEdit={userCanEdit}
           plant={plant}
         />);
       } else {

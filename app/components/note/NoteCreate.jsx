@@ -33,11 +33,11 @@ class NoteCreate extends React.Component {
 
   render() {
     const {
-      isOwner,
+      userCanEdit,
       interimNote,
     } = this.props;
 
-    if (!isOwner) {
+    if (!userCanEdit) {
       return null;
     }
 
@@ -72,7 +72,7 @@ class NoteCreate extends React.Component {
 
 NoteCreate.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   interimNote: PropTypes.shape({ // Immutable.js Map
     get: PropTypes.func.isRequired,
   }).isRequired,

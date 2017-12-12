@@ -103,7 +103,7 @@ class NoteRead extends React.Component {
     return (
       <NoteUpdate
         dispatch={this.props.dispatch}
-        isOwner={this.props.isOwner}
+        userCanEdit={this.props.userCanEdit}
         interimNote={this.props.interim.getIn(['note', 'note'])}
         plant={this.props.plant}
         plants={this.props.plants}
@@ -125,7 +125,7 @@ class NoteRead extends React.Component {
     } = this.state || {};
 
     const {
-      isOwner,
+      userCanEdit,
       note,
     } = this.props;
 
@@ -154,7 +154,7 @@ class NoteRead extends React.Component {
           clickEdit={this.editNote}
           confirmDelete={this.confirmDelete}
           deleteTitle=""
-          showButtons={isOwner}
+          showButtons={userCanEdit}
           showDeleteConfirmation={showDeleteConfirmation}
         />
         {images}
@@ -177,7 +177,7 @@ NoteRead.propTypes = {
     get: PropTypes.func.isRequired,
     getIn: PropTypes.func.isRequired,
   }).isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   note: PropTypes.shape({
     get: PropTypes.func.isRequired,
     toJS: PropTypes.func.isRequired,

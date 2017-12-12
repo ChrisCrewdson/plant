@@ -49,7 +49,7 @@ class NotesRead extends React.Component {
     const {
       dispatch,
       interim,
-      isOwner,
+      userCanEdit,
       notes,
       plant,
       plants,
@@ -78,7 +78,7 @@ class NotesRead extends React.Component {
           return (<NoteRead
             dispatch={dispatch}
             interim={interim}
-            isOwner={isOwner}
+            userCanEdit={userCanEdit}
             key={noteId}
             note={note}
             notes={notes}
@@ -117,7 +117,7 @@ NotesRead.propTypes = {
     get: PropTypes.func.isRequired,
     getIn: PropTypes.func.isRequired,
   }).isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   notes: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,

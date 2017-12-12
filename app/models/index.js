@@ -17,7 +17,7 @@ const plant = require('./plant');
 // Make sure not to append the key name, this will be done automatically.
 
 
-// Validate an integeter date. Should be in the range of
+// Validate an integer date. Should be in the range of
 // something like 17000101 to 20201231. Not sure why we'd
 // have dates beyond the current day...
 validatejs.validators.intDateValidate = (value, options) => {

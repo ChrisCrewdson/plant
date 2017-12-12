@@ -3,7 +3,7 @@
 // Url: /plant/slug/<plant-id>
 // Unless Create then Url: /plant
 
-const { isOwner } = require('../../libs/auth-helper');
+const { canEdit } = require('../../libs/auth-helper');
 const { makeMongoId } = require('../../libs/utils');
 const actions = require('../../actions');
 const Base = require('../base/Base');
@@ -100,7 +100,7 @@ class Plant extends React.Component {
     const { store } = this.context;
     const { match = {}, params = {} } = this.props;
     const user = store.getState().get('user');
-    const locations = store.getState().get('locations');
+    const locations = store.getState().get('locations', Immutable.Map());
     const plants = store.getState().get('plants');
 
     const plantId = params.id || (match.params && match.params.id);
@@ -123,7 +123,10 @@ class Plant extends React.Component {
       );
     }
 
-    const owner = isOwner((interimPlant || plant).toJS(), store);
+    const locationId = (interimPlant || plant).get('locationId');
+    const location = locations.get(locationId);
+    const loggedInUserId = store.getState().getIn(['user', '_id']);
+    const userCanEdit = canEdit(loggedInUserId, location);
 
     const notes = store.getState().get('notes');
 
@@ -142,7 +145,7 @@ class Plant extends React.Component {
                 <PlantRead
                   dispatch={store.dispatch}
                   interim={interim}
-                  isOwner={owner}
+                  userCanEdit={userCanEdit}
                   locations={locations}
                   notes={notes}
                   plant={plant}
@@ -153,7 +156,7 @@ class Plant extends React.Component {
                 <NoteCreate
                   dispatch={store.dispatch}
                   interimNote={interimNote}
-                  isOwner={owner}
+                  userCanEdit={userCanEdit}
                   plant={plant}
                   plants={plants}
                   user={user}

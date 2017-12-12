@@ -173,7 +173,7 @@ class PlantRead extends React.Component {
     };
 
     const {
-      isOwner,
+      userCanEdit,
       plant,
       user,
     } = this.props;
@@ -196,14 +196,14 @@ class PlantRead extends React.Component {
                 clickDelete={this.checkDelete}
                 confirmDelete={this.confirmDelete}
                 showDeleteConfirmation={showDeleteConfirmation}
-                showButtons={isOwner}
+                showButtons={userCanEdit}
                 deleteTitle={plant.get('title') || ''}
               />
             </Paper>
             <NotesRead
               dispatch={this.props.dispatch}
               interim={this.props.interim}
-              isOwner={isOwner}
+              userCanEdit={userCanEdit}
               notes={this.props.notes}
               plant={plant}
               plants={this.props.plants}
@@ -226,7 +226,7 @@ PlantRead.propTypes = {
   interim: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   notes: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,

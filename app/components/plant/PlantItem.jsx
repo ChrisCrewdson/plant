@@ -42,7 +42,7 @@ class PlantItem extends React.Component {
 
   render() {
     const {
-      isOwner = false,
+      userCanEdit,
       plant,
     } = this.props;
 
@@ -75,7 +75,7 @@ class PlantItem extends React.Component {
 
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {isOwner &&
+        {userCanEdit &&
           <div style={floatingActionButtonStyle}>
             <FloatingActionButton
               mini
@@ -94,7 +94,7 @@ class PlantItem extends React.Component {
 
 PlantItem.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   plant: PropTypes.shape({ // Immutable.js
     get: PropTypes.func.isRequired,
   }).isRequired,
