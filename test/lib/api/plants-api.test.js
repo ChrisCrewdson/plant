@@ -7,7 +7,7 @@ describe('plants-api', () => {
   let locationId;
 
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated();
+    const data = await helper.startServerAuthenticated(3014);
     expect(data.user).toBeTruthy();
     expect(data.user._id).toBeTruthy();
     expect(data.user.locationIds).toBeTruthy();

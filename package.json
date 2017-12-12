@@ -108,8 +108,8 @@
   },
   "scripts": {
     "build": "TARGET=build webpack --bail",
-    "coverage": "jest -w 1 --forceExit --coverage",
-    "coverage-fast": "jest -w 1 --forceExit --coverage --onlyChanged",
+    "coverage": "jest --forceExit --coverage",
+    "coverage-fast": "jest --forceExit --coverage --onlyChanged",
     "coverage-view": "google-chrome coverage/lcov-report/index.html",
     "csslint": "stylelint app/stylesheets/*.css",
     "dependency-update": "node_modules/.bin/npm-update-outdated",
@@ -121,8 +121,8 @@
     "server": ". ./devops/run-server.sh",
     "start": "TARGET=dev webpack-dev-server --port 9090 --progress --colors --hot --inline --history-api-fallback --bail",
     "test": "npm run lint && npm run build && sh ./devops/run-test.sh",
-    "test-only": "jest -w 1 --forceExit",
-    "test-fast": "jest -w 1 --forceExit --onlyChanged"
+    "test-only": "jest --forceExit",
+    "test-fast": "jest --forceExit --onlyChanged"
   },
   "version": "0.0.1"
 }

@@ -1,4 +1,3 @@
-const net = require('net');
 const _ = require('lodash');
 const constants = require('../app/libs/constants');
 const mongo = require('../lib/db/mongo')();
@@ -19,49 +18,6 @@ jest.mock('passport', () => {
 const serverModule = require('../lib/server');
 
 const logger = require('../lib/logging/logger').create('test.helper');
-
-
-/**
- * Checks to see if port is being used on the system.
- * @param {number} port - the port to check
- * @returns a Promise that resolves to true or false
- */
-function portInUse(port) {
-  return new Promise((resolve) => {
-    const server = net.createServer((socket) => {
-      socket.write('Echo server\r\n');
-      socket.pipe(socket);
-    });
-
-    server.listen(port, '127.0.0.1');
-    server.on('error', () => {
-      resolve(true);
-    });
-    server.on('listening', () => {
-      server.close();
-      resolve(false);
-    });
-  });
-}
-
-
-/**
- * Recursively checks ports 3001 to 3999 to see if they are in use
- * and returns the first port that is not in use in that range
- * @param {number} [port=3001] - the port to check
- * @returns the first unused port or throws an exception if none found
- */
-async function findUnusedPort(port = 3001) {
-  if (port > 3999) {
-    throw new Error(`Could not find a free port. Checked up to ${port}`);
-  }
-  const inUse = await portInUse(port);
-  if (!inUse) {
-    return port;
-  }
-
-  return findUnusedPort(port + 1);
-}
 
 const data = {};
 
@@ -114,7 +70,7 @@ async function makeRequest(opts) {
 }
 
 
-async function startServerAuthenticated() {
+async function startServerAuthenticated(port) {
   async function emptyDatabase() {
     const db = await mongo.GetDb();
     const promises = ['user', 'location', 'plant', 'note'].map((collection) => {
@@ -184,7 +140,7 @@ async function startServerAuthenticated() {
     return server || serverModule;
   }
 
-  async function startServer(app, server, port) {
+  async function startServer(app, server) {
     if (app) {
       return app;
     }
@@ -209,7 +165,7 @@ async function startServerAuthenticated() {
     await emptyDatabase();
     data.user = await createUser();
     createPassport(data.user);
-    data.port = await findUnusedPort();
+    data.port = port;
     data.server = createServer(data.server);
     data.app = await startServer(data.app, data.server, data.port);
     data.userId = await authenticateUser();

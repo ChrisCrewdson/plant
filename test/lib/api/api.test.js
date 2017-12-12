@@ -4,7 +4,7 @@ const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
 describe('api', () => {
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated();
+    const data = await helper.startServerAuthenticated(3010);
     const { userId, port } = data;
     expect(userId).toBeTruthy();
     expect(port).toBeGreaterThan(3000);
