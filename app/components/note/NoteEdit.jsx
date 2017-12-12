@@ -208,6 +208,7 @@ class NoteEdit extends React.Component {
         <Dropzone
           activeStyle={dropZoneActiveStyle}
           onDrop={this.onDrop}
+          accept="image/*"
           ref={(node) => { this.dropzone = node; }}
           style={dropZoneStyle}
         >
