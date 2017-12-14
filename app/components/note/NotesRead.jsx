@@ -53,7 +53,7 @@ class NotesRead extends React.Component {
       notes,
       plant,
       plants,
-      user,
+      locationId,
     } = this.props;
     const { sortedIds } = this.state || {};
     if (!sortedIds || !sortedIds.size) {
@@ -84,7 +84,7 @@ class NotesRead extends React.Component {
             notes={notes}
             plant={plant}
             plants={plants}
-            user={user}
+            locationId={locationId}
           />);
         case 'since':
           return (
@@ -128,9 +128,7 @@ NotesRead.propTypes = {
     get: PropTypes.func.isRequired,
     filter: PropTypes.func.isRequired,
   }).isRequired,
-  user: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  locationId: PropTypes.string.isRequired,
 };
 
 module.exports = NotesRead;

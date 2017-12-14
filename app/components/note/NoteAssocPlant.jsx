@@ -75,12 +75,13 @@ class NoteAssocPlant extends React.Component {
       ? this.renderPlantButtons(uncheckedPlantIds, plants, false)
       : null;
 
+    const title = `${expanded ? 'Hide' : 'Show'} Unchecked Plants`;
     const arrow = (
       <FloatingActionButton
         mini
         onClick={this.expand}
         secondary
-        title="Expand/Collapse Unchecked Plants"
+        title={title}
       >
         {expanded
           ? <ArrowLeft />

@@ -165,6 +165,18 @@ class NoteEdit extends React.Component {
       borderColor: 'tan',
     };
 
+    const { locationId } = this.props;
+    const plants = this.props.plants.filter(plant =>
+      plant.get('locationId') === locationId);
+    const associatedPlants = (
+      <NoteAssocPlant
+        dispatch={this.props.dispatch}
+        error={errors.get('plantIds')}
+        plantIds={plantIds}
+        plants={plants}
+      />
+    );
+
     return (
       <Paper
         style={paperStyle}
@@ -227,12 +239,7 @@ class NoteEdit extends React.Component {
           ))
         }
 
-        <NoteAssocPlant
-          dispatch={this.props.dispatch}
-          error={errors.get('plantIds')}
-          plantIds={plantIds}
-          plants={this.props.plants.filter(plant => plant.get('userId') === this.props.user.get('_id'))}
-        />
+        {associatedPlants}
 
         <NoteEditMetrics
           dispatch={this.props.dispatch}
@@ -259,9 +266,7 @@ NoteEdit.propTypes = {
     filter: PropTypes.func.isRequired,
   }).isRequired,
   postSaveSuccess: PropTypes.func,
-  user: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  locationId: PropTypes.string.isRequired,
 };
 
 NoteEdit.defaultProps = {

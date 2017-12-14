@@ -135,6 +135,7 @@ class Location extends React.Component {
     const createNote = !!interimNote && interimNote.get('isNew');
 
     const userCanEdit = canEdit(authUser.get('_id'), location);
+    const locationId = location.get('_id');
 
     if (createNote && userCanEdit) {
       const style = {
@@ -152,7 +153,7 @@ class Location extends React.Component {
               plant={plantCreateNote}
               plants={allLoadedPlants}
               postSaveSuccess={this.postSaveSuccessCreateNote}
-              user={authUser}
+              locationId={locationId}
             />
           </div>
         </Base>

@@ -15,7 +15,7 @@ function noteUpdate(props) {
       interimNote={props.interimNote}
       plant={props.plant}
       plants={props.plants}
-      user={props.user}
+      locationId={props.locationId}
     />
   );
 }
@@ -32,9 +32,7 @@ noteUpdate.propTypes = {
   plants: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,
-  user: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  locationId: PropTypes.string.isRequired,
 };
 
 module.exports = noteUpdate;

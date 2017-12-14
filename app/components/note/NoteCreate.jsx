@@ -17,7 +17,7 @@ class NoteCreate extends React.Component {
   }
 
   createNote() {
-    const { plant } = this.props;
+    const { plant, locationId } = this.props;
     const note = {
       _id: utils.makeMongoId(),
       date: moment().format('MM/DD/YYYY'),
@@ -25,7 +25,7 @@ class NoteCreate extends React.Component {
       note: '',
       plantIds: [plant.get('_id')],
       errors: {},
-      plants: this.props.plants.filter(p => p.get('userId') === this.props.user.get('_id')),
+      plants: this.props.plants.filter(p => p.get('locationId') === locationId),
     };
 
     this.props.dispatch(actions.editNoteOpen({ note, plant }));
@@ -51,7 +51,7 @@ class NoteCreate extends React.Component {
             interimNote={interimNote}
             plant={this.props.plant}
             plants={this.props.plants}
-            user={this.props.user}
+            locationId={this.props.locationId}
           />
         }
         {!createNote &&
@@ -83,9 +83,7 @@ NoteCreate.propTypes = {
     get: PropTypes.func.isRequired,
     filter: PropTypes.func.isRequired,
   }).isRequired,
-  user: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  locationId: PropTypes.string.isRequired,
 };
 
 module.exports = NoteCreate;

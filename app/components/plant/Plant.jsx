@@ -150,7 +150,6 @@ class Plant extends React.Component {
                   notes={notes}
                   plant={plant}
                   plants={plants}
-                  user={user}
                 />
                 {plant && plant.get('title') &&
                 <NoteCreate
@@ -159,7 +158,7 @@ class Plant extends React.Component {
                   userCanEdit={userCanEdit}
                   plant={plant}
                   plants={plants}
-                  user={user}
+                  locationId={locationId}
                 />
               }
               </div>

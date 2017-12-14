@@ -107,7 +107,7 @@ class NoteRead extends React.Component {
         interimNote={this.props.interim.getIn(['note', 'note'])}
         plant={this.props.plant}
         plants={this.props.plants}
-        user={this.props.user}
+        locationId={this.props.locationId}
       />
     );
   }
@@ -189,9 +189,7 @@ NoteRead.propTypes = {
     get: PropTypes.func.isRequired,
     filter: PropTypes.func.isRequired,
   }).isRequired,
-  user: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  locationId: PropTypes.string.isRequired,
 };
 
 module.exports = NoteRead;

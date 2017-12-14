@@ -175,12 +175,13 @@ class PlantRead extends React.Component {
     const {
       userCanEdit,
       plant,
-      user,
     } = this.props;
 
     const {
       showDeleteConfirmation = false,
     } = this.state || {};
+
+    const locationId = plant.get('locationId');
 
     return (
       <div>
@@ -207,7 +208,7 @@ class PlantRead extends React.Component {
               notes={this.props.notes}
               plant={plant}
               plants={this.props.plants}
-              user={user}
+              locationId={locationId}
             />
           </div>
           :
@@ -238,9 +239,6 @@ PlantRead.propTypes = {
     toJS: PropTypes.func.isRequired,
   }).isRequired,
   plants: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-  }).isRequired,
-  user: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,
 };
