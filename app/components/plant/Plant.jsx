@@ -103,6 +103,18 @@ class Plant extends React.Component {
     const locations = store.getState().get('locations', Immutable.Map());
     const plants = store.getState().get('plants');
 
+    const interim = store.getState().get('interim');
+    const interimNote = interim.getIn(['note', 'note'], Immutable.Map());
+    const interimPlant = interim.getIn(['plant', 'plant']);
+
+    if (interimPlant) {
+      return (<PlantEdit
+        dispatch={store.dispatch}
+        interimPlant={interimPlant}
+        user={user}
+      />);
+    }
+
     const plantId = params.id || (match.params && match.params.id);
     if (!plantId) {
       // eslint-disable-next-line no-console
@@ -111,11 +123,7 @@ class Plant extends React.Component {
 
     const plant = plants.get(plantId);
 
-    const interim = store.getState().get('interim');
-    const interimNote = interim.getIn(['note', 'note'], Immutable.Map());
-    const interimPlant = interim.getIn(['plant', 'plant']);
-
-    if (!plant && !interimPlant) {
+    if (!plant) {
       return (
         <Base>
           <CircularProgress />
@@ -133,36 +141,27 @@ class Plant extends React.Component {
     return (
       <Base>
         <div>
-          {interimPlant
-            ?
-              <PlantEdit
-                dispatch={store.dispatch}
-                interimPlant={interimPlant}
-                user={user}
-              />
-            :
-              <div>
-                <PlantRead
-                  dispatch={store.dispatch}
-                  interim={interim}
-                  userCanEdit={userCanEdit}
-                  locations={locations}
-                  notes={notes}
-                  plant={plant}
-                  plants={plants}
-                />
-                {plant && plant.get('title') &&
-                <NoteCreate
-                  dispatch={store.dispatch}
-                  interimNote={interimNote}
-                  userCanEdit={userCanEdit}
-                  plant={plant}
-                  plants={plants}
-                  locationId={locationId}
-                />
-              }
-              </div>
+          <div>
+            <PlantRead
+              dispatch={store.dispatch}
+              interim={interim}
+              userCanEdit={userCanEdit}
+              locations={locations}
+              notes={notes}
+              plant={plant}
+              plants={plants}
+            />
+            {plant && plant.get('title') &&
+            <NoteCreate
+              dispatch={store.dispatch}
+              interimNote={interimNote}
+              userCanEdit={userCanEdit}
+              plant={plant}
+              plants={plants}
+              locationId={locationId}
+            />
           }
+          </div>
         </div>
       </Base>
     );
