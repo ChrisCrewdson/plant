@@ -8,7 +8,7 @@ const React = require('react');
 
 const { List } = Immutable;
 
-class NotesRead extends React.Component {
+class NotesRead extends React.PureComponent {
   componentWillMount() {
     this.sortNotes();
   }

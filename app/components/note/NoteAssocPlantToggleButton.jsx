@@ -6,7 +6,7 @@ const React = require('react');
 const RaisedButton = require('material-ui/RaisedButton').default;
 const PropTypes = require('prop-types');
 
-class NoteAssocPlantToggleButton extends React.Component {
+class NoteAssocPlantToggleButton extends React.PureComponent {
   constructor() {
     super();
     this.toggle = this.toggle.bind(this);

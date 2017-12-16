@@ -10,7 +10,7 @@ const actions = require('../../actions');
 const moment = require('moment');
 const PropTypes = require('prop-types');
 
-class PlantItem extends React.Component {
+class PlantItem extends React.PureComponent {
   constructor() {
     super();
     this.createNote = this.createNote.bind(this);
@@ -63,6 +63,7 @@ class PlantItem extends React.Component {
       linkStyle.color = 'red';
     }
 
+    // const link = `/plant/${makeSlug(title)}/${_id}?react_perf`;
     const link = `/plant/${makeSlug(title)}/${_id}`;
     const renderLink = (
       <Link

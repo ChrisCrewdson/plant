@@ -7,7 +7,7 @@ const Toggle = require('material-ui/Toggle').default;
 const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
 
-class NoteEditMetrics extends React.Component {
+class NoteEditMetrics extends React.PureComponent {
   constructor() {
     super();
     this.onChange = this.onChange.bind(this);

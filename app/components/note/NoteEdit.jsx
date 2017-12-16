@@ -18,7 +18,7 @@ const validators = require('../../models');
 
 const { note: noteValidator } = validators;
 
-class NoteEdit extends React.Component {
+class NoteEdit extends React.PureComponent {
   constructor(props) {
     super(props);
     this.cancel = this.cancel.bind(this);
@@ -27,10 +27,6 @@ class NoteEdit extends React.Component {
     this.onOpenClick = this.onOpenClick.bind(this);
     this.save = this.save.bind(this);
     this.saveFiles = this.saveFiles.bind(this);
-  }
-
-  componentWillMount() {
-    this.initState();
   }
 
   componentWillUnmount() {
@@ -49,11 +45,6 @@ class NoteEdit extends React.Component {
 
   onOpenClick() {
     this.dropzone.open();
-  }
-
-  initState() {
-    const { images } = this.props;
-    this.setState({ images });
   }
 
   cancel() {
@@ -128,13 +119,11 @@ class NoteEdit extends React.Component {
       );
     }
 
-    const {
-      images,
-    } = this.state || {};
-
     const date = interimNote.get('date', '');
     const errors = interimNote.get('errors', Immutable.Map());
     const note = interimNote.get('note', '');
+    // TODO: Guy 11/16/2017 Can plantIds be passed to next component as an immutable instead
+    // of creating a new object each time?
     const plantIds = interimNote.get('plantIds').toJS();
 
     const textAreaStyle = {
@@ -144,11 +133,6 @@ class NoteEdit extends React.Component {
     const textFieldStyle = {
       marginLeft: 20,
       textAlign: 'left',
-    };
-
-    const imageStyle = {
-      maxWidth: '100%',
-      padding: '1%',
     };
 
     const dropZoneStyle = {
@@ -227,18 +211,6 @@ class NoteEdit extends React.Component {
           <div>Drop images here or tap to select images to upload.</div>
         </Dropzone>
 
-        {!!images.length &&
-          images.map(image => (
-            <div key={image.preview}>
-              <img
-                style={imageStyle}
-                src={image.preview}
-                alt="TODO: Add an alt here"
-              />
-            </div>
-          ))
-        }
-
         {associatedPlants}
 
         <NoteEditMetrics
@@ -254,9 +226,6 @@ class NoteEdit extends React.Component {
 
 NoteEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  images: PropTypes.arrayOf(PropTypes.shape({
-    preview: PropTypes.string.isRequired,
-  })),
   interimNote: PropTypes.shape({
     get: PropTypes.func.isRequired,
     toJS: PropTypes.func.isRequired,
@@ -271,7 +240,6 @@ NoteEdit.propTypes = {
 
 NoteEdit.defaultProps = {
   postSaveSuccess: () => {},
-  images: [],
 };
 
 module.exports = NoteEdit;

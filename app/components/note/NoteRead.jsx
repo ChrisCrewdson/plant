@@ -13,7 +13,7 @@ const PropTypes = require('prop-types');
 
 const { List } = Immutable;
 
-class NoteRead extends React.Component {
+class NoteRead extends React.PureComponent {
   static renderImages(note) {
     const images = note.get('images');
     if (images && images.size) {

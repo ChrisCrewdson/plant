@@ -9,7 +9,7 @@ const utils = require('../../libs/utils');
 const moment = require('moment');
 const PropTypes = require('prop-types');
 
-class NoteCreate extends React.Component {
+class NoteCreate extends React.PureComponent {
   constructor(props) {
     super(props);
 

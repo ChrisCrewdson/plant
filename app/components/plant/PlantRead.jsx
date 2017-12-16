@@ -10,7 +10,7 @@ const { withRouter } = require('react-router-dom');
 
 const dateFormat = 'DD-MMM-YYYY';
 
-class PlantRead extends React.Component {
+class PlantRead extends React.PureComponent {
   static contextTypes = {
     router: PropTypes.object.isRequired,
   };
