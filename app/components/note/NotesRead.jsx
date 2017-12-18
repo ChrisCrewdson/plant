@@ -2,6 +2,7 @@ const CircularProgress = require('material-ui/CircularProgress').default;
 const Immutable = require('immutable');
 const metrics = require('../../libs/metrics');
 const NoteRead = require('./NoteRead');
+const NoteEdit = require('./NoteEdit');
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
@@ -52,9 +53,23 @@ class NotesRead extends React.PureComponent {
       userCanEdit,
       notes,
       plant,
-      plants,
-      locationId,
     } = this.props;
+
+    const interimNoteId = interim.getIn(['note', 'note', '_id']);
+    if (interimNoteId && userCanEdit) {
+      const interimNote = this.props.interim.getIn(['note', 'note']);
+
+      return (
+        <NoteEdit
+          dispatch={this.props.dispatch}
+          interimNote={interimNote}
+          plant={this.props.plant}
+          plants={this.props.plants}
+          locationId={this.props.locationId}
+        />
+      );
+    }
+
     const { sortedIds } = this.state || {};
     if (!sortedIds || !sortedIds.size) {
       return null;
@@ -77,14 +92,11 @@ class NotesRead extends React.PureComponent {
         case 'note':
           return (<NoteRead
             dispatch={dispatch}
-            interim={interim}
             userCanEdit={userCanEdit}
             key={noteId}
             note={note}
             notes={notes}
             plant={plant}
-            plants={plants}
-            locationId={locationId}
           />);
         case 'since':
           return (

@@ -2,7 +2,6 @@ const actions = require('../../actions');
 const Paper = require('material-ui/Paper').default;
 const React = require('react');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
-const NoteEdit = require('./NoteEdit');
 const moment = require('moment');
 const LinkIcon = require('material-ui/svg-icons/content/link').default;
 const utils = require('../../libs/utils');
@@ -99,24 +98,7 @@ class NoteRead extends React.PureComponent {
     this.props.dispatch(actions.editNoteOpen({ plant, note }));
   }
 
-  renderEdit() {
-    if (!this.props.userCanEdit) {
-      return null;
-    }
-    const interimNote = this.props.interim.getIn(['note', 'note']);
-
-    return (
-      <NoteEdit
-        dispatch={this.props.dispatch}
-        interimNote={interimNote}
-        plant={this.props.plant}
-        plants={this.props.plants}
-        locationId={this.props.locationId}
-      />
-    );
-  }
-
-  renderRead() {
+  render() {
     const paperStyle = {
       padding: 20,
       width: '100%',
@@ -165,22 +147,10 @@ class NoteRead extends React.PureComponent {
       </Paper>
     );
   }
-
-  render() {
-    const noteId = this.props.interim.getIn(['note', 'note', '_id']);
-
-    return noteId === this.props.note.get('_id')
-      ? this.renderEdit()
-      : this.renderRead();
-  }
 }
 
 NoteRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  interim: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    getIn: PropTypes.func.isRequired,
-  }).isRequired,
   userCanEdit: PropTypes.bool.isRequired,
   note: PropTypes.shape({
     get: PropTypes.func.isRequired,
@@ -189,11 +159,6 @@ NoteRead.propTypes = {
   plant: PropTypes.shape({
     get: PropTypes.func.isRequired,
   }).isRequired,
-  plants: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    filter: PropTypes.func.isRequired,
-  }).isRequired,
-  locationId: PropTypes.string.isRequired,
 };
 
 module.exports = NoteRead;
