@@ -2,7 +2,7 @@ const actions = require('../../actions');
 const Paper = require('material-ui/Paper').default;
 const React = require('react');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
-const NoteUpdate = require('./NoteUpdate');
+const NoteEdit = require('./NoteEdit');
 const moment = require('moment');
 const LinkIcon = require('material-ui/svg-icons/content/link').default;
 const utils = require('../../libs/utils');
@@ -100,11 +100,15 @@ class NoteRead extends React.PureComponent {
   }
 
   renderEdit() {
+    if (!this.props.userCanEdit) {
+      return null;
+    }
+    const interimNote = this.props.interim.getIn(['note', 'note']);
+
     return (
-      <NoteUpdate
+      <NoteEdit
         dispatch={this.props.dispatch}
-        userCanEdit={this.props.userCanEdit}
-        interimNote={this.props.interim.getIn(['note', 'note'])}
+        interimNote={interimNote}
         plant={this.props.plant}
         plants={this.props.plants}
         locationId={this.props.locationId}
