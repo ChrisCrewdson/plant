@@ -11,7 +11,7 @@ function noteReadMetrics(props) {
 
   const metrics = mets.toJS();
 
-  const renderedMetrics = utils.metaMetrics.toJS().map((metaMetric) => {
+  const renderedMetrics = utils.metaMetrics.map((metaMetric) => {
     if (!metrics[metaMetric.key]) {
       return null;
     }

@@ -132,7 +132,7 @@ describe('/app/libs/utils', () => {
   });
 
   describe('metrics', () => {
-    test('should prepare note body and remove unknow metrics', () => {
+    test('should prepare note body and remove unknown metrics', () => {
       const body = {
         date: '20160101',
         metrics: {
@@ -151,6 +151,10 @@ describe('/app/libs/utils', () => {
           harvestStart: true,
         },
       };
+      // I'm torn between which of these paradigms below to follow.
+      // 1. Jest will remove the need for the expected object above.
+      // 2. toEqual() shows me the expected here in the code.
+      expect(actual).toMatchSnapshot();
       expect(actual).toEqual(expected);
     });
 

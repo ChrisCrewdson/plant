@@ -30,7 +30,7 @@ class NoteEditMetrics extends React.PureComponent {
     const { name: inputName } = e.target;
     const interimMetrics = this.props.interimNote.get('metrics', Immutable.Map());
     const metaMetric = utils.metaMetricsGetByKey(inputName);
-    const type = metaMetric.get('type');
+    const { type } = metaMetric;
     // based on inputName (e.g. blossom or height) we need to lookup
     // the type to determine where to pull the value. Types of toggle
     // have their values in "checked" otherwise in "value"
@@ -93,7 +93,7 @@ class NoteEditMetrics extends React.PureComponent {
   render() {
     const { interimNote } = this.props;
     const metrics = interimNote.get('metrics', Immutable.Map()).toJS();
-    const metaMetrics = utils.metaMetrics.toJS();
+    const { metaMetrics } = utils;
 
     const renderedMetrics = metaMetrics.map(metaMetric => this.renderMetric(metaMetric, metrics[metaMetric.key] || ''));
 

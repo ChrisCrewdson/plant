@@ -263,7 +263,7 @@ function rebaseLocations(plants) {
   }));
 }
 
-const metaMetrics = Immutable.fromJS([{
+const metaMetrics = Object.freeze([{
   key: 'height',
   label: 'Height (inches only)', // For InputCombo
   placeholder: 'Enter height of plant', // Input hint
@@ -319,7 +319,7 @@ const metaMetrics = Immutable.fromJS([{
   placeholder: 'Check when leaf shed (abscission) ends',
   type: 'toggle',
 },
-]);
+].map(item => Object.freeze(item)));
 
 function noteFromBody(body) {
   // eslint-disable-next-line no-param-reassign
@@ -327,9 +327,9 @@ function noteFromBody(body) {
 
   if (body.metrics) {
     Object.keys(body.metrics).forEach((key) => {
-      const metaMetric = metaMetrics.find(mm => mm.get('key') === key);
+      const metaMetric = metaMetrics.find(mm => mm.key === key);
       if (metaMetric) {
-        switch (metaMetric.get('type')) {
+        switch (metaMetric.type) {
           case 'toggle':
             // eslint-disable-next-line no-param-reassign
             body.metrics[key] = body.metrics[key] === 'true';
@@ -387,7 +387,7 @@ function noteFromBody(body) {
  * @returns {Immutable} - the metaMetric for that key
  */
 function metaMetricsGetByKey(key) {
-  return metaMetrics.find(value => value.get('key') === key);
+  return metaMetrics.find(value => value.key === key);
 }
 
 /**

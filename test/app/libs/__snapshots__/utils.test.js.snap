@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/libs/utils metrics should prepare note body and remove unknown metrics 1`] = `
+Object {
+  "date": 20160101,
+  "metrics": Object {
+    "harvestCount": 32,
+    "harvestStart": true,
+    "height": 15.5,
+  },
+}
+`;
