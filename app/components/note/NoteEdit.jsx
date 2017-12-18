@@ -18,6 +18,29 @@ const validators = require('../../models');
 
 const { note: noteValidator } = validators;
 
+const textAreaStyle = {
+  textAlign: 'left',
+};
+
+const textFieldStyle = {
+  marginLeft: 20,
+  textAlign: 'left',
+};
+
+const dropZoneStyle = {
+  backgroundColor: 'beige',
+  borderColor: 'khaki',
+  borderStyle: 'solid',
+  borderWidth: '3px',
+  height: '40px',
+  width: '100%',
+};
+
+const dropZoneActiveStyle = {
+  backgroundColor: 'darkseagreen',
+  borderColor: 'tan',
+};
+
 class NoteEdit extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -87,6 +110,7 @@ class NoteEdit extends React.PureComponent {
 
     const {
       interimNote,
+      locationId,
     } = this.props;
     const uploadProgress = interimNote.get('uploadProgress');
 
@@ -126,30 +150,6 @@ class NoteEdit extends React.PureComponent {
     // of creating a new object each time?
     const plantIds = interimNote.get('plantIds').toJS();
 
-    const textAreaStyle = {
-      textAlign: 'left',
-    };
-
-    const textFieldStyle = {
-      marginLeft: 20,
-      textAlign: 'left',
-    };
-
-    const dropZoneStyle = {
-      backgroundColor: 'beige',
-      borderColor: 'khaki',
-      borderStyle: 'solid',
-      borderWidth: '3px',
-      height: '40px',
-      width: '100%',
-    };
-
-    const dropZoneActiveStyle = {
-      backgroundColor: 'darkseagreen',
-      borderColor: 'tan',
-    };
-
-    const { locationId } = this.props;
     const plants = this.props.plants.filter(plant =>
       plant.get('locationId') === locationId);
     const associatedPlants = (
