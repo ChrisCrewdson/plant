@@ -2,12 +2,12 @@
 // "interim" is the least worst of all the bad names I came up with.
 
 const actions = require('../actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable');
 
 // action.payload:
 // {note, plant}
 function editNoteOpen(state, action) {
-  return state.set('note', Immutable.fromJS(action.payload));
+  return seamless.set(state, 'note', action.payload);
 }
 
 // action.payload:
@@ -15,7 +15,7 @@ function editNoteOpen(state, action) {
 function editNoteClose(state) {
   // Just remove note element if editing is canceled
   // or if the note has been saved
-  return state.delete('note');
+  return seamless.without(state, 'note');
 }
 
 // action.payload:
@@ -28,17 +28,20 @@ function editNoteChange(state, action) {
   // TODO: Write some tests around this and then see if this specialization
   // for plantIds can be removed and replaced with an Immutable function because
   // this will impact other arrays.
-  let merged = state.mergeDeep({ note: { note: action.payload } });
-  if (action.payload.plantIds) {
-    merged = merged.setIn(['note', 'note', 'plantIds'], Immutable.List(action.payload.plantIds));
-  }
-  return merged;
+
+  // let merged = state.mergeDeep({ note: { note: action.payload } });
+  // if (action.payload.plantIds) {
+  //   merged = merged.setIn(['note', 'note', 'plantIds'], Immutable.List(action.payload.plantIds));
+  // }
+  // return merged;
+
+  return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
 }
 
 // action.payload:
 // {plant}
 function editPlantOpen(state, action) {
-  return state.set('plant', Immutable.fromJS(action.payload));
+  return seamless.set(state, 'plant', action.payload);
 }
 
 // action.payload:
@@ -46,7 +49,7 @@ function editPlantOpen(state, action) {
 function editPlantClose(state) {
   // Just remove plant element if editing is canceled
   // or if the plant has been saved
-  return state.delete('plant');
+  return seamless.without(state, 'plant');
 }
 
 // action.payload:
@@ -56,19 +59,19 @@ function editPlantClose(state) {
 //     plant,
 //     plant
 function editPlantChange(state, action) {
-  return state.mergeDeep({ plant: { plant: action.payload } });
+  return seamless.merge(state, { plant: { plant: action.payload } }, { deep: true });
 }
 
 function loadPlantsRequest(state, action) {
-  return state.set('loadPlantRequest', action.payload);
+  return seamless.set(state, 'loadPlantRequest', action.payload);
 }
 
 function loadPlantsSuccess(state) {
-  return state.delete('loadPlantRequest');
+  return seamless.without(state, 'loadPlantRequest');
 }
 
 function loadPlantsFailure(state) {
-  return state.delete('loadPlantRequest');
+  return seamless.without(state, 'loadPlantRequest');
 }
 
 const reducers = {
@@ -91,7 +94,7 @@ if (reducers.undefined) {
 ${Object.keys(reducers).join()}`);
 }
 
-module.exports = (state = new Immutable.Map(), action) => {
+module.exports = (state = seamless({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

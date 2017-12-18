@@ -1,6 +1,6 @@
 const interim = require('../../../app/reducers/interim');
 const actions = require('../../../app/actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/interim', () => {
   describe('sanity check', () => {
@@ -18,76 +18,75 @@ describe('/app/reducers/interim', () => {
   function checkReducer(actionName, state, payload, expected) {
     const action = actions[actionName](payload);
     const actual = interim(state, action);
-    // The following line provides useful debug info which the one after does not
-    expect(actual.toJS()).toEqual(expected.toJS());
-    expect(Immutable.is(actual, expected)).toBe(true);
+
+    expect(actual).toEqual(expected);
   }
 
   describe('editNoteOpen', () => {
     test('should reduce from empty state and empty payload', () => {
-      const state = Immutable.fromJS({});
+      const state = seamless({});
       const payload = {};
-      const expected = Immutable.fromJS({ note: {} });
+      const expected = seamless({ note: {} });
       checkReducer('editNoteOpen', state, payload, expected);
     });
 
     test('should reduce from empty state and populated payload', () => {
-      const state = Immutable.fromJS({});
+      const state = seamless({});
       const payload = { a: 1, b: 2 };
-      const expected = Immutable.fromJS({ note: { a: 1, b: 2 } });
+      const expected = seamless({ note: { a: 1, b: 2 } });
       checkReducer('editNoteOpen', state, payload, expected);
     });
 
     test('should reduce from existing state and populated payload', () => {
-      const state = Immutable.fromJS({ plant: { a: 1 } });
+      const state = seamless({ plant: { a: 1 } });
       const payload = { a: 1, b: 2 };
-      const expected = Immutable.fromJS({ note: { a: 1, b: 2 }, plant: { a: 1 } });
+      const expected = seamless({ note: { a: 1, b: 2 }, plant: { a: 1 } });
       checkReducer('editNoteOpen', state, payload, expected);
     });
   });
 
   describe('editNoteClose', () => {
     test('should reduce from empty state and empty payload', () => {
-      const state = Immutable.fromJS({});
+      const state = seamless({});
       const payload = {};
-      const expected = Immutable.fromJS({});
+      const expected = seamless({});
       checkReducer('editNoteClose', state, payload, expected);
     });
 
     test('should reduce from empty state and populated payload', () => {
-      const state = Immutable.fromJS({});
+      const state = seamless({});
       const payload = { a: 1, b: 2 };
-      const expected = Immutable.fromJS({});
+      const expected = seamless({});
       checkReducer('editNoteClose', state, payload, expected);
     });
 
     test('should reduce from existing state and populated payload', () => {
-      const state = Immutable.fromJS({ plant: { a: 1 } });
+      const state = seamless({ plant: { a: 1 } });
       const payload = { a: 1, b: 2 };
-      const expected = Immutable.fromJS({ plant: { a: 1 } });
+      const expected = seamless({ plant: { a: 1 } });
       checkReducer('editNoteClose', state, payload, expected);
     });
   });
 
   describe('editNoteChange', () => {
     test('should reduce from empty state and empty payload', () => {
-      const state = Immutable.fromJS({ note: { note: {}, plant: {} } });
+      const state = seamless({ note: { note: {}, plant: {} } });
       const payload = {};
-      const expected = Immutable.fromJS({ note: { note: {}, plant: {} } });
+      const expected = seamless({ note: { note: {}, plant: {} } });
       checkReducer('editNoteChange', state, payload, expected);
     });
 
     test('should reduce from empty state and populated payload', () => {
-      const state = Immutable.fromJS({ note: { note: {}, plant: {} } });
+      const state = seamless({ note: { note: {}, plant: {} } });
       const payload = { a: 1, b: 2 };
-      const expected = Immutable.fromJS({ note: { note: { a: 1, b: 2 }, plant: {} } });
+      const expected = seamless({ note: { note: { a: 1, b: 2 }, plant: {} } });
       checkReducer('editNoteChange', state, payload, expected);
     });
 
     test('should reduce from existing state and populated payload', () => {
-      const state = Immutable.fromJS({ note: { note: { a: 11, c: 3 }, plant: {} } });
+      const state = seamless({ note: { note: { a: 11, c: 3 }, plant: {} } });
       const payload = { a: 1, b: 2 };
-      const expected = Immutable.fromJS({ note: { note: { a: 1, b: 2, c: 3 }, plant: {} } });
+      const expected = seamless({ note: { note: { a: 1, b: 2, c: 3 }, plant: {} } });
       checkReducer('editNoteChange', state, payload, expected);
     });
   });
