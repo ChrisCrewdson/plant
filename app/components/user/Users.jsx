@@ -31,26 +31,23 @@ class Users extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
-    const users = store.getState().get('users');
-    const locations = store.getState().get('locations');
+    const state = this.context.store.getState();
+    const { users, locations } = state;
     this.setState({ users, locations });
   }
 
   renderUser(user) {
-    const _id = user.get('_id');
-    const userName = user.get('name');
-    const locationIds = user.get('locationIds');
+    const { _id, name: userName, locationIds } = user;
     let link = `/locations/${makeSlug(userName)}/${_id}`;
 
-    if (locationIds.size === 1) {
-      const { store } = this.context;
-      const locations = store.getState().get('locations');
+    if (locationIds.length === 1) {
+      const state = this.context.store.getState();
+      const { locations } = state;
       if (locations) {
-        const singleLocationId = locationIds.first();
-        const singleLocation = locations.get(singleLocationId);
+        const [singleLocationId] = locationIds;
+        const singleLocation = locations[singleLocationId];
         if (singleLocation) {
-          link = `/location/${makeSlug(singleLocation.get('title'))}/${singleLocationId}`;
+          link = `/location/${makeSlug(singleLocation.title)}/${singleLocationId}`;
         }
       }
     }
@@ -68,10 +65,9 @@ class Users extends React.Component {
   }
 
   renderUsers() {
-    const { store } = this.context;
-    const users = store.getState().get('users');
-    if (users && users.size) {
-      return users.valueSeq().toArray().map(user => this.renderUser(user));
+    const { users } = this.context.store.getState();
+    if (users && users.length) {
+      return users.map(user => this.renderUser(user));
     }
     return null;
   }
@@ -86,8 +82,5 @@ class Users extends React.Component {
     );
   }
 }
-
-Users.propTypes = {
-};
 
 module.exports = Users;

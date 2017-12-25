@@ -5,9 +5,9 @@
 
 const React = require('react');
 const utils = require('../../libs/utils');
-const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
+const getIn = require('lodash/get');
 
 class Plants extends React.Component {
   static contextTypes = {
@@ -38,8 +38,7 @@ class Plants extends React.Component {
 
   onChange() {
     const { store } = this.context;
-    const users = store.getState().get('users');
-    const locations = store.getState().get('locations');
+    const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
 
@@ -50,13 +49,14 @@ class Plants extends React.Component {
     const userId = params && params.id;
     let fwdUrl = '/';
     if (userId) {
-      const user = store.getState().getIn(['users', userId], Immutable.Map());
-      const locationIds = user.get('locationIds', Immutable.List());
-      if (locationIds.size) {
-        const locationId = locationIds.first();
-        const location = store.getState().getIn(['locations', locationId]);
+      const state = store.getState();
+      const user = getIn(state, ['users', userId], {});
+      const locationIds = user.locationIds || [];
+      if (locationIds.length) {
+        const locationId = locationIds[0];
+        const location = getIn(state, ['locations', locationId]);
         if (location) {
-          const title = location.get('title', '');
+          const title = location.title || '';
           fwdUrl = `/location/${utils.makeSlug(title)}/${locationId}`;
           history.push(fwdUrl);
         }

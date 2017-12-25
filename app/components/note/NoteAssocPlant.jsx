@@ -19,6 +19,11 @@ class NoteAssocPlant extends React.Component {
     };
     this.expand = this.expand.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
+  }
+
+  changeHandler(e) {
+    return this.setState({ filter: e.target.value.toLowerCase() });
   }
 
   toggle(plantId) {
@@ -35,9 +40,8 @@ class NoteAssocPlant extends React.Component {
   }
 
   renderPlantButton(plant, primary) {
-    const _id = plant.get('_id');
-    const title = plant.get('title');
-    const secondary = !primary && !!plant.get('isTerminated');
+    const { _id, title, isTerminated } = plant;
+    const secondary = !primary && !!isTerminated;
     return (<NoteAssocPlantToggleButton
       _id={_id}
       key={_id}
@@ -51,7 +55,7 @@ class NoteAssocPlant extends React.Component {
 
   renderPlantButtons(plantIds, plants, selected) {
     return plantIds.map((plantId) => {
-      const plant = plants.get(plantId);
+      const plant = plants[plantId];
       if (!plant) {
         // console.warn(`Missing plant for plantId ${plantId}`);
         return null;
@@ -67,8 +71,7 @@ class NoteAssocPlant extends React.Component {
     const checkedPlantIds = utils.filterSortPlants(plantIds, plants, filter);
     const checkedPlants = this.renderPlantButtons(checkedPlantIds, plants, true);
 
-    const uncheckedIds = plants.filter((plant, _id) =>
-      plantIds.indexOf(_id) === -1).keySeq().toArray();
+    const uncheckedIds = plants.filter((plant, _id) => plantIds.indexOf(_id) === -1);
     const uncheckedPlantIds = utils.filterSortPlants(uncheckedIds, plants, filter);
 
     const uncheckedPlants = expanded
@@ -90,7 +93,7 @@ class NoteAssocPlant extends React.Component {
       </FloatingActionButton>);
 
     const filterInput = (<InputCombo
-      changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
+      changeHandler={this.changeHandler}
       label="Filter"
       placeholder="Filter..."
       value={filter}
@@ -118,10 +121,7 @@ NoteAssocPlant.propTypes = {
   dispatch: PropTypes.func.isRequired,
   error: PropTypes.string,
   plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  plants: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    filter: PropTypes.func.isRequired,
-  }).isRequired,
+  plants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 NoteAssocPlant.defaultProps = {

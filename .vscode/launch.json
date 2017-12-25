@@ -61,12 +61,32 @@
       },
       "console": "internalConsole",
       "sourceMaps": true
-    }, {
-      "name": "Unit Test",
+      }, {
+        "name": "Unit Test",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceRoot}/node_modules/.bin/jest",
+        "args": ["-i"],
+        "env": {
+          "NODE_ENV": "development",
+          "PLANT_TOKEN_SECRET": "json-web-token-secret",
+          "PLANT_DB_URL": "127.0.0.1:27017",
+          "PLANT_DB_NAME": "plant-test",
+          "PLANT_FB_ID": "facebook-app-id",
+          "PLANT_FB_SECRET": "facebook-app-secret",
+          "PLANT_GOOGLE_ID": "google-app-id",
+          "PLANT_GOOGLE_SECRET": "google-app-secret"
+        },
+        "cwd": "${workspaceRoot}"
+      }, {
+      "name": "Unit Test Focused",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/.bin/jest",
-      "args": ["-i"],
+      "args": [
+        "${workspaceRoot}/test/app/reducers/plants.test.js", // replace this file with the file to focus
+        "-i"
+      ],
       "env": {
         "NODE_ENV": "development",
         "PLANT_TOKEN_SECRET": "json-web-token-secret",
@@ -78,21 +98,35 @@
         "PLANT_GOOGLE_SECRET": "google-app-secret"
       },
       "cwd": "${workspaceRoot}"
-    }, {
-      "name": "Debug Jest Tests",
-      "type": "node",
-      "request": "launch",
-      "runtimeArgs": [
-        "--inspect-brk",
-        "${workspaceRoot}/node_modules/.bin/jest",
-        "--runInBand",
-        "--forceExit"
+      }, {
+        "name": "Debug Jest Tests",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "${workspaceRoot}/node_modules/.bin/jest",
+          "--runInBand",
+          "--forceExit"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "sourceMaps": true
+      }, {
+        "name": "Focused Jest Test",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "${workspaceRoot}/node_modules/.bin/jest",
+          "${workspaceRoot}/test/app/reducers/plants.test.js", // replace this file with the file to focus
+          "--runInBand",
+          "--forceExit"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "sourceMaps": true
+      }
       ],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true
-    }
-  ],
   "compounds": [
     {
       "name": "Server/Client",

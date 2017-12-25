@@ -17,37 +17,39 @@ class PlantItem extends React.PureComponent {
   }
 
   createNote() {
-    const { plant } = this.props;
+    const plantIds = [this.props.plant._id];
+
     const note = {
       _id: utils.makeMongoId(),
       date: moment().format('MM/DD/YYYY'),
       isNew: true,
       note: '',
-      plantIds: [plant.get('_id')],
+      plantIds,
       errors: {},
     };
 
-    if (!plant.has('notesRequested')) {
-      if (plant.has('_id')) {
+    if (!this.props.plant.notesRequested) {
+      if (this.props.plant._id) {
         this.props.dispatch(actions.loadNotesRequest({
-          plantId: plant.get('_id'),
+          plantId: this.props.plant._id,
         }));
       } else {
         // console.error('PlantItem: plant object does not have _id', plant.toJS());
       }
     }
 
-    this.props.dispatch(actions.editNoteOpen({ note, plant: plant.toJS() }));
+    this.props.dispatch(actions.editNoteOpen({
+      note,
+      plant: this.props.plant,
+    }));
   }
 
   render() {
     const {
       userCanEdit,
-      plant,
     } = this.props;
 
-    const _id = plant.get('_id');
-    const title = plant.get('title');
+    const { _id, title, isTerminated } = this.props.plant;
 
     const floatingActionButtonStyle = {
       marginLeft: '10px',
@@ -59,7 +61,7 @@ class PlantItem extends React.PureComponent {
     const linkStyle = {
       margin: '20px',
     };
-    if (plant.get('isTerminated') === true) {
+    if (isTerminated === true) {
       linkStyle.color = 'red';
     }
 
@@ -96,8 +98,11 @@ class PlantItem extends React.PureComponent {
 PlantItem.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
-  plant: PropTypes.shape({ // Immutable.js
-    get: PropTypes.func.isRequired,
+  plant: PropTypes.shape({
+    _id: PropTypes.string,
+    isTerminated: PropTypes.bool,
+    notesRequested: PropTypes.bool,
+    title: PropTypes.string,
   }).isRequired,
 };
 

@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const plants = require('../../../app/reducers/plants');
 const actions = require('../../../app/actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/plants', () => {
   describe('similar methods', () => {
@@ -15,7 +15,7 @@ describe('/app/reducers/plants', () => {
     ];
 
     test('should reduce using replace in place', () => {
-      const state = Immutable.fromJS({
+      const state = seamless.from({
         1: {
           _id: '1',
           name: 'one',
@@ -34,7 +34,7 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should reduce with existing with replace in place', () => {
-      const state = Immutable.fromJS({
+      const state = seamless.from({
         1: {
           _id: '1',
           name: 'one',
@@ -58,7 +58,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should delete a plant', () => {
-    const current = Immutable.fromJS({
+    const current = seamless.from({
       1: {
         _id: '1',
         name: 'one',
@@ -77,7 +77,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should delete a note', () => {
-    const current = Immutable.fromJS({
+    const current = seamless.from({
       1: {
         _id: '1',
         name: 'one',
@@ -90,16 +90,16 @@ describe('/app/reducers/plants', () => {
       },
     });
     const payload = 'n2';
-    const expected = current.toJS();
+    const expected = seamless.asMutable(current, { deep: true });
     expected['1'].notes.splice(1, 1);
     expected['2'].notes.splice(1, 1);
 
     const actual = plants(current, actions.deleteNoteRequest(payload));
-    expect(actual.toJS()).toEqual(expected);
+    expect(actual).toEqual(expected);
   });
 
   test('should load a plant', () => {
-    const current = Immutable.fromJS({
+    const current = seamless.from({
       1: {
         _id: '1',
         name: 'one',
@@ -125,7 +125,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load multiple plants', () => {
-    const current = Immutable.fromJS({
+    const current = seamless.from({
       1: {
         _id: '1',
         name: 'one',
@@ -150,7 +150,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should add a new noteId to the plant\'s notes List', () => {
-    const current = Immutable.fromJS({
+    const expected = {
       p1: {
         _id: 'p1',
         name: 'one',
@@ -161,23 +161,23 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2'],
       },
-    });
+    };
     const payload = {
       note: {
         _id: 'n5',
         plantIds: ['p1', 'p2'],
       },
     };
-    const expected = current.toJS();
+    const current = seamless.from(expected);
     expected.p1.notes = ['n1', 'n2', 'n3', 'n5'];
     expected.p2.notes = ['n1', 'n2', 'n5'];
 
     const actual = plants(current, actions.upsertNoteSuccess(payload));
-    expect(actual.toJS()).toEqual(expected);
+    expect(actual).toEqual(expected);
   });
 
-  test('should remove a removed noteId to the plant\'s notes List', () => {
-    const current = Immutable.fromJS({
+  test('should remove a removed noteId from the plant\'s notes List', () => {
+    const expected = {
       p1: {
         _id: 'p1',
         name: 'one',
@@ -188,18 +188,18 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2'],
       },
-    });
+    };
     const payload = {
       note: {
         _id: 'n5',
         plantIds: ['p2'],
       },
     };
-    const expected = current.toJS();
+    const current = seamless.from(expected);
     expected.p1.notes = ['n1', 'n2', 'n3'];
     expected.p2.notes = ['n1', 'n2', 'n5'];
 
     const actual = plants(current, actions.upsertNoteSuccess(payload));
-    expect(actual.toJS()).toEqual(expected);
+    expect(actual).toEqual(expected);
   });
 });

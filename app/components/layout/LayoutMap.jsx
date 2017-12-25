@@ -5,7 +5,6 @@ const Base = require('../base/Base');
 const React = require('react');
 const actions = require('../../actions');
 const gis = require('../../libs/gis');
-const Immutable = require('immutable');
 // const {Layer, Rect, Stage, Group} = require('react-konva');
 const {
   Layer, Text: KonvaText, Circle, Stage, Group,
@@ -27,22 +26,22 @@ class LayoutMap extends React.Component {
     const { store } = this.context;
     this.setState({
       color: 'green',
-      plants: store.getState('plants'),
-      users: store.getState('users'),
+      plants: store.getState().plants,
+      users: store.getState().users,
     });
 
     const { match } = this.props;
     if (match.params && match.params.id) {
       const { id: userId } = match.params;
-      const user = store.getState().getIn(['users', userId], Immutable.Map());
+      const user = store.getState().users[userId] || {};
       // This is the user id for this page.
-      if (!user.has('plantIds')) {
+      if (!user.plantIds) {
         store.dispatch(actions.loadPlantsRequest(userId));
       }
     }
     const state = {
-      users: store.getState('users'),
-      plants: store.getState('plants'),
+      plants: store.getState().plants,
+      users: store.getState().users,
     };
     this.setState(state);
     this.unsubscribe = store.subscribe(this.onChange);
@@ -55,8 +54,8 @@ class LayoutMap extends React.Component {
   onChange() {
     const { store } = this.context;
     const state = {
-      users: store.getState('users'),
-      plants: store.getState('plants'),
+      plants: store.getState().plants,
+      users: store.getState().users,
     };
     this.setState(state);
   }
@@ -140,14 +139,14 @@ class LayoutMap extends React.Component {
     const params = this.props.match && this.props.match.params;
     if (params && params.id) {
       const { id: userId } = params;
-      const user = store.getState().getIn(['users', userId], Immutable.Map());
-      if (!user.size) {
+      const user = store.getState().users[userId];
+      if (!user) {
         return null;
       }
 
-      const plants = store.getState().get('plants', Immutable.Set());
-      const userPlants = plants.filter(plant => plant.get('userId') === userId && plant.has('loc'));
-      if (!userPlants || !userPlants.size) {
+      const plants = store.getState().plants || [];
+      const userPlants = plants.filter(plant => plant.userId === userId && plant.loc);
+      if (!userPlants.length) {
         return null;
       }
 

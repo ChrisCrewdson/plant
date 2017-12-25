@@ -2,7 +2,7 @@ const constants = require('./constants');
 const slug = require('slugify');
 const isDate = require('lodash/isDate');
 const moment = require('moment');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 const { gisMultiplier } = constants;
 
@@ -33,16 +33,13 @@ function makeSlug(text) {
   return slug(lower.replace(/[/()]/g, ' '));
 }
 
-function makeUrl(first, location) {
-  const title = location.get('title');
-  const _id = location.get('_id');
-
+function makeUrl(first, { title, _id }) {
   return `/${first}/${makeSlug(title)}/${_id}`;
 }
 
 /**
  * Make a /location/location-name-slug/id url from location object
- * @param {Immutable.Map} location - an Immutable.js Map
+ * @param {Object} location - an Object
  * @returns {string} - a url
  */
 function makeLocationUrl(location) {
@@ -92,7 +89,7 @@ function intToString(date) {
 /**
  * Converts the body of a POST/PUT to a plant object.
  * @param {object} body - POST/PUT body
- * @returns {object} - body with relavant fields converted to correct data type
+ * @returns {object} - body with relevant fields converted to correct data type
  */
 function plantFromBody(body) {
   const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
@@ -112,15 +109,15 @@ function plantFromBody(body) {
 /**
  * Filters the plantIds array based on filter
  * @param {array} plantIds - original plantIds to filter
- * @param {Immutable.Map} plants - all the plants available to sort
+ * @param {Object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
  * @returns {array} - an array of filtered plantIds
  */
 function filterPlants(plantIds, plants, filter) {
   return filter
     ? plantIds.filter((plantId) => {
-      const plant = plants.get(plantId);
-      return !plant || (plant.get('title') || '').toLowerCase().indexOf(filter) >= 0;
+      const plant = plants[plantId];
+      return !plant || (plant.title || '').toLowerCase().indexOf(filter) >= 0;
     })
     : plantIds;
 }
@@ -128,18 +125,18 @@ function filterPlants(plantIds, plants, filter) {
 /**
  * Sorts the plantIds based on the plant's title
  * @param {array} plantIds - original plantIds to filter
- * @param {Immutable.Map} plants - all the plants available to sort
+ * @param {Object} plants - all the plants available to sort
  * @returns {array} - an array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
   return plantIds.sort((a, b) => {
-    const plantA = plants.get(a);
-    const plantB = plants.get(b);
+    const plantA = plants[a];
+    const plantB = plants[b];
     if (plantA && plantB) {
-      if (plantA.get('title') === plantB.get('title')) {
+      if (plantA.title === plantB.title) {
         return 0;
       }
-      return plantA.get('title') > plantB.get('title') ? 1 : -1;
+      return plantA.title > plantB.title ? 1 : -1;
     }
     return 0;
   });
@@ -148,7 +145,7 @@ function sortPlants(plantIds, plants) {
 /**
  * Filters the plantIds array and sorts based on the plant's title
  * @param {array} plantIds - original plantIds to filter
- * @param {Immutable.Map} plants - all the plants available to sort
+ * @param {Object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
  * @returns {array} - an array of sorted and filtered plantIds
  */
@@ -160,11 +157,11 @@ function filterSortPlants(plantIds, plants, filter) {
 
 function plantStats(plantIds, plants) {
   return {
-    total: plantIds.size,
-    alive: plantIds.filter((plantId) => {
-      const plant = plants.get(plantId, Immutable.Map());
-      return !plant.get('isTerminated', false);
-    }).size,
+    total: plantIds.length,
+    alive: plantIds.reduce((acc, plantId) => {
+      const plant = plants[plantId] || {};
+      return plant.isTerminated ? acc : acc + 1;
+    }, 0),
   };
 }
 
@@ -193,7 +190,7 @@ function hasGeo() {
 
 function getGeo(options, cb) {
   if (!hasGeo()) {
-    return cb('This device does not have geolcation available');
+    return cb('This device does not have geolocation available');
   }
 
   // eslint-disable-next-line no-param-reassign
@@ -263,7 +260,7 @@ function rebaseLocations(plants) {
   }));
 }
 
-const metaMetrics = Object.freeze([{
+const metaMetrics = seamless.from([{
   key: 'height',
   label: 'Height (inches only)', // For InputCombo
   placeholder: 'Enter height of plant', // Input hint
@@ -319,7 +316,7 @@ const metaMetrics = Object.freeze([{
   placeholder: 'Check when leaf shed (abscission) ends',
   type: 'toggle',
 },
-].map(item => Object.freeze(item)));
+]);
 
 function noteFromBody(body) {
   // eslint-disable-next-line no-param-reassign
@@ -392,7 +389,7 @@ function metaMetricsGetByKey(key) {
 
 /**
  * Determines if unfinished features should be shown. i.e. Feature Flag
- * @param {Immutable} user - an Immutable user object - possibly falsey
+ * @param {Object} user - a user object - possibly falsy
  * @return {boolean} - true to show flag and false otherwise
  */
 function showFeature(user) {
@@ -400,7 +397,7 @@ function showFeature(user) {
     '57b4e90d9f0e4e114b44bcf8', // Guy
   ];
 
-  return !!(user && user.get && validUserIds.indexOf(user.get('_id')) > -1);
+  return !!(user && user._id && validUserIds.indexOf(user._id) > -1);
 }
 
 /**

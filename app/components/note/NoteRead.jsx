@@ -7,15 +7,11 @@ const LinkIcon = require('material-ui/svg-icons/content/link').default;
 const utils = require('../../libs/utils');
 const Markdown = require('../common/Markdown');
 const NoteReadMetrics = require('./NoteReadMetrics');
-const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 
-const { List } = Immutable;
-
 class NoteRead extends React.PureComponent {
-  static renderImages(note) {
-    const images = note.get('images');
-    if (images && images.size) {
+  static renderImages({ images }) {
+    if (images && images.length) {
       return images.map(image => NoteRead.renderImage(image));
     }
     return null;
@@ -27,7 +23,7 @@ class NoteRead extends React.PureComponent {
       padding: '1%',
     };
     return (
-      <div key={image.get('id')}>
+      <div key={image.id}>
         <img
           style={imageStyle}
           src={NoteRead.buildImageSrc(image)}
@@ -39,15 +35,14 @@ class NoteRead extends React.PureComponent {
   }
 
   static buildImageUrl(size, image) {
-    const id = image.get('id');
-    const ext = image.get('ext');
+    const { id, ext } = image;
     const folder = process.env.NODE_ENV === 'production' ? 'up' : 'test';
-    const imageCache = process.env.PLANT_IMAGE_CACHE || '';
+    const { PLANT_IMAGE_CACHE: imageCache = '' } = process.env;
     return `//${imageCache}i.plaaant.com/${folder}/${size}/${id}${ext && ext.length ? '.' : ''}${ext}`;
   }
 
   static buildImageSrc(image) {
-    const sizes = image.get('sizes', List()).toJS();
+    const sizes = image.sizes || [];
     const size = sizes && sizes.length
       ? sizes[sizes.length - 1].name
       : 'orig';
@@ -60,7 +55,7 @@ class NoteRead extends React.PureComponent {
       return '';
     }
 
-    const sizes = image.get('sizes', List()).toJS();
+    const sizes = image.sizes || [];
     if (sizes && sizes.length) {
       // <img src="small.jpg" srcset="medium.jpg 1000w, large.jpg 2000w" alt="yah">
       const items = sizes.map(size => `${NoteRead.buildImageUrl(size.name, image)} ${size.width}w `);
@@ -82,7 +77,7 @@ class NoteRead extends React.PureComponent {
 
   confirmDelete(yes) {
     if (yes) {
-      this.props.dispatch(actions.deleteNoteRequest(this.props.note.get('_id')));
+      this.props.dispatch(actions.deleteNoteRequest(this.props.note._id));
     } else {
       this.setState({ showDeleteConfirmation: false });
     }
@@ -90,8 +85,8 @@ class NoteRead extends React.PureComponent {
 
   editNote() {
     const note = {
-      ...this.props.note.toJS(),
-      date: utils.intToString(this.props.note.get('date')),
+      ...this.props.note,
+      date: utils.intToString(this.props.note.date),
       isNew: false,
     };
     const { plant } = this.props;
@@ -117,13 +112,13 @@ class NoteRead extends React.PureComponent {
 
     const images = NoteRead.renderImages(note);
 
-    const date = utils.intToMoment(note.get('date'));
+    const date = utils.intToMoment(note.date);
 
     const noteDate = date.format('DD-MMM-YYYY') +
       (date.isSame(moment(), 'day')
         ? ' (today)'
         : ` (${date.from(moment().startOf('day'))})`);
-    const noteId = note.get('_id');
+    const { _id: noteId } = note;
 
     return (
       <Paper key={noteId} style={paperStyle} zDepth={1}>
@@ -133,7 +128,7 @@ class NoteRead extends React.PureComponent {
           </a>
         </div>
         <h5>{noteDate}</h5>
-        <Markdown markdown={note.get('note')} />
+        <Markdown markdown={note.note} />
         <NoteReadMetrics note={note} />
         <EditDeleteButtons
           clickDelete={this.checkDelete}
@@ -153,12 +148,10 @@ NoteRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
   note: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    toJS: PropTypes.func.isRequired,
+    _id: PropTypes.string.isRequired,
+    date: PropTypes.number.isRequired,
   }).isRequired,
-  plant: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  plant: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 module.exports = NoteRead;

@@ -4,7 +4,7 @@
 // might be plants belonging to the user.
 
 const actions = require('../actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 /**
  * This is a helper function for when the action.payload holds a new plant
@@ -14,7 +14,7 @@ const Immutable = require('immutable');
  * @returns {object} - new state
  */
 function replaceInPlace(state, action) {
-  return state.mergeDeep({
+  return seamless.merge(state, {
     [action.payload._id]: action.payload,
   });
 }
@@ -38,18 +38,19 @@ function updatePlantRequest(state, action) {
 // action.payload: <plant-id>
 function deletePlantRequest(state, action) {
   // payload is _id of plant being DELETEd from server
-  return state.delete(action.payload.plantId);
+  return seamless.without(state, action.payload.plantId);
 }
 
 // action.payload: <noteId>
 // payload is {id} of note being DELETEd from server
 // Need to remove this note from the notes array in all plants
-function deleteNoteRequest(state, action) {
+function deleteNoteRequest(state, { payload: noteId }) {
   return state.map((plant) => {
-    const noteIds = Immutable.Set(plant.get('notes', Immutable.Set()));
-    if (noteIds.size) {
-      if (noteIds.has(action.payload)) {
-        return plant.set('notes', noteIds.delete(action.payload));
+    const { notes: noteIds = [] } = plant;
+    if (noteIds.length) {
+      if (noteIds[noteId]) {
+        // TODO: Make sure this has a test
+        return seamless.merge(plant, { notes: noteIds.without(noteId) });
       }
       return plant;
     }
@@ -67,11 +68,9 @@ function loadPlantFailure(state, action) {
 }
 
 // action.payload is an array of plant objects
-function loadPlantsSuccess(state, action) {
-  if (action.payload && action.payload.length > 0) {
-    // const plants = plantArrayToObject(action.payload);
-    // return Object.freeze(Object.assign({}, state, plants));
-    return state.mergeDeep(action.payload.reduce((acc, plant) => {
+function loadPlantsSuccess(state, { payload: plants }) {
+  if (plants && plants.length > 0) {
+    return seamless.merge(state, plants.reduce((acc, plant) => {
       acc[plant._id] = plant;
       return acc;
     }, {}));
@@ -81,36 +80,61 @@ function loadPlantsSuccess(state, action) {
 
 // The action.payload.note is the returned note from the
 // server.
-function upsertNoteSuccess(state, action) {
+function upsertNoteSuccess(state, { payload: { note } }) {
   const {
-    _id,
-    plantIds = [],
-  } = action.payload.note;
+    _id, // The id of the note
+    plantIds = [], // The plants that this note applies to
+  } = note;
 
   if (!plantIds.length) {
     // console.error('No plantIds in upsertNoteSuccess:', action);
     return state;
   }
 
-  // If plantIds has plantId, then make sure notes has noteId
-  // If plantIds does not have plantId, then make sure notes does not have noteId
-  return state.map((plant, plantId) => {
-    const noteIds = Immutable.Set(plant.get('notes', Immutable.Set()));
-    const hasNoteId = noteIds.has(_id);
+  // The upsertNote might have added and/or removed associated plants
+  // for that note. As such, we need to iterate through all the plants
+  // in the state object and check the `notes` collection in each
+  // plant.
+  // If the `notes` collection has the _id and the plantIds does not
+  // have that plant's id then we need to remove that note's id from
+  // the plant's `notes` collection.
+  // If the `notes` collection does not have the _id and the plantIds
+  // has that plant's id then we need add the note's id to that plant's
+  // `notes` collection.
 
-    if (plantIds.indexOf(plantId) === -1) {
-      // Make sure plant does not have the _id in its notes List
-      if (hasNoteId) {
-        return plant.set('notes', noteIds.delete(_id));
-      }
-      return plant;
+  // Iterate through all the plants in the state object and get from
+  // that a new object of plants that have to be updated.
+  const updatedPlants = Object.keys(state).reduce((acc, plantId) => {
+    const plant = state[plantId];
+
+    // Should this plant have this note?
+    const shouldHaveNote = plantIds.includes(plantId);
+    // Does this plant have this note?
+    const hasNote = (plant.notes).includes(_id);
+
+    // If should have and has do nothing
+    // If should not have and does not have do nothing
+    // If should have and does not have then add it.
+    if (shouldHaveNote && !hasNote) {
+      acc[plantId] = seamless.merge(plant, {
+        notes: plant.notes.concat(_id),
+      });
     }
-    // Make sure the plant had the _id in its notes List
-    if (hasNoteId) {
-      return plant;
+
+    // If should not have and has, then remove it
+    if (!shouldHaveNote && hasNote) {
+      acc[plantId] = seamless.set(plant, 'notes', plant.notes.filter(noteId => noteId !== _id));
     }
-    return plant.set('notes', noteIds.add(_id));
-  });
+
+    return acc;
+  }, {});
+
+  // if no changes then return the original state.
+  if (!Object.keys(updatedPlants).length) {
+    return state;
+  }
+
+  return seamless.merge(state, updatedPlants);
 }
 
 // action.payload is {
@@ -127,18 +151,18 @@ function loadNotesRequest(state, action) {
     // console.error('No plantId in action.payload:', action.payload);
     return state;
   }
-  const plant = state.get(plantId);
+  const plant = state[plantId];
   if (!plant) {
     // console.error('No plant in state for plantId:', plantId);
     return state;
   }
-  return state.set(plantId, plant.set('notesRequested', true));
+  return seamless.set(state, plantId, seamless.set(plant, 'notesRequested', true));
 }
 
 // action.payload is an array of notes from the server
-function loadNotesSuccess(state, action) {
-  if (action.payload && action.payload.length > 0) {
-    const plants = action.payload.reduce((acc, note) => {
+function loadNotesSuccess(state, { payload: notes }) {
+  if (notes && notes.length > 0) {
+    const plants = notes.reduce((acc, note) => {
       (note.plantIds || []).forEach((plantId) => {
         if (acc[plantId]) {
           acc[plantId].push(note._id);
@@ -183,7 +207,7 @@ if (reducers.undefined) {
 ${Object.keys(reducers).join()}`);
 }
 
-module.exports = (state = new Immutable.Map(), action) => {
+module.exports = (state = seamless.from({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

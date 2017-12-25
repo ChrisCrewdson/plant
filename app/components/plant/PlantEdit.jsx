@@ -12,12 +12,12 @@ const Paper = require('material-ui/Paper').default;
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const React = require('react');
 const utils = require('../../libs/utils');
-const Immutable = require('immutable');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
 const MapsAddLocation = require('material-ui/svg-icons/maps/add-location').default;
 const PlantEditTerminated = require('./PlantEditTerminated');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
+const getIn = require('lodash/get');
 
 const { plant: plantValidator } = validators;
 
@@ -37,9 +37,9 @@ class PlantEdit extends React.Component {
 
   componentWillMount() {
     const { interimPlant } = this.props;
-    const pageTitle = interimPlant.get('isNew')
+    const pageTitle = interimPlant.isNew
       ? 'Add New Plant'
-      : `Edit ${interimPlant.get('title')}`;
+      : `Edit ${interimPlant.title}`;
     this.setState({ pageTitle });
   }
 
@@ -79,7 +79,7 @@ class PlantEdit extends React.Component {
           // console.error(err);
         } else {
           this.props.dispatch(actions.editPlantChange({
-            loc: Immutable.fromJS(geoJson),
+            loc: geoJson,
           }));
         }
       });
@@ -89,7 +89,7 @@ class PlantEdit extends React.Component {
   }
 
   save(e) {
-    const plant = this.props.interimPlant.toJS();
+    const plant = this.props.interimPlant;
     const { isNew = false } = plant;
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
@@ -98,7 +98,7 @@ class PlantEdit extends React.Component {
       }
     });
 
-    plant.userId = this.props.user.get('_id');
+    plant.userId = this.props.user._id;
 
     const { dispatch, history } = this.props;
     try {
@@ -120,17 +120,22 @@ class PlantEdit extends React.Component {
 
   render() {
     const { interimPlant, user } = this.props;
-    const title = interimPlant.get('title', '');
-    const botanicalName = interimPlant.get('botanicalName', '');
-    const commonName = interimPlant.get('commonName', '');
-    const description = interimPlant.get('description', '');
-    const purchasedDate = interimPlant.get('purchasedDate', '');
-    const plantedDate = interimPlant.get('plantedDate', '');
-    const price = interimPlant.get('price', '');
-    const errors = interimPlant.get('errors', Immutable.Map()).toJS();
+    const {
+      title = '',
+      botanicalName = '',
+      commonName = '',
+      description = '',
+      purchasedDate = '',
+      plantedDate = '',
+      price = '',
+      errors = {},
+    } = interimPlant;
 
-    const locationIds = user.get('locationIds', Immutable.List()).toJS() || [];
-    const activeLocationId = user.get('activeLocationId', '');
+    const {
+      locationIds = [],
+      activeLocationId = '',
+    } = user;
+
     const locations = locationIds.reduce((acc, locationId) => {
       acc[locationId._id] = locationId.title;
       return acc;
@@ -139,12 +144,12 @@ class PlantEdit extends React.Component {
     // one that you own/manage. Only set locationId to this if it's one that
     // is in the locationIds list.
     const locationIdsOnly = locationIds.map(locationId => locationId._id);
-    const locationId = interimPlant.get('locationId', '')
+    const locationId = interimPlant.locationId
       || (locationIdsOnly.some(locId => locId === activeLocationId) && activeLocationId)
       || locationIdsOnly[0];
 
-    const geoPosDisplay = interimPlant.has('loc')
-      ? `${interimPlant.getIn(['loc', 'coordinates', '0'])} / ${interimPlant.getIn(['loc', 'coordinates', '1'])}`
+    const geoPosDisplay = interimPlant.loc
+      ? `${getIn(interimPlant, ['loc', 'coordinates', '0'])} / ${getIn(interimPlant, ['loc', 'coordinates', '1'])}`
       : '-- / --';
 
     const {
@@ -321,11 +326,18 @@ PlantEdit.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   interimPlant: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    toJS: PropTypes.func.isRequired,
+    botanicalName: PropTypes.string,
+    commonName: PropTypes.string,
+    description: PropTypes.string,
+    errors: PropTypes.object,
+    isNew: PropTypes.bool,
+    plantedDate: PropTypes.string,
+    price: PropTypes.string,
+    purchasedDate: PropTypes.string,
+    title: PropTypes.string,
   }).isRequired,
   user: PropTypes.shape({
-    get: PropTypes.func.isRequired,
+    _id: PropTypes.string,
   }).isRequired,
 };
 

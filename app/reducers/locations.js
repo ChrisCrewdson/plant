@@ -1,16 +1,18 @@
 
 const actions = require('../actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 // The action.payload are the returned locations from the server.
 function loadLocationsSuccess(state, action) {
   const locations = (action.payload || []).reduce((acc, location) => {
     // eslint-disable-next-line no-param-reassign
-    location.plantIds = Immutable.Set(location.plantIds || []);
-    acc[location._id] = location;
+    location.plantIds = location.plantIds || [];
+    acc[location._id] = Object.assign({}, location, {
+      plantIds: location.plantIds || [],
+    });
     return acc;
   }, {});
-  const newState = state.mergeDeep(locations);
+  const newState = seamless.merge(state, locations, { deep: true });
   return newState;
 }
 
@@ -25,55 +27,44 @@ function createPlantRequest(state, action) {
   // payload is an object of new plant being POSTed to server
   // an _id has already been assigned to this object
   const plant = action.payload;
-  const location = state.get(plant.locationId);
+  let location = state[plant.locationId];
   if (location) {
     // Add the new plantId to the existing list of plantIds at this location
-    const plantIds = location.get('plantIds', Immutable.Set()).add(plant._id);
+    const plantIds = (location.plantIds || []).concat(plant._id);
+    location = Object.assign({}, location, { plantIds });
     // Update the location object with the new list of plantIds
-    return state.set(plant.locationId, location.set('plantIds', plantIds));
+    return seamless.set(state, plant.locationId, location);
   }
   // console.warn(`No location found in locations createPlantRequest reducer ${plant.locationId}`);
   return state;
 }
 
-const { isSet } = Immutable.Set;
-function merger(a, b) {
-  if (isSet(a) && isSet(b)) {
-    return a.union(b);
-  } else if (a && a.mergeWith) {
-    return a.mergeWith(merger, b);
-  }
-  return b;
-}
-
-
 // If a bunch of plants are loaded then check that the plant
-// is on the locations's plantIds list
+// is on the locations' plantIds list
 // action.payload is an array of plant objects
-function loadPlantsSuccess(state, action) {
-  if (action.payload && action.payload.length > 0) {
+function loadPlantsSuccess(state, { payload: plants }) {
+  if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}
-    const locations = action.payload.reduce((acc, plant) => {
-      if (state.get(plant.locationId)) {
-        acc[plant.locationId] = acc[plant.locationId] || { plantIds: Immutable.Set() };
-        acc[plant.locationId].plantIds = acc[plant.locationId].plantIds.add(plant._id);
+    const locations = plants.reduce((acc, { locationId, _id }) => {
+      if (state[locationId]) {
+        acc[locationId] = acc[locationId] || { plantIds: [] };
+        acc[locationId].plantIds.push(_id);
       }
       return acc;
     }, {});
 
-    return state.mergeDeepWith(merger, locations);
+    return seamless.merge(state, locations, { deep: true });
   }
   return state;
 }
 
 // action.payload: {plantId: <plant-id>, locationId: <location-id>}
-function deletePlantRequest(state, action) {
-  const { locationId, plantId } = action.payload;
-  const plantIds = state.getIn([locationId, 'plantIds'], Immutable.List());
-  if (plantIds.has(plantId)) {
+function deletePlantRequest(state, { payload: { locationId, plantId } }) {
+  const plantIds = seamless.getIn(state, [locationId, 'plantIds'], []);
+  if (plantIds.includes(plantId)) {
     const pIds = plantIds.filter(pId => pId !== plantId);
-    return state.setIn([locationId, 'plantIds'], pIds);
+    return seamless.setIn(state, [locationId, 'plantIds'], pIds);
   }
   return state;
 }
@@ -102,7 +93,7 @@ if (reducers.undefined) {
 ${Object.keys(reducers).join()}`);
 }
 
-module.exports = (state = new Immutable.Map(), action) => {
+module.exports = (state = seamless({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

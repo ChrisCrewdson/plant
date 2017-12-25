@@ -12,9 +12,9 @@ const PlantEdit = require('./PlantEdit');
 const PlantRead = require('./PlantRead');
 const NoteCreate = require('../note/NoteCreate');
 const React = require('react');
-const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
+const getIn = require('lodash/get');
 
 class Plant extends React.Component {
   static contextTypes = {
@@ -55,20 +55,18 @@ class Plant extends React.Component {
 
   initState(first, props = this.props || {}) {
     const { store } = this.context;
-    const plants = store.getState().get('plants');
+    const { plants, user } = store.getState();
 
     const { match = {}, params = {} } = props;
     const _id = params.id || (match.params && match.params.id);
     let plant;
     if (_id) {
-      plant = plants.get(_id);
+      plant = plants[_id];
       if (!plant && first) {
         store.dispatch(actions.loadPlantRequest({ _id }));
       }
     } else {
-      const user = store.getState().get('user');
-      const locationIds = user.get('locationIds', Immutable.List()).toJS() || [];
-      const activeLocationId = user.get('activeLocationId', '');
+      const { locationIds = [], activeLocationId } = user;
 
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
@@ -88,24 +86,19 @@ class Plant extends React.Component {
     }
   }
 
-  fromStore(key) {
-    const { store } = this.context;
-    if (store.getState().has(key)) {
-      return store.getState().get(key).toJS();
-    }
-    return null;
-  }
-
   render() {
     const { store } = this.context;
     const { match = {}, params = {} } = this.props;
-    const user = store.getState().get('user');
-    const locations = store.getState().get('locations', Immutable.Map());
-    const plants = store.getState().get('plants');
+    const {
+      interim,
+      locations = {},
+      notes,
+      plants,
+      user,
+    } = store.getState();
 
-    const interim = store.getState().get('interim');
-    const interimNote = interim.getIn(['note', 'note'], Immutable.Map());
-    const interimPlant = interim.getIn(['plant', 'plant']);
+    const interimNote = getIn(interim, ['note', 'note'], {});
+    const interimPlant = getIn(interim, ['plant', 'plant']);
 
     if (interimPlant) {
       return (<PlantEdit
@@ -121,7 +114,7 @@ class Plant extends React.Component {
       console.error('Plant.render: plantId is falsy', this.props);
     }
 
-    const plant = plants.get(plantId);
+    const plant = plants[plantId];
 
     if (!plant) {
       return (
@@ -131,12 +124,10 @@ class Plant extends React.Component {
       );
     }
 
-    const locationId = (interimPlant || plant).get('locationId');
-    const location = locations.get(locationId);
-    const loggedInUserId = store.getState().getIn(['user', '_id']);
+    const { locationId } = (interimPlant || plant);
+    const location = locations[locationId];
+    const loggedInUserId = user && user._id;
     const userCanEdit = canEdit(loggedInUserId, location);
-
-    const notes = store.getState().get('notes');
 
     return (
       <Base>

@@ -1,7 +1,7 @@
 const actions = require('../../actions');
 const Errors = require('../common/Errors');
-const Immutable = require('immutable');
 const InputCombo = require('../common/InputCombo');
+const seamless = require('seamless-immutable').static;
 const React = require('react');
 const Toggle = require('material-ui/Toggle').default;
 const utils = require('../../libs/utils');
@@ -28,7 +28,7 @@ class NoteEditMetrics extends React.PureComponent {
   onChange(e) {
     // console.log('onChange:', e.target.name);
     const { name: inputName } = e.target;
-    const interimMetrics = this.props.interimNote.get('metrics', Immutable.Map());
+    const interimMetrics = this.props.interimNote.metrics || {};
     const metaMetric = utils.metaMetricsGetByKey(inputName);
     const { type } = metaMetric;
     // based on inputName (e.g. blossom or height) we need to lookup
@@ -39,9 +39,7 @@ class NoteEditMetrics extends React.PureComponent {
 
     const value = type === 'toggle' ? e.target.checked : e.target.value;
 
-    const metrics = interimMetrics.mergeDeep({
-      [inputName]: value,
-    });
+    const metrics = seamless.set(interimMetrics, inputName, value);
 
     this.props.dispatch(actions.editNoteChange({ metrics }));
   }
@@ -92,10 +90,11 @@ class NoteEditMetrics extends React.PureComponent {
 
   render() {
     const { interimNote } = this.props;
-    const metrics = interimNote.get('metrics', Immutable.Map()).toJS();
+    const { metrics } = interimNote || {};
     const { metaMetrics } = utils;
 
-    const renderedMetrics = metaMetrics.map(metaMetric => this.renderMetric(metaMetric, metrics[metaMetric.key] || ''));
+    const renderedMetrics = metaMetrics.map(metaMetric =>
+      this.renderMetric(metaMetric, metrics[metaMetric.key] || ''));
 
     return (
       <div style={{ textAlign: 'left' }}>
@@ -110,7 +109,7 @@ NoteEditMetrics.propTypes = {
   dispatch: PropTypes.func.isRequired,
   error: PropTypes.string,
   interimNote: PropTypes.shape({
-    get: PropTypes.func.isRequired,
+    metrics: PropTypes.object,
   }).isRequired,
 };
 

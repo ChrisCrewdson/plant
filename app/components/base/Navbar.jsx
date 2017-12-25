@@ -2,7 +2,7 @@ const React = require('react');
 const actions = require('../../actions');
 const utils = require('../../libs/utils');
 const { isLoggedIn } = require('../../libs/auth-helper');
-const Immutable = require('immutable');
+
 const AddPlantButton = require('../common/AddPlantButton');
 const PropTypes = require('prop-types');
 
@@ -22,8 +22,8 @@ class Navbar extends React.Component {
   componentWillMount() {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
-    const user = store.getState().get('user', Immutable.Map());
-    const interimMap = store.getState().get('interim');
+    const user = store.getState().user || {};
+    const interimMap = store.getState().interim;
     this.setState({ user, interimMap });
   }
 
@@ -33,8 +33,8 @@ class Navbar extends React.Component {
 
   onChange() {
     const { store } = this.context;
-    const user = store.getState().get('user', Immutable.Map());
-    const interimMap = store.getState().get('interim');
+    const user = store.getState().user || {};
+    const interimMap = store.getState().interim;
     this.setState({ user, interimMap });
   }
 
@@ -62,7 +62,7 @@ class Navbar extends React.Component {
       user,
     } = this.state || {};
 
-    const locationId = user.get('activeLocationId', '');
+    const locationId = user.activeLocationId || '';
 
     if (!locationId) {
       // console.warn('No default locationId found for user', user);
@@ -70,12 +70,12 @@ class Navbar extends React.Component {
     }
 
     const { store } = this.context;
-    const location = store.getState().getIn(['locations', locationId]);
+    const location = store.getState().locations[locationId];
     if (!location) {
       // console.warn('Navbar.makeMyPlantsMenu no location', locationId);
       return null;
     }
-    const locationTitle = location.get('title', '...');
+    const locationTitle = location.title || '...';
     const plantListAt = `Plant List at ${locationTitle}`;
 
     return (
@@ -109,13 +109,13 @@ class Navbar extends React.Component {
       user,
       interimMap,
     } = this.state || {};
-    const displayName = user.get('name', '');
+    const displayName = user.name || '';
     const { store } = this.context;
 
     const loggedIn = isLoggedIn(store);
     const notEditing = !interimMap.size;
 
-    const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${user.get('_id')}`;
+    const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${user._id}`;
 
     return (
       <nav className="navbar navbar-default navbar-fixed-top">

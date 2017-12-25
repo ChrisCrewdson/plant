@@ -1,4 +1,4 @@
-const { combineReducers } = require('redux-immutable');
+const { combineReducers } = require('redux');
 const interim = require('./interim');
 const locations = require('./locations');
 const notes = require('./notes');

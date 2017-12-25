@@ -23,9 +23,9 @@ class NoteCreate extends React.PureComponent {
       date: moment().format('MM/DD/YYYY'),
       isNew: true,
       note: '',
-      plantIds: [plant.get('_id')],
+      plantIds: [plant._id],
       errors: {},
-      plants: this.props.plants.filter(p => p.get('locationId') === locationId),
+      plants: this.props.plants.filter(p => p.locationId === locationId),
     };
 
     this.props.dispatch(actions.editNoteOpen({ note, plant }));
@@ -73,16 +73,13 @@ class NoteCreate extends React.PureComponent {
 NoteCreate.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
-  interimNote: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
+  interimNote: PropTypes.shape({
+    note: PropTypes.object,
   }).isRequired,
-  plant: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
+  plant: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
   }).isRequired,
-  plants: PropTypes.shape({ // Immutable.js Map
-    get: PropTypes.func.isRequired,
-    filter: PropTypes.func.isRequired,
-  }).isRequired,
+  plants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   locationId: PropTypes.string.isRequired,
 };
 

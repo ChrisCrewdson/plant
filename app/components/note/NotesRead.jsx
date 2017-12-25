@@ -1,13 +1,11 @@
 const CircularProgress = require('material-ui/CircularProgress').default;
-const Immutable = require('immutable');
 const metrics = require('../../libs/metrics');
 const NoteRead = require('./NoteRead');
 const NoteEdit = require('./NoteEdit');
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
-
-const { List } = Immutable;
+const getIn = require('lodash/get');
 
 class NotesRead extends React.PureComponent {
   componentWillMount() {
@@ -20,21 +18,18 @@ class NotesRead extends React.PureComponent {
 
   sortNotes(props = this.props) {
     const { notes, plant } = props;
-    const noteIds = plant.get('notes', List());
-    if (!(List.isList(noteIds) || Immutable.Set.isSet(noteIds))) {
-      // console.error('Not a List or Set from plant.get notes:', props.plant, noteIds);
-    }
+    const { notes: noteIds = [] } = plant;
 
-    if (!noteIds.size) {
+    if (!noteIds.length) {
       return;
     }
 
     const sortedIds = noteIds.sort((a, b) => {
-      const noteA = notes.get(a);
-      const noteB = notes.get(b);
+      const noteA = notes[a];
+      const noteB = notes[b];
       if (noteA && noteB) {
-        const dateA = noteA.get('date');
-        const dateB = noteB.get('date');
+        const dateA = noteA.date;
+        const dateB = noteB.date;
         if (dateA === dateB) {
           return 0;
         }
@@ -55,9 +50,9 @@ class NotesRead extends React.PureComponent {
       plant,
     } = this.props;
 
-    const interimNoteId = interim.getIn(['note', 'note', '_id']);
+    const interimNoteId = getIn(interim, ['note', 'note', '_id']);
     if (interimNoteId && userCanEdit) {
-      const interimNote = this.props.interim.getIn(['note', 'note']);
+      const interimNote = getIn(interim, ['note', 'note']);
 
       return (
         <NoteEdit
@@ -71,7 +66,7 @@ class NotesRead extends React.PureComponent {
     }
 
     const { sortedIds } = this.state || {};
-    if (!sortedIds || !sortedIds.size) {
+    if (!sortedIds || !sortedIds.length) {
       return null;
     }
 
@@ -126,20 +121,14 @@ class NotesRead extends React.PureComponent {
 NotesRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interim: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    getIn: PropTypes.func.isRequired,
+    note: PropTypes.object,
   }).isRequired,
   userCanEdit: PropTypes.bool.isRequired,
-  notes: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-  }).isRequired,
+  notes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   plant: PropTypes.shape({
-    get: PropTypes.func.isRequired,
+    notes: PropTypes.array.isRequired,
   }).isRequired,
-  plants: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    filter: PropTypes.func.isRequired,
-  }).isRequired,
+  plants: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   locationId: PropTypes.string.isRequired,
 };
 

@@ -2,17 +2,17 @@
 // Only the logged in user can get to their profile page.
 
 const Base = require('../base/Base');
-const Immutable = require('immutable');
 const LocationsManager = require('../location/LocationsManager');
 const PropTypes = require('prop-types');
 const { RadioButton } = require('material-ui/RadioButton');
 const { RadioButtonGroup } = require('material-ui/RadioButton');
 const React = require('react');
+const getIn = require('lodash/get');
 
 // Responsible for:
 // 1. Current user: /profile
 // 2. Other user: /profile/slug/<id>
-// Only implmenting #1 for now.
+// Only implementing #1 for now.
 
 function profile(props, context) {
   const styles = {
@@ -28,9 +28,10 @@ function profile(props, context) {
   const { userSettings } = props;
   const { imperial } = userSettings;
   const { store } = context;
-  const { getState, dispatch } = store;
-  const users = getState().get('users', Immutable.Map());
-  const locations = getState().getIn(['user', 'locationIds']);
+  const { dispatch } = store;
+  const state = store.getState();
+  const users = getIn(state, 'users', {});
+  const locations = getIn(state, ['user', 'locationIds']);
 
   const unitOfMeasurement = imperial ? 'imperial' : 'metric';
 

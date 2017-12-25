@@ -1,6 +1,5 @@
 const actions = require('../../actions');
 const React = require('react');
-const Immutable = require('immutable');
 const Toggle = require('material-ui/Toggle').default;
 const InputCombo = require('../common/InputCombo');
 const Divider = require('material-ui/Divider').default;
@@ -16,7 +15,7 @@ class PlantEditTerminated extends React.Component {
 
   componentWillMount() {
     const { interimPlant } = this.props;
-    let terminatedReason = interimPlant.get('terminatedReason');
+    let { terminatedReason } = interimPlant;
     if (!terminatedReason) {
       terminatedReason = 'died';
       this.props.dispatch(actions.editPlantChange({
@@ -45,13 +44,15 @@ class PlantEditTerminated extends React.Component {
         width: 'inherit',
       },
     };
-    const { interimPlant } = this.props;
-    const isTerminated = interimPlant.get('isTerminated', false);
-    const terminatedDate = interimPlant.get('terminatedDate', '');
-    const terminatedReason = interimPlant.get('terminatedReason');
-    const terminatedDescription = interimPlant.get('terminatedDescription', '');
 
-    const errors = interimPlant.get('errors', Immutable.Map()).toJS();
+    const {
+      errors = {},
+      isTerminated = false,
+      terminatedDate = '',
+      terminatedDescription = '',
+      terminatedReason,
+    } = this.props.interimPlant;
+
     const dateFormat = 'MM/DD/YYYY';
 
     return (
@@ -116,8 +117,11 @@ class PlantEditTerminated extends React.Component {
 PlantEditTerminated.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimPlant: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    toJS: PropTypes.func.isRequired,
+    errors: PropTypes.object,
+    isTerminated: PropTypes.bool,
+    terminatedDate: PropTypes.string,
+    terminatedDescription: PropTypes.string,
+    terminatedReason: PropTypes.string,
   }).isRequired,
 };
 

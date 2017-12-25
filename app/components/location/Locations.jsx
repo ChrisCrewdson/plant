@@ -7,7 +7,6 @@ const actions = require('../../actions');
 const Base = require('../base/Base');
 const React = require('react');
 const { withRouter } = require('react-router-dom');
-const Immutable = require('immutable');
 const AddLocationButton = require('./AddLocationButton');
 const PropTypes = require('prop-types');
 const LocationTile = require('./LocationTile');
@@ -51,15 +50,14 @@ class Locations extends React.Component {
 
   updateState() {
     const { store } = this.context;
-    const locations = store.getState().get('locations');
-    const users = store.getState().get('users');
+    const { locations, users } = store.getState();
     this.setState({ locations, users });
   }
 
   isOwner(user) {
     const { store } = this.context;
-    const authUser = store.getState().get('user', Immutable.Map());
-    return !!(user && authUser.get('_id') === user.get('_id'));
+    const { user: authUser = {} } = store.getState();
+    return !!(user && authUser._id === user._id);
   }
 
   renderLocation(location) {
@@ -67,18 +65,15 @@ class Locations extends React.Component {
       return null;
     }
 
-    const plantIds = location.get('plantIds', Immutable.Set());
-    const { size } = plantIds;
+    const { plantIds = [], _id, title } = location;
+    const { length: numPlants } = plantIds;
     const { store: { dispatch } } = this.context;
-
-    const _id = location.get('_id');
-    const title = location.get('title');
 
     return (<LocationTile
       _id={_id}
       dispatch={dispatch}
       key={_id}
-      numPlants={size}
+      numPlants={numPlants}
       title={title}
     />);
   }
@@ -86,7 +81,7 @@ class Locations extends React.Component {
   renderNoLocations(user) {
     return (
       <div>
-        {Locations.renderTitle(user.get('name'))}
+        {Locations.renderTitle(user.name)}
         <h3 style={{ textAlign: 'center' }}>
           <div style={{ marginTop: '100px' }}>No locations added yet...</div>
           <AddLocationButton
@@ -100,18 +95,18 @@ class Locations extends React.Component {
 
   renderLocations() {
     const { store } = this.context;
-    const locations = store.getState().get('locations');
-    if (!locations || !locations.size) {
+    const { locations, users = {} } = store.getState();
+    if (!locations || !locations.length) {
       return null;
     }
 
     const { params } = this.props.match;
     if (params && params.id) {
-      const user = store.getState().getIn(['users', params.id], Immutable.Map());
-      const locationIds = user.get('locationIds', Immutable.List());
-      if (locationIds.size) {
-        return locationIds.valueSeq().toArray().map((locationId) => {
-          const location = locations.get(locationId);
+      const user = users[params.id] || {};
+      const { locationIds = [] } = user;
+      if (locationIds.length) {
+        return locationIds.map((locationId) => {
+          const location = locations[locationId];
           return this.renderLocation(location);
         });
       }
@@ -119,17 +114,15 @@ class Locations extends React.Component {
     }
     return locations
       .filter((location) => {
-        const plantIds = location.get('plantIds', Immutable.Set());
-        return plantIds.size > 0;
+        const { plantIds = [] } = location;
+        return !!plantIds.length;
       })
-      .valueSeq()
       .sort((a, b) => {
-        const sizeA = a.get('plantIds', Immutable.Set()).size;
-        const sizeB = b.get('plantIds', Immutable.Set()).size;
+        const sizeA = (a.plantIds || []).length;
+        const sizeB = (b.plantIds || []).length;
         return sizeB - sizeA;
       })
-      .toArray()
-      .map(location => this.renderLocation(location));
+      .map(this.renderLocation);
   }
 
   render() {

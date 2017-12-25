@@ -20,7 +20,7 @@ Object of notes:
 */
 
 const actions = require('../actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 /**
  * Raised when a save event is triggered for a note.
@@ -34,7 +34,7 @@ function upsertNoteRequestSuccess(state, action) {
     // console.error('No _id in note in upsertNoteRequestSuccess', action.payload);
     return state;
   }
-  return state.set(_id, Immutable.fromJS(action.payload.note));
+  return seamless.merge(state, { _id: action.payload.note });
 }
 
 /**
@@ -53,8 +53,8 @@ function upsertNoteFailure(state) {
  * @param {object} action - action.payload holds _id of note being deleted
  * @returns {object} state - the new object of notes
  */
-function deleteNoteRequest(state, action) {
-  return state.delete(action.payload);
+function deleteNoteRequest(state, { payload: _id }) {
+  return seamless.without(state, _id);
 }
 
 /**
@@ -78,15 +78,14 @@ function deleteNoteFailure(state /* , action */) {
 }
 
 // action.payload is an array of notes from the server
-function loadNotesSuccess(state, action) {
-  const notes = action.payload;
+function loadNotesSuccess(state, { payload: notes }) {
   if (notes && notes.length) {
     const newNotes = notes.reduce((acc, note) => {
       acc[note._id] = note;
       return acc;
     }, {});
 
-    return state.mergeDeep(newNotes);
+    return seamless.merge(state, newNotes);
   }
   // console.warn('Nothing loaded from server in loadNotesSuccess:', action);
   return state;
@@ -111,7 +110,7 @@ if (reducers.undefined) {
 ${Object.keys(reducers).join()}`);
 }
 
-module.exports = (state = new Immutable.Map(), action) => {
+module.exports = (state = {}, action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

@@ -12,7 +12,6 @@ const actions = require('../../actions');
 const utils = require('../../libs/utils');
 const NoteAssocPlant = require('./NoteAssocPlant');
 const NoteEditMetrics = require('./NoteEditMetrics');
-const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 const validators = require('../../models');
 
@@ -112,15 +111,14 @@ class NoteEdit extends React.PureComponent {
       interimNote,
       locationId,
     } = this.props;
-    const uploadProgress = interimNote.get('uploadProgress');
+    const { uploadProgress } = interimNote;
 
     if (uploadProgress) {
       const linearProgressStyle = {
         width: '100%',
         height: '20px',
       };
-      const value = uploadProgress.get('value');
-      const max = uploadProgress.get('max');
+      const { value, max } = uploadProgress;
       const progress = `Upload progress ${Math.round((value * 100) / max)} %`;
       return (
         <Paper
@@ -143,19 +141,17 @@ class NoteEdit extends React.PureComponent {
       );
     }
 
-    const date = interimNote.get('date', '');
-    const errors = interimNote.get('errors', Immutable.Map());
-    const note = interimNote.get('note', '');
-    // TODO: Guy 11/16/2017 Can plantIds be passed to next component as an immutable instead
-    // of creating a new object each time?
-    const plantIds = interimNote.get('plantIds').toJS();
+    const {
+      date = '', errors = {}, note = '', plantIds,
+    } = interimNote;
 
-    const plants = this.props.plants.filter(plant =>
-      plant.get('locationId') === locationId);
+    // TODO: Next line should happen in NoteAssocPlant and not here because then NoteAssocPlant
+    // can be a PureComponent
+    const plants = this.props.plants.filter(({ locationId: locId }) => locId === locationId);
     const associatedPlants = (
       <NoteAssocPlant
         dispatch={this.props.dispatch}
-        error={errors.get('plantIds')}
+        error={errors.plantIds}
         plantIds={plantIds}
         plants={plants}
       />
@@ -169,7 +165,7 @@ class NoteEdit extends React.PureComponent {
 
         <InputCombo
           changeHandler={this.onChange}
-          error={errors.get('date')}
+          error={errors.date}
           floatingLabelText="Date"
           name="date"
           placeholder="MM/DD/YYYY"
@@ -179,7 +175,7 @@ class NoteEdit extends React.PureComponent {
 
         <InputCombo
           changeHandler={this.onChange}
-          error={errors.get('note')}
+          error={errors.note}
           floatingLabelText="Note"
           multiLine
           name="note"
@@ -215,7 +211,7 @@ class NoteEdit extends React.PureComponent {
 
         <NoteEditMetrics
           dispatch={this.props.dispatch}
-          error={errors.get('metrics')}
+          error={errors.metrics}
           interimNote={interimNote}
         />
 
@@ -227,12 +223,8 @@ class NoteEdit extends React.PureComponent {
 NoteEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimNote: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    toJS: PropTypes.func.isRequired,
   }).isRequired,
   plants: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    filter: PropTypes.func.isRequired,
   }).isRequired,
   postSaveSuccess: PropTypes.func,
   locationId: PropTypes.string.isRequired,

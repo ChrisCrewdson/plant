@@ -2,7 +2,7 @@
 // "interim" is the least worst of all the bad names I came up with.
 
 const actions = require('../actions');
-const seamless = require('seamless-immutable');
+const seamless = require('seamless-immutable').static;
 
 // action.payload:
 // {note, plant}

@@ -1,15 +1,12 @@
 const React = require('react');
 const utils = require('../../libs/utils');
-// const Immutable = require('immutable');
 const PropTypes = require('prop-types');
 
 function noteReadMetrics(props) {
-  const mets = props.note.get('metrics');
-  if (!mets) {
+  const { metrics } = props.note;
+  if (!metrics) {
     return null;
   }
-
-  const metrics = mets.toJS();
 
   const renderedMetrics = utils.metaMetrics.map((metaMetric) => {
     if (!metrics[metaMetric.key]) {
@@ -51,8 +48,7 @@ function noteReadMetrics(props) {
 
 noteReadMetrics.propTypes = {
   note: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    toJS: PropTypes.func.isRequired,
+    metrics: PropTypes.object,
   }).isRequired,
 };
 

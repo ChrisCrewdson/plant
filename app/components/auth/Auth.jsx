@@ -1,8 +1,6 @@
 const Base = require('../base/Base');
 const React = require('react');
 const actions = require('../../actions');
-const Immutable = require('immutable');
-// const utils = require('../libs/utils');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 
@@ -31,8 +29,8 @@ class Auth extends React.Component {
 
   componentDidUpdate() {
     const { store } = this.context;
-    const user = store.getState().get('user', Immutable.Map());
-    const jwt = user.get('jwt');
+    const user = store.getState().user || {};
+    const { jwt } = user;
     if (jwt) {
       const returnurl = localStorage.getItem('returnurl');
       if (returnurl) {
@@ -52,7 +50,7 @@ class Auth extends React.Component {
 
   onChange() {
     const { store } = this.context;
-    this.setState(store.getState().get('user', Immutable.Map()));
+    this.setState(store.getState().user || {});
   }
 
 

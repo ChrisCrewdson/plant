@@ -10,7 +10,6 @@ const { canEdit } = require('../../libs/auth-helper');
 const actions = require('../../actions');
 const NoteCreate = require('../note/NoteCreate');
 const utils = require('../../libs/utils');
-const Immutable = require('immutable');
 const AddPlantButton = require('../common/AddPlantButton');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
@@ -75,11 +74,11 @@ class Location extends React.Component {
 
   componentWillMount() {
     const { store } = this.context;
-    const locations = store.getState().get('locations', Immutable.Map());
+    const { locations = {} } = store.getState();
 
     const { id: locationId } = this.props.match.params;
 
-    const plantIds = locations.getIn([locationId, 'plantIds']);
+    const plantIds = locations[locationId] && locations[locationId].plantIds;
     if (!plantIds) {
       store.dispatch(actions.loadPlantsRequest(locationId));
     }
@@ -93,13 +92,19 @@ class Location extends React.Component {
 
   onChange() {
     const { store } = this.context;
-    const locations = store.getState().get('locations');
-    const allLoadedPlants = store.getState().get('plants');
-    const interim = store.getState().get('interim');
-    const authUser = store.getState().get('user');
-    const users = store.getState().get('users');
+    const {
+      interim,
+      locations,
+      plants: allLoadedPlants,
+      user: authUser,
+      users,
+    } = store.getState();
     const state = {
-      locations, allLoadedPlants, interim, authUser, users,
+      allLoadedPlants,
+      authUser,
+      interim,
+      locations,
+      users,
     };
     this.setState(state);
   }
@@ -119,7 +124,7 @@ class Location extends React.Component {
       authUser,
     } = this.state || {};
 
-    const location = locations && locations.get(this.props.match.params.id);
+    const location = locations && locations[this.props.match.params.id];
     if (!location) {
       return (
         <Base>
@@ -130,12 +135,14 @@ class Location extends React.Component {
       );
     }
 
-    const interimNote = interim.getIn(['note', 'note']);
-    const plantCreateNote = interim.getIn(['note', 'plant']);
-    const createNote = !!interimNote && interimNote.get('isNew');
+    const {
+      note: interimNote,
+      plant: plantCreateNote,
+    } = interim.note || {};
+    const createNote = !!interimNote && interimNote.isNew;
 
-    const userCanEdit = canEdit(authUser.get('_id'), location);
-    const locationId = location.get('_id');
+    const userCanEdit = canEdit(authUser._id, location);
+    const { _id: locationId } = location;
 
     if (createNote && userCanEdit) {
       const style = {
@@ -160,9 +167,9 @@ class Location extends React.Component {
       );
     }
 
-    const plantIds = location.get('plantIds', Immutable.List());
-    if (!plantIds.size) {
-      if (interim.has('loadPlantRequest')) {
+    const { plantIds = [] } = location;
+    if (!plantIds.length) {
+      if (interim.loadPlantRequest) {
         return Location.renderWaiting(location);
       }
       return this.renderNoPlants(location, userCanEdit);
@@ -177,9 +184,9 @@ class Location extends React.Component {
     // in the name:
     // title={location.title}
     const tileElements = sortedPlantIds.reduce((acc, plantId) => {
-      const plant = allLoadedPlants.get(plantId);
+      const plant = allLoadedPlants[plantId];
       if (plant) {
-        const _id = plant.get('_id');
+        const { _id } = plant;
         acc.found.push(<PlantItem
           key={_id}
           dispatch={store.dispatch}
