@@ -1,6 +1,6 @@
 
 const actions = require('../actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 // The action.payload are the users returned users from the server.
 function loadUsersSuccess(state, action) {

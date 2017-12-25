@@ -1,5 +1,5 @@
 const { initialState } = require('../store/user');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 const actions = require('../actions');
 
 function loginRequest() {

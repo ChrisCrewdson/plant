@@ -1,5 +1,5 @@
 const authHelper = require('../../../app/libs/auth-helper');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 describe('/app/libs/auth-helper', () => {
   describe('canEdit', () => {

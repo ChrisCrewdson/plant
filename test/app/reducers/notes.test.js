@@ -1,6 +1,6 @@
 const notes = require('../../../app/reducers/notes');
 const actions = require('../../../app/actions');
-const Immutable = require('immutable');
+const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/notes', () => {
   describe('sanity check', () => {
