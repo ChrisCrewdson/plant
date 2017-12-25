@@ -3,7 +3,7 @@ const plants = require('../../../app/reducers/plants');
 const actions = require('../../../app/actions');
 const seamless = require('seamless-immutable').static;
 
-describe('/app/reducers/plants', () => {
+describe.only('/app/reducers/plants', () => {
   describe('similar methods', () => {
     const methods = [
       'createPlantRequest',
@@ -25,11 +25,11 @@ describe('/app/reducers/plants', () => {
         _id: '2',
         name: 'two',
       };
-      const expected = Object.assign({}, state.toJS(), { 2: payload });
+      const expected = Object.assign({}, state, { 2: payload });
 
       methods.forEach((method) => {
         const actual = plants(state, actions[method](payload));
-        expect(actual.toJS()).toEqual(expected);
+        expect(actual).toEqual(expected);
       });
     });
 
@@ -48,17 +48,17 @@ describe('/app/reducers/plants', () => {
         _id: '2',
         name: 'two',
       };
-      const expected = Object.assign({}, state.toJS(), { 2: payload });
+      const expected = Object.assign({}, state, { 2: payload });
 
       methods.forEach((method) => {
         const actual = plants(state, actions[method](payload));
-        expect(actual.toJS()).toEqual(expected);
+        expect(actual).toEqual(expected);
       });
     });
   });
 
   test('should delete a plant', () => {
-    const current = seamless.from({
+    const expected = {
       1: {
         _id: '1',
         name: 'one',
@@ -67,17 +67,17 @@ describe('/app/reducers/plants', () => {
         _id: '2',
         name: 'xxx',
       },
-    });
+    };
+    const current = seamless.from(expected);
     const payload = { locationId: 'l1', plantId: '2' };
-    const expected = current.toJS();
     delete expected['2'];
 
     const actual = plants(current, actions.deletePlantRequest(payload));
-    expect(actual.toJS()).toEqual(expected);
+    expect(actual).toEqual(expected);
   });
 
   test('should delete a note', () => {
-    const current = seamless.from({
+    const expected = {
       1: {
         _id: '1',
         name: 'one',
@@ -88,9 +88,9 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2', 'n3'],
       },
-    });
+    };
     const payload = 'n2';
-    const expected = seamless.asMutable(current, { deep: true });
+    const current = seamless.from(expected);
     expected['1'].notes.splice(1, 1);
     expected['2'].notes.splice(1, 1);
 
@@ -99,7 +99,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load a plant', () => {
-    const current = seamless.from({
+    const expected = {
       1: {
         _id: '1',
         name: 'one',
@@ -110,22 +110,23 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2', 'n3'],
       },
-    });
+    };
     const payload = {
       _id: '3',
       name: 'three',
       notes: ['n1', 'n2'],
     };
-    const expected = Object.assign({}, current.toJS(), { 3: _.cloneDeep(payload) });
+    const current = seamless.from(expected);
+    Object.assign(expected, { 3: _.cloneDeep(payload) });
     expected['3'].notes = ['n1', 'n2'];
 
     const actual = plants(current, actions.loadPlantSuccess(payload));
 
-    expect(actual.toJS()).toEqual(expected);
+    expect(actual).toEqual(expected);
   });
 
   test('should load multiple plants', () => {
-    const current = seamless.from({
+    const expected = {
       1: {
         _id: '1',
         name: 'one',
@@ -136,17 +137,18 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2', 'n3'],
       },
-    });
+    };
     const payload = [{
       _id: '3',
       name: 'three',
       notes: ['n1', 'n2'],
     }];
-    const expected = Object.assign({}, current.toJS(), { 3: _.cloneDeep(payload[0]) });
+    const current = seamless.from(expected);
+    Object.assign(expected, { 3: _.cloneDeep(payload[0]) });
     expected['3'].notes = ['n1', 'n2'];
 
     const actual = plants(current, actions.loadPlantsSuccess(payload));
-    expect(actual.toJS()).toEqual(expected);
+    expect(actual).toEqual(expected);
   });
 
   test('should add a new noteId to the plant\'s notes List', () => {

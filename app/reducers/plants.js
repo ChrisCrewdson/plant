@@ -5,6 +5,7 @@
 
 const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
+const uniq = require('lodash/uniq');
 
 /**
  * This is a helper function for when the action.payload holds a new plant
@@ -45,17 +46,15 @@ function deletePlantRequest(state, action) {
 // payload is {id} of note being DELETEd from server
 // Need to remove this note from the notes array in all plants
 function deleteNoteRequest(state, { payload: noteId }) {
-  return state.map((plant) => {
-    const { notes: noteIds = [] } = plant;
-    if (noteIds.length) {
-      if (noteIds[noteId]) {
-        // TODO: Make sure this has a test
-        return seamless.merge(plant, { notes: noteIds.without(noteId) });
-      }
-      return plant;
+  return seamless.from(Object.keys(state).reduce((acc, plantId) => {
+    const plant = state[plantId];
+    if ((plant.notes || []).includes(noteId)) {
+      acc[plantId] = seamless.set(plant, 'notes', plant.notes.filter(nId => nId !== noteId));
+    } else {
+      acc[plantId] = plant;
     }
-    return plant;
-  });
+    return acc;
+  }, {}));
 }
 
 // action.payload is a plant object
@@ -161,27 +160,33 @@ function loadNotesRequest(state, action) {
 
 // action.payload is an array of notes from the server
 function loadNotesSuccess(state, { payload: notes }) {
-  if (notes && notes.length > 0) {
-    const plants = notes.reduce((acc, note) => {
-      (note.plantIds || []).forEach((plantId) => {
-        if (acc[plantId]) {
-          acc[plantId].push(note._id);
-        } else {
-          acc[plantId] = [note._id];
-        }
-      });
-      return acc;
-    }, {});
-
-    return state.map((plant, plantId) => {
-      if (!plants[plantId]) {
-        return plant;
-      }
-
-      return plant.set('notes', Immutable.Set(plant.get('notes', Immutable.Set()).concat(plants[plantId])));
-    });
+  if (!notes || !notes.length) {
+    return state;
   }
-  return state;
+
+  const plants = notes.reduce((acc, note) => {
+    (note.plantIds || []).forEach((plantId) => {
+      if (acc[plantId]) {
+        acc[plantId].push(note._id);
+      } else {
+        acc[plantId] = [note._id];
+      }
+    });
+    return acc;
+  }, {});
+
+  return Object.keys(state).reduce((acc, plantId) => {
+    const plant = state[plantId];
+
+    if (!plants[plantId]) {
+      acc[plantId] = plant;
+      return acc;
+    }
+
+    const plantNotes = uniq(plant.notes.concat(plants[plantId]));
+    acc[plantId] = seamless.set(plant, 'notes', plantNotes);
+    return acc;
+  });
 }
 
 const reducers = {
