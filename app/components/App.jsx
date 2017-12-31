@@ -9,13 +9,12 @@ class App extends React.Component {
 
   componentWillMount() {
     const { store } = this.context;
-    const users = store.getState().get('users');
-    if (!users || users.size === 0) {
+    const { users, locations } = store.getState();
+    if (!users || users.length === 0) {
       store.dispatch(actions.loadUsersRequest());
     }
 
-    const locations = store.getState().get('locations');
-    if (!locations || locations.size === 0) {
+    if (!locations || locations.length === 0) {
       store.dispatch(actions.loadLocationsRequest());
     }
 

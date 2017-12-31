@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/libs/gis scaling to canvas should scale a single plant 1`] = `
+Object {
+  "canvasHeight": 700,
+  "plants": Object {
+    "1": Object {
+      "_id": "1",
+      "title": "Title 1",
+      "x": 350,
+      "y": 350,
+    },
+  },
+}
+`;
+
+exports[`/app/libs/gis scaling to canvas should scale two plants on the same latitude 1`] = `
+Object {
+  "canvasHeight": 700,
+  "plants": Object {
+    "1": Object {
+      "_id": "1",
+      "title": "Title 1",
+      "x": 50,
+      "y": 50,
+    },
+    "2": Object {
+      "_id": "2",
+      "title": "Title 2",
+      "x": 650,
+      "y": 50,
+    },
+  },
+}
+`;
+
+exports[`/app/libs/gis scaling to canvas should scale two plants on the same longitude 1`] = `
+Object {
+  "canvasHeight": 700,
+  "plants": Object {
+    "1": Object {
+      "_id": "1",
+      "title": "Title 1",
+      "x": 50,
+      "y": 50,
+    },
+    "2": Object {
+      "_id": "2",
+      "title": "Title 2",
+      "x": 50,
+      "y": 650,
+    },
+  },
+}
+`;
+
+exports[`/app/libs/gis scaling to canvas should scale zero plants 1`] = `
+Object {
+  "canvasHeight": 0,
+  "plants": Object {},
+}
+`;

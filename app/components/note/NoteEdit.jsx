@@ -184,7 +184,7 @@ class NoteEdit extends React.PureComponent {
           value={note}
         />
 
-        {!!errors.size &&
+        {!!errors.length &&
           <div>
             <p className="text-danger col-xs-12">There were errors. Please check your input.</p>
           </div>

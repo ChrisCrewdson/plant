@@ -1,18 +1,28 @@
 const constants = require('./constants');
+const getIn = require('lodash/get');
+const seamless = require('seamless-immutable').static;
 
 const { gisMultiplier } = constants;
 
+/**
+ * Convert Geo long/lat values to canvas x/y pixels
+ * @param {Object} immutablePlants - keyed off plantId
+ * @param {Number} width - the width of the canvas in pixels?
+ */
 function scaleToCanvas(immutablePlants, width) {
-  if (!immutablePlants.size) {
+  const plantIds = Object.keys(immutablePlants);
+
+  if (!plantIds.length) {
     return {
       plants: immutablePlants,
       canvasHeight: 0,
     };
   }
 
-  const minMax = immutablePlants.reduce((acc, plant) => {
-    const long = plant.getIn(['loc', 'coordinates', '0']);
-    const lat = plant.getIn(['loc', 'coordinates', '1']);
+  const minMax = plantIds.reduce((acc, plantId) => {
+    const plant = immutablePlants[plantId];
+    const long = getIn(plant, ['loc', 'coordinates', '0']);
+    const lat = getIn(plant, ['loc', 'coordinates', '1']);
     // eslint-disable-next-line no-restricted-globals
     if (isNaN(long) || isNaN(lat)) {
       // console.warn(`NaN found in getting min/max of long/lat ${long} / ${lat}`);
@@ -52,25 +62,26 @@ function scaleToCanvas(immutablePlants, width) {
   const heightWidthRatio = actualHeight / actualWidth;
   const canvasHeight = heightWidthRatio * width;
 
-  const plants = immutablePlants.map((plant) => {
-    const long = Math.round(plant.getIn(['loc', 'coordinates', '0']) * gisMultiplier);
+  const plants = plantIds.reduce((acc, plantId) => {
+    const plant = immutablePlants[plantId];
+    const long = Math.round(getIn(plant, ['loc', 'coordinates', '0']) * gisMultiplier);
     const ratioFromMinLong = (long - minMax.long.min) / actualWidth;
     const x = (canvasWidth * ratioFromMinLong) + canvasMin;
 
-    const lat = Math.round(plant.getIn(['loc', 'coordinates', '1']) * gisMultiplier);
+    const lat = Math.round(getIn(plant, ['loc', 'coordinates', '1']) * gisMultiplier);
     const ratioFromMinLat = (lat - minMax.lat.min) / actualHeight;
     const y = ((heightWidthRatio * (canvasWidth * ratioFromMinLat)) + canvasMin);
 
-    const title = plant.get('title');
-    const _id = plant.get('_id');
-    return {
+    const { title, _id } = plant;
+    acc[plantId] = {
       _id, title, x, y,
     };
-  });
-  return {
+    return acc;
+  }, {});
+  return seamless.from({
     plants,
     canvasHeight,
-  };
+  });
 }
 
 module.exports = {

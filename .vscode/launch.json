@@ -85,7 +85,8 @@
       "program": "${workspaceRoot}/node_modules/.bin/jest",
       "args": [
         "${workspaceRoot}/test/app/reducers/plants.test.js", // replace this file with the file to focus
-        "-i"
+        "-i",
+        "--forceExit"
       ],
       "env": {
         "NODE_ENV": "development",

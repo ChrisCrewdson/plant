@@ -3,7 +3,7 @@ const plants = require('../../../app/reducers/plants');
 const actions = require('../../../app/actions');
 const seamless = require('seamless-immutable').static;
 
-describe.only('/app/reducers/plants', () => {
+describe('/app/reducers/plants', () => {
   describe('similar methods', () => {
     const methods = [
       'createPlantRequest',

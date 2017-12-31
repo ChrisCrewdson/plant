@@ -30,9 +30,7 @@ class Home extends React.Component {
   }
 
   updateState() {
-    const { store } = this.context;
-    const users = store.getState().get('users');
-    const locations = store.getState().get('locations');
+    const { users, locations } = this.context.store.getState();
     this.setState({ users, locations });
   }
 
@@ -78,10 +76,8 @@ class Home extends React.Component {
   }
 
   renderUsers() {
-    const { store } = this.context;
-    const users = store.getState().get('users');
-    const locations = store.getState().get('locations');
-    return this.anonHome(!!(users && users.size), !!(locations && locations.size));
+    const { users, locations } = this.context.store.getState();
+    return this.anonHome(!!(users && users.length), !!(locations && locations.length));
   }
 
   render() {

@@ -22,8 +22,7 @@ class Navbar extends React.Component {
   componentWillMount() {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
-    const user = store.getState().user || {};
-    const interimMap = store.getState().interim;
+    const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
   }
 
@@ -33,8 +32,7 @@ class Navbar extends React.Component {
 
   onChange() {
     const { store } = this.context;
-    const user = store.getState().user || {};
-    const interimMap = store.getState().interim;
+    const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
   }
 
@@ -69,8 +67,8 @@ class Navbar extends React.Component {
       return null;
     }
 
-    const { store } = this.context;
-    const location = store.getState().locations[locationId];
+    const { locations = {} } = this.context.store.getState();
+    const location = locations[locationId];
     if (!location) {
       // console.warn('Navbar.makeMyPlantsMenu no location', locationId);
       return null;
@@ -113,7 +111,7 @@ class Navbar extends React.Component {
     const { store } = this.context;
 
     const loggedIn = isLoggedIn(store);
-    const notEditing = !interimMap.size;
+    const notEditing = !Object.keys(interimMap).length;
 
     const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${user._id}`;
 

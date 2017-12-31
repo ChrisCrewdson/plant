@@ -5,11 +5,10 @@ describe('/app/libs/gis', () => {
   describe('scaling to canvas', () => {
     test('should scale zero plants', () => {
       const width = 700;
-      const immutablePlants = Immutable.Map();
+      const immutablePlants = seamless.from({});
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
-      expect(scaledPlants.plants.size).toBe(0);
-      expect(scaledPlants.canvasHeight).toBe(0);
+      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants).toMatchSnapshot();
     });
 
     test('should scale a single plant', () => {
@@ -23,11 +22,10 @@ describe('/app/libs/gis', () => {
         },
       };
       const width = 700;
-      const immutablePlants = Immutable.fromJS(plants);
+      const immutablePlants = seamless.from(plants);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
-      expect(scaledPlants.plants.size).toBe(1);
-      expect(scaledPlants.canvasHeight).toBe(width);
+      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants).toMatchSnapshot();
     });
 
     test('should scale two plants on the same latitude', () => {
@@ -48,11 +46,10 @@ describe('/app/libs/gis', () => {
         },
       };
       const width = 700;
-      const immutablePlants = Immutable.fromJS(plants);
+      const immutablePlants = seamless.from(plants);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
-      expect(scaledPlants.plants.size).toBe(2);
-      expect(scaledPlants.canvasHeight).toBe(width);
+      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants).toMatchSnapshot();
     });
 
     test('should scale two plants on the same longitude', () => {
@@ -73,11 +70,10 @@ describe('/app/libs/gis', () => {
         },
       };
       const width = 700;
-      const immutablePlants = Immutable.fromJS(plants);
+      const immutablePlants = seamless.from(plants);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(Immutable.Map.isMap(scaledPlants.plants)).toBe(true);
-      expect(scaledPlants.plants.size).toBe(2);
-      expect(scaledPlants.canvasHeight).toBe(width);
+      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
+      expect(scaledPlants).toMatchSnapshot();
     });
   });
 });
