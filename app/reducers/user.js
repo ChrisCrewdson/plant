@@ -3,13 +3,13 @@ const seamless = require('seamless-immutable').static;
 const actions = require('../actions');
 
 function loginRequest() {
-  return Immutable.fromJS({
+  return seamless.from({
     status: 'fetching',
   });
 }
 
 function loginSuccess(state, action) {
-  return Immutable.fromJS(Object.assign(
+  return seamless.from(Object.assign(
     {}, {
       status: 'success',
       isLoggedIn: true,
@@ -19,7 +19,7 @@ function loginSuccess(state, action) {
 }
 
 function loginFailure(state, action) {
-  return Immutable.fromJS(Object.assign(
+  return seamless.from(Object.assign(
     {}, {
       status: 'failed',
       isLoggedIn: false,
@@ -29,7 +29,7 @@ function loginFailure(state, action) {
 }
 
 function logout() {
-  return Immutable.fromJS({});
+  return seamless.from({});
 }
 
 // The action.payload are the returned locations from the server.

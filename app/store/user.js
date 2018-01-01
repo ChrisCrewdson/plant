@@ -6,14 +6,14 @@ const seamless = require('seamless-immutable').static;
 
 let user;
 function setupSubscribe(store) {
-  let currentValue = user || Immutable.Map();
+  let currentValue = user || seamless.from({});
 
   function handleChange() {
     const previousValue = currentValue;
-    currentValue = store.getState().get('user');
+    currentValue = store.getState().user;
 
-    if (!previousValue.equals(currentValue)) {
-      localStorage.setItem('user', JSON.stringify(currentValue.toJS()));
+    if (previousValue !== currentValue) {
+      localStorage.setItem('user', JSON.stringify(currentValue));
     }
   }
 
@@ -29,7 +29,7 @@ function initialState() {
     // eslint-disable-next-line no-empty
     } catch (e) {
     }
-    user = Immutable.fromJS(user || {});
+    user = seamless.from(user || {});
   }
 
   return user;

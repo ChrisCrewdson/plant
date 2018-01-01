@@ -7,7 +7,7 @@ function loadUsersSuccess(state, action) {
   const { payload: users = [] } = action;
   const usersSet = users.reduce((acc, user) => {
     acc[user._id] = Object.assign({}, user, {
-      locationIds: Immutable.Set(user.locationIds || []),
+      locationIds: user.locationIds || [],
     });
     return acc;
   }, {});
@@ -107,7 +107,7 @@ if (reducers.undefined) {
 ${Object.keys(reducers).join()}`);
 }
 
-module.exports = (state = new Immutable.Map(), action) => {
+module.exports = (state = seamless.from({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

@@ -14,6 +14,7 @@ const NoteAssocPlant = require('./NoteAssocPlant');
 const NoteEditMetrics = require('./NoteEditMetrics');
 const PropTypes = require('prop-types');
 const validators = require('../../models');
+const seamless = require('seamless-immutable').static;
 
 const { note: noteValidator } = validators;
 
@@ -74,7 +75,9 @@ class NoteEdit extends React.PureComponent {
   }
 
   saveNote(files) {
-    const interimNote = this.props.interimNote.toJS();
+    // TODO: Change the 3 lines below to use Object.assign()
+    // or seamless.merge() <== probably this
+    const interimNote = seamless.asMutable(this.props.interimNote, { deep: true });
 
     interimNote._id = interimNote._id || utils.makeMongoId();
     interimNote.date = utils.dateToInt(interimNote.date);
@@ -145,9 +148,17 @@ class NoteEdit extends React.PureComponent {
       date = '', errors = {}, note = '', plantIds,
     } = interimNote;
 
-    // TODO: Next line should happen in NoteAssocPlant and not here because then NoteAssocPlant
-    // can be a PureComponent
-    const plants = this.props.plants.filter(({ locationId: locId }) => locId === locationId);
+    // TODO: Next line (reduce) should happen in NoteAssocPlant and not here because
+    // then NoteAssocPlant can be a PureComponent
+    const plants = Object.keys(this.props.plants).reduce((acc, plantId) => {
+      const plant = plants[plantId];
+      const { locationId: locId } = plant;
+      if (locId === locationId) {
+        acc[plantId] = plant;
+      }
+      return acc;
+    }, {});
+
     const associatedPlants = (
       <NoteAssocPlant
         dispatch={this.props.dispatch}

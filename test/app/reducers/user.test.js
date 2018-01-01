@@ -6,31 +6,32 @@ function checkReducer(actionName, state, payload, expected) {
   const action = actions[actionName](payload);
   const actual = user(state, action);
   // The following line provides useful debug info which the one after does not
-  expect(actual.toJS()).toEqual(expected.toJS());
-  expect(Immutable.is(actual, expected)).toBe(true);
+  expect(actual).toEqual(expected);
+  // TODO: Can a snapshot check be put in here because the caller is the test?
+  expect(actual).toBe(expected);
 }
 
 describe('/app/reducers/user', () => {
   test('should reduce a logout action', () => {
-    const state = Immutable.fromJS({});
+    const state = seamless.from({});
     const payload = {};
-    const expected = Immutable.fromJS({});
+    const expected = seamless.from({});
     checkReducer('logout', state, payload, expected);
   });
 
   test('should reduce a login request', () => {
-    const state = Immutable.fromJS({});
+    const state = seamless.from({});
     const payload = { one: 1, two: 2 };
-    const expected = Immutable.fromJS({
+    const expected = seamless.from({
       status: 'fetching',
     });
     checkReducer('loginRequest', state, payload, expected);
   });
 
   test('should reduce a login success', () => {
-    const state = Immutable.fromJS({});
+    const state = seamless.from({});
     const payload = { one: 1, two: 2 };
-    const expected = Immutable.fromJS(Object.assign(
+    const expected = seamless.from(Object.assign(
       {}, {
         status: 'success',
         isLoggedIn: true,
@@ -41,9 +42,9 @@ describe('/app/reducers/user', () => {
   });
 
   test('should reduce a login failure', () => {
-    const state = Immutable.fromJS({});
+    const state = seamless.from({});
     const payload = { one: 1, two: 2 };
-    const expected = Immutable.fromJS(Object.assign(
+    const expected = seamless.from(Object.assign(
       {}, {
         status: 'failed',
         isLoggedIn: false,

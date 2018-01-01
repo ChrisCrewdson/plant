@@ -12,12 +12,12 @@ describe('/app/libs/auth-helper', () => {
     });
 
     test('should return false if location does not have member', () => {
-      const location = Immutable.fromJS({});
+      const location = seamless.from({});
       expect(authHelper.canEdit('fake-user-id', location)).toBe(false);
     });
 
     test('should return false if member is not owner/manager', () => {
-      const location = Immutable.fromJS({
+      const location = seamless.from({
         members: {
           'fake-user-id': 'not-owner-manager',
         },
@@ -26,7 +26,7 @@ describe('/app/libs/auth-helper', () => {
     });
 
     test('should return true if member is owner', () => {
-      const location = Immutable.fromJS({
+      const location = seamless.from({
         members: {
           'fake-user-id': 'owner',
         },
@@ -35,7 +35,7 @@ describe('/app/libs/auth-helper', () => {
     });
 
     test('should return true if member is manager', () => {
-      const location = Immutable.fromJS({
+      const location = seamless.from({
         members: {
           'fake-user-id': 'manager',
         },
@@ -47,7 +47,7 @@ describe('/app/libs/auth-helper', () => {
   describe('isLoggedIn', () => {
     test('should return false if user is not logged in', () => {
       const store = {
-        getState: () => Immutable.fromJS({
+        getState: () => seamless.from({
           user: {},
         }),
       };
