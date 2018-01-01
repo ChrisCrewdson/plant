@@ -41,11 +41,11 @@ class NoteCreate extends React.PureComponent {
       return null;
     }
 
-    const createNote = interimNote.get('isNew');
+    const { isNew: createNote } = interimNote;
 
     return (
       <div>
-        {createNote &&
+        {createNote ?
           <NoteEdit
             dispatch={this.props.dispatch}
             interimNote={interimNote}
@@ -53,8 +53,7 @@ class NoteCreate extends React.PureComponent {
             plants={this.props.plants}
             locationId={this.props.locationId}
           />
-        }
-        {!createNote &&
+        :
           <div style={{ textAlign: 'right' }}>
             <FloatingActionButton
               onClick={this.createNote}

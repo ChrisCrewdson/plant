@@ -51,7 +51,7 @@ class Location extends React.Component {
 
   static renderTitle(location) {
     return (
-      <h2 style={{ textAlign: 'center' }}>{`${location.get('title')} - Plant List`}</h2>
+      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Plant List`}</h2>
     );
   }
 
@@ -152,7 +152,7 @@ class Location extends React.Component {
       return (
         <Base>
           <div>
-            <h4 style={style}>{`Create a Note for ${plantCreateNote.get('title')}`}</h4>
+            <h4 style={style}>{`Create a Note for ${plantCreateNote.title}`}</h4>
             <NoteCreate
               dispatch={store.dispatch}
               userCanEdit={userCanEdit}

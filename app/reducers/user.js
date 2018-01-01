@@ -35,15 +35,15 @@ function logout() {
 // The action.payload are the returned locations from the server.
 function loadLocationsSuccess(state, action) {
   const { payload: locations = [] } = action;
-  if (state.get('isLoggedIn', false) && !state.get('activeLocationId', '')) {
-    const _id = state.get('_id');
+  if (state.isLoggedIn && !state.activeLocationId) {
+    const { _id } = state;
 
     // Find the first location that this user is a member of
     const location = locations.find(l => l.members[_id]);
 
     if (location) {
       // console.log('found location');
-      return state.set('activeLocationId', location._id);
+      return seamless.set(state, 'activeLocationId', location._id);
     }
     // console.log('no location found');
   }
@@ -57,8 +57,8 @@ function loadLocationsSuccess(state, action) {
  * @param {object} action - object with {payload: { _id: <mongo-id}}
  */
 function changeActiveLocationId(state, { payload }) {
-  const { _id } = payload;
-  return state.set('activeLocationId', _id);
+  const { _id } = payload || {};
+  return seamless.set(state, 'activeLocationId', _id);
 }
 
 const reducers = {

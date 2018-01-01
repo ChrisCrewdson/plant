@@ -1,6 +1,7 @@
 // A helper module for doing metric calculations
 
 const utils = require('./utils');
+const getIn = require('lodash/get');
 
 /**
  * Create the object that represents the component that goes between notes describing
@@ -12,7 +13,8 @@ const utils = require('./utils');
  * @returns {Moment} - The date from the note object as a Moment object
  */
 function since(acc, note, noteId, lastNoteDate) {
-  const currentNoteDate = utils.intToMoment(note.get('date'));
+  const { date } = note || {};
+  const currentNoteDate = utils.intToMoment(date);
   const sinceLast = lastNoteDate
     ? `...and then after ${lastNoteDate.from(currentNoteDate, true)}`
     : '';
@@ -73,11 +75,10 @@ function crunchChangeNumbers(metric, prop) {
   return `The ${prop} has changed by ${valueDelta} inches over the last ${dateDelta} days.`;
 }
 
-function calculateMetrics(acc, note, noteId, metrics) {
-  const height = note.getIn(['metrics', 'height']);
-  const girth = note.getIn(['metrics', 'girth']);
+function calculateMetrics(acc, note = {}, noteId, metrics) {
+  const { height, girth } = note.metrics || {};
   if (height || girth) {
-    const date = utils.intToMoment(note.get('date'));
+    const date = utils.intToMoment(note.date);
     const metric = { date };
     if (height) {
       metric.height = height;
@@ -112,7 +113,7 @@ function notesToMetricNotes(sortedNoteIds, notes) {
   let lastNoteDate;
   const metrics = [];
   return sortedNoteIds.reduce((acc, noteId) => {
-    const note = notes.get(noteId);
+    const note = notes[noteId];
     if (note) {
       lastNoteDate = since(acc, note, noteId, lastNoteDate);
       calculateMetrics(acc, note, noteId, metrics);

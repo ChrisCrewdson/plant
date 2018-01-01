@@ -142,7 +142,7 @@ class Plant extends React.Component {
               plant={plant}
               plants={plants}
             />
-            {plant && plant.get('title') &&
+            {plant && plant.title &&
             <NoteCreate
               dispatch={store.dispatch}
               interimNote={interimNote}
