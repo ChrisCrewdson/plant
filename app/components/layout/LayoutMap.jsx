@@ -5,6 +5,8 @@ const Base = require('../base/Base');
 const React = require('react');
 const actions = require('../../actions');
 const gis = require('../../libs/gis');
+const getIn = require('lodash/get');
+
 // const {Layer, Rect, Stage, Group} = require('react-konva');
 const {
   Layer, Text: KonvaText, Circle, Stage, Group,
@@ -70,7 +72,7 @@ class LayoutMap extends React.Component {
     const { store } = this.context;
     const { params = {} } = (this.props || {}).match || {};
     const { id: userId } = params;
-    const userName = store.getState().getIn(['users', userId, 'name']);
+    const userName = getIn(store.getState(), ['users', userId, 'name'], '');
     return (
       <h2 style={{ textAlign: 'center' }}>{`${userName} Layout Map`}</h2>
     );

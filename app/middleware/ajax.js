@@ -1,10 +1,11 @@
 const isFunction = require('lodash/isFunction');
 const $ = require('jquery');
+const getIn = require('lodash/get');
 
 // const logger = require('../../../lib/logging/logger').create('test.ajax');
 
 function setJwtHeader(store, request) {
-  const jwt = store.getState().getIn(['user', 'jwt']);
+  const jwt = getIn(store.getState(), ['user', 'jwt']);
   if (jwt) {
     request.setRequestHeader('Authorization', `Bearer ${jwt}`);
   }

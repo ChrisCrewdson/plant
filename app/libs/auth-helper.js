@@ -1,3 +1,4 @@
+const getIn = require('lodash/get');
 
 function isOwner(object, store) {
   const { user } = store.getState();
@@ -24,7 +25,7 @@ function canEdit(loggedInUserId, location) {
   if (!loggedInUserId || !location) {
     return false;
   }
-  const role = location.getIn(['members', loggedInUserId]);
+  const role = getIn(location, ['members', loggedInUserId]);
   if (!role) {
     return false;
   }
