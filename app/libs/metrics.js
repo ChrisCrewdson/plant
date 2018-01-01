@@ -1,7 +1,6 @@
 // A helper module for doing metric calculations
 
 const utils = require('./utils');
-const getIn = require('lodash/get');
 
 /**
  * Create the object that represents the component that goes between notes describing

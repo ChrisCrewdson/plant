@@ -34,7 +34,7 @@ class PlantItem extends React.PureComponent {
           plantId: this.props.plant._id,
         }));
       } else {
-        // console.error('PlantItem: plant object does not have _id', plant.toJS());
+        // console.error('PlantItem: plant object does not have _id', plant);
       }
     }
 

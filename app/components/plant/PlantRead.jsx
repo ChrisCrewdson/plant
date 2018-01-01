@@ -31,7 +31,7 @@ class PlantRead extends React.PureComponent {
           plantId: _id,
         }));
       } else {
-        // console.error('PlantRead: plant object does not have _id', plant.toJS());
+        // console.error('PlantRead: plant object does not have _id', plant);
       }
     }
   }

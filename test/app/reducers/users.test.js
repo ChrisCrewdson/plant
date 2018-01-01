@@ -7,7 +7,7 @@ function checkReducer(actionName, state, payload, expected) {
   const action = actions[actionName](payload);
   const actual = users(state, action);
   // The following line provides useful debug info which the one after does not
-  expect(actual.toJS()).toEqual(expected.toJS());
+  expect(actual).toEqual(expected);
   // TODO: See comment in user.test.js
   expect(actual).toBe(expected);
 }

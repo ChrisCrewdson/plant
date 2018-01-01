@@ -173,7 +173,7 @@ class LayoutMap extends React.Component {
             ?
               <Stage width={canvasWidth} height={plantLocations.canvasHeight}>
                 <Layer>
-                  {plantLocations.plants.valueSeq().toJS()}
+                  {plantLocations.plants}
                 </Layer>
               </Stage>
             :

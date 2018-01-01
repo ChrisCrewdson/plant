@@ -186,7 +186,7 @@ class LocationsManager extends React.Component {
       display: 'inline-block',
     };
 
-    const locations = this.props.locations.toJS();
+    const { locations } = this.props;
 
     return (
       <div>
@@ -228,9 +228,9 @@ class LocationsManager extends React.Component {
 
 LocationsManager.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  locations: PropTypes.shape({
-    toJS: PropTypes.func.isRequired,
-  }).isRequired,
+  locations: PropTypes.arrayOf(
+    PropTypes.object,
+  ).isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
