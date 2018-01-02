@@ -3,41 +3,33 @@ const actions = require('../../../app/actions');
 
 const seamless = require('seamless-immutable').static;
 
-function checkReducer(actionName, state, payload, expected) {
+function checkReducer(actionName, state, payload) {
   const action = actions[actionName](payload);
   const actual = users(state, action);
-  // The following line provides useful debug info which the one after does not
-  expect(actual).toEqual(expected);
-  // TODO: See comment in user.test.js
-  expect(actual).toBe(expected);
+
+  expect(actual).toMatchSnapshot();
 }
 
 describe('/app/reducers/users', () => {
   test('should reduce loadUserSuccess action', () => {
     const state = seamless.from({});
     const payload = { _id: '1', name: 'john' };
-    const expected = seamless.from({
-      1: { _id: '1', name: 'john', locationIds: [] },
-    });
-    checkReducer('loadUserSuccess', state, payload, expected);
+
+    checkReducer('loadUserSuccess', state, payload);
   });
 
   test('should reduce loadUsersSuccess action', () => {
     const state = seamless.from({});
     const payload = [{ _id: '1', name: 'john' }];
-    const expected = seamless.from({
-      1: { _id: '1', name: 'john', locationIds: [] },
-    });
-    checkReducer('loadUsersSuccess', state, payload, expected);
+
+    checkReducer('loadUsersSuccess', state, payload);
   });
 
   test('should reduce createPlantRequest action', () => {
     const state = seamless.from({ u1: { _id: 'u1', name: 'john', locationIds: ['p1'] } });
     const payload = { _id: 'p2', title: 'pt', userId: 'u1' };
-    const expected = seamless.from({
-      u1: { _id: 'u1', name: 'john', locationIds: ['p1'] },
-    });
-    checkReducer('createPlantRequest', state, payload, expected);
+
+    checkReducer('createPlantRequest', state, payload);
   });
 
   test('should reduce loadPlantsSuccess action', () => {
@@ -60,11 +52,8 @@ describe('/app/reducers/users', () => {
       { _id: 'p2.3', userId: 'u2' },
       { _id: 'p3.1', userId: 'u3' },
     ];
-    const expected = seamless.from({
-      u1: { _id: 'u1', name: 'john', locationIds: ['p1.1'] },
-      u2: { _id: 'u2', name: 'jane', locationIds: ['p2.1', 'p2.2'] },
-    });
-    checkReducer('loadPlantsSuccess', state, payload, expected);
+
+    checkReducer('loadPlantsSuccess', state, payload);
   });
 
   test('should delete a plant', () => {
@@ -81,11 +70,7 @@ describe('/app/reducers/users', () => {
       },
     });
     const payload = { locationId: 'l2', plantId: 'p2.1' };
-    const expected = seamless.from({
-      l1: { _id: 'l1', name: 'john', locationIds: ['p1.1'] },
-      l2: { _id: 'l2', name: 'jane', locationIds: ['p2.1', 'p2.2', 'p2.3'] },
-    });
 
-    checkReducer('deletePlantRequest', state, payload, expected);
+    checkReducer('deletePlantRequest', state, payload);
   });
 });

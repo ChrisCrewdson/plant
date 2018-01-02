@@ -84,7 +84,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/.bin/jest",
       "args": [
-        "${workspaceRoot}/test/app/reducers/plants.test.js", // replace this file with the file to focus
+        "${workspaceRoot}/test/app/reducers/notes.test.js", // replace this file with the file to focus
         "-i",
         "--forceExit"
       ],

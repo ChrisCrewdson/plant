@@ -34,7 +34,7 @@ function upsertNoteRequestSuccess(state, action) {
     // console.error('No _id in note in upsertNoteRequestSuccess', action.payload);
     return state;
   }
-  return seamless.merge(state, { _id: action.payload.note });
+  return seamless.set(state, _id, action.payload.note);
 }
 
 /**

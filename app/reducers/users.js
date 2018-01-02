@@ -11,7 +11,7 @@ function loadUsersSuccess(state, action) {
     });
     return acc;
   }, {});
-  const newState = state.mergeDeep(usersSet);
+  const newState = seamless.merge(state, usersSet);
   return newState;
 }
 

@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/reducers/users should delete a plant 1`] = `
+Object {
+  "l1": Object {
+    "_id": "l1",
+    "locationIds": Array [
+      "p1.1",
+    ],
+    "name": "john",
+  },
+  "l2": Object {
+    "_id": "l2",
+    "locationIds": Array [
+      "p2.1",
+      "p2.2",
+      "p2.3",
+    ],
+    "name": "jane",
+  },
+}
+`;
+
+exports[`/app/reducers/users should reduce createPlantRequest action 1`] = `
+Object {
+  "u1": Object {
+    "_id": "u1",
+    "locationIds": Array [
+      "p1",
+    ],
+    "name": "john",
+  },
+}
+`;
+
+exports[`/app/reducers/users should reduce loadPlantsSuccess action 1`] = `
+Object {
+  "u1": Object {
+    "_id": "u1",
+    "locationIds": Array [
+      "p1.1",
+    ],
+    "name": "john",
+  },
+  "u2": Object {
+    "_id": "u2",
+    "locationIds": Array [
+      "p2.1",
+      "p2.2",
+    ],
+    "name": "jane",
+  },
+}
+`;
+
+exports[`/app/reducers/users should reduce loadUserSuccess action 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "locationIds": Array [],
+    "name": "john",
+  },
+}
+`;
+
+exports[`/app/reducers/users should reduce loadUsersSuccess action 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "locationIds": Array [],
+    "name": "john",
+  },
+}
+`;

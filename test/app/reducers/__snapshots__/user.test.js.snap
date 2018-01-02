@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/reducers/user should reduce a login failure 1`] = `
+Object {
+  "isLoggedIn": false,
+  "one": 1,
+  "status": "failed",
+  "two": 2,
+}
+`;
+
+exports[`/app/reducers/user should reduce a login request 1`] = `
+Object {
+  "status": "fetching",
+}
+`;
+
+exports[`/app/reducers/user should reduce a login success 1`] = `
+Object {
+  "isLoggedIn": true,
+  "one": 1,
+  "status": "success",
+  "two": 2,
+}
+`;
+
+exports[`/app/reducers/user should reduce a logout action 1`] = `Object {}`;
