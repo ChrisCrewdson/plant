@@ -76,8 +76,10 @@ class Home extends React.Component {
   }
 
   renderUsers() {
-    const { users, locations } = this.context.store.getState();
-    return this.anonHome(!!(users && users.length), !!(locations && locations.length));
+    const { users = {}, locations = {} } = this.context.store.getState();
+    const usersCount = Object.keys(users).length;
+    const locationsCount = Object.keys(locations).length;
+    return this.anonHome(!!usersCount, !!locationsCount);
   }
 
   render() {

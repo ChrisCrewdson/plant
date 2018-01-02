@@ -9,23 +9,18 @@ class App extends React.Component {
 
   componentWillMount() {
     const { store } = this.context;
-    const { users, locations } = store.getState();
-    if (!users || users.length === 0) {
+    const { users = {}, locations = {} } = store.getState();
+
+    const usersCount = Object.keys(users).length;
+    const locationsCount = Object.keys(locations).length;
+
+    if (!usersCount) {
       store.dispatch(actions.loadUsersRequest());
     }
 
-    if (!locations || locations.length === 0) {
+    if (!locationsCount) {
       store.dispatch(actions.loadLocationsRequest());
     }
-
-    // const user = store.getState().get('user');
-    // if(user && user.get('isLoggedIn', false)) {
-    //   const locationIds = user.get('locationIds');
-    //   if(!locationIds) {
-    //     const userId = user.get('_id');
-    //     store.dispatch(actions.loadLocationsRequest(userId));
-    //   }
-    // }
   }
 
   render() {

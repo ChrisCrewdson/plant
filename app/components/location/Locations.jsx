@@ -10,6 +10,7 @@ const { withRouter } = require('react-router-dom');
 const AddLocationButton = require('./AddLocationButton');
 const PropTypes = require('prop-types');
 const LocationTile = require('./LocationTile');
+const seamless = require('seamless-immutable').static;
 
 class Locations extends React.Component {
   static contextTypes = {
@@ -95,8 +96,11 @@ class Locations extends React.Component {
 
   renderLocations() {
     const { store } = this.context;
-    const { locations, users = {} } = store.getState();
-    if (!locations || !locations.length) {
+    const { locations, users = seamless.from({}) } = store.getState();
+
+    const locationsCount = Object.keys(locations || {}).length;
+
+    if (!locationsCount) {
       return null;
     }
 

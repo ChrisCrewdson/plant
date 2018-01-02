@@ -84,12 +84,13 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/.bin/jest",
       "args": [
-        "${workspaceRoot}/test/app/reducers/notes.test.js", // replace this file with the file to focus
+        "${workspaceRoot}/test/lib/render/plant.test.js", // replace this file with the file to focus
         "-i",
         "--forceExit"
       ],
       "env": {
         "NODE_ENV": "development",
+        "DEFAULT_TIMEOUT_INTERVAL": "999000",
         "PLANT_TOKEN_SECRET": "json-web-token-secret",
         "PLANT_DB_URL": "127.0.0.1:27017",
         "PLANT_DB_NAME": "plant-test",
