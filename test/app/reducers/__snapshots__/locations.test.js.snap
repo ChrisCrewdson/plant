@@ -16,12 +16,35 @@ Object {
       "twenty",
     ],
   },
-  "33": Object {
-    "_id": "33",
+  "3": Object {
+    "_id": "3",
     "name": "thirty-three",
     "plantIds": Array [
       "three",
       "thirty",
+    ],
+  },
+  "4": Object {
+    "_id": "4",
+    "name": "four",
+    "plantIds": Array [],
+  },
+}
+`;
+
+exports[`/app/reducers/locations should load locations with undefined payload 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
     ],
   },
 }

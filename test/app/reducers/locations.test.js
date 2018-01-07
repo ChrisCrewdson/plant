@@ -17,9 +17,6 @@ describe('/app/reducers/locations', () => {
       },
     });
 
-    // TODO: Should the Locations collection be coming back from the server as an object
-    // or an array? How is it maintained in the reducer? As an object or an array?
-
     const payload = {
       2: {
         _id: '2',
@@ -27,13 +24,34 @@ describe('/app/reducers/locations', () => {
         plantIds: ['two', 'twenty'],
       },
       3: {
-        _id: '33',
+        _id: '3',
         name: 'thirty-three',
         plantIds: ['three', 'thirty'],
+      },
+      4: {
+        _id: '4',
+        name: 'four',
       },
     };
 
     const actual = locations(state, actions.loadLocationsSuccess(payload));
+    expect(actual).toMatchSnapshot();
+  });
+
+  test('should load locations with undefined payload', () => {
+    const state = seamless.from({
+      1: {
+        _id: '1',
+        plantIds: ['one'],
+      },
+      2: {
+        _id: '2',
+        name: 'xxx',
+        plantIds: ['xxx'],
+      },
+    });
+
+    const actual = locations(state, actions.loadLocationsSuccess(undefined));
     expect(actual).toMatchSnapshot();
   });
 });
