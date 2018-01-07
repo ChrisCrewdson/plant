@@ -3,8 +3,9 @@ const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
 
 // The action.payload are the returned locations from the server.
-function loadLocationsSuccess(state, action) {
-  const locations = (action.payload || []).reduce((acc, location) => {
+function loadLocationsSuccess(state, { payload }) {
+  const locations = Object.keys(payload || {}).reduce((acc, locationId) => {
+    const location = payload[locationId];
     // eslint-disable-next-line no-param-reassign
     location.plantIds = location.plantIds || [];
     acc[location._id] = Object.assign({}, location, {
@@ -101,7 +102,8 @@ module.exports = (state = seamless({}), action) => {
   return state;
 };
 
-// This state is an object with locationId's as keys and each value is an object with:
+// This state is an object with locationId's as keys and
+// each value is an object with:
 // _id
 // title
 // loc (optional)

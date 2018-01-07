@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/reducers/locations should load locations 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "twenty-two",
+    "plantIds": Array [
+      "two",
+      "twenty",
+    ],
+  },
+  "33": Object {
+    "_id": "33",
+    "name": "thirty-three",
+    "plantIds": Array [
+      "three",
+      "thirty",
+    ],
+  },
+}
+`;
