@@ -45,10 +45,12 @@ function loadPlantsSuccess(state, { payload: plants }) {
   if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}
-    const locations = plants.reduce((acc, { locationId, _id }) => {
+    const locations = plants.reduce((acc, { locationId, _id: plantId }) => {
       if (state[locationId]) {
-        acc[locationId] = acc[locationId] || { plantIds: [] };
-        acc[locationId].plantIds.push(_id);
+        acc[locationId] = acc[locationId] || seamless.asMutable(state[locationId], { deep: true });
+        if (!acc[locationId].plantIds.includes(plantId)) {
+          acc[locationId].plantIds.push(plantId);
+        }
       }
       return acc;
     }, {});

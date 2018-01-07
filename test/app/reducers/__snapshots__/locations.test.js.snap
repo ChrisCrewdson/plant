@@ -1,5 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/app/reducers/locations should handle a createPlantRequest for a missing plant at location 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
+exports[`/app/reducers/locations should handle a createPlantRequest for an existing plant at location 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+      "plant-1",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
+exports[`/app/reducers/locations should handle a createPlantRequest for an existing plant at location 2`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+      "plant-1",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
+exports[`/app/reducers/locations should handle a loadPlantsSuccess for an array of plants 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+      "plant-1",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
+exports[`/app/reducers/locations should handle a loadPlantsSuccess for an empty array of plants 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
 exports[`/app/reducers/locations should load locations 1`] = `
 Object {
   "1": Object {
