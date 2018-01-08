@@ -14,10 +14,8 @@ const uniq = require('lodash/uniq');
  * @param {object} action - has type and payload
  * @returns {object} - new state
  */
-function replaceInPlace(state, action) {
-  return seamless.merge(state, {
-    [action.payload._id]: action.payload,
-  });
+function replaceInPlace(state, { payload }) {
+  return seamless.set(state, payload._id, payload);
 }
 
 // User clicks save after creating a new plant
