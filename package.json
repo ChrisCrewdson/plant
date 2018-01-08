@@ -68,7 +68,7 @@
     "eslint-plugin-security": "1.4.0",
     "jest": "22.0.4",
     "jsdom": "11.5.1",
-    "nodemon": "1.14.8",
+    "nodemon": "1.14.9",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
     "proxyquire": "1.8.0",
