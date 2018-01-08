@@ -2,6 +2,12 @@
 const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
 
+// TODO: If we can keep the plantIds at each location sorted by Title then
+// this will save us sorting later which will improve performance.
+// We don't have access to the Title for each plantId here so might need
+// to fire a sortPlantIdsInLocations event with the plants object as a payload
+// if we discover that we're doing sorting.
+
 // The action.payload are the returned locations from the server.
 function loadLocationsSuccess(state, { payload }) {
   const locations = Object.keys(payload || {}).reduce((acc, locationId) => {

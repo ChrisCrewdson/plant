@@ -123,13 +123,35 @@ function filterPlants(plantIds, plants, filter) {
 }
 
 /**
+ * Determines if the array is already sorted.
+ * If it doesn't need sorting then the caller can return the same
+ * array which will be more performant for PureComponents.
+ * @param {Array} plantIds - Immutable array of plantIds
+ * @param {Object} plants - All plants indexed by id
+ * @returns {Boolean} - true if array needs sorting otherwise false
+ */
+function alreadySorted(plantIds, plants) {
+  return plantIds.every((plantId, index) => {
+    if (index === 0) {
+      return true;
+    }
+    const { title: title1 } = plants[plantIds[index - 1]] || {};
+    const { title: title2 } = plants[plantId] || {};
+    return !title1 || !title2 || title1 <= title2;
+  });
+}
+
+/**
  * Sorts the plantIds based on the plant's title
  * @param {array} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
  * @returns {array} - an array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
-  return plantIds.sort((a, b) => {
+  if (alreadySorted(plantIds, plants)) {
+    return plantIds;
+  }
+  return seamless.from(seamless.asMutable(plantIds).sort((a, b) => {
     const plantA = plants[a];
     const plantB = plants[b];
     if (plantA && plantB) {
@@ -139,7 +161,7 @@ function sortPlants(plantIds, plants) {
       return plantA.title > plantB.title ? 1 : -1;
     }
     return 0;
-  });
+  }));
 }
 
 /**

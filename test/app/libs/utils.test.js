@@ -1,6 +1,7 @@
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 const moment = require('moment');
+const seamless = require('seamless-immutable').static;
 
 describe('/app/libs/utils', () => {
   describe('slugs', () => {
@@ -196,6 +197,47 @@ describe('/app/libs/utils', () => {
     );
     test('should pass if 1st and 2nd are equal', () => {
       expect(utils.constantEquals('123', '123')).toBe(true);
+    });
+  });
+
+  describe('sortPlants', () => {
+    const plants = {
+      1: {
+        title: 'A',
+      },
+      2: {
+        title: 'B',
+      },
+      3: {
+        title: 'B',
+      },
+      4: {
+        title: 'C',
+      },
+    };
+    test('should sort plants', () => {
+      const plantIds = seamless.from(['4', '1', '3', '2']);
+      const sortedPlantIds = utils.sortPlants(plantIds, plants);
+      expect(sortedPlantIds).toMatchSnapshot();
+      expect(sortedPlantIds).not.toBe(plantIds);
+    });
+
+    test('should not need to sort plants', () => {
+      const plantIds = seamless.from(['1', '2', '3', '4']);
+      const sortedPlantIds = utils.sortPlants(plantIds, plants);
+      expect(sortedPlantIds).toMatchSnapshot();
+      // It should have returned the same object because it did
+      // not need to get sorted.
+      expect(sortedPlantIds).toBe(plantIds);
+    });
+
+    test('should not need to sort plants with missing plants', () => {
+      const plantIds = seamless.from(['5', '1', '2', '5', '3', '4', '5']);
+      const sortedPlantIds = utils.sortPlants(plantIds, plants);
+      expect(sortedPlantIds).toMatchSnapshot();
+      // It should have returned the same object because it did
+      // not need to get sorted.
+      expect(sortedPlantIds).toBe(plantIds);
     });
   });
 });
