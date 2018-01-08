@@ -104,4 +104,25 @@ describe('/app/reducers/locations', () => {
     expect(actual).toBe(stateA);
     expect(seamless.isImmutable(actual)).toBe(true);
   });
+
+  test('should handle a deletePlantRequest', () => {
+    const deletePlant = {
+      locationId: '1',
+      plantId: 'one',
+    };
+    const actual = locations(stateA, actions.deletePlantRequest(deletePlant));
+    expect(actual).toMatchSnapshot();
+    expect(seamless.isImmutable(actual)).toBe(true);
+  });
+
+  test('should handle a deletePlantRequest when locationId is missing', () => {
+    const deletePlant = {
+      locationId: '7',
+      plantId: 'one',
+    };
+    const actual = locations(stateA, actions.deletePlantRequest(deletePlant));
+    expect(actual).toMatchSnapshot();
+    expect(actual).toBe(stateA);
+    expect(seamless.isImmutable(actual)).toBe(true);
+  });
 });

@@ -56,6 +56,40 @@ Object {
 }
 `;
 
+exports[`/app/reducers/locations should handle a deletePlantRequest 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
+exports[`/app/reducers/locations should handle a deletePlantRequest when locationId is missing 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+}
+`;
+
 exports[`/app/reducers/locations should handle a loadPlantsSuccess for an array of plants 1`] = `
 Object {
   "1": Object {
