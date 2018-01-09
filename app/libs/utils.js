@@ -122,6 +122,45 @@ function filterPlants(plantIds, plants, filter) {
     : plantIds;
 }
 
+function notesAlreadySorted(noteIds, notes) {
+  return noteIds.every((noteId, index) => {
+    if (index === 0) {
+      return true;
+    }
+
+    const noteA = notes[noteIds[index - 1]];
+    const noteB = notes[noteId];
+    const { date: dateA } = noteA || {};
+    const { date: dateB } = noteB || {};
+    return !dateA || !dateB || dateA <= dateB;
+  });
+}
+
+// TODO: Memoize this method.
+function sortNotes(noteIds, notes) {
+  if (!noteIds.length) {
+    return noteIds || [];
+  }
+
+  if (notesAlreadySorted(noteIds, notes)) {
+    return noteIds;
+  }
+
+  return seamless.from(seamless.asMutable(noteIds).sort((a, b) => {
+    const noteA = notes[a];
+    const noteB = notes[b];
+    if (noteA && noteB) {
+      const dateA = noteA.date;
+      const dateB = noteB.date;
+      if (dateA === dateB) {
+        return 0;
+      }
+      return dateA > dateB ? 1 : -1;
+    }
+    return 0;
+  }));
+}
+
 /**
  * Determines if the array is already sorted.
  * If it doesn't need sorting then the caller can return the same
@@ -130,7 +169,7 @@ function filterPlants(plantIds, plants, filter) {
  * @param {Object} plants - All plants indexed by id
  * @returns {Boolean} - true if array needs sorting otherwise false
  */
-function alreadySorted(plantIds, plants) {
+function plantsAlreadySorted(plantIds, plants) {
   return plantIds.every((plantId, index) => {
     if (index === 0) {
       return true;
@@ -148,7 +187,8 @@ function alreadySorted(plantIds, plants) {
  * @returns {array} - an array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
-  if (alreadySorted(plantIds, plants)) {
+  // TODO: Memoize this method
+  if (plantsAlreadySorted(plantIds, plants)) {
     return plantIds;
   }
   return seamless.from(seamless.asMutable(plantIds).sort((a, b) => {
@@ -464,6 +504,7 @@ module.exports = {
   plantStats,
   rebaseLocations,
   showFeature,
+  sortNotes,
   sortPlants,
   transformErrors,
 };

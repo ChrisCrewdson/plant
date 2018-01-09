@@ -173,7 +173,7 @@ function loadNotesSuccess(state, { payload: notes }) {
     return acc;
   }, {});
 
-  return Object.keys(state).reduce((acc, plantId) => {
+  return seamless.from(Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
 
     if (!plants[plantId]) {
@@ -181,10 +181,10 @@ function loadNotesSuccess(state, { payload: notes }) {
       return acc;
     }
 
-    const plantNotes = uniq(plant.notes.concat(plants[plantId]));
+    const plantNotes = uniq((plant.notes || []).concat(plants[plantId] || []));
     acc[plantId] = seamless.set(plant, 'notes', plantNotes);
     return acc;
-  });
+  }, {}));
 }
 
 const reducers = {

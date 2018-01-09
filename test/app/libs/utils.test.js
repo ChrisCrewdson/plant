@@ -215,6 +215,7 @@ describe('/app/libs/utils', () => {
         title: 'C',
       },
     };
+
     test('should sort plants', () => {
       const plantIds = seamless.from(['4', '1', '3', '2']);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
@@ -238,6 +239,48 @@ describe('/app/libs/utils', () => {
       // It should have returned the same object because it did
       // not need to get sorted.
       expect(sortedPlantIds).toBe(plantIds);
+    });
+  });
+
+  describe('sortNotes', () => {
+    const notes = {
+      1: {
+        date: 10,
+      },
+      2: {
+        date: 20,
+      },
+      3: {
+        date: 20,
+      },
+      4: {
+        date: 30,
+      },
+    };
+
+    test('should sort notes', () => {
+      const noteIds = seamless.from(['4', '1', '3', '2']);
+      const sortedNoteIds = utils.sortNotes(noteIds, notes);
+      expect(sortedNoteIds).toMatchSnapshot();
+      expect(sortedNoteIds).not.toBe(noteIds);
+    });
+
+    test('should not need to sort notes', () => {
+      const noteIds = seamless.from(['1', '2', '3', '4']);
+      const sortedNoteIds = utils.sortNotes(noteIds, notes);
+      expect(sortedNoteIds).toMatchSnapshot();
+      // It should have returned the same object because it did
+      // not need to get sorted.
+      expect(sortedNoteIds).toBe(noteIds);
+    });
+
+    test('should not need to sort notes with missing notes', () => {
+      const noteIds = seamless.from(['5', '1', '2', '5', '3', '4', '5']);
+      const sortedNoteIds = utils.sortNotes(noteIds, notes);
+      expect(sortedNoteIds).toMatchSnapshot();
+      // It should have returned the same object because it did
+      // not need to get sorted.
+      expect(sortedNoteIds).toBe(noteIds);
     });
   });
 });

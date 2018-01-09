@@ -6,6 +6,7 @@ const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 const getIn = require('lodash/get');
+const utils = require('../../libs/utils');
 
 class NotesRead extends React.PureComponent {
   componentWillMount() {
@@ -24,20 +25,7 @@ class NotesRead extends React.PureComponent {
       return;
     }
 
-    const sortedIds = noteIds.sort((a, b) => {
-      const noteA = notes[a];
-      const noteB = notes[b];
-      if (noteA && noteB) {
-        const dateA = noteA.date;
-        const dateB = noteB.date;
-        if (dateA === dateB) {
-          return 0;
-        }
-        return dateA > dateB ? 1 : -1;
-      }
-      return 0;
-    });
-
+    const sortedIds = utils.sortNotes(noteIds, notes);
     this.setState({ sortedIds });
   }
 
@@ -124,11 +112,15 @@ NotesRead.propTypes = {
     note: PropTypes.object,
   }).isRequired,
   userCanEdit: PropTypes.bool.isRequired,
-  notes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  plant: PropTypes.shape({
-    notes: PropTypes.array.isRequired,
+  notes: PropTypes.shape({
+    _id: PropTypes.string.required,
   }).isRequired,
-  plants: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  plant: PropTypes.shape({
+    notes: PropTypes.array,
+  }).isRequired,
+  plants: PropTypes.shape({
+    notes: PropTypes.array,
+  }).isRequired,
   locationId: PropTypes.string.isRequired,
 };
 

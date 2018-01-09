@@ -11,6 +11,36 @@ Object {
 }
 `;
 
+exports[`/app/libs/utils sortNotes should not need to sort notes 1`] = `
+Array [
+  "1",
+  "2",
+  "3",
+  "4",
+]
+`;
+
+exports[`/app/libs/utils sortNotes should not need to sort notes with missing notes 1`] = `
+Array [
+  "5",
+  "1",
+  "2",
+  "5",
+  "3",
+  "4",
+  "5",
+]
+`;
+
+exports[`/app/libs/utils sortNotes should sort notes 1`] = `
+Array [
+  "1",
+  "3",
+  "2",
+  "4",
+]
+`;
+
 exports[`/app/libs/utils sortPlants should not need to sort plants 1`] = `
 Array [
   "1",
