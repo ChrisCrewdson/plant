@@ -113,6 +113,7 @@ class NoteEdit extends React.PureComponent {
     const {
       interimNote,
       locationId,
+      plants,
     } = this.props;
     const { uploadProgress } = interimNote;
 
@@ -150,7 +151,7 @@ class NoteEdit extends React.PureComponent {
 
     // TODO: Next line (reduce) should happen in NoteAssocPlant and not here because
     // then NoteAssocPlant can be a PureComponent
-    const plants = Object.keys(this.props.plants).reduce((acc, plantId) => {
+    const plantsAtLocation = Object.keys(plants).reduce((acc, plantId) => {
       const plant = plants[plantId];
       const { locationId: locId } = plant;
       if (locId === locationId) {
@@ -164,7 +165,7 @@ class NoteEdit extends React.PureComponent {
         dispatch={this.props.dispatch}
         error={errors.plantIds}
         plantIds={plantIds}
-        plants={plants}
+        plants={plantsAtLocation}
       />
     );
 
@@ -234,6 +235,7 @@ class NoteEdit extends React.PureComponent {
 NoteEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimNote: PropTypes.shape({
+    note: PropTypes.string,
   }).isRequired,
   plants: PropTypes.shape({
   }).isRequired,

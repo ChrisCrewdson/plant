@@ -67,16 +67,19 @@ class NoteAssocPlant extends React.Component {
   render() {
     const { expanded, filter } = this.state;
     const { plantIds, plants } = this.props;
-
+    // TODO: If the following pattern is to be kept then:
+    // If expanded is true then it might be faster to sort the array once before applying
+    // the filter twice rather than filtering twice and sorting twice.
     const checkedPlantIds = utils.filterSortPlants(plantIds, plants, filter);
     const checkedPlants = this.renderPlantButtons(checkedPlantIds, plants, true);
 
-    const uncheckedIds = plants.filter((plant, _id) => plantIds.indexOf(_id) === -1);
-    const uncheckedPlantIds = utils.filterSortPlants(uncheckedIds, plants, filter);
+    let uncheckedPlants = null;
+    if (expanded) {
+      const uncheckedIds = Object.keys(plants).filter(plantId => plantIds.indexOf(plantId) === -1);
+      const uncheckedPlantIds = utils.filterSortPlants(uncheckedIds, plants, filter);
 
-    const uncheckedPlants = expanded
-      ? this.renderPlantButtons(uncheckedPlantIds, plants, false)
-      : null;
+      uncheckedPlants = this.renderPlantButtons(uncheckedPlantIds, plants, false);
+    }
 
     const title = `${expanded ? 'Hide' : 'Show'} Unchecked Plants`;
     const arrow = (

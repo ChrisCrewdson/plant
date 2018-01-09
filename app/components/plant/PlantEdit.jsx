@@ -18,6 +18,7 @@ const PlantEditTerminated = require('./PlantEditTerminated');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
+const seamless = require('seamless-immutable').static;
 
 const { plant: plantValidator } = validators;
 
@@ -89,7 +90,7 @@ class PlantEdit extends React.Component {
   }
 
   save(e) {
-    const plant = this.props.interimPlant;
+    const plant = seamless.asMutable(this.props.interimPlant);
     const { isNew = false } = plant;
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {

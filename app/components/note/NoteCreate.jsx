@@ -73,7 +73,7 @@ NoteCreate.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
   interimNote: PropTypes.shape({
-    note: PropTypes.object,
+    note: PropTypes.string,
   }).isRequired,
   plant: PropTypes.shape({
     _id: PropTypes.string.isRequired,

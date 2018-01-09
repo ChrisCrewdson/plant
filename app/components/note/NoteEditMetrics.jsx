@@ -90,7 +90,7 @@ class NoteEditMetrics extends React.PureComponent {
 
   render() {
     const { interimNote } = this.props;
-    const { metrics } = interimNote || {};
+    const { metrics = {} } = interimNote || {};
     const { metaMetrics } = utils;
 
     const renderedMetrics = metaMetrics.map(metaMetric =>
