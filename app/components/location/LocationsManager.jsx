@@ -2,12 +2,11 @@
 
 const actions = require('../../actions');
 const Grid = require('../common/Grid');
-const seamless = require('seamless-immutable').static;
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const userColumns = seamless.from([{
+const userColumns = [{
   title: 'Name',
   type: 'select',
   width: 50,
@@ -21,9 +20,9 @@ const userColumns = seamless.from([{
   title: 'Role',
   type: 'select',
   width: 50,
-}]);
+}];
 
-const weatherColumns = seamless.from([{
+const weatherColumns = [{
   title: 'Station ID',
   type: 'text',
   width: 33,
@@ -35,7 +34,7 @@ const weatherColumns = seamless.from([{
   title: 'Enabled',
   type: 'boolean',
   width: 33,
-}]);
+}];
 
 const getMembers = members => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
@@ -119,8 +118,11 @@ class LocationsManager extends React.Component {
     this.upsertLocationWeather = this.upsertLocationWeather.bind(this);
     this.deleteLocationWeather = this.deleteLocationWeather.bind(this);
 
-    userColumns[0].options = props.users.reduce((acc, { _id, name }) =>
-      Object.assign({ [_id]: name }, acc), {});
+    userColumns[0].options = Object.keys(props.users).reduce((acc, userId) => {
+      const { _id, name } = props.users[userId];
+      acc[_id] = name;
+      return acc;
+    }, {});
     userColumns[0].options['<select>'] = '<select>';
   }
 
@@ -228,13 +230,8 @@ class LocationsManager extends React.Component {
 
 LocationsManager.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  locations: PropTypes.arrayOf(
-    PropTypes.object,
-  ).isRequired,
-  users: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
+  locations: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  users: PropTypes.shape({}).isRequired,
 };
 
 module.exports = LocationsManager;
