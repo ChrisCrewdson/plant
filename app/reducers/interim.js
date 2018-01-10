@@ -40,8 +40,15 @@ function editNoteChange(state, action) {
 
 // action.payload:
 // {plant}
-function editPlantOpen(state, action) {
-  return seamless.set(state, 'plant', action.payload);
+function editPlantOpen(state, { payload }) {
+  const { plant } = payload;
+  return seamless.set(state, 'plant', {
+    plant: {
+      ...plant,
+      price: (plant.price || '').toString(),
+    },
+  },
+  );
 }
 
 // action.payload:

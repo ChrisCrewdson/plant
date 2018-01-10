@@ -107,7 +107,7 @@ function upsertNoteSuccess(state, { payload: { note } }) {
     // Should this plant have this note?
     const shouldHaveNote = plantIds.includes(plantId);
     // Does this plant have this note?
-    const hasNote = (plant.notes).includes(_id);
+    const hasNote = (plant.notes || []).includes(_id);
 
     // If should have and has do nothing
     // If should not have and does not have do nothing
