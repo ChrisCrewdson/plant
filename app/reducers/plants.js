@@ -103,24 +103,25 @@ function upsertNoteSuccess(state, { payload: { note } }) {
   // that a new object of plants that have to be updated.
   const updatedPlants = Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
+    const plantNotes = plant.notes || [];
 
     // Should this plant have this note?
     const shouldHaveNote = plantIds.includes(plantId);
     // Does this plant have this note?
-    const hasNote = (plant.notes || []).includes(_id);
+    const hasNote = plantNotes.includes(_id);
 
-    // If should have and has do nothing
-    // If should not have and does not have do nothing
-    // If should have and does not have then add it.
+    // If should have and has, do nothing
+    // If should not have and does not have, do nothing
+    // If should have and does not have, then add it.
     if (shouldHaveNote && !hasNote) {
       acc[plantId] = seamless.merge(plant, {
-        notes: plant.notes.concat(_id),
+        notes: plantNotes.concat(_id),
       });
     }
 
     // If should not have and has, then remove it
     if (!shouldHaveNote && hasNote) {
-      acc[plantId] = seamless.set(plant, 'notes', plant.notes.filter(noteId => noteId !== _id));
+      acc[plantId] = seamless.set(plant, 'notes', plantNotes.filter(noteId => noteId !== _id));
     }
 
     return acc;

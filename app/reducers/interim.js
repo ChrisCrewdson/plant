@@ -41,14 +41,13 @@ function editNoteChange(state, action) {
 // action.payload:
 // {plant}
 function editPlantOpen(state, { payload }) {
-  const { plant } = payload;
-  return seamless.set(state, 'plant', {
-    plant: {
-      ...plant,
-      price: (plant.price || '').toString(),
-    },
-  },
-  );
+  let { plant = {} } = payload;
+  if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
+    plant = seamless.asMutable(plant, { deep: true });
+    plant.price = plant.price.toString();
+  }
+
+  return seamless.set(state, 'plant', { plant });
 }
 
 // action.payload:

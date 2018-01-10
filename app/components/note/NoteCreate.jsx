@@ -17,7 +17,16 @@ class NoteCreate extends React.PureComponent {
   }
 
   createNote() {
-    const { plant, locationId } = this.props;
+    const { plant, locationId, plants: plantsObj } = this.props;
+
+    const plants = Object.keys(plantsObj).reduce((acc, plantId) => {
+      const p = plantsObj[plantId];
+      if (p.locationId === locationId) {
+        acc[plantId] = p;
+      }
+      return acc;
+    }, {});
+
     const note = {
       _id: utils.makeMongoId(),
       date: moment().format('MM/DD/YYYY'),
@@ -25,7 +34,7 @@ class NoteCreate extends React.PureComponent {
       note: '',
       plantIds: [plant._id],
       errors: {},
-      plants: this.props.plants.filter(p => p.locationId === locationId),
+      plants,
     };
 
     this.props.dispatch(actions.editNoteOpen({ note, plant }));

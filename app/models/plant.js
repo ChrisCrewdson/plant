@@ -67,6 +67,11 @@ function transform(attributes) {
     attributes.tags = uniq(attributes.tags.map(tag => tag.toLowerCase()));
   }
 
+  if (attributes.price === '') {
+    // eslint-disable-next-line no-param-reassign
+    delete attributes.price;
+  }
+
   // If any amounts are preceded by a $ sign then trim that.
   if (attributes.price && typeof attributes.price === 'string') {
     // eslint-disable-next-line no-param-reassign
@@ -117,13 +122,13 @@ module.exports = (attributes, { isNew }) => {
     attributes = Object.assign({}, attributes, { _id: makeMongoId() });
   }
 
-  // debug('attributes:', attributes);
+  // console.log('attributes:', attributes);
   const cleaned = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
-  // debug('cleaned:', cleaned);
+  // console.log('cleaned:', cleaned);
   const transformed = transform(cleaned);
-  // debug('transformed:', transformed);
+  // console.log('transformed:', transformed);
   const errors = validatejs.validate(transformed, constraints);
-  // debug('errors:', errors);
+  // console.log('errors:', errors);
   const flatErrors = utils.transformErrors(errors);
   if (flatErrors) {
     throw flatErrors;
