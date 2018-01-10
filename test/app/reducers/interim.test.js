@@ -3,18 +3,6 @@ const actions = require('../../../app/actions');
 const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/interim', () => {
-  describe('sanity check', () => {
-    test('should check that all the reducers are in the actions file', (done) => {
-      Object.keys(interim.reducers).forEach((reducerKey) => {
-        // If any of the actions being used in the reducer haven't been defined
-        // in the actions file then this test will fail.
-        expect(reducerKey).not.toBe('undefined');
-      });
-
-      done();
-    });
-  });
-
   function checkReducer(actionName, state, payload, expected) {
     const action = actions[actionName](payload);
     const actual = interim(state, action);

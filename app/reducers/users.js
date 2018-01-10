@@ -101,12 +101,6 @@ const reducers = {
   [actions.LOAD_USERS_SUCCESS]: loadUsersSuccess,
 };
 
-if (reducers.undefined) {
-  // eslint-disable-next-line no-console
-  console.error(`Missing action type in users.js - these are the reducers keys:
-${Object.keys(reducers).join()}`);
-}
-
 module.exports = (state = seamless.from({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
@@ -114,6 +108,9 @@ module.exports = (state = seamless.from({}), action) => {
 
   return state;
 };
+
+// This is only exported for testing
+module.exports.reducers = reducers;
 
 // This state is an object with userId's as keys and each value is an object with:
 // _id

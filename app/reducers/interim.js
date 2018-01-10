@@ -108,6 +108,7 @@ module.exports = (state = seamless({}), action) => {
   return state;
 };
 
+// This is only exported for testing
 module.exports.reducers = reducers;
 
 /*

@@ -94,12 +94,6 @@ const reducers = {
   [actions.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
-if (reducers.undefined) {
-  // eslint-disable-next-line no-console
-  console.error(`Missing action type in locations.js - these are the reducers keys:
-${Object.keys(reducers).join()}`);
-}
-
 module.exports = (state = seamless({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
@@ -107,6 +101,9 @@ module.exports = (state = seamless({}), action) => {
 
   return state;
 };
+
+// This is only exported for testing
+module.exports.reducers = reducers;
 
 // This state is an object with locationId's as keys and
 // each value is an object with:

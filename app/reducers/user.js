@@ -70,12 +70,6 @@ const reducers = {
   [actions.CHANGE_ACTIVE_LOCATION_ID]: changeActiveLocationId,
 };
 
-if (reducers.undefined) {
-  // eslint-disable-next-line no-console
-  console.error(`Missing action type in user.js - these are the reducers keys:
-${Object.keys(reducers).join()}`);
-}
-
 // The login reducer
 module.exports = (state, action) => {
   if (reducers[action.type]) {
@@ -88,3 +82,6 @@ module.exports = (state, action) => {
 
   return state;
 };
+
+// This is only exported for testing
+module.exports.reducers = reducers;
