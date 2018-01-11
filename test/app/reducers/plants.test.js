@@ -88,6 +88,15 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2', 'n3'],
       },
+      3: {
+        _id: '3',
+        name: 'no note match',
+        notes: ['n1', 'n3'],
+      },
+      4: {
+        _id: '4',
+        name: 'missing notes',
+      },
     };
     const payload = 'n2';
     const current = seamless.from(expected);
@@ -151,6 +160,27 @@ describe('/app/reducers/plants', () => {
     expect(actual).toEqual(expected);
   });
 
+  test('should load multiple plants with missing payload', () => {
+    const expected = {
+      1: {
+        _id: '1',
+        name: 'one',
+        notes: ['n1', 'n2', 'n3'],
+      },
+      2: {
+        _id: '2',
+        name: 'xxx',
+        notes: ['n1', 'n2', 'n3'],
+      },
+    };
+    const payload = [];
+    const current = seamless.from(expected);
+
+    const actual = plants(current, actions.loadPlantsSuccess(payload));
+    expect(actual).toEqual(expected);
+    expect(actual).toBe(current);
+  });
+
   test('should add a new noteId to the plant\'s notes List', () => {
     const expected = {
       p1: {
@@ -190,6 +220,10 @@ describe('/app/reducers/plants', () => {
         name: 'xxx',
         notes: ['n1', 'n2'],
       },
+      p3: {
+        _id: 'p3',
+        name: 'three',
+      },
     };
     const payload = {
       note: {
@@ -203,5 +237,116 @@ describe('/app/reducers/plants', () => {
 
     const actual = plants(current, actions.upsertNoteSuccess(payload));
     expect(actual).toEqual(expected);
+  });
+
+  test('should remove nothing if the payload note is empty', () => {
+    const expected = {
+      p1: {
+        _id: 'p1',
+        name: 'one',
+        notes: ['n1', 'n2', 'n3', 'n5'],
+      },
+      p2: {
+        _id: 'p2',
+        name: 'xxx',
+        notes: ['n1', 'n2'],
+      },
+    };
+    const payload = {
+      note: { },
+    };
+    const current = seamless.from(expected);
+
+    const actual = plants(current, actions.upsertNoteSuccess(payload));
+    expect(actual).toBe(current);
+  });
+
+  test('should return original state if nothing to update', () => {
+    const expected = {
+      p1: {
+        _id: 'p1',
+        name: 'one',
+        notes: ['n1', 'n2', 'n3', 'n5'],
+      },
+    };
+    const payload = {
+      note: {
+        _id: 'n5',
+        plantIds: ['p1'],
+      },
+    };
+    const current = seamless.from(expected);
+
+    const actual = plants(current, actions.upsertNoteSuccess(payload));
+    expect(actual).toBe(current);
+  });
+
+  describe('loadNotesRequest', () => {
+    test('should return original state if noteIds present in payload', () => {
+      const expected = {};
+      const payload = {
+        noteIds: true,
+      };
+      const current = seamless.from(expected);
+
+      const actual = plants(current, actions.loadNotesRequest(payload));
+      expect(actual).toBe(current);
+    });
+
+    test('should return original state if plantIds not present in payload', () => {
+      const expected = {};
+      const payload = {
+      };
+      const current = seamless.from(expected);
+
+      const actual = plants(current, actions.loadNotesRequest(payload));
+      expect(actual).toBe(current);
+    });
+
+    test('should return original state if plant not found in state', () => {
+      const expected = {};
+      const payload = {
+        plantId: 'not in state',
+      };
+      const current = seamless.from(expected);
+
+      const actual = plants(current, actions.loadNotesRequest(payload));
+      expect(actual).toBe(current);
+    });
+
+    test('should flag that notes have been requested for a plant', () => {
+      const expected = {
+        1: { },
+      };
+      const payload = {
+        plantId: '1',
+      };
+      const current = seamless.from(expected);
+      expected['1'].notesRequested = true;
+
+      const actual = plants(current, actions.loadNotesRequest(payload));
+      expect(actual).not.toBe(current);
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('loadNotesSuccess', () => {
+    test('should return original state if notes is empty', () => {
+      const expected = {};
+      const payload = [];
+      const current = seamless.from(expected);
+
+      const actual = plants(current, actions.loadNotesSuccess(payload));
+      expect(actual).toBe(current);
+    });
+
+    test('should return original state if notes do not have plantIds', () => {
+      const expected = {};
+      const payload = [{}];
+      const current = seamless.from(expected);
+
+      const actual = plants(current, actions.loadNotesSuccess(payload));
+      expect(actual).toBe(current);
+    });
   });
 });

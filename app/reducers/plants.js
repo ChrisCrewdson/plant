@@ -174,6 +174,10 @@ function loadNotesSuccess(state, { payload: notes }) {
     return acc;
   }, {});
 
+  if (!Object.keys(plants).length) {
+    return state;
+  }
+
   return seamless.from(Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
 
