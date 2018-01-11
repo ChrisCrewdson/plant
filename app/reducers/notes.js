@@ -40,41 +40,11 @@ function upsertNoteRequestSuccess(state, action) {
 /**
  *
  * @param {object} state - existing object of notes
- * @param {object} action - action.payload holds new note
- * @returns {object} state - the new object of notes
- */
-function upsertNoteFailure(state) {
-  return state;
-}
-
-/**
- *
- * @param {object} state - existing object of notes
  * @param {object} action - action.payload holds _id of note being deleted
  * @returns {object} state - the new object of notes
  */
 function deleteNoteRequest(state, { payload: _id }) {
   return seamless.without(state, _id);
-}
-
-/**
- *
- * @param {object} state - existing object of notes
- * @param {object} action - action.payload holds new note
- * @returns {object} state - the new object of notes
- */
-function deleteNoteSuccess(state /* , action */) {
-  return state;
-}
-
-/**
- *
- * @param {object} state - existing object of notes
- * @param {object} action - action.payload holds new note
- * @returns {object} state - the new object of notes
- */
-function deleteNoteFailure(state /* , action */) {
-  return state;
 }
 
 // action.payload is an array of notes from the server
@@ -94,11 +64,8 @@ function loadNotesSuccess(state, { payload: notes }) {
 const reducers = Object.freeze({
   [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
   [actions.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
-  [actions.UPSERT_NOTE_FAILURE]: upsertNoteFailure,
 
   [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
-  [actions.DELETE_NOTE_SUCCESS]: deleteNoteSuccess,
-  [actions.DELETE_NOTE_FAILURE]: deleteNoteFailure,
 
   [actions.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
 
