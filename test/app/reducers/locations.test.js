@@ -14,6 +14,9 @@ describe('/app/reducers/locations', () => {
       name: 'xxx',
       plantIds: ['xxx'],
     },
+    3: {
+      _id: '3',
+    },
   });
 
   test('should load locations', () => {
