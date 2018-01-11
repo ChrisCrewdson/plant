@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Privacy Privacy should be rendered 1`] = `
+<div
+  className="react-root"
+>
+  <div
+    className="page"
+  >
+    <nav
+      className="navbar navbar-default navbar-fixed-top"
+    >
+      <div
+        className="container-fluid"
+      >
+        <div
+          className="navbar-header"
+        >
+          <button
+            aria-expanded="false"
+            className="navbar-toggle collapsed"
+            data-target="#plant-navbar-collapse"
+            data-toggle="collapse"
+            type="button"
+          >
+            <span
+              className="sr-only"
+            >
+              Toggle navigation
+            </span>
+            <span
+              className="icon-bar"
+            />
+            <span
+              className="icon-bar"
+            />
+            <span
+              className="icon-bar"
+            />
+          </button>
+          <a
+            className="navbar-brand"
+            href="/"
+            onClick={[Function]}
+          >
+            Plant
+          </a>
+        </div>
+        <div
+          className="collapse navbar-collapse"
+          id="plant-navbar-collapse"
+        >
+          <ul
+            className="nav navbar-nav navbar-right"
+          >
+            <li>
+              <a
+                href="/login"
+                onClick={[Function]}
+              >
+                Login
+              </a>
+            </li>
+            <li>
+              <a
+                href="/help"
+                onClick={[Function]}
+                title="help"
+              >
+                Help
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div
+      id="main"
+    >
+      <div
+        style={
+          Object {
+            "WebkitTapHighlightColor": "rgba(0,0,0,0)",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 2,
+            "boxShadow": "0 19px 60px rgba(0, 0, 0, 0.3),
+         0 15px 20px rgba(0, 0, 0, 0.22)",
+            "boxSizing": "border-box",
+            "color": "rgba(0, 0, 0, 0.87)",
+            "display": "inline-block",
+            "fontFamily": "Roboto, sans-serif",
+            "margin": 20,
+            "muiPrepared": true,
+            "padding": 20,
+            "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<h1 id=\\"plant-privacy-policy\\">Plant Privacy Policy</h1>
+<h2 id=\\"contents\\">Contents</h2>
+<ul>
+<li>Information Collection</li>
+<li>Information Usage</li>
+<li>Information Protection</li>
+<li>Cookie Usage</li>
+<li>3rd Party Disclosure</li>
+<li>3rd Party Links</li>
+<li>Google AdSense</li>
+<li>Fair Information Practices</li>
+<li>COPPA</li>
+<li>CalOPPA</li>
+<li>Our Contact Information</li>
+</ul>
+<p>This privacy policy has been compiled to better serve those who are concerned with how their &#39;Personally identifiable information&#39; (PII) is being used online. PII, as used in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
+<p><strong>What personal information do we collect from the people that visit our blog, website or app?</strong></p>
+<p>When registering on our site, as appropriate, you may be asked to enter your name, email address or other details to help you with your experience.</p>
+<p><strong>When do we collect information?</strong></p>
+<p>We collect information from you when you register on our site or enter information on our site.</p>
+<p><strong>How do we use your information?</strong></p>
+<p>We may use the information we collect from you when you register in the following ways:</p>
+<ul>
+<li>To personalize user&#39;s experience and to allow us to deliver the type of content in which you are most interested.</li>
+</ul>
+<p><strong>How do we protect visitor information?</strong></p>
+<p>Our website is scanned on a regular basis for security holes and known vulnerabilities in order to make your visit to our site as safe as possible.</p>
+<p>We use regular Malware Scanning.</p>
+<p>We use an SSL certificate.</p>
+<p>We only provide articles and information, we never ask for personal or private information like credit card numbers.</p>
+<p><strong>Do we use &#39;cookies&#39;?</strong></p>
+<p>We do not use cookies for tracking purposes</p>
+<p>You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all cookies. You do this through your browser (like Internet Explorer) settings. Each browser is a little different, so look at your browser&#39;s Help menu to learn the correct way to modify your cookies.</p>
+<p><strong>Third Party Disclosure</strong></p>
+<p>We do not sell, trade, or otherwise transfer to outside parties your personally identifiable information.</p>
+<p><strong>Third party links</strong></p>
+<p>Occasionally, at our discretion, we may include or offer third party products or services on our website. These third party sites have separate and independent privacy policies. We therefore have no responsibility or liability for the content and activities of these linked sites. Nonetheless, we seek to protect the integrity of our site and welcome any feedback about these sites.</p>
+<p><strong>Google</strong></p>
+<p>Google&#39;s advertising requirements can be summed up by Google&#39;s Advertising Principles. They are put in place to provide a positive experience for users. <a href=\\"https://support.google.com/adwordspolicy/answer/1316548?hl=en\\">https://support.google.com/adwordspolicy/answer/1316548?hl=en</a></p>
+<p>We have not enabled Google AdSense on our site but we may do so in the future.</p>
+<p><strong>California Online Privacy Protection Act</strong></p>
+<p>CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy. The law&#39;s reach stretches well beyond California to require a person or company in the United States (and conceivably the world) that operates websites collecting personally identifiable information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals with whom it is being shared, and to comply with this policy. - See more at: <a href=\\"http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf\\">http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf</a></p>
+<p><strong>According to CalOPPA we agree to the following:</strong></p>
+<ul>
+<li>Users can visit our site anonymously</li>
+<li>Once this privacy policy is created, we will add a link to it on our home page, or as a minimum on the first significant page after entering our website.</li>
+<li>Our Privacy Policy link includes the word &#39;Privacy&#39;, and can be easily be found on the page specified above.</li>
+</ul>
+<p>Users will be notified of any privacy policy changes:</p>
+<ul>
+<li>On our Privacy Policy Page</li>
+</ul>
+<p>Users are able to change their personal information:</p>
+<ul>
+<li>By emailing us</li>
+<li>By logging in to their account</li>
+</ul>
+<p><strong>How does our site handle do not track signals?</strong></p>
+<p>We honor do not track signals and do not track, plant cookies, or use advertising when a Do Not Track (DNT) browser mechanism is in place.</p>
+<p><strong>Does our site allow third party behavioral tracking?</strong></p>
+<p>It&#39;s also important to note that we do not allow third party behavioral tracking</p>
+<p><strong>COPPA (Children Online Privacy Protection Act)</strong></p>
+<p>When it comes to the collection of personal information from children under 13, the Children&#39;s Online Privacy Protection Act (COPPA) puts parents in control. The Federal Trade Commission, the nation&#39;s consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect children&#39;s privacy and safety online.</p>
+<p>We do not specifically market to children under 13.</p>
+<p><strong>Fair Information Practices</strong></p>
+<p>The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.</p>
+<p><strong>In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:</strong></p>
+<p>We will notify the users via email</p>
+<ul>
+<li>Within 7 business days</li>
+</ul>
+<p>We will notify the users via in site notification</p>
+<ul>
+<li>Within 7 business days</li>
+</ul>
+<p><strong>CAN SPAM Act</strong></p>
+<p>The CAN-SPAM Act is a law that sets the rules for commercial email, establishes requirements for commercial messages, gives recipients the right to have emails stopped from being sent to them, and spells out tough penalties for violations.</p>
+<p><strong>To be in accordance with CANSPAM we agree to the following:</strong></p>
+<p>If at any time you would like to unsubscribe from receiving future emails, you can email us and we will promptly remove you from ALL correspondence.</p>
+<p><strong>Contacting Us</strong></p>
+<p>If there are any questions regarding this privacy policy you may contact us using the information below.</p>
+<p><a href=\\"https://plaaant.com\\">https://plaaant.com</a>
+wildfiction@gmail.com</p>
+<p>Last Edited on 2017-06-14</p>
+",
+            }
+          }
+        />
+      </div>
+    </div>
+    <nav
+      className="navbar navbar-default navbar-fixed-bottom"
+    >
+      <div
+        className="container-fluid"
+      >
+        <a
+          href="/"
+          onClick={[Function]}
+        >
+          Home
+        </a>
+        <a
+          href="/privacy"
+          onClick={[Function]}
+          style={
+            Object {
+              "marginLeft": "10px",
+            }
+          }
+        >
+          Privacy
+        </a>
+        <a
+          href="/terms"
+          onClick={[Function]}
+          style={
+            Object {
+              "marginLeft": "10px",
+            }
+          }
+        >
+          Terms
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
