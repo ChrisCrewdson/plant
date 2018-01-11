@@ -94,12 +94,6 @@ const reducers = {
   [actions.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
-if (reducers.undefined) {
-  // eslint-disable-next-line no-console
-  console.error(`Missing action type in interim.js - these are the reducers keys:
-${Object.keys(reducers).join()}`);
-}
-
 module.exports = (state = seamless({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);

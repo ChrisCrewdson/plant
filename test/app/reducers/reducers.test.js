@@ -22,7 +22,7 @@ describe('/app/reducers', () => {
       .forEach((reducer) => {
         test(`${reducer} should not have an undefined reducer`, () => {
           // eslint-disable-next-line
-      const { reducers } = require(`../../../app/reducers/${reducer}`);
+          const { reducers } = require(`../../../app/reducers/${reducer}`);
           expect(reducers).toBeInstanceOf(Object);
           expect(reducers.undefined).toBeUndefined();
           Object.keys(reducers).forEach((reducerKey) => {

@@ -104,12 +104,6 @@ const reducers = Object.freeze({
 
 });
 
-if (reducers.undefined) {
-  // eslint-disable-next-line no-console
-  console.error(`Missing action type in notes.js - these are the reducers keys:
-${Object.keys(reducers).join()}`);
-}
-
 module.exports = (state = {}, action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);

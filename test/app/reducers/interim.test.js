@@ -78,4 +78,103 @@ describe('/app/reducers/interim', () => {
       checkReducer('editNoteChange', state, payload, expected);
     });
   });
+
+  describe('editPlantOpen', () => {
+    test('should reduce from empty state and empty payload', () => {
+      const state = seamless({});
+      const payload = {};
+      const expected = seamless({ plant: { plant: {} } });
+      checkReducer('editPlantOpen', state, payload, expected);
+    });
+
+    test('should reduce from empty state and populated payload', () => {
+      const state = seamless({});
+      const payload = { plant: { a: 1, b: 2 } };
+      const expected = seamless({ plant: { plant: { a: 1, b: 2 } } });
+      checkReducer('editPlantOpen', state, payload, expected);
+    });
+
+    test('should reduce from existing state and populated payload', () => {
+      const state = seamless({ note: { a: 1 } });
+      const payload = { plant: { a: 1, b: 2 } };
+      const expected = seamless({ plant: { plant: { a: 1, b: 2 } }, note: { a: 1 } });
+      checkReducer('editPlantOpen', state, payload, expected);
+    });
+
+    test('should reduce from a number to string price', () => {
+      const state = seamless({});
+      const payload = { plant: { price: 1 } };
+      const expected = seamless({ plant: { plant: { price: '1' } } });
+      checkReducer('editPlantOpen', state, payload, expected);
+    });
+  });
+
+  describe('editPlantClose', () => {
+    test('should reduce from empty state and empty payload', () => {
+      const state = seamless({});
+      const payload = {};
+      const expected = seamless({});
+      checkReducer('editPlantClose', state, payload, expected);
+    });
+
+    test('should reduce from empty state and populated payload', () => {
+      const state = seamless({});
+      const payload = { a: 1, b: 2 };
+      const expected = seamless({});
+      checkReducer('editPlantClose', state, payload, expected);
+    });
+
+    test('should reduce from existing state and populated payload', () => {
+      const state = seamless({ note: { a: 1 } });
+      const payload = { a: 1, b: 2 };
+      const expected = seamless({ note: { a: 1 } });
+      checkReducer('editPlantClose', state, payload, expected);
+    });
+  });
+
+  describe('editPlantChange', () => {
+    test('should reduce from empty state and empty payload', () => {
+      const state = seamless({ plant: { plant: {}, note: {} } });
+      const payload = {};
+      const expected = seamless({ plant: { plant: {}, note: {} } });
+      checkReducer('editPlantChange', state, payload, expected);
+    });
+
+    test('should reduce from empty state and populated payload', () => {
+      const state = seamless({ plant: { plant: {}, note: {} } });
+      const payload = { a: 1, b: 2 };
+      const expected = seamless({ plant: { plant: { a: 1, b: 2 }, note: {} } });
+      checkReducer('editPlantChange', state, payload, expected);
+    });
+
+    test('should reduce from existing state and populated payload', () => {
+      const state = seamless({ plant: { plant: { a: 11, c: 3 }, note: {} } });
+      const payload = { a: 1, b: 2 };
+      const expected = seamless({ plant: { plant: { a: 1, b: 2, c: 3 }, note: {} } });
+      checkReducer('editPlantChange', state, payload, expected);
+    });
+  });
+
+  describe('loadPlants Request/Success/Failure', () => {
+    test('should reduce from empty state and empty payload', () => {
+      const state = seamless({ });
+      const payload = { stuff: 1 };
+      const expected = seamless({ loadPlantRequest: { stuff: 1 } });
+      checkReducer('loadPlantsRequest', state, payload, expected);
+    });
+
+    test('should reduce from empty state and populated payload', () => {
+      const state = seamless({ loadPlantRequest: true });
+      const payload = { };
+      const expected = seamless({ });
+      checkReducer('loadPlantsFailure', state, payload, expected);
+    });
+
+    test('should reduce from existing state and populated payload', () => {
+      const state = seamless({ loadPlantRequest: true });
+      const payload = { };
+      const expected = seamless({ });
+      checkReducer('loadPlantsSuccess', state, payload, expected);
+    });
+  });
 });
