@@ -76,12 +76,12 @@ function deletePlantRequest(state, { payload: { locationId, plantId } }) {
   return state;
 }
 
-function modifyLocationSuccess(state, action) {
-  // eslint-disable-next-line no-console
-  console.log('reducers.locations.modifyLocationSuccess action', action);
-  // TODO: Fix this
-  return state;
-}
+// function modifyLocationSuccess(state, action) {
+//   // eslint-disable-next-line no-console
+//   console.log('reducers.locations.modifyLocationSuccess action', action);
+//   // TODO: Fix this
+//   return state;
+// }
 
 const reducers = {
   // [actions.CREATE_LOCATION_REQUEST]: createLocationRequest,
@@ -91,7 +91,7 @@ const reducers = {
   [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
   [actions.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
   [actions.LOAD_UNLOADED_PLANTS_SUCCESS]: loadPlantsSuccess,
-  [actions.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
+  // [actions.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
 module.exports = (state = seamless({}), action) => {

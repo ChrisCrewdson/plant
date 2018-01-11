@@ -65,6 +65,30 @@ Object {
 }
 `;
 
+exports[`/app/reducers/locations should handle a createPlantRequest when location does not have plantIds 1`] = `
+Object {
+  "1": Object {
+    "_id": "1",
+    "plantIds": Array [
+      "one",
+    ],
+  },
+  "2": Object {
+    "_id": "2",
+    "name": "xxx",
+    "plantIds": Array [
+      "xxx",
+    ],
+  },
+  "3": Object {
+    "_id": "3",
+    "plantIds": Array [
+      "plant-1",
+    ],
+  },
+}
+`;
+
 exports[`/app/reducers/locations should handle a deletePlantRequest 1`] = `
 Object {
   "1": Object {
