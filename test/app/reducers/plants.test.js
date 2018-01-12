@@ -348,5 +348,36 @@ describe('/app/reducers/plants', () => {
       const actual = plants(current, actions.loadNotesSuccess(payload));
       expect(actual).toBe(current);
     });
+
+    test('should return original state if notes do not have plantIds', () => {
+      const expected = {
+        'p-1': {
+          notes: ['n-7', 'n-8'],
+        },
+        'p-2': {
+          notes: ['n-2', 'n-3'],
+        },
+        'p-3': {},
+        'p-4': {
+          notes: ['n-2', 'n-3'],
+        },
+      };
+      const payload = [{
+        _id: 'n-1',
+        plantIds: ['p-1', 'p-2'],
+      }, {
+        _id: 'n-2',
+        plantIds: ['p-2', 'p-3'],
+      }];
+      const current = seamless.from(expected);
+      expected['p-1'].notes.push('n-1');
+      expected['p-2'].notes.push('n-1');
+      expected['p-3'].notes = ['n-2'];
+
+      const actual = plants(current, actions.loadNotesSuccess(payload));
+
+      expect(actual).not.toBe(current);
+      expect(actual).toEqual(expected);
+    });
   });
 });

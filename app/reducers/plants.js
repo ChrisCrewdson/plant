@@ -186,7 +186,7 @@ function loadNotesSuccess(state, { payload: notes }) {
       return acc;
     }
 
-    const plantNotes = uniq((plant.notes || []).concat(plants[plantId] || []));
+    const plantNotes = uniq((plant.notes || []).concat(plants[plantId]));
     acc[plantId] = seamless.set(plant, 'notes', plantNotes);
     return acc;
   }, {}));
