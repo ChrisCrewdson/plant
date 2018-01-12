@@ -120,7 +120,9 @@ class PlantEdit extends React.Component {
   }
 
   render() {
-    const { interimPlant, user } = this.props;
+    const {
+      interimPlant, user, users, locations,
+    } = this.props;
     const {
       title = '',
       botanicalName = '',
@@ -133,21 +135,23 @@ class PlantEdit extends React.Component {
     } = interimPlant;
 
     const {
-      locationIds = [],
+      _id = '',
       activeLocationId = '',
     } = user;
+    const {
+      locationIds = [],
+    } = users[_id];
 
-    const locations = locationIds.reduce((acc, locationId) => {
-      acc[locationId._id] = locationId.title;
+    const locationIdTitleMap = locationIds.reduce((acc, locationId) => {
+      acc[locationId._id] = (locations[locationId] || {}).title;
       return acc;
     }, {});
     // activeLocationId is the one that you last viewed which might not be
     // one that you own/manage. Only set locationId to this if it's one that
     // is in the locationIds list.
-    const locationIdsOnly = locationIds.map(locationId => locationId._id);
     const locationId = interimPlant.locationId
-      || (locationIdsOnly.some(locId => locId === activeLocationId) && activeLocationId)
-      || locationIdsOnly[0];
+      || (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
+      || locationIds[0];
 
     const geoPosDisplay = interimPlant.loc
       ? `${getIn(interimPlant, ['loc', 'coordinates', '0'])} / ${getIn(interimPlant, ['loc', 'coordinates', '1'])}`
@@ -200,7 +204,7 @@ class PlantEdit extends React.Component {
           error={errors.locationId}
           label="Location"
           name="locationId"
-          options={locations}
+          options={locationIdTitleMap}
           placeholder="Which location is this at?"
           style={{ textAlign: 'left', width: '100%' }}
           type="select"
@@ -340,6 +344,8 @@ PlantEdit.propTypes = {
   user: PropTypes.shape({
     _id: PropTypes.string,
   }).isRequired,
+  users: PropTypes.shape({}).isRequired,
+  locations: PropTypes.shape({}).isRequired,
 };
 
 module.exports = withRouter(PlantEdit);

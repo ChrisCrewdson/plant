@@ -188,40 +188,43 @@ class LocationsManager extends React.Component {
       display: 'inline-block',
     };
 
-    const { locations } = this.props;
+    const { locationIds, locations } = this.props;
 
     return (
       <div>
         {
-          locations.map(location => (
-            <Paper
-              key={location._id}
-              style={paperStyle}
-              zDepth={5}
-            >
-              <h3>{`${location.title}`}</h3>
-              <Grid
-                columns={userColumns}
-                delete={this.deleteLocationMember}
-                insert={this.upsertLocationMember}
-                meta={{ location }}
-                rows={getMembers(location.members)}
-                title="Users"
-                update={this.upsertLocationMember}
-                validate={LocationsManager.validateLocationMember}
-              />
-              <Grid
-                columns={weatherColumns}
-                delete={this.deleteLocationWeather}
-                insert={this.upsertLocationWeather}
-                meta={{ location }}
-                rows={getStations(location.stations)}
-                title="Weather Stations"
-                update={this.upsertLocationWeather}
-                validate={LocationsManager.validateLocationWeather}
-              />
-            </Paper>
-          ))
+          locationIds.map((locationId) => {
+            const location = locations[locationId];
+            return (
+              <Paper
+                key={location._id}
+                style={paperStyle}
+                zDepth={5}
+              >
+                <h3>{`${location.title}`}</h3>
+                <Grid
+                  columns={userColumns}
+                  delete={this.deleteLocationMember}
+                  insert={this.upsertLocationMember}
+                  meta={{ location }}
+                  rows={getMembers(location.members)}
+                  title="Users"
+                  update={this.upsertLocationMember}
+                  validate={LocationsManager.validateLocationMember}
+                />
+                <Grid
+                  columns={weatherColumns}
+                  delete={this.deleteLocationWeather}
+                  insert={this.upsertLocationWeather}
+                  meta={{ location }}
+                  rows={getStations(location.stations)}
+                  title="Weather Stations"
+                  update={this.upsertLocationWeather}
+                  validate={LocationsManager.validateLocationWeather}
+                />
+              </Paper>
+          );
+          })
         }
       </div>
     );
@@ -230,7 +233,8 @@ class LocationsManager extends React.Component {
 
 LocationsManager.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  locations: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  locationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  locations: PropTypes.shape({}).isRequired,
   users: PropTypes.shape({}).isRequired,
 };
 

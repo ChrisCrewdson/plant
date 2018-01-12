@@ -31,7 +31,9 @@ function profile(props, context) {
   const { dispatch } = store;
   const state = store.getState();
   const users = getIn(state, 'users', {});
-  const locationIds = getIn(state, ['user', 'locationIds']);
+  const locations = getIn(state, 'locations', {});
+  const userId = getIn(state, ['user', '_id'], '');
+  const locationIds = getIn(users, [userId, 'locationIds'], []);
 
   const unitOfMeasurement = imperial ? 'imperial' : 'metric';
 
@@ -59,7 +61,8 @@ function profile(props, context) {
           />
         </RadioButtonGroup>
         <LocationsManager
-          locations={locationIds}
+          locations={locations}
+          locationIds={locationIds}
           users={users}
           dispatch={dispatch}
         />

@@ -55,7 +55,7 @@ class Plant extends React.Component {
 
   initState(first, props = this.props || {}) {
     const { store } = this.context;
-    const { plants, user } = store.getState();
+    const { plants, user, users = {} } = store.getState();
 
     const { match = {}, params = {} } = props;
     const _id = params.id || (match.params && match.params.id);
@@ -66,15 +66,15 @@ class Plant extends React.Component {
         store.dispatch(actions.loadPlantRequest({ _id }));
       }
     } else {
-      const { locationIds = [], activeLocationId } = user;
+      const { _id: userId = '', activeLocationId } = user;
+      const { locationIds = [] } = users[userId];
 
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
       // is in the locationIds list.
-      const locationIdsOnly = locationIds.map(locationId => locationId._id);
       const locationId =
-        (locationIdsOnly.some(locId => locId === activeLocationId) && activeLocationId)
-        || locationIdsOnly[0];
+        (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
+        || locationIds[0];
 
       store.dispatch(actions.editPlantOpen({
         plant: {
@@ -95,6 +95,7 @@ class Plant extends React.Component {
       notes,
       plants,
       user,
+      users,
     } = store.getState();
 
     const interimNote = getIn(interim, ['note', 'note'], {});
@@ -104,7 +105,9 @@ class Plant extends React.Component {
       return (<PlantEdit
         dispatch={store.dispatch}
         interimPlant={interimPlant}
+        locations={locations}
         user={user}
+        users={users}
       />);
     }
 

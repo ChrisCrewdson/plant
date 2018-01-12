@@ -36,6 +36,10 @@ class Users extends React.Component {
     this.setState({ users, locations });
   }
 
+  /**
+   * Render the users
+   * @param {Object} user - user is from the users collection and not the loggedIn user
+   */
   renderUser(user) {
     const { _id, name: userName, locationIds } = user;
     let link = `/locations/${makeSlug(userName)}/${_id}`;
@@ -44,10 +48,10 @@ class Users extends React.Component {
       const state = this.context.store.getState();
       const { locations } = state;
       if (locations) {
-        const [singleLocationId] = locationIds;
-        const singleLocation = locations[singleLocationId];
+        const [firstLocationId] = locationIds;
+        const singleLocation = locations[firstLocationId];
         if (singleLocation) {
-          link = `/location/${makeSlug(singleLocation.title)}/${singleLocationId}`;
+          link = `/location/${makeSlug(singleLocation.title)}/${firstLocationId}`;
         }
       }
     }
