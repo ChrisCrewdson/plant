@@ -25,6 +25,13 @@ describe('/app/reducers/users', () => {
     checkReducer('loadUsersSuccess', state, payload);
   });
 
+  test('should reduce loadUsersSuccess with undefined payload', () => {
+    const state = seamless.from({});
+    const payload = undefined;
+
+    checkReducer('loadUsersSuccess', state, payload);
+  });
+
   test('should reduce createPlantRequest action', () => {
     const state = seamless.from({ u1: { _id: 'u1', name: 'john', locationIds: ['p1'] } });
     const payload = { _id: 'p2', title: 'pt', userId: 'u1' };

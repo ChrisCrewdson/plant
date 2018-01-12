@@ -11,7 +11,12 @@ function loadUsersSuccess(state, action) {
     });
     return acc;
   }, {});
-  const newState = seamless.merge(state, usersSet);
+
+  if (!Object.keys(usersSet).length) {
+    return state;
+  }
+
+  const newState = seamless.merge(state, usersSet, { deep: true });
   return newState;
 }
 

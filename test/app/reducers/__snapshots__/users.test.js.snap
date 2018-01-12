@@ -72,3 +72,5 @@ Object {
   },
 }
 `;
+
+exports[`/app/reducers/users should reduce loadUsersSuccess with undefined payload 1`] = `Object {}`;
