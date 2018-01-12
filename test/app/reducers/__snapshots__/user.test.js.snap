@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/app/reducers/user should handle changeActiveLocationId 1`] = `
+Object {
+  "activeLocationId": "l-1",
+}
+`;
+
+exports[`/app/reducers/user should handle changeActiveLocationId with no payload 1`] = `
+Object {
+  "activeLocationId": "l-2",
+}
+`;
+
+exports[`/app/reducers/user should not change state with loadLocationsSuccess when not logged in 1`] = `
+Object {
+  "_id": "u-1",
+  "activeLocationId": false,
+  "isLoggedIn": false,
+}
+`;
+
+exports[`/app/reducers/user should reduce a loadLocationsSuccess 1`] = `
+Object {
+  "_id": "u-1",
+  "activeLocationId": "l-1",
+  "isLoggedIn": true,
+}
+`;
+
 exports[`/app/reducers/user should reduce a login failure 1`] = `
 Object {
   "isLoggedIn": false,
@@ -25,3 +53,11 @@ Object {
 `;
 
 exports[`/app/reducers/user should reduce a logout action 1`] = `Object {}`;
+
+exports[`/app/reducers/user should reduce a missing location 1`] = `
+Object {
+  "_id": "u-1",
+  "activeLocationId": false,
+  "isLoggedIn": true,
+}
+`;

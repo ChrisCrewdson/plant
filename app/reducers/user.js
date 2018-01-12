@@ -54,10 +54,13 @@ function loadLocationsSuccess(state, action) {
 /**
  * Change the active location id
  * @param {ImmutableJS} state - existing immutable state
- * @param {object} action - object with {payload: { _id: <mongo-id}}
+ * @param {object} action - object with {payload: { _id: <mongo-id>}}
  */
 function changeActiveLocationId(state, { payload }) {
   const { _id } = payload || {};
+  if (!_id) {
+    return state; // should we remove activeLocationId?
+  }
   return seamless.set(state, 'activeLocationId', _id);
 }
 
