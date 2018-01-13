@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Article Article should be rendered 1`] = `
+<div
+  className="react-root"
+>
+  <div
+    className="page"
+  >
+    <nav
+      className="navbar navbar-default navbar-fixed-top"
+    >
+      <div
+        className="container-fluid"
+      >
+        <div
+          className="navbar-header"
+        >
+          <button
+            aria-expanded="false"
+            className="navbar-toggle collapsed"
+            data-target="#plant-navbar-collapse"
+            data-toggle="collapse"
+            type="button"
+          >
+            <span
+              className="sr-only"
+            >
+              Toggle navigation
+            </span>
+            <span
+              className="icon-bar"
+            />
+            <span
+              className="icon-bar"
+            />
+            <span
+              className="icon-bar"
+            />
+          </button>
+          <a
+            className="navbar-brand"
+            href="/"
+            onClick={[Function]}
+          >
+            Plant
+          </a>
+        </div>
+        <div
+          className="collapse navbar-collapse"
+          id="plant-navbar-collapse"
+        >
+          <ul
+            className="nav navbar-nav navbar-right"
+          >
+            <li>
+              <a
+                href="/login"
+                onClick={[Function]}
+              >
+                Login
+              </a>
+            </li>
+            <li>
+              <a
+                href="/help"
+                onClick={[Function]}
+                title="help"
+              >
+                Help
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div
+      id="main"
+    >
+      <div
+        style={
+          Object {
+            "marginBottom": "50px",
+            "marginLeft": "25px",
+            "marginTop": "70px",
+          }
+        }
+      >
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<p><strong>911 Operator:</strong> 911 - what&#39;s your emergency?</p>
+<p><strong>Fruit Tree Addict:</strong> I just planted my fruit trees and now it&#39;s raining on them.</p>
+<p><strong>Operator:</strong> Are in a safe place sir?</p>
+<p><strong>Addict:</strong> I don&#39;t know it&#39;s raining.</p>
+<p><strong>Operator:</strong> Where are you right now sir?</p>
+<p><strong>Addict:</strong> I&#39;m next to one of the trees I planted.</p>
+<p><strong>Operator:</strong> Do you have an umbrella in your hand sir?</p>
+<p><strong>Addict:</strong> Yes, yes, … <em>(sobbing)</em> I&#39;m holding it over the tree so it doesn&#39;t get wet.</p>
+<p><strong>Operator:</strong> Okay sir, remain calm, I&#39;m going to help you. Is there lightning in the area?</p>
+<p><strong>Addict:</strong> Yes, everywhere.</p>
+<p><strong>Operator:</strong> Okay sir, I need you to move to a safe place. Can you put down the umbrella and get inside a house?</p>
+<p><strong>Addict:</strong> Yes, … <em>(muffled sound)</em> I&#39;m in my house.</p>
+<p><strong>Operator:</strong> Is there anyone in your house that can be with you?</p>
+<p><strong>Addict:</strong> No, my wife and kids have gone to a PTA meeting. I&#39;m supposed to be there as well.</p>
+<p><strong>Operator:</strong> Please sit down sir. I&#39;m familiar with this problem and I can help you. I need you to look at the photos on your phone. What do you see?</p>
+<p><strong>Addict:</strong> I see trees and flowers and leaves.</p>
+<p><strong>Operator:</strong> Are there any photos of your wife or children on the phone sir?</p>
+<p><strong>Addict:</strong> No, only the trees.</p>
+<p><strong>Operator:</strong> This is normal sir, this is a common condition. I need you to make another check sir. Have a look at the list of the last 10 numbers that you dialed. Who were they to?</p>
+<p><strong>Addict:</strong> They are to my local nurseries. Except for one of them which is to a guy from Facebook that going to give me a Mulberry Tree.</p>
+<p><strong>Operator:</strong> Sir, when you call the tree nurseries do they immediately recognize your voice and greet you by name?</p>
+<p><strong>Addict:</strong> Yes, always.</p>
+<p><strong>Operator:</strong> We&#39;re going to get help over to you right now sir. In the meantime I would like you to go online and go to a support group. It&#39;s called <a href=\\"https://www.facebook.com/groups/589635491185478/\\">Fruit Trees Anonymous</a>. There are other people just like you who will be able to help you. Sit tight and we have someone on their way.</p>
+<p><strong>Addict:</strong> Okay... <em>(sobbing)</em>.</p>
+<p>...CLICK…</p>
+",
+            }
+          }
+        />
+      </div>
+    </div>
+    <nav
+      className="navbar navbar-default navbar-fixed-bottom"
+    >
+      <div
+        className="container-fluid"
+      >
+        <a
+          href="/"
+          onClick={[Function]}
+        >
+          Home
+        </a>
+        <a
+          href="/privacy"
+          onClick={[Function]}
+          style={
+            Object {
+              "marginLeft": "10px",
+            }
+          }
+        >
+          Privacy
+        </a>
+        <a
+          href="/terms"
+          onClick={[Function]}
+          style={
+            Object {
+              "marginLeft": "10px",
+            }
+          }
+        >
+          Terms
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
