@@ -38,3 +38,6 @@ module.exports = (done) => {
     loadScript(done);
   }
 };
+
+// Export to help with testing
+module.exports.features = features;
