@@ -12,7 +12,7 @@
 export NODE_ENV=development
 
 # You can comment out the DEBUG line below if you want fewer terminal messages
-export DEBUG=plant:*
+# export DEBUG=plant:*
 export PLANT_DB_URL=127.0.0.1:27017
 export PLANT_DB_NAME=plant-test
 
