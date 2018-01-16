@@ -276,6 +276,15 @@ describe('/app/libs/utils', () => {
       },
     };
 
+    test('should return plantIds if array is empty', () => {
+      const plantIds = seamless.from([]);
+      expect(utils.sortPlants(plantIds)).toBe(plantIds);
+    });
+
+    test('should return an array if param is falsy', () => {
+      expect(utils.sortPlants()).toEqual([]);
+    });
+
     test('should sort plants', () => {
       const plantIds = seamless.from(['4', '1', '3', '2']);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
@@ -292,13 +301,24 @@ describe('/app/libs/utils', () => {
       expect(sortedPlantIds).toBe(plantIds);
     });
 
-    test('should not need to sort plants with missing plants', () => {
-      const plantIds = seamless.from(['5', '1', '2', '5', '3', '4', '5']);
+    test('should not need to sort plants with missing plants at end', () => {
+      const plantIds = seamless.from(['1', '2', '3', '4', '5', '5', '5']);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       // It should have returned the same object because it did
       // not need to get sorted.
       expect(sortedPlantIds).toBe(plantIds);
+    });
+
+    test('should sort plants with missing plants', () => {
+      const plantIds = seamless.from(['4', '7', '6', '2', '6', '3', '1', '9']);
+      const sortedPlantIds = utils.sortPlants(plantIds, plants);
+      expect(sortedPlantIds).toMatchSnapshot();
+      const expectedOrder = ['1', '2', '3', '4', '7', '6', '6', '9'];
+      expect(sortedPlantIds).toEqual(expectedOrder);
+      // It should not have returned the same object because it did
+      // not need to get sorted.
+      expect(sortedPlantIds).not.toBe(plantIds);
     });
   });
 
@@ -319,11 +339,11 @@ describe('/app/libs/utils', () => {
     };
 
     test('should return noteIds if array is empty', () => {
-      const noteIds = [];
+      const noteIds = seamless.from([]);
       expect(utils.sortNotes(noteIds)).toBe(noteIds);
     });
 
-    test('should return an array if array is missing', () => {
+    test('should return an array if param is falsy', () => {
       expect(utils.sortNotes()).toEqual([]);
     });
 

@@ -72,14 +72,14 @@ Array [
 ]
 `;
 
-exports[`/app/libs/utils sortPlants should not need to sort plants with missing plants 1`] = `
+exports[`/app/libs/utils sortPlants should not need to sort plants with missing plants at end 1`] = `
 Array [
-  "5",
   "1",
   "2",
-  "5",
   "3",
   "4",
+  "5",
+  "5",
   "5",
 ]
 `;
@@ -90,5 +90,18 @@ Array [
   "3",
   "2",
   "4",
+]
+`;
+
+exports[`/app/libs/utils sortPlants should sort plants with missing plants 1`] = `
+Array [
+  "1",
+  "2",
+  "3",
+  "4",
+  "7",
+  "6",
+  "6",
+  "9",
 ]
 `;

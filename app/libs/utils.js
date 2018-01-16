@@ -150,59 +150,41 @@ function alreadySorted(prop, itemIds, items) {
   });
 }
 
-function notesAlreadySorted(noteIds, notes) {
-  return alreadySorted('date', noteIds, notes);
-}
-
 // TODO: Memoize this method.
-function sortNotes(noteIds, notes) {
-  if (!noteIds || !noteIds.length) {
-    return noteIds || [];
+function sortItems(prop, itemIds, items) {
+  if (!itemIds || !itemIds.length) {
+    return itemIds || [];
   }
 
-  if (notesAlreadySorted(noteIds, notes)) {
-    return noteIds;
+  if (alreadySorted(prop, itemIds, items)) {
+    return itemIds;
   }
 
-  return seamless.from(seamless.asMutable(noteIds).sort((a, b) => {
-    const noteA = notes[a];
-    const noteB = notes[b];
-    if (noteA && noteB) {
-      const dateA = noteA.date;
-      const dateB = noteB.date;
+  return seamless.from(seamless.asMutable(itemIds).sort((a, b) => {
+    const itemA = items[a];
+    const itemB = items[b];
+    if (itemA && itemB) {
+      const dateA = itemA[prop];
+      const dateB = itemB[prop];
       if (dateA === dateB) {
         return 0;
       }
       return dateA > dateB ? 1 : -1;
     }
-    // The following logic puts all the unfound notes at the end of the sort.
-    if (!noteA && !noteB) {
+    // The following logic puts all the unfound items at the end of the sort.
+    if (!itemA && !itemB) {
       return 0;
     }
-    if (noteA) {
+    if (itemA) {
       return -1;
     }
     return 1;
   }));
 }
 
-/**
- * Determines if the array is already sorted.
- * If it doesn't need sorting then the caller can return the same
- * array which will be more performant for PureComponents.
- * @param {Array} plantIds - Immutable array of plantIds
- * @param {Object} plants - All plants indexed by id
- * @returns {Boolean} - true if array needs sorting otherwise false
- */
-function plantsAlreadySorted(plantIds, plants) {
-  return plantIds.every((plantId, index) => {
-    if (index === 0) {
-      return true;
-    }
-    const { title: title1 } = plants[plantIds[index - 1]] || {};
-    const { title: title2 } = plants[plantId] || {};
-    return !title1 || !title2 || title1 <= title2;
-  });
+function sortNotes(noteIds, notes) {
+  // TODO: Memoize this method
+  return sortItems('date', noteIds, notes);
 }
 
 /**
@@ -213,20 +195,7 @@ function plantsAlreadySorted(plantIds, plants) {
  */
 function sortPlants(plantIds, plants) {
   // TODO: Memoize this method
-  if (plantsAlreadySorted(plantIds, plants)) {
-    return plantIds;
-  }
-  return seamless.from(seamless.asMutable(plantIds).sort((a, b) => {
-    const plantA = plants[a];
-    const plantB = plants[b];
-    if (plantA && plantB) {
-      if (plantA.title === plantB.title) {
-        return 0;
-      }
-      return plantA.title > plantB.title ? 1 : -1;
-    }
-    return 0;
-  }));
+  return sortItems('title', plantIds, plants);
 }
 
 /**
