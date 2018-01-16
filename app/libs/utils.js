@@ -114,10 +114,11 @@ function plantFromBody(body) {
  * @returns {array} - an array of filtered plantIds
  */
 function filterPlants(plantIds, plants, filter) {
-  return filter
+  const lowerFilter = (filter || '').toLowerCase();
+  return lowerFilter
     ? plantIds.filter((plantId) => {
       const plant = plants[plantId];
-      return !plant || (plant.title || '').toLowerCase().indexOf(filter) >= 0;
+      return plant && (plant.title || '').toLowerCase().indexOf(lowerFilter) >= 0;
     })
     : plantIds;
 }
@@ -132,13 +133,14 @@ function notesAlreadySorted(noteIds, notes) {
     const noteB = notes[noteId];
     const { date: dateA } = noteA || {};
     const { date: dateB } = noteB || {};
-    return !dateA || !dateB || dateA <= dateB;
+    return (dateA && dateB && dateA <= dateB) ||
+      (dateA && !dateB) || (!dateA && !dateB);
   });
 }
 
 // TODO: Memoize this method.
 function sortNotes(noteIds, notes) {
-  if (!noteIds.length) {
+  if (!noteIds || !noteIds.length) {
     return noteIds || [];
   }
 
@@ -157,7 +159,14 @@ function sortNotes(noteIds, notes) {
       }
       return dateA > dateB ? 1 : -1;
     }
-    return 0;
+    // The following logic puts all the unfound notes at the end of the sort.
+    if (!noteA && !noteB) {
+      return 0;
+    }
+    if (noteA) {
+      return -1;
+    }
+    return 1;
   }));
 }
 

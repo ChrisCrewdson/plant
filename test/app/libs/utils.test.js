@@ -13,6 +13,18 @@ describe('/app/libs/utils', () => {
     });
   });
 
+  describe('URLs', () => {
+    test('that makeLocationUrl creates a url', () => {
+      const url = utils.makeLocationUrl({ title: 'I Am A Title', _id: 'l-1' });
+      expect(url).toBe('/location/i-am-a-title/l-1');
+    });
+
+    test('that makeLayoutUrl creates a url', () => {
+      const url = utils.makeLayoutUrl({ title: 'I Am A Title', _id: 'l-1' });
+      expect(url).toBe('/layout/i-am-a-title/l-1');
+    });
+  });
+
   describe('mongo', () => {
     test('should create a mongo id', () => {
       const mongoId = utils.makeMongoId();
@@ -107,6 +119,54 @@ describe('/app/libs/utils', () => {
       actual = utils.intToDate(20161231);
       expected = new Date(2016, 11, 31);
       compareDates(actual, expected);
+    });
+  });
+
+  describe('intToString()', () => {
+    test('should create a String from an Integer date', () => {
+      const actual = utils.intToString(20160101);
+      expect(actual).toBe('01/01/2016');
+    });
+  });
+
+  describe('plantFromBody', () => {
+    test('that a plant is created from a body', () => {
+      const body = {
+        plantedDate: '20160505',
+        purchasedDate: '20160404',
+        terminatedDate: '20170228',
+        isTerminated: 'true',
+      };
+      const actual = utils.plantFromBody(body);
+      expect(actual).toMatchSnapshot();
+    });
+  });
+
+  describe('filterPlants', () => {
+    test('that plants are filtered', () => {
+      const plantIds = seamless.from(['p-1', 'p-2', 'p-3']);
+      const plants = {
+        'p-1': {
+          title: 'GoLden',
+        },
+        'p-2': {},
+      };
+      const filter = 'gOlD';
+      const actual = utils.filterPlants(plantIds, plants, filter);
+      expect(actual).toEqual(['p-1']);
+    });
+
+    test('that plants are not filtered if no filter text', () => {
+      const plantIds = seamless.from(['p-1', 'p-2', 'p-3']);
+      const plants = {
+        'p-1': {
+          title: 'GoLden',
+        },
+        'p-2': {},
+      };
+
+      const actual = utils.filterPlants(plantIds, plants);
+      expect(actual).toBe(plantIds);
     });
   });
 
@@ -258,6 +318,15 @@ describe('/app/libs/utils', () => {
       },
     };
 
+    test('should return noteIds if array is empty', () => {
+      const noteIds = [];
+      expect(utils.sortNotes(noteIds)).toBe(noteIds);
+    });
+
+    test('should return an array if array is missing', () => {
+      expect(utils.sortNotes()).toEqual([]);
+    });
+
     test('should sort notes', () => {
       const noteIds = seamless.from(['4', '1', '3', '2']);
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
@@ -274,13 +343,22 @@ describe('/app/libs/utils', () => {
       expect(sortedNoteIds).toBe(noteIds);
     });
 
-    test('should not need to sort notes with missing notes', () => {
-      const noteIds = seamless.from(['5', '1', '2', '5', '3', '4', '5']);
+    test('should not need to sort notes with missing notes at end', () => {
+      const noteIds = seamless.from(['1', '2', '3', '4', '5', '5', '5']);
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
       // not need to get sorted.
       expect(sortedNoteIds).toBe(noteIds);
+    });
+
+    test('should sort notes with missing notes', () => {
+      const noteIds = seamless.from(['4', '7', '6', '2', '6', '3', '1', '9']);
+      const sortedNoteIds = utils.sortNotes(noteIds, notes);
+      expect(sortedNoteIds).toMatchSnapshot();
+      // It should have returned the same object because it did
+      // not need to get sorted.
+      expect(sortedNoteIds).not.toBe(noteIds);
     });
   });
 });

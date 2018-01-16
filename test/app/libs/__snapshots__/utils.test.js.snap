@@ -11,6 +11,15 @@ Object {
 }
 `;
 
+exports[`/app/libs/utils plantFromBody that a plant is created from a body 1`] = `
+Object {
+  "isTerminated": true,
+  "plantedDate": 20160505,
+  "purchasedDate": 20160404,
+  "terminatedDate": 20170228,
+}
+`;
+
 exports[`/app/libs/utils sortNotes should not need to sort notes 1`] = `
 Array [
   "1",
@@ -20,14 +29,14 @@ Array [
 ]
 `;
 
-exports[`/app/libs/utils sortNotes should not need to sort notes with missing notes 1`] = `
+exports[`/app/libs/utils sortNotes should not need to sort notes with missing notes at end 1`] = `
 Array [
-  "5",
   "1",
   "2",
-  "5",
   "3",
   "4",
+  "5",
+  "5",
   "5",
 ]
 `;
@@ -38,6 +47,19 @@ Array [
   "3",
   "2",
   "4",
+]
+`;
+
+exports[`/app/libs/utils sortNotes should sort notes with missing notes 1`] = `
+Array [
+  "1",
+  "2",
+  "3",
+  "4",
+  "7",
+  "6",
+  "6",
+  "9",
 ]
 `;
 
