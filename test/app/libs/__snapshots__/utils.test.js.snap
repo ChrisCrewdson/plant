@@ -27,6 +27,13 @@ Object {
 }
 `;
 
+exports[`/app/libs/utils plantStats that plantStats creates a reasonable result 1`] = `
+Object {
+  "alive": 3,
+  "total": 5,
+}
+`;
+
 exports[`/app/libs/utils sortNotes should not need to sort notes 1`] = `
 Array [
   "1",

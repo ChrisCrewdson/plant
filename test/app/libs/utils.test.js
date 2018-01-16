@@ -398,4 +398,19 @@ describe('/app/libs/utils', () => {
       expect(actual).toEqual(['1', '2']);
     });
   });
+
+  describe('plantStats', () => {
+    test('that plantStats creates a reasonable result', () => {
+      const plantIds = ['missing', '4', '3', '2', '1'];
+      const plants = {
+        1: { isTerminated: true },
+        2: { isTerminated: false },
+        3: { isTerminated: false },
+        4: { isTerminated: true },
+      };
+      const actual = utils.plantStats(plantIds, plants);
+      expect(actual).toMatchSnapshot();
+      expect(actual).not.toBe(plantIds);
+    });
+  });
 });
