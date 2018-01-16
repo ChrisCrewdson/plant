@@ -50,7 +50,7 @@
     "slugify": "1.2.9",
     "style-loader": "0.19.1",
     "url-loader": "0.6.2",
-    "uuid": "3.2.0",
+    "uuid": "3.2.1",
     "validate.js": "0.12.0",
     "webpack": "3.10.0",
     "webpack-merge": "4.1.1",
