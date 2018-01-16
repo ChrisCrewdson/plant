@@ -123,19 +123,35 @@ function filterPlants(plantIds, plants, filter) {
     : plantIds;
 }
 
-function notesAlreadySorted(noteIds, notes) {
-  return noteIds.every((noteId, index) => {
+/**
+ * Checks to see if an array of strings is already sorted by the
+ * prop provided.
+ * @param {String} prop - the property in the object to sort by
+ * @param {Array} itemIds - an array of Ids
+ * @param {*} items - a object that has ids as props
+ */
+function alreadySorted(prop, itemIds, items) {
+  return itemIds.every((itemId, index) => {
     if (index === 0) {
       return true;
     }
 
-    const noteA = notes[noteIds[index - 1]];
-    const noteB = notes[noteId];
-    const { date: dateA } = noteA || {};
-    const { date: dateB } = noteB || {};
-    return (dateA && dateB && dateA <= dateB) ||
-      (dateA && !dateB) || (!dateA && !dateB);
+    const itemA = items[itemIds[index - 1]];
+    const itemB = items[itemId];
+    const valueA = (itemA || {})[prop];
+    const valueB = (itemB || {})[prop];
+    // Check one of these is true:
+    // 1. That both values exist and the first is less or equal to the second
+    // 2. That first value exists and second doesn't
+    // 3. That neither exists.
+    // i.e. if values are missing then they must be at the end.
+    return (valueA && valueB && valueA <= valueB) ||
+      (valueA && !valueB) || (!valueA && !valueB);
   });
+}
+
+function notesAlreadySorted(noteIds, notes) {
+  return alreadySorted('date', noteIds, notes);
 }
 
 // TODO: Memoize this method.
