@@ -381,4 +381,21 @@ describe('/app/libs/utils', () => {
       expect(sortedNoteIds).not.toBe(noteIds);
     });
   });
+
+  describe('filterSortPlants', () => {
+    test('that plants are both filtered and sorted by title', () => {
+      const plantIds = ['missing', '4', '3', '2', '1'];
+      const plants = {
+        1: { title: '1. Golden' },
+        2: { title: '2. Gold' },
+        3: { title: '3. Fish' },
+        4: { title: '4. Gol' },
+      };
+      const filter = 'gOLD';
+      const actual = utils.filterSortPlants(plantIds, plants, filter);
+      expect(actual).toMatchSnapshot();
+      expect(actual).not.toBe(plantIds);
+      expect(actual).toEqual(['1', '2']);
+    });
+  });
 });

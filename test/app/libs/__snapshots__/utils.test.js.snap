@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/app/libs/utils filterSortPlants that plants are both filtered and sorted by title 1`] = `
+Array [
+  "1",
+  "2",
+]
+`;
+
 exports[`/app/libs/utils metrics should prepare note body and remove unknown metrics 1`] = `
 Object {
   "date": 20160101,
