@@ -413,4 +413,70 @@ describe('/app/libs/utils', () => {
       expect(actual).not.toBe(plantIds);
     });
   });
+
+  describe('hasGeo', () => {
+    test('that window.navigator.geolocation exists', () => {
+      window.navigator.geolocation = true;
+      expect(utils.hasGeo()).toBe(true);
+    });
+
+    test('that window.navigator.geolocation does not exists', () => {
+      window.navigator.geolocation = undefined;
+      expect(utils.hasGeo()).toBe(false);
+    });
+  });
+
+  describe('getGeo', () => {
+    test('that getGeo returns an error if not supported', (done) => {
+      utils.getGeo({}, (err) => {
+        expect(err).toBe('This device does not have geolocation available');
+        done();
+      });
+    });
+
+    test('that getGeo returns a result', (done) => {
+      const expected = {
+        type: 'Point',
+        coordinates: [1, 2],
+      };
+
+      window.navigator.geolocation = {
+        getCurrentPosition: (cb) => {
+          cb({
+            coords: {
+              longitude: 1,
+              latitude: 2,
+            },
+          });
+        },
+      };
+
+      utils.getGeo({}, (err, geo) => {
+        expect(err).toBeFalsy();
+        expect(geo).toEqual(expected);
+        done();
+      });
+    });
+
+    test('should return a fake timeout error', (done) => {
+      // PERMISSION_DENIED (numeric value 1)
+      // POSITION_UNAVAILABLE (numeric value 2)
+      // TIMEOUT (numeric value 3)
+      const positionError = {
+        code: 3, // TIMEOUT
+        message: 'Timeout',
+      };
+
+      window.navigator.geolocation = {
+        getCurrentPosition: (cb, errCb) => {
+          errCb(positionError);
+        },
+      };
+
+      utils.getGeo({}, (err) => {
+        expect(err).toBe(positionError);
+        done();
+      });
+    });
+  });
 });

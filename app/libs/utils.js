@@ -238,9 +238,6 @@ function transformErrors(errors) {
 }
 
 function hasGeo() {
-  if (typeof window === 'undefined') {
-    return false;
-  }
   return !!(window && window.navigator && window.navigator.geolocation);
 }
 
@@ -252,13 +249,13 @@ function getGeo(options, cb) {
   // eslint-disable-next-line no-param-reassign
   options = Object.assign({}, {
     enableHighAccuracy: true,
-    timeout: 30000, // 10 seconds
+    timeout: 30000, // 30 seconds
   }, options);
 
   return window.navigator.geolocation.getCurrentPosition(
     (position) => {
     // { type: "Point", coordinates: [ 40, 5 ] }
-    // postion: {coords: {latitude: 11.1, longitude: 22.2}}
+    // position: {coords: {latitude: 11.1, longitude: 22.2}}
       const geoJson = {
         type: 'Point',
         coordinates: [
@@ -267,11 +264,7 @@ function getGeo(options, cb) {
         ],
       };
       return cb(null, geoJson);
-    }, positionError =>
-    // console.error('geolcation error:', positionError);
-      cb('There was an error get the geo position', positionError),
-    options,
-  );
+    }, cb, options);
 }
 
 
