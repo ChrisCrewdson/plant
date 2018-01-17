@@ -31,13 +31,15 @@ class GridCell extends React.Component {
 
   render() {
     const {
-      editId, rowId, value, type, title, options, error,
+      editId, rowId, value, type, title, options, error, index,
     } = this.props;
+    const htmlId = `${editId}-${index}`;
     if (editId === rowId) {
       return (
         <InputCombo
           changeHandler={this.onChange}
           error={error}
+          id={htmlId}
           name={title}
           options={options}
           placeholder={title}

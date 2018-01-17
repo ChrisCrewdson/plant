@@ -3,7 +3,7 @@
 
 const Base = require('../base/Base');
 const CircularProgress = require('material-ui/CircularProgress').default;
-const InputCombo = require('../common/InputCombo');
+const InputComboText = require('../common/InputComboText');
 const PlantItem = require('../plant/PlantItem');
 const React = require('react');
 const { canEdit } = require('../../libs/auth-helper');
@@ -204,12 +204,13 @@ class Location extends React.Component {
       store.dispatch(actions.loadUnloadedPlantsRequest(tileElements.unloaded));
     }
 
-    const filterInput = (<InputCombo
+    const filterInput = (<InputComboText
       changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
+      id="plant-title-filter"
       label="Filter"
+      name="filter"
       placeholder="Type a plant name to filter..."
       value={filter}
-      name="filter"
     />);
 
     const stats = (

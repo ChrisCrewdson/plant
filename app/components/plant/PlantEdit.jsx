@@ -192,6 +192,7 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.title}
+          id="title"
           label="Title"
           name="title"
           placeholder="How do you refer to this plant? (e.g. Washington Navel)"
@@ -202,6 +203,7 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChangeLocation}
           error={errors.locationId}
+          id="location"
           label="Location"
           name="locationId"
           options={locationIdTitleMap}
@@ -216,6 +218,7 @@ class PlantEdit extends React.Component {
           changeHandler={this.onChange}
           error={errors.botanicalName}
           extraClasses="col-sm-6"
+          id="botanical-name"
           label="Botanical Name"
           name="botanicalName"
           placeholder="e.g. Citrus sinensis \'Washington Navel\'"
@@ -227,6 +230,7 @@ class PlantEdit extends React.Component {
           changeHandler={this.onChange}
           error={errors.commonName}
           extraClasses="col-sm-6"
+          id="common-name"
           label="Common Name"
           name="commonName"
           placeholder="e.g. Washington Navel Orange"
@@ -237,6 +241,7 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.description}
+          id="description"
           label="Description"
           multiLine
           name="description"
@@ -250,6 +255,7 @@ class PlantEdit extends React.Component {
           changeHandler={this.onChange}
           error={errors.purchasedDate}
           extraClasses="col-sm-4"
+          id="acquire-date"
           label="Acquire Date"
           name="purchasedDate"
           placeholder={dateFormat}
@@ -261,6 +267,7 @@ class PlantEdit extends React.Component {
           changeHandler={this.onChange}
           error={errors.plantedDate}
           extraClasses="col-sm-4"
+          id="planted-date"
           label="Planted Date"
           name="plantedDate"
           placeholder={dateFormat}
@@ -272,6 +279,7 @@ class PlantEdit extends React.Component {
           changeHandler={this.onChange}
           error={errors.price}
           extraClasses="col-sm-4"
+          id="price"
           label="Price"
           name="price"
           placeholder="$9.99"
@@ -297,6 +305,7 @@ class PlantEdit extends React.Component {
               disabled
               error={errors.geoPosition}
               extraClasses="col-sm-4"
+              id="geo-position"
               label="Geo Position"
               name="geoPosition"
               placeholder="Location of this plant"

@@ -5,7 +5,7 @@ const Paper = require('material-ui/Paper').default;
 const React = require('react');
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const Dropzone = require('react-dropzone').default;
-const InputCombo = require('../common/InputCombo');
+const InputComboText = require('../common/InputComboText');
 const LinearProgress = require('material-ui/LinearProgress').default;
 const CircularProgress = require('material-ui/CircularProgress').default;
 const actions = require('../../actions');
@@ -175,20 +175,22 @@ class NoteEdit extends React.PureComponent {
         zDepth={1}
       >
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.date}
           floatingLabelText="Date"
+          id="note-date"
           name="date"
           placeholder="MM/DD/YYYY"
           style={textFieldStyle}
           value={date}
         />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.note}
           floatingLabelText="Note"
+          id="note-text"
           multiLine
           name="note"
           placeholder="What has happened since your last note?"

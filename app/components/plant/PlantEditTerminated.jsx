@@ -1,7 +1,7 @@
 const actions = require('../../actions');
 const React = require('react');
 const Toggle = require('material-ui/Toggle').default;
-const InputCombo = require('../common/InputCombo');
+const InputComboText = require('../common/InputComboText');
 const Divider = require('material-ui/Divider').default;
 const { RadioButton } = require('material-ui/RadioButton');
 const { RadioButtonGroup } = require('material-ui/RadioButton');
@@ -67,9 +67,10 @@ class PlantEditTerminated extends React.Component {
         />
         {isTerminated &&
           <div>
-            <InputCombo
+            <InputComboText
               changeHandler={this.onChange}
               error={errors.terminatedDate}
+              id="termination-date"
               label="Termination Date"
               name="terminatedDate"
               placeholder={dateFormat}
@@ -97,9 +98,10 @@ class PlantEditTerminated extends React.Component {
                 value="transferred"
               />
             </RadioButtonGroup>
-            <InputCombo
+            <InputComboText
               changeHandler={this.onChange}
               error={errors.terminatedDescription}
+              id="termination-description"
               label="Termination Description"
               name="terminatedDescription"
               placeholder="(Optional) Describe why this plant was terminated."

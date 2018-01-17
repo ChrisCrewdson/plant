@@ -47,6 +47,7 @@ class NoteEditMetrics extends React.PureComponent {
   renderLength(metaMetric, value) {
     return (<InputCombo
       changeHandler={this.onChange}
+      id={metaMetric.key}
       key={metaMetric.key}
       label={metaMetric.label}
       name={metaMetric.key}
