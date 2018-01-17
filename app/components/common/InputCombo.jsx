@@ -11,6 +11,7 @@ function inputCombo(props = {}) {
     disabled = false,
     error,
     fullWidth = true,
+    id,
     label,
     multiLine = false,
     name: namo,
@@ -35,6 +36,7 @@ function inputCombo(props = {}) {
     floatingLabelText={label}
     fullWidth={fullWidth}
     hintText={placeholder}
+    id={id}
     multiLine={multiLine}
     name={namo}
     onChange={changeHandler}
@@ -55,6 +57,7 @@ function inputCombo(props = {}) {
     <SelectField
       errorText={error}
       floatingLabelText={label}
+      id={id}
       value={value}
       onChange={changeHandler}
       style={styler}
@@ -74,9 +77,7 @@ function inputCombo(props = {}) {
     case 'select':
       return select();
     default:
-      // eslint-disable-next-line no-console
-      console.warn('Unrecognized type in InputCombo', type);
-      return null;
+      throw new Error(`Unknown input type ${type}`);
   }
 }
 
@@ -85,9 +86,10 @@ inputCombo.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
   fullWidth: PropTypes.bool,
+  id: PropTypes.string.isRequired,
   label: PropTypes.string,
   multiLine: PropTypes.bool,
-  name: PropTypes.string.isRequired, // eslint-disable-line no-dupe-keys
+  name: PropTypes.string.isRequired,
   options: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   placeholder: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
