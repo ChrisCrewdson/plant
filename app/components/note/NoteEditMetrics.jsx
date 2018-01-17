@@ -69,13 +69,13 @@ class NoteEditMetrics extends React.PureComponent {
     const isToggled = value === 'true' || value === true;
     return (
       <Toggle
-        toggled={isToggled}
         key={metaMetric.key}
         label={metaMetric.label}
         labelPosition="left"
         name={metaMetric.key}
         onToggle={this.onChange}
         style={{ paddingLeft: '5px', maxWidth: '200px' }}
+        toggled={isToggled}
       />
     );
   }

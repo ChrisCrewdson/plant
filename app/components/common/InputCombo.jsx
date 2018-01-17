@@ -23,10 +23,9 @@ function inputCombo(props = {}) {
   }, style);
 
   const boolean = () => (<Toggle
-    toggled={value}
-    value={value}
     name={namo}
     onToggle={changeHandler}
+    toggled={value}
   />);
 
   const select = () => (

@@ -58,12 +58,12 @@ class PlantEditTerminated extends React.Component {
     return (
       <div>
         <Toggle
-          toggled={isTerminated}
           label="Terminated"
           labelPosition="left"
           name="isTerminated"
           onToggle={this.onChange}
           style={{ paddingLeft: '5px', maxWidth: '150px' }}
+          toggled={isTerminated}
         />
         {isTerminated &&
           <div>
