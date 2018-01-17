@@ -2,7 +2,7 @@
 const actions = require('../../actions');
 const React = require('react');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const InputCombo = require('../common/InputCombo');
+const InputComboText = require('../common/InputComboText');
 const ArrowLeft = require('material-ui/svg-icons/hardware/keyboard-arrow-left').default;
 const ArrowRight = require('material-ui/svg-icons/hardware/keyboard-arrow-right').default;
 const Errors = require('../common/Errors');
@@ -95,7 +95,8 @@ class NoteAssocPlant extends React.Component {
         }
       </FloatingActionButton>);
 
-    const filterInput = (<InputCombo
+    const filterInput = (<InputComboText
+      id="note-assoc-plant-filter"
       changeHandler={this.changeHandler}
       label="Filter"
       placeholder="Filter..."
