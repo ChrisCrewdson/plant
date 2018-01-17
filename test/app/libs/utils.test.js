@@ -190,6 +190,17 @@ describe('/app/libs/utils', () => {
       expect(rebased[2].loc.coordinates[0]).toBe(4.6);
       expect(rebased[2].loc.coordinates[1]).toBe(0);
     });
+
+    test('should return plants if plants is an empty array', () => {
+      const plants = [];
+      const actual = utils.rebaseLocations(plants);
+      expect(actual).toBe(plants);
+    });
+
+    test('should return undefined if plants is undefined', () => {
+      const actual = utils.rebaseLocations();
+      expect(actual).toBeUndefined();
+    });
   });
 
   describe('metrics', () => {
@@ -477,6 +488,36 @@ describe('/app/libs/utils', () => {
         expect(err).toBe(positionError);
         done();
       });
+    });
+  });
+
+  describe('metaMetricsGetByKey', () => {
+    test('should get a meta metrics key', () => {
+      const actual = utils.metaMetricsGetByKey('harvestCount');
+      // The 3rd item in the array is harvestCount
+      expect(actual).toBe(utils.metaMetrics[2]);
+    });
+  });
+
+  describe('showFeature', () => {
+    test('should not show feature if no user', () => {
+      expect(utils.showFeature()).toBe(false);
+    });
+
+    test('should not show feature if user._id is missing', () => {
+      expect(utils.showFeature({})).toBe(false);
+    });
+
+    test('should not show feature if user._id is not listed', () => {
+      expect(utils.showFeature({
+        _id: '1',
+      })).toBe(false);
+    });
+
+    test('should show feature if user._id is listed', () => {
+      expect(utils.showFeature({
+        _id: '57b4e90d9f0e4e114b44bcf8',
+      })).toBe(true);
     });
   });
 });

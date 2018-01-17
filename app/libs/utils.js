@@ -400,10 +400,10 @@ function noteFromBody(body) {
               body.metrics[key] = parseFloat(body.metrics[key], 10);
             }
             break;
+          /* istanbul ignore next */
           default:
             // eslint-disable-next-line no-param-reassign
-            body.metrics[key] = parseFloat(body.metrics[key], 10);
-            break;
+            throw new Error(`Unknown metric type ${metaMetric.type}`);
         }
         // eslint-disable-next-line no-restricted-globals
         if (isNaN(body.metrics[key])) {
