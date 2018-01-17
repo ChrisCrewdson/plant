@@ -87,7 +87,7 @@ NoteCreate.propTypes = {
   plant: PropTypes.shape({
     _id: PropTypes.string.isRequired,
   }).isRequired,
-  plants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  plants: PropTypes.shape({}).isRequired,
   locationId: PropTypes.string.isRequired,
 };
 
