@@ -128,7 +128,8 @@ function filterPlants(plantIds, plants, filter) {
  * prop provided.
  * @param {String} prop - the property in the object to sort by
  * @param {Array} itemIds - an array of Ids
- * @param {*} items - a object that has ids as props
+ * @param {Object} items - a object that has ids as props
+ * @returns {Boolean} - true if already sorted otherwise false
  */
 function alreadySorted(prop, itemIds, items) {
   return itemIds.every((itemId, index) => {
@@ -150,8 +151,15 @@ function alreadySorted(prop, itemIds, items) {
   });
 }
 
-// TODO: Memoize this method.
+/**
+ * Sort the itemIds based on the value of the prop parameter.
+ * @param {String} prop - the name of the property from the items object that's being sorted
+ * @param {Array} itemIds - array of MongoId strings
+ * @param {Object} items - an object with MongoIds as keys. The values are objects.
+ * @returns {array} - an immutable array of sorted itemIds
+ */
 function sortItems(prop, itemIds, items) {
+  // TODO: Memoize this method.
   if (!itemIds || !itemIds.length) {
     return itemIds || [];
   }
@@ -182,6 +190,12 @@ function sortItems(prop, itemIds, items) {
   }));
 }
 
+/**
+ * Sort the noteIds based on the date property.
+ * @param {Array} noteIds - array of MongoId strings
+ * @param {Object} notes - an object with MongoIds as keys. The values are note objects.
+ * @returns {array} - an immutable array of sorted noteIds
+ */
 function sortNotes(noteIds, notes) {
   // TODO: Memoize this method
   return sortItems('date', noteIds, notes);
@@ -191,7 +205,7 @@ function sortNotes(noteIds, notes) {
  * Sorts the plantIds based on the plant's title
  * @param {array} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
- * @returns {array} - an array of sorted plantIds
+ * @returns {array} - an immutable array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
   // TODO: Memoize this method

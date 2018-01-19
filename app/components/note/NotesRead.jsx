@@ -111,9 +111,9 @@ NotesRead.propTypes = {
   interim: PropTypes.shape({
     note: PropTypes.object,
   }).isRequired,
-  userCanEdit: PropTypes.bool.isRequired,
+  locationId: PropTypes.string.isRequired,
   notes: PropTypes.shape({
-    _id: PropTypes.string.required,
+    // _id: PropTypes.string.required,
   }).isRequired,
   plant: PropTypes.shape({
     notes: PropTypes.array,
@@ -121,7 +121,7 @@ NotesRead.propTypes = {
   plants: PropTypes.shape({
     notes: PropTypes.array,
   }).isRequired,
-  locationId: PropTypes.string.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
 };
 
 module.exports = NotesRead;
