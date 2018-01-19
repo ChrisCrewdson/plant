@@ -1,4 +1,5 @@
 const Helper = require('../../../../lib/db/mongo/helper');
+const seamless = require('seamless-immutable').static;
 
 describe('/lib/db/mongo/helper', () => {
   describe('removeEmpty', () => {
@@ -46,6 +47,14 @@ describe('/lib/db/mongo/helper', () => {
     test('should do nothing if param is falsy', () => {
       const rDoc = Helper.removeEmpty();
       expect(rDoc).toBeUndefined();
+    });
+  });
+
+  describe('convertIdToString', () => {
+    test('should return object if no _id prop', () => {
+      const obj = seamless.from({});
+      const actual = Helper.convertIdToString(obj);
+      expect(actual).toBe(obj);
     });
   });
 });
