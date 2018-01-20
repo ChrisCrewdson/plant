@@ -1,5 +1,0 @@
---timeout 50000
---recursive
---require babel-polyfill
---require babel-core/register
---require ./test/setup.js
