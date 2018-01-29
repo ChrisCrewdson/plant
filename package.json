@@ -80,7 +80,7 @@
     "webpack-dev-server": "2.11.1"
   },
   "engines": {
-    "node": "8.x"
+    "node": "9.x"
   },
   "jestConfig": "./jest.config.js",
   "homepage": "https://github.com/guyellis/plant",
