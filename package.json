@@ -24,7 +24,7 @@
     "jquery": "2.x",
     "jwt-simple": "0.5.1",
     "konva": "1.7.6",
-    "lodash": "4.17.4",
+    "lodash": "4.17.5",
     "marked": "0.3.12",
     "material-ui": "0.20.0",
     "method-override": "2.3.10",
