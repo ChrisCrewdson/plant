@@ -29,7 +29,7 @@
     "material-ui": "0.20.0",
     "method-override": "2.3.10",
     "moment": "2.20.1",
-    "mongodb": "2.2.33",
+    "mongodb": "3.0.3",
     "morgan": "1.9.0",
     "multer": "1.3.0",
     "passport": "0.4.0",
@@ -107,6 +107,7 @@
   },
   "scripts": {
     "build": "TARGET=build webpack --bail",
+    "cover": "jest --coverage && google-chrome coverage/lcov-report/index.html",
     "coverage": "jest --forceExit --coverage",
     "coverage-fast": "jest --forceExit --coverage --onlyChanged",
     "coverage-view": "google-chrome coverage/lcov-report/index.html",
