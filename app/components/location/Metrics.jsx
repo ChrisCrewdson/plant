@@ -3,12 +3,10 @@
 
 const Base = require('../base/Base');
 const CircularProgress = require('material-ui/CircularProgress').default;
-const InputComboText = require('../common/InputComboText');
 const PlantItem = require('../plant/PlantItem');
 const React = require('react');
 const { canEdit } = require('../../libs/auth-helper');
 const actions = require('../../actions');
-const NoteCreate = require('../note/NoteCreate');
 const utils = require('../../libs/utils');
 const AddPlantButton = require('../common/AddPlantButton');
 const PropTypes = require('prop-types');
@@ -55,7 +53,7 @@ class Metrics extends React.Component {
 
   static renderTitle(location) {
     return (
-      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Plant List`}</h2>
+      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Metrics`}</h2>
     );
   }
 
@@ -139,37 +137,7 @@ class Metrics extends React.Component {
       );
     }
 
-    const {
-      note: interimNote,
-      plant: plantCreateNote,
-    } = interim.note || {};
-    const createNote = !!interimNote && interimNote.isNew;
-
     const userCanEdit = canEdit(authUser._id, location);
-    const { _id: locationId } = location;
-
-    if (createNote && userCanEdit) {
-      const style = {
-        paddingTop: '30px',
-        textAlign: 'center',
-      };
-      return (
-        <Base>
-          <div>
-            <h4 style={style}>{`Create a Note for ${plantCreateNote.title}`}</h4>
-            <NoteCreate
-              dispatch={store.dispatch}
-              userCanEdit={userCanEdit}
-              interimNote={interimNote}
-              plant={plantCreateNote}
-              plants={allLoadedPlants}
-              postSaveSuccess={this.postSaveSuccessCreateNote}
-              locationId={locationId}
-            />
-          </div>
-        </Base>
-      );
-    }
 
     const { plantIds = [] } = location;
     if (!plantIds.length) {
@@ -208,15 +176,6 @@ class Metrics extends React.Component {
       store.dispatch(actions.loadUnloadedPlantsRequest(tileElements.unloaded));
     }
 
-    const filterInput = (<InputComboText
-      changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
-      id="plant-title-filter"
-      label="Filter"
-      name="filter"
-      placeholder="Type a plant name to filter..."
-      value={filter}
-    />);
-
     const stats = (
       <div>
         <p>{`Total: ${plantStats.total}`}</p>
@@ -228,7 +187,6 @@ class Metrics extends React.Component {
         <div>
           {Metrics.renderTitle(location)}
           {stats}
-          {filterInput}
           {tileElements.found}
           {Metrics.addPlantButton(userCanEdit)}
           <div className="clear">&nbsp;</div>
