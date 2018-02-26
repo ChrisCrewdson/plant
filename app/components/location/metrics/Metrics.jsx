@@ -1,14 +1,14 @@
 // Used to show a collection of metrics for a location.
 // Url: /metrics/<location-name>/_location_id
 
-const Base = require('../base/Base');
+const Base = require('../../base/Base');
 const CircularProgress = require('material-ui/CircularProgress').default;
-const PlantItem = require('../plant/PlantItem');
+const PlantItem = require('../../plant/PlantItem');
 const React = require('react');
-const { canEdit } = require('../../libs/auth-helper');
-const actions = require('../../actions');
-const utils = require('../../libs/utils');
-const AddPlantButton = require('../common/AddPlantButton');
+const { canEdit } = require('../../../libs/auth-helper');
+const actions = require('../../../actions');
+const utils = require('../../../libs/utils');
+const AddPlantButton = require('../../common/AddPlantButton');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 
