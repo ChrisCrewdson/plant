@@ -77,7 +77,7 @@
     "stylelint": "9.1.1",
     "stylelint-config-standard": "18.1.0",
     "stylelint-order": "^0.8.0",
-    "webpack-dev-server": "3.0.0"
+    "webpack-dev-server": "2.x"
   },
   "engines": {
     "node": "9.x"

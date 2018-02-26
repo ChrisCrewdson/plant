@@ -30,6 +30,7 @@ const ReactDOM = require('react-dom');
 const store = require('./store');
 const Terms = require('./components/info/Terms');
 const Location = require('./components/location/Location');
+const Metrics = require('./components/location/Metrics');
 const Locations = require('./components/location/Locations');
 const Users = require('./components/user/Users');
 const poly = require('./poly');
@@ -54,21 +55,22 @@ const routes = (
     <Switch>
       <Route path="/" exact component={Home} />
       <Route path="/auth/token" component={Auth} />
+      <Route path="/article/:slug/:id" component={Article} />
       <Route path="/debug-settings" component={DebugSettings} />
       <Route path="/help" component={Help} />
       <Route path="/layout/:slug/:id" component={LayoutMap} />
-      <Route path="/locations" exact component={Locations} />
       <Route path="/location/:slug/:id" component={Location} />
+      <Route path="/locations" exact component={Locations} />
       <Route path="/locations/:slug/:id" component={Locations} />
-      <Route path="/users" component={Users} />
       <Route path="/login" component={Login} />
+      <Route path="/metrics/:slug/:id" component={Metrics} />
       <Route path="/plant" exact component={Plant} />
       <Route path="/plant/:slug/:id" component={Plant} />
-      <Route path="/article/:slug/:id" component={Article} />
       <Route path="/plants/:slug/:id" component={Plants} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/profile" component={Profile} />
       <Route path="/terms" component={Terms} />
+      <Route path="/users" component={Users} />
       <Redirect to="/help" />
     </Switch>
   </BrowserRouter>
