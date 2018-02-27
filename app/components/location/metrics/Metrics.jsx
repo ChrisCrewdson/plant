@@ -11,6 +11,7 @@ const utils = require('../../../libs/utils');
 const AddPlantButton = require('../../common/AddPlantButton');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
+const LastMeasured = require('./LastMeasured');
 
 // TODO: AT THIS POINT THIS FILE IS JUST A COPY OF THE Location file/class
 // with the class renamed to Metrics. It's tested and works on the url.
@@ -182,13 +183,20 @@ class Metrics extends React.Component {
         <p>{`Alive: ${plantStats.alive}`}</p>
       </div>);
 
+    // TODO: metricDate must come from a collection of toggle/checkbox inputs that
+    // the user selects to determine what the most recent date is for that metric
+    const metricDates = ['height', 'girth'];
+
     return (
       <Base>
         <div>
           {Metrics.renderTitle(location)}
           {stats}
-          {tileElements.found}
-          {Metrics.addPlantButton(userCanEdit)}
+          <LastMeasured
+            plantIds={plantIds}
+            plants={allLoadedPlants}
+            metricDates={metricDates}
+          />
           <div className="clear">&nbsp;</div>
         </div>
       </Base>
