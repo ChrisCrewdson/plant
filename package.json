@@ -69,7 +69,6 @@
     "nodemon": "1.17.1",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
-    "proxyquire": "1.8.0",
     "react-hot-loader": "4.0.0",
     "react-log-lifecycle": "1.1.0",
     "react-test-renderer": "16.2.0",
