@@ -36,6 +36,5 @@ local-only/
 typings/
 
 .vscode/chrome/
-package-lock.json
 
 .swp
