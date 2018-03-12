@@ -25,16 +25,6 @@ function editNoteClose(state) {
 //     note,
 //     plant
 function editNoteChange(state, action) {
-  // TODO: Write some tests around this and then see if this specialization
-  // for plantIds can be removed and replaced with an Immutable function because
-  // this will impact other arrays.
-
-  // let merged = state.mergeDeep({ note: { note: action.payload } });
-  // if (action.payload.plantIds) {
-  //   merged = merged.setIn(['note', 'note', 'plantIds'], Immutable.List(action.payload.plantIds));
-  // }
-  // return merged;
-
   return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
 }
 
@@ -62,7 +52,6 @@ function editPlantClose(state) {
 // {plant-key: plant-value, ...}
 // state:
 //   plant:
-//     plant,
 //     plant
 function editPlantChange(state, action) {
   return seamless.merge(state, { plant: { plant: action.payload } }, { deep: true });

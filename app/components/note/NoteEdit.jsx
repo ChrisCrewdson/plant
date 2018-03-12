@@ -75,8 +75,6 @@ class NoteEdit extends React.PureComponent {
   }
 
   saveNote(files) {
-    // TODO: Change the 3 lines below to use Object.assign()
-    // or seamless.merge() <== probably this
     const interimNote = seamless.asMutable(this.props.interimNote, { deep: true });
 
     interimNote._id = interimNote._id || utils.makeMongoId();
