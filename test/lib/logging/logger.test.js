@@ -46,6 +46,7 @@ describe('Logger', () => {
   });
 
   describe('Log Messages', () => {
+    // eslint-disable-next-line jest/no-disabled-tests
     test.skip('should log a complex string of params', (done) => {
       const msg = 'my message';
       const myArray = [1, 2, 3, 4, 5];

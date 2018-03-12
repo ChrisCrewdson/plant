@@ -43,28 +43,6 @@ Object {
 }
 `;
 
-exports[`/app/reducers/locations should handle a createPlantRequest for an existing plant at location 2`] = `
-Object {
-  "1": Object {
-    "_id": "1",
-    "plantIds": Array [
-      "one",
-      "plant-1",
-    ],
-  },
-  "2": Object {
-    "_id": "2",
-    "name": "xxx",
-    "plantIds": Array [
-      "xxx",
-    ],
-  },
-  "3": Object {
-    "_id": "3",
-  },
-}
-`;
-
 exports[`/app/reducers/locations should handle a createPlantRequest when location does not have plantIds 1`] = `
 Object {
   "1": Object {

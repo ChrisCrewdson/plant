@@ -61,17 +61,6 @@ describe('/app/reducers/locations', () => {
     expect(seamless.isImmutable(actual)).toBe(true);
   });
 
-  test('should handle a createPlantRequest for an existing plant at location', () => {
-    const plant = {
-      locationId: '1',
-      _id: 'plant-1',
-    };
-    const actual = locations(stateA, actions.createPlantRequest(plant));
-    expect(actual).toMatchSnapshot();
-    expect(actual).not.toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
-  });
-
   test('should handle a createPlantRequest for a missing plant at location', () => {
     const plant = {
       locationId: '7',

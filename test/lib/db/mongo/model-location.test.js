@@ -40,7 +40,7 @@ describe('/lib/db/mongo/model-location', () => {
       }
     });
 
-    test('should fail to create a location if members and createdBy are missing', async () => {
+    test('should fail to create a location if members is missing', async () => {
       expect.hasAssertions();
       try {
         const loc = {
@@ -52,7 +52,7 @@ describe('/lib/db/mongo/model-location', () => {
       }
     });
 
-    test('should fail to create a location if members and createdBy are missing', async () => {
+    test('should create a location if members and createdBy are present', async () => {
       const loc = {
         createdBy: userId,
         members: {

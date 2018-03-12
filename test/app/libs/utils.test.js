@@ -28,7 +28,7 @@ describe('/app/libs/utils', () => {
   describe('mongo', () => {
     test('should create a mongo id', () => {
       const mongoId = utils.makeMongoId();
-      expect(mongoId.length).toBe(24);
+      expect(mongoId).toHaveLength(24);
       expect(mongoId).not.toContain('-');
       expect(typeof mongoId).toBe('string');
       expect(constants.mongoIdRE.test(mongoId)).toBe(true);
@@ -70,17 +70,6 @@ describe('/app/libs/utils', () => {
 
       actual = utils.dateToInt('13/02/1987');
       expect(actual).toBeNaN();
-    });
-
-    test('should create an Integer date from a string', () => {
-      let actual = utils.dateToInt('1/1/2016');
-      expect(actual).toBe(20160101);
-
-      actual = utils.dateToInt('2/29/2016');
-      expect(actual).toBe(20160229);
-
-      actual = utils.dateToInt('12/31/2016');
-      expect(actual).toBe(20161231);
     });
 
     test('should return an Integer date from an Integer', () => {

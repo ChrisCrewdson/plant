@@ -14,7 +14,7 @@ describe('lib/render/plant', () => {
     const locationId = data.user.locationIds[0]._id;
     // 1. Create 2 plants
     const plants = await helper.createPlants(1, userId, locationId);
-    expect(plants.length).toBe(1);
+    expect(plants).toHaveLength(1);
 
     const [plant] = plants;
     // 2. Create 3 notes, part 1.1:

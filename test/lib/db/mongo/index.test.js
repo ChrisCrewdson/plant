@@ -35,11 +35,12 @@ describe('/lib/db/mongo/', () => {
       async () => {
         try {
           await mongo.findOrCreateUser(null);
-          expect(false, 'findOrCreateUser() should have thrown in this test').toBeTruthy();
         } catch (err) {
           expect(err).toBeTruthy();
           expect(err.message).toBe('No facebook.id or google.id:');
         }
+        // 2 here, 2 in beforeAll(), 8 in helper.startServerAuthenticated from beforeAll.
+        expect.assertions(12);
       },
     );
 

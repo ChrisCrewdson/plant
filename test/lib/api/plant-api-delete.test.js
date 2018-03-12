@@ -58,7 +58,7 @@ describe('plant-api-delete', () => {
 
       // 1. Create 2 plants
       const plants = await helper.createPlants(2, userId, locationId);
-      expect(plants.length).toBe(2);
+      expect(plants).toHaveLength(2);
 
       // 2. Create 3 notes, part 1.1:
       //    Note #1: plantIds reference plant #1

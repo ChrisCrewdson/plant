@@ -340,7 +340,7 @@ describe('/app/reducers/plants', () => {
       expect(actual).toBe(current);
     });
 
-    test('should return original state if notes do not have plantIds', () => {
+    test('should return original state if notes is an empty object', () => {
       const expected = {};
       const payload = [{}];
       const current = seamless.from(expected);
