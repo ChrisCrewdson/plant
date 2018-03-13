@@ -172,7 +172,7 @@ class Location extends React.Component {
       if (interim.loadPlantRequest) {
         return Location.renderWaiting(location);
       }
-      return this.renderNoPlants(location, userCanEdit);
+      return Location.renderNoPlants(location, userCanEdit);
     }
 
     const sortedPlantIds = utils.filterSortPlants(plantIds, allLoadedPlants, filter);

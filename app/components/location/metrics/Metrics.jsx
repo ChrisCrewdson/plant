@@ -145,7 +145,7 @@ class Metrics extends React.Component {
       if (interim.loadPlantRequest) {
         return Metrics.renderWaiting(location);
       }
-      return this.renderNoPlants(location, userCanEdit);
+      return Metrics.renderNoPlants(location, userCanEdit);
     }
 
     const sortedPlantIds = utils.filterSortPlants(plantIds, allLoadedPlants, filter);
