@@ -1,3 +1,4 @@
+const RaisedButton = require('material-ui/RaisedButton').default;
 const actions = require('../../actions');
 const Paper = require('material-ui/Paper').default;
 const React = require('react');
@@ -10,13 +11,6 @@ const NoteReadMetrics = require('./NoteReadMetrics');
 const PropTypes = require('prop-types');
 
 class NoteRead extends React.PureComponent {
-  static renderImages({ images }) {
-    if (images && images.length) {
-      return images.map(image => NoteRead.renderImage(image));
-    }
-    return null;
-  }
-
   static renderImage(image) {
     const imageStyle = {
       maxWidth: '100%',
@@ -93,6 +87,27 @@ class NoteRead extends React.PureComponent {
     this.props.dispatch(actions.editNoteOpen({ plant, note }));
   }
 
+  renderImages({ images, showImages, _id }) {
+    if (images && images.length) {
+      if (showImages) {
+        return images.map(image => NoteRead.renderImage(image));
+      }
+
+      const label = `Show ${images.length} image${images.length > 1 ? 's' : ''}`;
+
+      return (
+        <div>
+          <RaisedButton
+            label={label}
+            onMouseUp={() => this.props.dispatch(actions.showNoteImages(_id))}
+            primary
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     const paperStyle = {
       padding: 20,
@@ -110,7 +125,7 @@ class NoteRead extends React.PureComponent {
       note,
     } = this.props;
 
-    const images = NoteRead.renderImages(note);
+    const images = this.renderImages(note);
 
     const date = utils.intToMoment(note.date);
 
@@ -150,6 +165,9 @@ NoteRead.propTypes = {
   note: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     date: PropTypes.number.isRequired,
+    images: PropTypes.array,
+    note: PropTypes.string,
+    showImages: PropTypes.bool,
   }).isRequired,
   plant: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };

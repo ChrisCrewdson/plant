@@ -57,8 +57,30 @@ class Plant extends React.Component {
     const { store } = this.context;
     const { plants, user, users = {} } = store.getState();
 
-    const { match = {}, params = {} } = props;
+    const {
+      match = {}, params = {}, location = {}, searchParams,
+    } = props;
     const _id = params.id || (match.params && match.params.id);
+
+    // console.log('Plant.initState match', match);
+    // console.log('Plant.initState location', location);
+
+    const { search = '' } = location;
+    // TODO: This is not available on server:
+    const paramsMap = searchParams || new URLSearchParams(search);
+    const noteId = paramsMap.get('noteid');
+
+    if (noteId) {
+      // If there's a noteid on the query params then this is a link
+      // to a particular note so we want to show the images in this note
+      // automatically.
+      const { notes = {} } = store.getState();
+      const note = notes[noteId] || {};
+      if (!note.showImages) {
+        store.dispatch(actions.showNoteImages(noteId));
+      }
+    }
+
     let plant;
     if (_id) {
       plant = plants[_id];
@@ -67,7 +89,7 @@ class Plant extends React.Component {
       }
     } else {
       const { _id: userId = '', activeLocationId } = user;
-      const { locationIds = [] } = users[userId];
+      const { locationIds = [] } = users[userId] || {};
 
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
@@ -163,6 +185,12 @@ class Plant extends React.Component {
 }
 
 Plant.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  location: PropTypes.shape({
+    hash: PropTypes.string,
+    pathname: PropTypes.string,
+    search: PropTypes.string, // this has query params
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -171,6 +199,10 @@ Plant.propTypes = {
   params: PropTypes.shape({
     id: PropTypes.string,
   }),
+  // eslint-disable-next-line react/no-unused-prop-types
+  searchParams: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+  }),
 };
 
 Plant.defaultProps = {
@@ -178,6 +210,7 @@ Plant.defaultProps = {
     params: {},
   },
   params: {},
+  searchParams: null,
 };
 
 module.exports = withRouter(Plant);

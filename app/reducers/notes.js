@@ -14,7 +14,8 @@ Object of notes:
     date: 20160101 - a number,
     note: 'string',
     plantIds: 'an array of strings',
-    userId: 'mongoId - identifies user'
+    userId: 'mongoId - identifies user',
+    showImages: true/undefined
   }
 }
 */
@@ -61,9 +62,24 @@ function loadNotesSuccess(state, { payload: notes }) {
   return state;
 }
 
+// action.payload is the _id of the note whose images we
+// are going to tag as showable
+function showNoteImages(state, { payload: _id }) {
+  const note = _id && state[_id];
+  if (!note || note.showImages) {
+    return state;
+  }
+
+  const updatedNote = Object.assign({}, note, { showImages: true });
+
+  return seamless.set(state, _id, updatedNote);
+}
+
 const reducers = Object.freeze({
   [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
   [actions.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
+
+  [actions.SHOW_NOTE_IMAGES]: showNoteImages,
 
   [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
 
