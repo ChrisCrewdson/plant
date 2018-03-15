@@ -11,6 +11,9 @@ class App extends React.Component {
     const { store } = this.context;
     const { users = {}, locations = {} } = store.getState();
 
+    // TODO: This will cause a problem for a non-initialized site
+    // that has zero users and zero locations as these values
+    // will be 0 which is falsy.
     const usersCount = Object.keys(users).length;
     const locationsCount = Object.keys(locations).length;
 
