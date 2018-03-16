@@ -24,7 +24,7 @@ describe('/app/models/note', () => {
     expect(noteCopy).toEqual(note);
   });
 
-  test('should fail validation', (done) => {
+  test('should fail validation', () => {
     // All items in note should be invalid
     const note = {
       _id: '0e55d91cb33d42', // Not a MongoId
@@ -35,6 +35,8 @@ describe('/app/models/note', () => {
 
     const noteCopy = _.clone(note);
 
+    /* eslint-disable no-console */
+    console.error = jest.fn();
     try {
       noteValidator(note);
     } catch (err) {
@@ -44,8 +46,11 @@ describe('/app/models/note', () => {
       expect(err.date).toBe('Date must be a number');
       expect(err.plantIds).toBe('Plant ids must be MongoIds');
       expect(noteCopy).toEqual(note);
-      done();
+      expect(console.error).toHaveBeenCalledTimes(1);
     }
+    console.error.mockReset();
+    /* eslint-enable no-console */
+    expect.assertions(6);
   });
 
   test('should strip out props not in the schema', () => {
