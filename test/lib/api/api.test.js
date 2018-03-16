@@ -4,11 +4,10 @@ const logger = require('../../../lib/logging/logger').create('test.plants-api');
 
 describe('api', () => {
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated(3010);
+    const data = await helper.startServerAuthenticated();
     const { userId, port } = data;
     expect(userId).toBeTruthy();
     expect(port).toBeGreaterThan(3000);
-    expect(port).toBeLessThan(4000);
   });
 
   test('should get a 404 if the path is not recognized', async () => {

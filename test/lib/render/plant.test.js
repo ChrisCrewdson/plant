@@ -5,7 +5,7 @@ const logger = require('../../../lib/logging/logger').create('test.server-render
 describe('lib/render/plant', () => {
   let data;
   beforeAll(async () => {
-    data = await helper.startServerAuthenticated(3016);
+    data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
   });
 

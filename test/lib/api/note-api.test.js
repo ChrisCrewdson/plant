@@ -10,7 +10,7 @@ describe('note-api', () => {
   let locationId;
 
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated(3011);
+    const data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
     userId = data.user._id;
     locationId = data.user.locationIds[0]._id;

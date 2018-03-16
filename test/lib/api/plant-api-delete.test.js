@@ -9,7 +9,7 @@ describe('plant-api-delete', () => {
   let locationId;
 
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated(3012);
+    const data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
     userId = data.user._id;
     locationId = data.user.locationIds[0]._id;

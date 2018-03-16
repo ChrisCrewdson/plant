@@ -20,7 +20,7 @@ describe('/lib/db/mongo/model-location', () => {
   // let locationId;
 
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated(3017);
+    const data = await helper.startServerAuthenticated();
     fbUser = data.user;
     userId = fbUser._id;
     expect(userId).toBeTruthy();

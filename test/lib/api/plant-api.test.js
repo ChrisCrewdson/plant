@@ -9,7 +9,7 @@ describe('plant-api', () => {
   let initialPlant;
 
   beforeAll(async () => {
-    const data = await helper.startServerAuthenticated(3013);
+    const data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
     ({ user } = data);
     initialPlant = Object.freeze({

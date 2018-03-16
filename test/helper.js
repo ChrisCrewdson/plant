@@ -26,12 +26,10 @@ function getUrl(url) {
     return url;
   }
 
-  if (!data.port) {
-    // eslint-disable-next-line no-console
-    console.error('port is not defined in data object:', JSON.stringify(data, null, 2));
+  const { port } = data;
+  if (!port) {
+    throw new Error(`port is not defined in data object: ${JSON.stringify(data, null, 2)}`);
   }
-
-  const { port = 3001 } = data;
 
   return `${'http'}://127.0.0.1:${port}${url}`;
 }
@@ -69,8 +67,8 @@ async function makeRequest(opts) {
   });
 }
 
-
-async function startServerAuthenticated(port) {
+async function startServerAuthenticated() {
+  const port = 3000 + parseInt(process.env.JEST_WORKER_ID, 10);
   async function emptyDatabase() {
     const db = await mongo.GetDb();
     const promises = ['user', 'location', 'plant', 'note'].map((collection) => {
