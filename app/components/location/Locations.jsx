@@ -27,6 +27,7 @@ class Locations extends React.Component {
     super();
     this.onChange = this.onChange.bind(this);
     this.onLinkClick = this.onLinkClick.bind(this);
+    this.renderLocation = this.renderLocation.bind(this);
   }
 
   componentWillMount() {
@@ -96,7 +97,7 @@ class Locations extends React.Component {
 
   renderLocations() {
     const { store } = this.context;
-    const { locations, users = seamless.from({}) } = store.getState();
+    const { locations = {}, users = seamless.from({}) } = store.getState();
 
     const locationsCount = Object.keys(locations || {}).length;
 
@@ -116,7 +117,10 @@ class Locations extends React.Component {
       }
       return this.renderNoLocations(user);
     }
-    return locations
+
+    // locations is an object
+    return Object.keys(locations)
+      .map(locationId => locations[locationId])
       .filter((location) => {
         const { plantIds = [] } = location;
         return !!plantIds.length;
