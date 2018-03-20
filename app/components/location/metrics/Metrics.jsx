@@ -196,6 +196,7 @@ class Metrics extends React.Component {
             plantIds={plantIds}
             plants={allLoadedPlants}
             metricDates={metricDates}
+            dispatch={store.dispatch}
           />
           <div className="clear">&nbsp;</div>
         </div>

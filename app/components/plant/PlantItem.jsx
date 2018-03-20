@@ -31,7 +31,7 @@ class PlantItem extends React.PureComponent {
     if (!this.props.plant.notesRequested) {
       if (this.props.plant._id) {
         this.props.dispatch(actions.loadNotesRequest({
-          plantId: this.props.plant._id,
+          plantIds: [this.props.plant._id],
         }));
       } else {
         // console.error('PlantItem: plant object does not have _id', plant);

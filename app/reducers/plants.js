@@ -138,23 +138,29 @@ function upsertNoteSuccess(state, { payload: { note } }) {
 // action.payload is {
 //   noteIds: [<note-id>, <note-id>, ...]
 // OR
-//   plantId: <plant-id>
+//   plantIds: [<plant-id>, ...]
 // }
 function loadNotesRequest(state, action) {
-  const { plantId, noteIds } = action.payload;
+  const { plantIds, noteIds } = action.payload;
   if (noteIds) {
     return state;
   }
-  if (!plantId) {
-    // console.error('No plantId in action.payload:', action.payload);
+  if (!plantIds || !plantIds.length) {
+    // console.error('No plantIds or length in action.payload:', action.payload);
     return state;
   }
-  const plant = state[plantId];
-  if (!plant) {
-    // console.error('No plant in state for plantId:', plantId);
-    return state;
-  }
-  return seamless.set(state, plantId, seamless.set(plant, 'notesRequested', true));
+
+  const requestedPlants = plantIds.reduce((acc, plantId) => {
+    const plant = state[plantId];
+    if (!plant) {
+      // console.error('No plant in state for plantId:', plantId);
+      return acc;
+    }
+    acc[plantId] = seamless.set(plant, 'notesRequested', true);
+    return acc;
+  }, {});
+
+  return seamless.merge(state, requestedPlants);
 }
 
 // action.payload is an array of notes from the server

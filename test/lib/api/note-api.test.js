@@ -197,7 +197,7 @@ describe('note-api', () => {
         const reqOptions = {
           method: 'POST',
           authenticate: true,
-          body: { plantId },
+          body: { plantIds: [plantId] },
           json: true,
           url: '/api/notes',
         };

@@ -28,7 +28,7 @@ class PlantRead extends React.PureComponent {
     if (!notesRequested) {
       if (_id) {
         this.props.dispatch(actions.loadNotesRequest({
-          plantId: _id,
+          plantIds: [_id],
         }));
       } else {
         // console.error('PlantRead: plant object does not have _id', plant);

@@ -306,7 +306,7 @@ describe('/app/reducers/plants', () => {
     test('should return original state if plant not found in state', () => {
       const expected = {};
       const payload = {
-        plantId: 'not in state',
+        plantIds: ['not in state'],
       };
       const current = seamless.from(expected);
 
@@ -319,7 +319,7 @@ describe('/app/reducers/plants', () => {
         1: { },
       };
       const payload = {
-        plantId: '1',
+        plantIds: ['1'],
       };
       const current = seamless.from(expected);
       expected['1'].notesRequested = true;

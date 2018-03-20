@@ -2,13 +2,44 @@ const React = require('react');
 // const utils = require('../../../libs/utils');
 const PropTypes = require('prop-types');
 const seamless = require('seamless-immutable');
+const actions = require('../../../actions');
 
 function lastMeasured(props) {
   const {
-    plantIds, // Array of mongoId strings
+    plantIds, // Array of mongoId strings. These are the plants we're calculating metrics on.
     plants, // An object with mongoId keys and plant values
     metricDates, // An array of metrics keys/props for with to find the most recent date
+    dispatch,
   } = props;
+
+  // We need all the plants in this list to have had their notes loaded.
+  // This is determined by the "notesRequested" flag on the plant object.
+  const missingPlants = plantIds.reduce((acc, plantId) => {
+    if (plants[plantId]) {
+      return acc;
+    }
+    acc.push(plantId);
+    return acc;
+  }, []);
+
+  if (missingPlants.length) {
+    dispatch(actions.loadUnloadedPlantsRequest(missingPlants));
+  }
+
+  const missingNotesPlantIds = plantIds.reduce((acc, plantId) => {
+    const plant = plants[plantId];
+    if (!plant || plant.notesRequested) {
+      return acc;
+    }
+    acc.push(plantId);
+    return acc;
+  }, []);
+
+  if (missingNotesPlantIds.length) {
+    dispatch(actions.loadNotesRequest({
+      plantIds: missingNotesPlantIds,
+    }));
+  }
 
   // Get an array with flattened metrics and their most recent date.
   const plantsWithLatestMetrics = plantIds.reduce((acc, plantId) => {
@@ -21,7 +52,7 @@ function lastMeasured(props) {
     // date value on them:
     //
     // plantId:
-    // name/title:
+    // title:
     // lastDate: Date Object with most recent date of interested metric
     // height: 2/2/2018
     // girth: 1/2/2018
@@ -30,7 +61,7 @@ function lastMeasured(props) {
 
     const metricPlant = {
       plantId,
-      name: plant.name,
+      title: plant.title,
     };
 
     // Now iterate through notes...
@@ -52,7 +83,7 @@ function lastMeasured(props) {
     return acc;
   }, []);
 
-  const sortMetrics = seamless.asMutable(plantsWithLatestMetrics).sort((a, b) => {
+  const sortedMetrics = seamless.asMutable(plantsWithLatestMetrics).sort((a, b) => {
     // TODO: Move to utils module and write tests around this.
     if (!a.lastDate && !b.lastDate) {
       return 0;
@@ -74,9 +105,9 @@ function lastMeasured(props) {
       <h5>Metrics:</h5>
       <ul>
         {
-          sortMetrics.map(metricPlant => (
+          sortedMetrics.map(metricPlant => (
             <div key={metricPlant.plantId}>
-              {metricPlant.name}
+              {metricPlant.title}
             </div>),
           )
         }
@@ -89,6 +120,7 @@ lastMeasured.propTypes = {
   plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   plants: PropTypes.shape({}).isRequired,
   metricDates: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 module.exports = lastMeasured;

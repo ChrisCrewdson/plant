@@ -223,16 +223,17 @@ function loadLocationsRequest(store) {
 // Get all the notes listed
 // action.payload is an object with one of 2 properties:
 // noteIds: an array of noteIds
-// plantId: a plant id
+// plantIds: an array of plantIds
 function loadNotesRequest(store, action, next) {
-  const { noteIds, plantId } = action.payload;
-  if (!noteIds && !plantId) {
-    // console.error('No noteIds or plantId on payload, action:', action);
+  const { noteIds, plantIds } = action.payload;
+  if (!noteIds && !plantIds) {
+    // eslint-disable-next-line no-console
+    console.error('No noteIds or plantIds on payload, action:', action);
     return next(action);
   }
 
   const options = {
-    data: { noteIds, plantId },
+    data: { noteIds, plantIds },
     failure: actions.loadNotesFailure,
     success: actions.loadNotesSuccess,
     type: 'POST', // Because we don't know how big the payload will be
@@ -247,7 +248,8 @@ function loadNotesRequest(store, action, next) {
 // action.payload is an array of plantIds
 function loadUnloadedPlantsRequest(store, action) {
   if (!action.payload || !action.payload.length) {
-    // console.error('No plantIds on payload, action:', action);
+    // eslint-disable-next-line no-console
+    console.error('No plantIds on payload, action:', action);
   }
 
   const options = {
@@ -290,17 +292,17 @@ const apis = {
   [actions.CREATE_PLANT_REQUEST]: createPlant,
   [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
   [actions.DELETE_PLANT_REQUEST]: deletePlantRequest,
+  [actions.LOAD_LOCATIONS_REQUEST]: loadLocationsRequest,
   [actions.LOAD_NOTES_REQUEST]: loadNotesRequest,
   [actions.LOAD_PLANT_REQUEST]: loadPlantRequest,
   [actions.LOAD_PLANTS_REQUEST]: loadPlantsRequest,
   [actions.LOAD_UNLOADED_PLANTS_REQUEST]: loadUnloadedPlantsRequest,
   [actions.LOAD_USER_REQUEST]: loadUserRequest,
   [actions.LOAD_USERS_REQUEST]: loadUsersRequest,
-  [actions.LOAD_LOCATIONS_REQUEST]: loadLocationsRequest,
   [actions.LOGIN_REQUEST]: loginRequest,
+  [actions.MODIFY_LOCATION_REQUEST]: modifyLocationRequest,
   [actions.UPDATE_PLANT_REQUEST]: updatePlant,
   [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
-  [actions.MODIFY_LOCATION_REQUEST]: modifyLocationRequest,
 };
 
 module.exports = store => next => (action) => {

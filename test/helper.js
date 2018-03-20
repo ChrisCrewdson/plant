@@ -28,7 +28,7 @@ function getUrl(url) {
 
   const { port } = data;
   if (!port) {
-    throw new Error(`port is not defined in data object: ${JSON.stringify(data, null, 2)}`);
+    throw new Error(`Jest Worker Id is ${process.env.JEST_WORKER_ID} and port is not defined in data object: ${JSON.stringify(data, null, 2)}`);
   }
 
   return `${'http'}://127.0.0.1:${port}${url}`;
@@ -138,7 +138,7 @@ async function startServerAuthenticated() {
     return server || serverModule;
   }
 
-  async function startServer(app, server) {
+  function startServer(app, server) {
     if (app) {
       return app;
     }

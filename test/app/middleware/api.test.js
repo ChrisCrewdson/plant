@@ -28,7 +28,7 @@ describe('/app/middleware/api', () => {
       const action = {
         payload: {
           _id: '123',
-          plantId: '123', // To make loadNotesRequest work
+          plantIds: ['123'], // To make loadNotesRequest work
         },
       };
 
