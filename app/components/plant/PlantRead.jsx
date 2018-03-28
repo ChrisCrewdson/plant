@@ -5,6 +5,7 @@ const moment = require('moment');
 const Paper = require('material-ui/Paper').default;
 const React = require('react');
 const utils = require('../../libs/utils');
+const RaisedButton = require('material-ui/RaisedButton').default;
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const seamless = require('seamless-immutable').static;
@@ -21,6 +22,7 @@ class PlantRead extends React.PureComponent {
     this.edit = this.edit.bind(this);
     this.checkDelete = this.checkDelete.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.showImages = this.showImages.bind(this);
   }
 
   componentWillMount() {
@@ -49,6 +51,11 @@ class PlantRead extends React.PureComponent {
 
   checkDelete() {
     this.setState({ showDeleteConfirmation: true });
+  }
+
+  showImages() {
+    const noteIds = (this.props.plant && this.props.plant.notes) || [];
+    this.props.dispatch(actions.showNoteImages(noteIds));
   }
 
   confirmDelete(yes) {
@@ -185,6 +192,8 @@ class PlantRead extends React.PureComponent {
 
     const { locationId, title } = this.props.plant;
 
+    const label = 'Show All Images';
+
     return (
       <div>
         {this.props.plant ?
@@ -194,14 +203,22 @@ class PlantRead extends React.PureComponent {
                 {title}
               </h2>
               {this.renderDetails()}
-              <EditDeleteButtons
-                clickEdit={this.edit}
-                clickDelete={this.checkDelete}
-                confirmDelete={this.confirmDelete}
-                showDeleteConfirmation={showDeleteConfirmation}
-                showButtons={userCanEdit}
-                deleteTitle={title || ''}
+              <RaisedButton
+                label={label}
+                style={{ marginTop: '40px' }}
+                onMouseUp={this.showImages}
+                primary
               />
+              <div style={{ width: '50%', float: 'right' }}>
+                <EditDeleteButtons
+                  clickEdit={this.edit}
+                  clickDelete={this.checkDelete}
+                  confirmDelete={this.confirmDelete}
+                  showDeleteConfirmation={showDeleteConfirmation}
+                  showButtons={userCanEdit}
+                  deleteTitle={title || ''}
+                />
+              </div>
             </Paper>
             <NotesRead
               dispatch={this.props.dispatch}
@@ -235,14 +252,15 @@ PlantRead.propTypes = {
   }).isRequired,
   plant: PropTypes.shape({
     _id: PropTypes.string.isRequired,
-    locationId: PropTypes.string.isRequired,
-    terminatedReason: PropTypes.string,
-    terminatedDescription: PropTypes.string,
-    title: PropTypes.string.isRequired,
     isTerminated: PropTypes.bool,
+    locationId: PropTypes.string.isRequired,
+    notes: PropTypes.arrayOf(PropTypes.string),
     notesRequested: PropTypes.bool,
     plantedDate: PropTypes.number,
     terminatedDate: PropTypes.number,
+    terminatedDescription: PropTypes.string,
+    terminatedReason: PropTypes.string,
+    title: PropTypes.string.isRequired,
   }).isRequired,
   plants: PropTypes.shape({
   }).isRequired,

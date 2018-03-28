@@ -65,14 +65,25 @@ function loadNotesSuccess(state, { payload: notes }) {
 // action.payload is the _id of the note whose images we
 // are going to tag as showable
 function showNoteImages(state, { payload: _id }) {
-  const note = _id && state[_id];
-  if (!note || note.showImages) {
+  const noteIds = Array.isArray(_id) ? _id : [_id];
+  const notes = noteIds.reduce((acc, noteId) => {
+    const note = state[noteId];
+    if (note && !note.showImages) {
+      acc.push(note);
+    }
+    return acc;
+  }, []);
+
+  if (!notes.length) {
     return state;
   }
 
-  const updatedNote = Object.assign({}, note, { showImages: true });
+  const updatedNotes = notes.reduce((acc, note) => {
+    acc[note._id] = Object.assign({}, note, { showImages: true });
+    return acc;
+  }, {});
 
-  return seamless.set(state, _id, updatedNote);
+  return seamless.merge(state, updatedNotes);
 }
 
 const reducers = Object.freeze({

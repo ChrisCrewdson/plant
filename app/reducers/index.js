@@ -40,7 +40,7 @@ users: { // Each user the same as user above but without token
 },
 
 plants: {
-  plantId: {
+  <plant-id>: {
     _id: <plant-id>,
     summary: true, // if true then notes have not been fetched
     userId: <user-id>,
@@ -48,14 +48,14 @@ plants: {
     commonName: '',
     botanicalName: '',
     notes: [{
-      _id = <note-id>,
+      _id: <note-id>,
       date: ''
     }] // if summary is false then this is complete
   }
 }
 
 notes: {
-  nodeId: {
+  <note-id>: {
     _id: <note-id>
     date: a date
     plantIds: [plantId, plantId, ...]
