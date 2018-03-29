@@ -38,10 +38,10 @@ class NotesRead extends React.PureComponent {
       plant,
     } = this.props;
 
-    const interimNoteId = getIn(interim, ['note', 'note', '_id']);
-    if (interimNoteId && userCanEdit) {
-      const interimNote = getIn(interim, ['note', 'note']);
+    const interimNote = getIn(interim, ['note', 'note'], {});
+    const { isNew, _id: interimNoteId } = interimNote;
 
+    if (interimNoteId && userCanEdit && !isNew) {
       return (
         <NoteEdit
           dispatch={this.props.dispatch}
