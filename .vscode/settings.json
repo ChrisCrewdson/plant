@@ -11,6 +11,7 @@
         "numericality",
         "originalname",
         "polyfill",
+        "sinensis",
         "upsert",
         "validators"
     ]

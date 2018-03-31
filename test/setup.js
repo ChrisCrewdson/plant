@@ -74,5 +74,6 @@ afterAll((done) => {
 
 // These modules use 'ref' which causes problems with jest snapshot testing
 // so mock them for all tests.
+jest.mock('material-ui/TextField/EnhancedTextarea');
 jest.mock('material-ui/internal/EnhancedSwitch');
 jest.mock('material-ui/internal/Tooltip');

@@ -140,10 +140,10 @@ class PlantEdit extends React.Component {
     } = user;
     const {
       locationIds = [],
-    } = users[_id];
+    } = users[_id] || {};
 
     const locationIdTitleMap = locationIds.reduce((acc, locationId) => {
-      acc[locationId._id] = (locations[locationId] || {}).title;
+      acc[locationId] = (locations[locationId] || {}).title;
       return acc;
     }, {});
     // activeLocationId is the one that you last viewed which might not be
