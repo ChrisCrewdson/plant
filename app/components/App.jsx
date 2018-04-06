@@ -7,7 +7,8 @@ class App extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     const { users = {}, locations = {} } = store.getState();
 

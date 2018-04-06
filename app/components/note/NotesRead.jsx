@@ -9,11 +9,13 @@ const getIn = require('lodash/get');
 const utils = require('../../libs/utils');
 
 class NotesRead extends React.PureComponent {
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     this.sortNotes();
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.sortNotes(nextProps);
   }
 

@@ -13,7 +13,8 @@ class PlantEditTerminated extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { interimPlant } = this.props;
     let { terminatedReason } = interimPlant;
     if (!terminatedReason) {

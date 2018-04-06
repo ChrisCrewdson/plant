@@ -19,7 +19,8 @@ class Navbar extends React.Component {
     this.logout = this.logout.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     const { user = {}, interim: interimMap } = store.getState();

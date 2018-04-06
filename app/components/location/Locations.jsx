@@ -30,7 +30,8 @@ class Locations extends React.Component {
     this.renderLocation = this.renderLocation.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 

@@ -75,7 +75,8 @@ class Metrics extends React.Component {
     this.state = { filter: '' };
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     const { locations = {} } = store.getState();
 

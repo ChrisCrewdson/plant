@@ -36,7 +36,8 @@ class PlantEdit extends React.Component {
     this.addGeo = this.addGeo.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { interimPlant } = this.props;
     const pageTitle = interimPlant.isNew
       ? 'Add New Plant'

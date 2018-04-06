@@ -24,7 +24,8 @@ class LayoutMap extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     this.setState({
       color: 'green',

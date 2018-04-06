@@ -25,7 +25,8 @@ class PlantRead extends React.PureComponent {
     this.showImages = this.showImages.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     const { notesRequested, _id } = this.props.plant;
     if (!notesRequested) {
       if (_id) {

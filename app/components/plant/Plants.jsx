@@ -21,14 +21,16 @@ class Plants extends React.Component {
     this.redirectIfReady = this.redirectIfReady.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     this.onChange();
     this.redirectIfReady();
   }
 
-  componentWillUpdate() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillUpdate() {
     this.redirectIfReady();
   }
 

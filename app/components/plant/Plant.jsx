@@ -26,7 +26,8 @@ class Plant extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase, react/sort-comp
+  UNSAFE_componentWillMount() {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     this.initState(true);
@@ -40,7 +41,8 @@ class Plant extends React.Component {
 - parameter to this function is nextProps
 - can call this.setState() here (will not trigger additional render)
 */
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.initState(true, nextProps);
   }
 
