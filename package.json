@@ -4,12 +4,12 @@
     "url": "https://github.com/guyellis/plant/issues"
   },
   "dependencies": {
-    "aws-sdk": "2.237.1",
+    "aws-sdk": "2.238.1",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.4",
     "babel-polyfill": "6.26.0",
-    "babel-preset-env": "1.6.1",
+    "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
     "body-parser": "1.18.2",
@@ -64,7 +64,7 @@
     "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jest": "21.15.1",
     "eslint-plugin-jsx-a11y": "6.0.3",
-    "eslint-plugin-react": "7.8.1",
+    "eslint-plugin-react": "7.8.2",
     "eslint-plugin-security": "1.4.0",
     "jest": "22.4.3",
     "nodemon": "1.17.4",
