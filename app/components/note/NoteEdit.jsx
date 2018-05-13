@@ -236,6 +236,7 @@ NoteEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimNote: PropTypes.shape({
     note: PropTypes.string,
+    plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   plants: PropTypes.shape({
   }).isRequired,
