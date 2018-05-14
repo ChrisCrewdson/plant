@@ -26,7 +26,7 @@
     "konva": "2.0.3",
     "lodash": "4.17.10",
     "marked": "0.3.19",
-    "material-ui": "0.20.0",
+    "material-ui": "0.20.1",
     "method-override": "2.3.10",
     "moment": "2.22.1",
     "mongodb": "3.0.7",
