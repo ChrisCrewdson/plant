@@ -43,7 +43,7 @@
     "react-konva": "1.7.4",
     "react-redux": "5.0.7",
     "react-router-dom": "4.2.2",
-    "react-tap-event-plugin": "3.0.2",
+    "react-tap-event-plugin": "3.0.3",
     "redux": "4.0.0",
     "request": "2.87.0",
     "seamless-immutable": "7.1.3",
