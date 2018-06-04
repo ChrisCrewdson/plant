@@ -15,46 +15,6 @@ const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 
 class Location extends React.Component {
-  static contextTypes = {
-    store: PropTypes.object.isRequired,
-  };
-
-  static renderNoPlants(location, userCanEdit) {
-    return (
-      <Base>
-        <div>
-          {Location.renderTitle(location)}
-          <h3 style={{ textAlign: 'center' }}>
-            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
-            <AddPlantButton
-              show={userCanEdit}
-              style={{ marginTop: '10px' }}
-            />
-          </h3>
-        </div>
-      </Base>
-    );
-  }
-
-  static renderWaiting(location) {
-    return (
-      <Base>
-        <div>
-          {Location.renderTitle(location)}
-          <h3 style={{ textAlign: 'center' }}>
-            <CircularProgress />
-          </h3>
-        </div>
-      </Base>
-    );
-  }
-
-  static renderTitle(location) {
-    return (
-      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Plant List`}</h2>
-    );
-  }
-
   static addPlantButton(userCanEdit) {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
@@ -64,6 +24,10 @@ class Location extends React.Component {
       </div>
     );
   }
+
+  static contextTypes = {
+    store: PropTypes.object.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -113,6 +77,42 @@ class Location extends React.Component {
   postSaveSuccessCreateNote() {
     const { store } = this.context;
     store.dispatch(actions.editNoteClose());
+  }
+
+  static renderTitle(location) {
+    return (
+      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Plant List`}</h2>
+    );
+  }
+
+  static renderWaiting(location) {
+    return (
+      <Base>
+        <div>
+          {Location.renderTitle(location)}
+          <h3 style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </h3>
+        </div>
+      </Base>
+    );
+  }
+
+  static renderNoPlants(location, userCanEdit) {
+    return (
+      <Base>
+        <div>
+          {Location.renderTitle(location)}
+          <h3 style={{ textAlign: 'center' }}>
+            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
+            <AddPlantButton
+              show={userCanEdit}
+              style={{ marginTop: '10px' }}
+            />
+          </h3>
+        </div>
+      </Base>
+    );
   }
 
   render() {

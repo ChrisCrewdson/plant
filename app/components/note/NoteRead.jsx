@@ -11,23 +11,6 @@ const NoteReadMetrics = require('./NoteReadMetrics');
 const PropTypes = require('prop-types');
 
 class NoteRead extends React.PureComponent {
-  static renderImage(image) {
-    const imageStyle = {
-      maxWidth: '100%',
-      padding: '1%',
-    };
-    return (
-      <div key={image.id}>
-        <img
-          style={imageStyle}
-          src={NoteRead.buildImageSrc(image)}
-          srcSet={NoteRead.buildImageSrcSet(image)}
-          alt="A plant, tree, bush, shrub or vine"
-        />
-      </div>
-    );
-  }
-
   static buildImageUrl(size, image) {
     const { id, ext } = image;
     const folder = process.env.NODE_ENV === 'production' ? 'up' : 'test';
@@ -85,6 +68,23 @@ class NoteRead extends React.PureComponent {
     };
     const { plant } = this.props;
     this.props.dispatch(actions.editNoteOpen({ plant, note }));
+  }
+
+  static renderImage(image) {
+    const imageStyle = {
+      maxWidth: '100%',
+      padding: '1%',
+    };
+    return (
+      <div key={image.id}>
+        <img
+          style={imageStyle}
+          src={NoteRead.buildImageSrc(image)}
+          srcSet={NoteRead.buildImageSrcSet(image)}
+          alt="A plant, tree, bush, shrub or vine"
+        />
+      </div>
+    );
   }
 
   renderImages({ images, showImages, _id }) {

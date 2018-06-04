@@ -18,46 +18,6 @@ const LastMeasured = require('./LastMeasured');
 // With this as an initial commit it is easy to iterate on this.
 
 class Metrics extends React.Component {
-  static contextTypes = {
-    store: PropTypes.object.isRequired,
-  };
-
-  static renderNoPlants(location, userCanEdit) {
-    return (
-      <Base>
-        <div>
-          {Metrics.renderTitle(location)}
-          <h3 style={{ textAlign: 'center' }}>
-            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
-            <AddPlantButton
-              show={userCanEdit}
-              style={{ marginTop: '10px' }}
-            />
-          </h3>
-        </div>
-      </Base>
-    );
-  }
-
-  static renderWaiting(location) {
-    return (
-      <Base>
-        <div>
-          {Metrics.renderTitle(location)}
-          <h3 style={{ textAlign: 'center' }}>
-            <CircularProgress />
-          </h3>
-        </div>
-      </Base>
-    );
-  }
-
-  static renderTitle(location) {
-    return (
-      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Metrics`}</h2>
-    );
-  }
-
   static addPlantButton(userCanEdit) {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
@@ -67,6 +27,10 @@ class Metrics extends React.Component {
       </div>
     );
   }
+
+  static contextTypes = {
+    store: PropTypes.object.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -116,6 +80,42 @@ class Metrics extends React.Component {
   postSaveSuccessCreateNote() {
     const { store } = this.context;
     store.dispatch(actions.editNoteClose());
+  }
+
+  static renderTitle(location) {
+    return (
+      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Metrics`}</h2>
+    );
+  }
+
+  static renderWaiting(location) {
+    return (
+      <Base>
+        <div>
+          {Metrics.renderTitle(location)}
+          <h3 style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </h3>
+        </div>
+      </Base>
+    );
+  }
+
+  static renderNoPlants(location, userCanEdit) {
+    return (
+      <Base>
+        <div>
+          {Metrics.renderTitle(location)}
+          <h3 style={{ textAlign: 'center' }}>
+            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
+            <AddPlantButton
+              show={userCanEdit}
+              style={{ marginTop: '10px' }}
+            />
+          </h3>
+        </div>
+      </Base>
+    );
   }
 
   render() {

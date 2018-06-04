@@ -17,12 +17,6 @@ class Locations extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  static renderTitle(title) {
-    return (
-      <h2 style={{ textAlign: 'center' }}>{`${title}`}</h2>
-    );
-  }
-
   constructor() {
     super();
     this.onChange = this.onChange.bind(this);
@@ -61,6 +55,12 @@ class Locations extends React.Component {
     const { store } = this.context;
     const { user: authUser = {} } = store.getState();
     return !!(user && authUser._id === user._id);
+  }
+
+  static renderTitle(title) {
+    return (
+      <h2 style={{ textAlign: 'center' }}>{`${title}`}</h2>
+    );
   }
 
   renderLocation(location) {
