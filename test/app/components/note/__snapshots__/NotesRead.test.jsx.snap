@@ -76,7 +76,6 @@ exports[`NotesRead should render a NotesRead 1`] = `
           }
         >
           <div
-            className={undefined}
             style={
               Object {
                 "WebkitTapHighlightColor": "rgba(0,0,0,0)",
@@ -179,7 +178,6 @@ exports[`NotesRead should render a NotesRead 1`] = `
             </button>
           </div>
           <div
-            className={undefined}
             style={
               Object {
                 "WebkitTapHighlightColor": "rgba(0,0,0,0)",

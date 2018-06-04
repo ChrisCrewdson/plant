@@ -13,7 +13,6 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
   >
     <div>
       <div
-        className={undefined}
         style={
           Object {
             "backgroundColor": "transparent",
@@ -32,9 +31,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         }
       >
         <label
-          className={undefined}
           htmlFor="height"
-          onClick={undefined}
           style={
             Object {
               "color": "rgba(0, 0, 0, 0.3)",
@@ -144,7 +141,6 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         
       </div>
       <div
-        className={undefined}
         style={
           Object {
             "backgroundColor": "transparent",
@@ -163,9 +159,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         }
       >
         <label
-          className={undefined}
           htmlFor="girth"
-          onClick={undefined}
           style={
             Object {
               "color": "rgba(0, 0, 0, 0.3)",
@@ -275,7 +269,6 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         
       </div>
       <div
-        className={undefined}
         style={
           Object {
             "backgroundColor": "transparent",
@@ -294,9 +287,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         }
       >
         <label
-          className={undefined}
           htmlFor="harvestCount"
-          onClick={undefined}
           style={
             Object {
               "color": "rgba(0, 0, 0, 0.3)",
@@ -406,7 +397,6 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         
       </div>
       <div
-        className={undefined}
         style={
           Object {
             "backgroundColor": "transparent",
@@ -425,9 +415,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         }
       >
         <label
-          className={undefined}
           htmlFor="harvestWeight"
-          onClick={undefined}
           style={
             Object {
               "color": "rgba(0, 0, 0, 0.3)",

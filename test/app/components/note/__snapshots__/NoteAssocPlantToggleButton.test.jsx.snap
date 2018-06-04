@@ -5,7 +5,6 @@ exports[`NoteAssocPlantToggleButton NoteAssocPlantToggleButton should be rendere
   className="react-root"
 >
   <div
-    className={undefined}
     style={
       Object {
         "WebkitTapHighlightColor": "rgba(0,0,0,0)",

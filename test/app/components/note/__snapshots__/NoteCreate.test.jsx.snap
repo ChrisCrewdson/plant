@@ -13,7 +13,6 @@ exports[`NoteCreate should render a NoteCreate 1`] = `
       }
     >
       <div
-        className={undefined}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0,0,0,0)",

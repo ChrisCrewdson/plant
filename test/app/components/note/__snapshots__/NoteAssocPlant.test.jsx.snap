@@ -14,7 +14,6 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
     <div>
       Associated plants:
       <div
-        className={undefined}
         style={
           Object {
             "backgroundColor": "transparent",
@@ -33,9 +32,7 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
         }
       >
         <label
-          className={undefined}
           htmlFor="note-assoc-plant-filter"
-          onClick={undefined}
           style={
             Object {
               "color": "rgba(0, 0, 0, 0.3)",
@@ -145,7 +142,6 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
         
       </div>
       <div
-        className={undefined}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0,0,0,0)",
@@ -250,7 +246,6 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
         </button>
       </div>
       <div
-        className={undefined}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0,0,0,0)",
@@ -355,7 +350,6 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
         </button>
       </div>
       <div
-        className={undefined}
         style={
           Object {
             "WebkitTapHighlightColor": "rgba(0,0,0,0)",

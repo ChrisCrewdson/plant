@@ -5,7 +5,6 @@ exports[`InputCombo should render Select Input 1`] = `
   className="react-root"
 >
   <div
-    className={undefined}
     style={
       Object {
         "backgroundColor": "transparent",
@@ -39,7 +38,6 @@ exports[`InputCombo should render Select Input 1`] = `
        
     </div>
     <div
-      className={undefined}
       id="test-id"
       onBlur={[Function]}
       onChange={[Function]}
@@ -264,7 +262,6 @@ exports[`InputCombo should render Text Input 1`] = `
   className="react-root"
 >
   <div
-    className={undefined}
     style={
       Object {
         "backgroundColor": "transparent",
