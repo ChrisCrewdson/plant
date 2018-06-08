@@ -4,7 +4,7 @@
     "url": "https://github.com/guyellis/plant/issues"
   },
   "dependencies": {
-    "aws-sdk": "2.251.1",
+    "aws-sdk": "2.254.1",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.4",
