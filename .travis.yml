@@ -12,8 +12,10 @@ addons:
     - g++-4.8
 services:
   - mongodb
+install: npm install
 before_install:
-- npm install -g npm
+# Don't need to install latest npm because Node >= 9
+# - npm install -g npm
 - npm install -g greenkeeper-lockfile@1
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
