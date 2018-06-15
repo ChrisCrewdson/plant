@@ -95,15 +95,7 @@ const loggerMockFunction = (errObj, extra) => {
   }
 };
 
-// const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
-global.loggerMock = {
-  trace: loggerMockFunction,
-  info: loggerMockFunction,
-  warn: loggerMockFunction,
-  error: loggerMockFunction,
-  fatal: loggerMockFunction,
-  security: loggerMockFunction,
-};
+global.loggerMock = {};
 
 jest.mock('lalog', () => ({
   create: ({ serviceName, moduleName }) => {
@@ -116,3 +108,14 @@ jest.mock('lalog', () => ({
   getLevel: () => 'info',
 }));
 
+global.loggerMockReset = () => {
+  // const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
+  global.loggerMock.trace = jest.fn(loggerMockFunction);
+  global.loggerMock.info = jest.fn(loggerMockFunction);
+  global.loggerMock.warn = jest.fn(loggerMockFunction);
+  global.loggerMock.error = jest.fn(loggerMockFunction);
+  global.loggerMock.fatal = jest.fn(loggerMockFunction);
+  global.loggerMock.security = jest.fn(loggerMockFunction);
+};
+
+global.loggerMockReset();
