@@ -103,7 +103,6 @@ global.loggerMock = {
 };
 
 jest.mock('lalog', () => ({
-  setLevel: jest.fn(),
   create: ({ serviceName, moduleName }) => {
     expect(serviceName).toBeTruthy();
     expect(moduleName).toBeTruthy();
