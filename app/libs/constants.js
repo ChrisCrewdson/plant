@@ -11,4 +11,6 @@ module.exports = {
   // roles for that location. The roles are, from left to right, most
   // permissive to least permissive.
   roles: ['owner', 'manager', 'member'],
+
+  SERVICE_NAME: 'plant',
 };

@@ -39,8 +39,11 @@ describe('/lib/db/mongo/', () => {
           expect(err).toBeTruthy();
           expect(err.message).toBe('No facebook.id or google.id:');
         }
-        // 2 here, 2 in beforeAll(), 8 in helper.startServerAuthenticated from beforeAll.
-        expect.assertions(12);
+        // 2 here,
+        // 2 in beforeAll(),
+        // 8 in helper.startServerAuthenticated from beforeAll.
+        // 8 in calls to logger
+        expect.assertions(20);
       },
     );
 

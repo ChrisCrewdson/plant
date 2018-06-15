@@ -84,3 +84,33 @@ jest.mock('material-ui/TextField/EnhancedTextarea');
 jest.mock('react-dropzone', () => ({
   default: () => {},
 }));
+
+const loggerMockFunction = (errObj, extra) => {
+  if (extra) {
+    const { res, code } = extra;
+    res.status(code).send({ one: 1 });
+  }
+};
+
+// const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
+global.loggerMock = {
+  trace: loggerMockFunction,
+  info: loggerMockFunction,
+  warn: loggerMockFunction,
+  error: loggerMockFunction,
+  fatal: loggerMockFunction,
+  security: loggerMockFunction,
+};
+
+jest.mock('lalog', () => ({
+  setLevel: jest.fn(),
+  create: ({ serviceName, moduleName }) => {
+    expect(serviceName).toBeTruthy();
+    expect(moduleName).toBeTruthy();
+    expect(typeof serviceName).toBe('string');
+    expect(typeof moduleName).toBe('string');
+    return global.loggerMock;
+  },
+  getLevel: () => 'info',
+}));
+
