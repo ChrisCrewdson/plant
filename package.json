@@ -24,6 +24,7 @@
     "jquery": "2.x",
     "jwt-simple": "0.5.1",
     "konva": "2.1.5",
+    "lalog": "0.4.0",
     "lodash": "4.17.10",
     "marked": "0.4.0",
     "material-ui": "0.20.1",
