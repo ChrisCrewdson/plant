@@ -1,4 +1,4 @@
-
+const _ = require('lodash');
 const Logger = require('../lib/logging/logger');
 const uuid = require('uuid');
 const mongo = require('../lib/db/mongo');
@@ -86,6 +86,9 @@ jest.mock('react-dropzone', () => ({
 }));
 
 const loggerMockFunction = (errObj, extra) => {
+  if (!_.isObject(errObj)) {
+    throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
+  }
   if (extra) {
     const { res, code } = extra;
     res.status(code).send({ one: 1 });
