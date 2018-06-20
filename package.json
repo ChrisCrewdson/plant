@@ -23,7 +23,7 @@
     "html-webpack-plugin": "2.30.1",
     "jquery": "2.x",
     "jwt-simple": "0.5.1",
-    "konva": "2.1.5",
+    "konva": "2.1.6",
     "lalog": "0.4.0",
     "lodash": "4.17.10",
     "marked": "0.4.0",
