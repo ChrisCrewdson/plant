@@ -116,7 +116,6 @@
     "dependency-update": "node_modules/.bin/npm-update-outdated",
     "lint": "eslint --ext .js --ext .jsx . --max-warnings 0",
     "lintfix": "eslint --ext .js --ext .jsx . --fix",
-    "prepublish": "npm run build",
     "prodstart": "npm run build && pm2 start ../site-ops/pm2/plant.config.js --env production",
     "prodstop": "pm2 stop plant",
     "server": ". ./devops/run-server.sh",
