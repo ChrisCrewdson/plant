@@ -1,7 +1,6 @@
-// const _ = require('lodash');
+const seamless = require('seamless-immutable').static;
 const locations = require('../../../app/reducers/locations');
 const actions = require('../../../app/actions');
-const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/locations', () => {
   const stateA = seamless.from({

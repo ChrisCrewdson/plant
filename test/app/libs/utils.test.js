@@ -1,7 +1,7 @@
-const utils = require('../../../app/libs/utils');
-const constants = require('../../../app/libs/constants');
 const moment = require('moment');
 const seamless = require('seamless-immutable').static;
+const utils = require('../../../app/libs/utils');
+const constants = require('../../../app/libs/constants');
 
 describe('/app/libs/utils', () => {
   describe('slugs', () => {

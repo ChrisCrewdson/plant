@@ -1,14 +1,14 @@
 const RaisedButton = require('material-ui/RaisedButton').default;
-const actions = require('../../actions');
-const Paper = require('material-ui/Paper').default;
-const React = require('react');
-const EditDeleteButtons = require('../common/EditDeleteButtons');
-const moment = require('moment');
 const LinkIcon = require('material-ui/svg-icons/content/link').default;
+const PropTypes = require('prop-types');
+const React = require('react');
+const Paper = require('material-ui/Paper').default;
+const moment = require('moment');
+const actions = require('../../actions');
+const EditDeleteButtons = require('../common/EditDeleteButtons');
 const utils = require('../../libs/utils');
 const Markdown = require('../common/Markdown');
 const NoteReadMetrics = require('./NoteReadMetrics');
-const PropTypes = require('prop-types');
 
 class NoteRead extends React.PureComponent {
   static buildImageUrl(size, image) {
@@ -54,20 +54,22 @@ class NoteRead extends React.PureComponent {
 
   confirmDelete(yes) {
     if (yes) {
-      this.props.dispatch(actions.deleteNoteRequest(this.props.note._id));
+      const { dispatch, note: { _id } } = this.props;
+      dispatch(actions.deleteNoteRequest(_id));
     } else {
       this.setState({ showDeleteConfirmation: false });
     }
   }
 
   editNote() {
+    const { note: propNote, dispatch } = this.props;
     const note = {
-      ...this.props.note,
-      date: utils.intToString(this.props.note.date),
+      ...propNote,
+      date: utils.intToString(propNote.date),
       isNew: false,
     };
     const { plant } = this.props;
-    this.props.dispatch(actions.editNoteOpen({ plant, note }));
+    dispatch(actions.editNoteOpen({ plant, note }));
   }
 
   static renderImage(image) {
@@ -95,11 +97,13 @@ class NoteRead extends React.PureComponent {
 
       const label = `Show ${images.length} image${images.length > 1 ? 's' : ''}`;
 
+      const { dispatch } = this.props;
+
       return (
         <div>
           <RaisedButton
             label={label}
-            onMouseUp={() => this.props.dispatch(actions.showNoteImages(_id))}
+            onMouseUp={() => dispatch(actions.showNoteImages(_id))}
             primary
           />
         </div>
@@ -129,8 +133,8 @@ class NoteRead extends React.PureComponent {
 
     const date = utils.intToMoment(note.date);
 
-    const noteDate = date.format('DD-MMM-YYYY') +
-      (date.isSame(moment(), 'day')
+    const noteDate = date.format('DD-MMM-YYYY')
+      + (date.isSame(moment(), 'day')
         ? ' (today)'
         : ` (${date.from(moment().startOf('day'))})`);
     const { _id: noteId } = note;
@@ -142,7 +146,9 @@ class NoteRead extends React.PureComponent {
             <LinkIcon />
           </a>
         </div>
-        <h5>{noteDate}</h5>
+        <h5>
+          {noteDate}
+        </h5>
         <Markdown markdown={note.note} />
         <NoteReadMetrics note={note} />
         <EditDeleteButtons

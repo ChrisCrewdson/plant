@@ -12,11 +12,13 @@ class RemoveConfirm extends React.Component {
   }
 
   reallyDelete() {
-    this.props.confirmFn(true, this.props.deleteData);
+    const { confirmFn, deleteData } = this.props;
+    confirmFn(true, deleteData);
   }
 
   cancelDelete() {
-    this.props.confirmFn(false, this.props.deleteData);
+    const { confirmFn, deleteData } = this.props;
+    confirmFn(false, deleteData);
   }
 
   render() {
@@ -24,7 +26,9 @@ class RemoveConfirm extends React.Component {
 
     return (
       <div style={{ textAlign: 'right' }}>
-        <strong className="lead">{confirmMsg}</strong>
+        <strong className="lead">
+          {confirmMsg}
+        </strong>
         <FloatingActionButton
           mini={mini}
           onClick={this.cancelDelete}

@@ -52,13 +52,15 @@ class ReactDebugSettings extends React.Component {
       return null;
     }
 
-    const msg = 'Check the console debug messages that you want to enable. ' +
-'These settings are stored in localStorage which means that they\'ll still be ' +
-'set the next time you open this browser.';
+    const msg = 'Check the console debug messages that you want to enable. '
++ 'These settings are stored in localStorage which means that they\'ll still be '
++ 'set the next time you open this browser.';
 
     return (
       <div style={{ marginLeft: '50px' }}>
-        <div>{msg}</div>
+        <div>
+          {msg}
+        </div>
         {settings.map(setting => this.renderCheckbox(setting))}
       </div>
     );

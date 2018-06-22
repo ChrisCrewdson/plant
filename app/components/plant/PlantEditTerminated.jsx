@@ -1,11 +1,11 @@
-const actions = require('../../actions');
 const React = require('react');
 const Toggle = require('material-ui/Toggle').default;
-const InputComboText = require('../common/InputComboText');
 const Divider = require('material-ui/Divider').default;
 const { RadioButton } = require('material-ui/RadioButton');
 const { RadioButtonGroup } = require('material-ui/RadioButton');
 const PropTypes = require('prop-types');
+const InputComboText = require('../common/InputComboText');
+const actions = require('../../actions');
 
 class PlantEditTerminated extends React.Component {
   constructor(props) {
@@ -15,22 +15,23 @@ class PlantEditTerminated extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
+    const { dispatch } = this.props;
     const { interimPlant } = this.props;
     let { terminatedReason } = interimPlant;
     if (!terminatedReason) {
       terminatedReason = 'died';
-      this.props.dispatch(actions.editPlantChange({
+      dispatch(actions.editPlantChange({
         terminatedReason,
       }));
     }
   }
 
   onChange(e) {
-    // console.log('onChange', e.target.name, e.target.checked, e.target.value);
+    const { dispatch } = this.props;
     const { name: inputName } = e.target;
     const value = inputName === 'isTerminated' ? e.target.checked : e.target.value;
 
-    this.props.dispatch(actions.editPlantChange({
+    dispatch(actions.editPlantChange({
       [inputName]: value,
     }));
   }
@@ -47,12 +48,14 @@ class PlantEditTerminated extends React.Component {
     };
 
     const {
-      errors = {},
-      isTerminated = false,
-      terminatedDate = '',
-      terminatedDescription = '',
-      terminatedReason,
-    } = this.props.interimPlant;
+      interimPlant: {
+        errors = {},
+        isTerminated = false,
+        terminatedDate = '',
+        terminatedDescription = '',
+        terminatedReason,
+      },
+    } = this.props;
 
     const dateFormat = 'MM/DD/YYYY';
 
@@ -66,7 +69,8 @@ class PlantEditTerminated extends React.Component {
           style={{ paddingLeft: '5px', maxWidth: '150px' }}
           toggled={isTerminated}
         />
-        {isTerminated &&
+        {isTerminated
+          && (
           <div>
             <InputComboText
               changeHandler={this.onChange}
@@ -111,6 +115,7 @@ class PlantEditTerminated extends React.Component {
 
             <Divider />
           </div>
+          )
         }
       </div>
     );

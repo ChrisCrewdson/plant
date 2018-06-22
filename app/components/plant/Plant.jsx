@@ -3,21 +3,22 @@
 // Url: /plant/slug/<plant-id>
 // Unless Create then Url: /plant
 
-const { canEdit } = require('../../libs/auth-helper');
-const { makeMongoId } = require('../../libs/utils');
-const actions = require('../../actions');
-const Base = require('../base/Base');
 const CircularProgress = require('material-ui/CircularProgress').default;
-const PlantEdit = require('./PlantEdit');
-const PlantRead = require('./PlantRead');
-const NoteCreate = require('../note/NoteCreate');
 const React = require('react');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
+const { canEdit } = require('../../libs/auth-helper');
+const { makeMongoId } = require('../../libs/utils');
+const actions = require('../../actions');
+const Base = require('../base/Base');
+const PlantEdit = require('./PlantEdit');
+const PlantRead = require('./PlantRead');
+const NoteCreate = require('../note/NoteCreate');
 
 class Plant extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -96,8 +97,7 @@ class Plant extends React.Component {
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
       // is in the locationIds list.
-      const locationId =
-        (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
+      const locationId = (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
         || locationIds[0];
 
       store.dispatch(actions.editPlantOpen({
@@ -126,13 +126,15 @@ class Plant extends React.Component {
     const interimPlant = getIn(interim, ['plant', 'plant']);
 
     if (interimPlant) {
-      return (<PlantEdit
-        dispatch={store.dispatch}
-        interimPlant={interimPlant}
-        locations={locations}
-        user={user}
-        users={users}
-      />);
+      return (
+        <PlantEdit
+          dispatch={store.dispatch}
+          interimPlant={interimPlant}
+          locations={locations}
+          user={user}
+          users={users}
+        />
+      );
     }
 
     const plantId = params.id || (match.params && match.params.id);
@@ -169,7 +171,8 @@ class Plant extends React.Component {
               plant={plant}
               plants={plants}
             />
-            {plant && plant.title &&
+            {plant && plant.title
+            && (
             <NoteCreate
               dispatch={store.dispatch}
               interimNote={interimNote}
@@ -178,6 +181,7 @@ class Plant extends React.Component {
               plants={plants}
               locationId={locationId}
             />
+            )
           }
           </div>
         </div>

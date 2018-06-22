@@ -1,19 +1,20 @@
-const actions = require('../../actions');
-const EditDeleteButtons = require('../common/EditDeleteButtons');
-const NotesRead = require('../note/NotesRead');
 const moment = require('moment');
 const Paper = require('material-ui/Paper').default;
 const React = require('react');
-const utils = require('../../libs/utils');
 const RaisedButton = require('material-ui/RaisedButton').default;
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const seamless = require('seamless-immutable').static;
+const utils = require('../../libs/utils');
+const NotesRead = require('../note/NotesRead');
+const EditDeleteButtons = require('../common/EditDeleteButtons');
+const actions = require('../../actions');
 
 const dateFormat = 'DD-MMM-YYYY';
 
 class PlantRead extends React.PureComponent {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,
   };
 
@@ -27,10 +28,10 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
-    const { notesRequested, _id } = this.props.plant;
+    const { plant: { notesRequested, _id }, dispatch } = this.props;
     if (!notesRequested) {
       if (_id) {
-        this.props.dispatch(actions.loadNotesRequest({
+        dispatch(actions.loadNotesRequest({
           plantIds: [_id],
         }));
       } else {
@@ -40,14 +41,15 @@ class PlantRead extends React.PureComponent {
   }
 
   edit() {
-    const plant = seamless.asMutable(this.props.plant);
+    const { plant: propsPlant, dispatch } = this.props;
+    const plant = seamless.asMutable(propsPlant);
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
       if (plant[dateField]) {
         plant[dateField] = utils.intToString(plant[dateField]);
       }
     });
-    this.props.dispatch(actions.editPlantOpen({ plant, meta: { isNew: false } }));
+    dispatch(actions.editPlantOpen({ plant, meta: { isNew: false } }));
   }
 
   checkDelete() {
@@ -55,23 +57,27 @@ class PlantRead extends React.PureComponent {
   }
 
   showImages() {
-    const noteIds = (this.props.plant && this.props.plant.notes) || [];
-    this.props.dispatch(actions.showNoteImages(noteIds));
+    const { plant: { notes } = {}, dispatch } = this.props;
+    const noteIds = notes || [];
+    dispatch(actions.showNoteImages(noteIds));
   }
 
   confirmDelete(yes) {
     if (yes) {
       const {
-        _id,
-        locationId,
-      } = this.props.plant;
+        plant: {
+          _id,
+          locationId,
+        },
+        dispatch,
+      } = this.props;
       const { locations, history } = this.props;
       const payload = {
         locationId,
         plantId: _id,
       };
       const location = locations[locationId];
-      this.props.dispatch(actions.deletePlantRequest(payload));
+      dispatch(actions.deletePlantRequest(payload));
       if (location) {
         // Transition to /location/:slug/:id
         const locationUrl = utils.makeLocationUrl(location);
@@ -86,7 +92,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this
   plantedDateTitle() {
-    const { plantedDate } = this.props.plant;
+    const { plant: { plantedDate } } = this.props;
     if (plantedDate) {
       const date = utils.intToMoment(plantedDate);
       const daysAgo = date.isSame(moment(), 'day')
@@ -98,7 +104,8 @@ class PlantRead extends React.PureComponent {
   }
 
   renderDetails() {
-    if (!this.props.plant) {
+    const { plant } = this.props;
+    if (!plant) {
       return null;
     }
 
@@ -108,7 +115,7 @@ class PlantRead extends React.PureComponent {
       { name: 'botanicalName', text: 'Botanical Name' },
     ];
     const basicTitles = titles.map((title) => {
-      const value = this.props.plant[title.name];
+      const value = plant[title.name];
       if (!value) {
         return null;
       }
@@ -128,9 +135,9 @@ class PlantRead extends React.PureComponent {
         </div>);
     }
 
-    const { isTerminated } = this.props.plant;
+    const { isTerminated } = plant;
     if (isTerminated) {
-      const { terminatedDate } = this.props.plant;
+      const { terminatedDate } = plant;
       const dateTerminated = terminatedDate
         ? utils.intToMoment(terminatedDate)
         : null;
@@ -141,7 +148,7 @@ class PlantRead extends React.PureComponent {
           {`This plant was terminated${terminatedDate ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`}
         </div>);
 
-      const { plantedDate } = this.props.plant;
+      const { plantedDate } = plant;
       if (plantedDate && dateTerminated) {
         const datePlanted = utils.intToMoment(plantedDate);
         if (datePlanted.isBefore(dateTerminated)) {
@@ -153,7 +160,7 @@ class PlantRead extends React.PureComponent {
         }
       }
 
-      const { terminatedReason } = this.props.plant;
+      const { terminatedReason } = plant;
       if (terminatedReason) {
         // eslint-disable-next-line function-paren-newline
         basicTitles.push(
@@ -162,7 +169,7 @@ class PlantRead extends React.PureComponent {
           </div>);
       }
 
-      const { terminatedDescription } = this.props.plant;
+      const { terminatedDescription } = plant;
       if (terminatedDescription) {
       // eslint-disable-next-line function-paren-newline
         basicTitles.push(
@@ -185,54 +192,64 @@ class PlantRead extends React.PureComponent {
 
     const {
       userCanEdit,
+      dispatch,
+      interim,
+      notes,
+      plant,
+      plants,
     } = this.props;
 
     const {
       showDeleteConfirmation = false,
     } = this.state || {};
 
-    const { locationId, title } = this.props.plant;
+    const { locationId, title } = plant;
 
     const label = 'Show All Images';
 
     return (
       <div>
-        {this.props.plant ?
-          <div className="plant">
-            <Paper style={paperStyle} zDepth={1}>
-              <h2 className="vcenter" style={{ textAlign: 'center' }}>
-                {title}
-              </h2>
-              {this.renderDetails()}
-              <RaisedButton
-                label={label}
-                style={{ marginTop: '40px' }}
-                onMouseUp={this.showImages}
-                primary
-              />
-              <div style={{ width: '50%', float: 'right' }}>
-                <EditDeleteButtons
-                  clickEdit={this.edit}
-                  clickDelete={this.checkDelete}
-                  confirmDelete={this.confirmDelete}
-                  showDeleteConfirmation={showDeleteConfirmation}
-                  showButtons={userCanEdit}
-                  deleteTitle={title || ''}
+        {plant
+          ? (
+            <div className="plant">
+              <Paper style={paperStyle} zDepth={1}>
+                <h2 className="vcenter" style={{ textAlign: 'center' }}>
+                  {title}
+                </h2>
+                {this.renderDetails()}
+                <RaisedButton
+                  label={label}
+                  style={{ marginTop: '40px' }}
+                  onMouseUp={this.showImages}
+                  primary
                 />
-              </div>
-            </Paper>
-            <NotesRead
-              dispatch={this.props.dispatch}
-              interim={this.props.interim}
-              userCanEdit={userCanEdit}
-              notes={this.props.notes}
-              plant={this.props.plant}
-              plants={this.props.plants}
-              locationId={locationId}
-            />
-          </div>
-          :
-          <div>Plant not found or still loading...</div>
+                <div style={{ width: '50%', float: 'right' }}>
+                  <EditDeleteButtons
+                    clickEdit={this.edit}
+                    clickDelete={this.checkDelete}
+                    confirmDelete={this.confirmDelete}
+                    showDeleteConfirmation={showDeleteConfirmation}
+                    showButtons={userCanEdit}
+                    deleteTitle={title || ''}
+                  />
+                </div>
+              </Paper>
+              <NotesRead
+                dispatch={dispatch}
+                interim={interim}
+                userCanEdit={userCanEdit}
+                notes={notes}
+                plant={plant}
+                plants={plants}
+                locationId={locationId}
+              />
+            </div>
+          )
+          : (
+            <div>
+Plant not found or still loading...
+            </div>
+          )
         }
       </div>
     );

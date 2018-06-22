@@ -1,8 +1,8 @@
 // The most difficult part of creating this module was naming it.
 // "interim" is the least worst of all the bad names I came up with.
 
-const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
+const actions = require('../actions');
 
 // action.payload:
 // {note, plant}

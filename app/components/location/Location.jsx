@@ -1,18 +1,18 @@
 // Used to show a list of plants for a location.
 // Url: /location/<location-name>/_location_id
 
-const Base = require('../base/Base');
 const CircularProgress = require('material-ui/CircularProgress').default;
+const React = require('react');
+const PropTypes = require('prop-types');
+const { withRouter } = require('react-router-dom');
+const Base = require('../base/Base');
 const InputComboText = require('../common/InputComboText');
 const PlantItem = require('../plant/PlantItem');
-const React = require('react');
 const { canEdit } = require('../../libs/auth-helper');
 const actions = require('../../actions');
 const NoteCreate = require('../note/NoteCreate');
 const utils = require('../../libs/utils');
 const AddPlantButton = require('../common/AddPlantButton');
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
 
 class Location extends React.Component {
   static addPlantButton(userCanEdit) {
@@ -26,6 +26,7 @@ class Location extends React.Component {
   }
 
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -40,8 +41,8 @@ class Location extends React.Component {
   UNSAFE_componentWillMount() {
     const { store } = this.context;
     const { locations = {} } = store.getState();
-
-    const { id: locationId } = this.props.match.params;
+    const { match: { params } } = this.props;
+    const { id: locationId } = params;
 
     const plantIds = locations[locationId] && locations[locationId].plantIds;
     if (!plantIds) {
@@ -81,7 +82,9 @@ class Location extends React.Component {
 
   static renderTitle(location) {
     return (
-      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Plant List`}</h2>
+      <h2 style={{ textAlign: 'center' }}>
+        {`${location.title} - Plant List`}
+      </h2>
     );
   }
 
@@ -104,7 +107,9 @@ class Location extends React.Component {
         <div>
           {Location.renderTitle(location)}
           <h3 style={{ textAlign: 'center' }}>
-            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
+            <div style={{ marginTop: '100px' }}>
+No plants added yet...
+            </div>
             <AddPlantButton
               show={userCanEdit}
               style={{ marginTop: '10px' }}
@@ -124,8 +129,9 @@ class Location extends React.Component {
       interim,
       authUser,
     } = this.state || {};
+    const { match: { params } } = this.props;
 
-    const location = locations && locations[this.props.match.params.id];
+    const location = locations && locations[params.id];
     if (!location) {
       return (
         <Base>
@@ -153,7 +159,9 @@ class Location extends React.Component {
       return (
         <Base>
           <div>
-            <h4 style={style}>{`Create a Note for ${plantCreateNote.title}`}</h4>
+            <h4 style={style}>
+              {`Create a Note for ${plantCreateNote.title}`}
+            </h4>
             <NoteCreate
               dispatch={store.dispatch}
               userCanEdit={userCanEdit}
@@ -205,19 +213,25 @@ class Location extends React.Component {
       store.dispatch(actions.loadUnloadedPlantsRequest(tileElements.unloaded));
     }
 
-    const filterInput = (<InputComboText
-      changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
-      id="plant-title-filter"
-      label="Filter"
-      name="filter"
-      placeholder="Type a plant name to filter..."
-      value={filter}
-    />);
+    const filterInput = (
+      <InputComboText
+        changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
+        id="plant-title-filter"
+        label="Filter"
+        name="filter"
+        placeholder="Type a plant name to filter..."
+        value={filter}
+      />
+    );
 
     const stats = (
       <div>
-        <p>{`Total: ${plantStats.total}`}</p>
-        <p>{`Alive: ${plantStats.alive}`}</p>
+        <p>
+          {`Total: ${plantStats.total}`}
+        </p>
+        <p>
+          {`Alive: ${plantStats.alive}`}
+        </p>
       </div>);
 
     return (
@@ -228,7 +242,9 @@ class Location extends React.Component {
           {filterInput}
           {tileElements.found}
           {Location.addPlantButton(userCanEdit)}
-          <div className="clear">&nbsp;</div>
+          <div className="clear">
+&nbsp;
+          </div>
         </div>
       </Base>
     );

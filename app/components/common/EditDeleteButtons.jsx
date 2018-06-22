@@ -1,15 +1,22 @@
 const React = require('react');
-const RemoveConfirm = require('./RemoveConfirm');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
 const EditIcon = require('material-ui/svg-icons/editor/mode-edit').default;
 const DeleteIcon = require('material-ui/svg-icons/action/delete').default;
 const PropTypes = require('prop-types');
+const RemoveConfirm = require('./RemoveConfirm');
 
 function editDeleteButtons(props) {
   const {
+    clickDelete,
+    clickEdit,
+    confirmDelete,
+    confirmMsg,
+    deleteData,
+    deleteTitle,
+    disabled,
+    mini,
     showButtons,
     showDeleteConfirmation,
-    disabled,
   } = props;
 
   if (!showButtons) {
@@ -17,45 +24,47 @@ function editDeleteButtons(props) {
   }
 
   function onClickDelete() {
-    props.clickDelete(props.deleteData);
+    clickDelete(deleteData);
   }
 
   function onClickEdit() {
-    props.clickEdit(props.deleteData);
+    clickEdit(deleteData);
   }
 
   return (
     <h2 className="vcenter">
       { showDeleteConfirmation
-        ? <RemoveConfirm
-          confirmFn={props.confirmDelete}
-          confirmMsg={props.confirmMsg}
-          deleteData={props.deleteData}
-          mini={props.mini}
-          title={props.deleteTitle}
-        />
-        :
-        <div style={{ textAlign: 'right' }}>
-          <FloatingActionButton
-            disabled={disabled}
-            mini={props.mini}
-            onClick={onClickEdit}
-            title="Edit"
-          >
-            <EditIcon />
-          </FloatingActionButton>
-          <FloatingActionButton
-            disabled={disabled}
-            mini={props.mini}
-            onClick={onClickDelete}
-            secondary
-            style={{ marginLeft: '10px' }}
-            title="Delete"
-          >
-            <DeleteIcon />
-          </FloatingActionButton>
-        </div>
-      }
+        ? (
+          <RemoveConfirm
+            confirmFn={confirmDelete}
+            confirmMsg={confirmMsg}
+            deleteData={deleteData}
+            mini={mini}
+            title={deleteTitle}
+          />
+        )
+        : (
+          <div style={{ textAlign: 'right' }}>
+            <FloatingActionButton
+              disabled={disabled}
+              mini={mini}
+              onClick={onClickEdit}
+              title="Edit"
+            >
+              <EditIcon />
+            </FloatingActionButton>
+            <FloatingActionButton
+              disabled={disabled}
+              mini={mini}
+              onClick={onClickDelete}
+              secondary
+              style={{ marginLeft: '10px' }}
+              title="Delete"
+            >
+              <DeleteIcon />
+            </FloatingActionButton>
+          </div>
+        )}
     </h2>
   );
 }

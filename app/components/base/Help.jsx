@@ -1,12 +1,14 @@
-const Base = require('./Base');
 const React = require('react');
+const Base = require('./Base');
 
 function help() {
   /* eslint-disable react/jsx-no-target-blank */
   return (
     <Base>
       <div className="well">
-        <h3 className="well">Need Help?</h3>
+        <h3 className="well">
+Need Help?
+        </h3>
         <p>
           {'Please ask your questions on '}
           <a

@@ -2,9 +2,9 @@ const cloneDeep = require('lodash/cloneDeep');
 const omit = require('lodash/omit');
 const isArray = require('lodash/isArray');
 const every = require('lodash/every');
+const validatejs = require('validate.js');
 const { makeMongoId } = require('../libs/utils');
 const constants = require('../libs/constants');
-const validatejs = require('validate.js');
 const utils = require('../libs/utils');
 
 validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */) => {
@@ -29,8 +29,7 @@ validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */
   }
 
   // Only mongoId values of x length
-  const validInner = every(value, item =>
-    item && item.length === 24 && constants.mongoIdRE.test(item));
+  const validInner = every(value, item => constants.mongoIdRE.test(item));
 
   if (!validInner) {
     return 'must be MongoIds';
@@ -84,8 +83,8 @@ validatejs.validators.imagesValidate = (value) => {
   const names = constants.imageSizeNames;
   const validSizes = every(value, (item) => {
     if (item.sizes) {
-      return every(item.sizes, size => names.indexOf(size.name) >= 0 &&
-          typeof size.width === 'number');
+      return every(item.sizes, size => names.indexOf(size.name) >= 0
+          && typeof size.width === 'number');
     }
     return true;
   });

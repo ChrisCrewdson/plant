@@ -1,11 +1,11 @@
-const actions = require('../../actions');
-const Errors = require('../common/Errors');
-const InputCombo = require('../common/InputCombo');
 const seamless = require('seamless-immutable').static;
 const React = require('react');
 const Toggle = require('material-ui/Toggle').default;
-const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
+const actions = require('../../actions');
+const Errors = require('../common/Errors');
+const InputCombo = require('../common/InputCombo');
+const utils = require('../../libs/utils');
 
 class NoteEditMetrics extends React.PureComponent {
   constructor() {
@@ -28,7 +28,8 @@ class NoteEditMetrics extends React.PureComponent {
   onChange(e) {
     // console.log('onChange:', e.target.name);
     const { name: inputName } = e.target;
-    const interimMetrics = this.props.interimNote.metrics || {};
+    const { interimNote, dispatch } = this.props;
+    const interimMetrics = interimNote.metrics || {};
     const metaMetric = utils.metaMetricsGetByKey(inputName);
     const { type } = metaMetric;
     // based on inputName (e.g. blossom or height) we need to lookup
@@ -41,20 +42,22 @@ class NoteEditMetrics extends React.PureComponent {
 
     const metrics = seamless.set(interimMetrics, inputName, value);
 
-    this.props.dispatch(actions.editNoteChange({ metrics }));
+    dispatch(actions.editNoteChange({ metrics }));
   }
 
   renderLength(metaMetric, value) {
-    return (<InputCombo
-      changeHandler={this.onChange}
-      id={metaMetric.key}
-      key={metaMetric.key}
-      label={metaMetric.label}
-      name={metaMetric.key}
-      placeholder={metaMetric.placeholder}
-      type="number"
-      value={value || ''}
-    />);
+    return (
+      <InputCombo
+        changeHandler={this.onChange}
+        id={metaMetric.key}
+        key={metaMetric.key}
+        label={metaMetric.label}
+        name={metaMetric.key}
+        placeholder={metaMetric.placeholder}
+        type="number"
+        value={value || ''}
+      />
+    );
   }
 
   renderCount(metaMetric, value) {
@@ -90,17 +93,18 @@ class NoteEditMetrics extends React.PureComponent {
   }
 
   render() {
-    const { interimNote } = this.props;
+    const { interimNote, error } = this.props;
     const { metrics = {} } = interimNote || {};
     const { metaMetrics } = utils;
 
-    const renderedMetrics = metaMetrics.map(metaMetric =>
-      this.renderMetric(metaMetric, metrics[metaMetric.key] || ''));
+    const renderedMetrics = metaMetrics.map(metaMetric => this.renderMetric(metaMetric, metrics[metaMetric.key] || ''));
 
     return (
       <div style={{ textAlign: 'left' }}>
-        <Errors errors={this.props.error} />
-        <div>{renderedMetrics}</div>
+        <Errors errors={error} />
+        <div>
+          {renderedMetrics}
+        </div>
       </div>
     );
   }

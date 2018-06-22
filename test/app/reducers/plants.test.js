@@ -1,7 +1,7 @@
 const _ = require('lodash');
+const seamless = require('seamless-immutable').static;
 const plants = require('../../../app/reducers/plants');
 const actions = require('../../../app/actions');
-const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/plants', () => {
   describe('similar methods', () => {

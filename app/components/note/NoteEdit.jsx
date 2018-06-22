@@ -1,20 +1,20 @@
 // Used to add a note to a plant
 
-// const isEmpty = require('lodash/isEmpty');
 const Paper = require('material-ui/Paper').default;
 const React = require('react');
-const CancelSaveButtons = require('../common/CancelSaveButtons');
 const Dropzone = require('react-dropzone').default;
-const InputComboText = require('../common/InputComboText');
 const LinearProgress = require('material-ui/LinearProgress').default;
 const CircularProgress = require('material-ui/CircularProgress').default;
+const PropTypes = require('prop-types');
+const seamless = require('seamless-immutable').static;
+
+const CancelSaveButtons = require('../common/CancelSaveButtons');
+const InputComboText = require('../common/InputComboText');
 const actions = require('../../actions');
 const utils = require('../../libs/utils');
 const NoteAssocPlant = require('./NoteAssocPlant');
 const NoteEditMetrics = require('./NoteEditMetrics');
-const PropTypes = require('prop-types');
 const validators = require('../../models');
-const seamless = require('seamless-immutable').static;
 
 const { note: noteValidator } = validators;
 
@@ -53,11 +53,13 @@ class NoteEdit extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(actions.editNoteClose());
+    const { dispatch } = this.props;
+    dispatch(actions.editNoteClose());
   }
 
   onChange(e) {
-    this.props.dispatch(actions.editNoteChange({
+    const { dispatch } = this.props;
+    dispatch(actions.editNoteChange({
       [e.target.name]: e.target.value,
     }));
   }
@@ -71,21 +73,23 @@ class NoteEdit extends React.PureComponent {
   }
 
   cancel() {
-    this.props.dispatch(actions.editNoteClose());
+    const { dispatch } = this.props;
+    dispatch(actions.editNoteClose());
   }
 
   saveNote(files) {
-    const interimNote = seamless.asMutable(this.props.interimNote, { deep: true });
+    const { dispatch, interimNote: propInterimNote, postSaveSuccess } = this.props;
+    const interimNote = seamless.asMutable(propInterimNote, { deep: true });
 
     interimNote._id = interimNote._id || utils.makeMongoId();
     interimNote.date = utils.dateToInt(interimNote.date);
 
     try {
       const note = noteValidator(interimNote);
-      this.props.dispatch(actions.upsertNoteRequest({ note, files }));
-      this.props.postSaveSuccess();
+      dispatch(actions.upsertNoteRequest({ note, files }));
+      postSaveSuccess();
     } catch (errors) {
-      this.props.dispatch(actions.editNoteChange({ errors }));
+      dispatch(actions.editNoteChange({ errors }));
     }
   }
 
@@ -109,6 +113,7 @@ class NoteEdit extends React.PureComponent {
     };
 
     const {
+      dispatch,
       interimNote,
       locationId,
       plants,
@@ -127,17 +132,25 @@ class NoteEdit extends React.PureComponent {
           style={paperStyle}
           zDepth={1}
         >
-          {value !== max &&
+          {value !== max
+            && (
             <div>
-              <h1 style={{ fontSize: 'xx-large' }}>{progress}</h1>
+              <h1 style={{ fontSize: 'xx-large' }}>
+                {progress}
+              </h1>
               <LinearProgress style={linearProgressStyle} mode="determinate" value={value} max={max} />
             </div>
+            )
           }
-          {value === max &&
+          {value === max
+            && (
             <div style={{ display: 'flex', fontSize: 'xx-large', justifyContent: 'space-between' }}>
-              <h1>Upload complete... Finishing up... Hang on...</h1>
+              <h1>
+Upload complete... Finishing up... Hang on...
+              </h1>
               <CircularProgress />
             </div>
+            )
           }
         </Paper>
       );
@@ -160,7 +173,7 @@ class NoteEdit extends React.PureComponent {
 
     const associatedPlants = (
       <NoteAssocPlant
-        dispatch={this.props.dispatch}
+        dispatch={dispatch}
         error={errors.plantIds}
         plantIds={plantIds}
         plants={plantsAtLocation}
@@ -196,10 +209,14 @@ class NoteEdit extends React.PureComponent {
           value={note}
         />
 
-        {!!errors.length &&
+        {!!errors.length
+          && (
           <div>
-            <p className="text-danger col-xs-12">There were errors. Please check your input.</p>
+            <p className="text-danger col-xs-12">
+There were errors. Please check your input.
+            </p>
           </div>
+          )
         }
 
         <CancelSaveButtons
@@ -216,13 +233,15 @@ class NoteEdit extends React.PureComponent {
           ref={(node) => { this.dropzone = node; }}
           style={dropZoneStyle}
         >
-          <div>Drop images here or tap to select images to upload.</div>
+          <div>
+Drop images here or tap to select images to upload.
+          </div>
         </Dropzone>
 
         {associatedPlants}
 
         <NoteEditMetrics
-          dispatch={this.props.dispatch}
+          dispatch={dispatch}
           error={errors.metrics}
           interimNote={interimNote}
         />

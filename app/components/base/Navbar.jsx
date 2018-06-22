@@ -1,15 +1,15 @@
 const React = require('react');
+const PropTypes = require('prop-types');
+const { Link } = require('react-router-dom');
+
 const actions = require('../../actions');
 const utils = require('../../libs/utils');
 const { isLoggedIn } = require('../../libs/auth-helper');
-
 const AddPlantButton = require('../common/AddPlantButton');
-const PropTypes = require('prop-types');
-
-const { Link } = require('react-router-dom');
 
 class Navbar extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -67,8 +67,8 @@ class Navbar extends React.Component {
       // console.warn('No default locationId found for user', user);
       return null;
     }
-
-    const { locations = {} } = this.context.store.getState();
+    const { store } = this.context;
+    const { locations = {} } = store.getState();
     const location = locations[locationId];
     if (!location) {
       // console.warn('Navbar.makeMyPlantsMenu no location', locationId);
@@ -121,12 +121,16 @@ class Navbar extends React.Component {
         <div className="container-fluid">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#plant-navbar-collapse" aria-expanded="false">
-              <span className="sr-only">Toggle navigation</span>
+              <span className="sr-only">
+Toggle navigation
+              </span>
               <span className="icon-bar" />
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <Link to="/" className="navbar-brand">Plant</Link>
+            <Link to="/" className="navbar-brand">
+Plant
+            </Link>
             <AddPlantButton
               mini
               show={!!(loggedIn && notEditing)}
@@ -137,7 +141,8 @@ class Navbar extends React.Component {
           <div className="collapse navbar-collapse" id="plant-navbar-collapse">
             <ul className="nav navbar-nav navbar-right">
               {this.makeMyPlantsMenu(loggedIn)}
-              {loggedIn &&
+              {loggedIn
+                && (
                 <li className="dropdown">
                   <a
                     href="/"
@@ -148,28 +153,43 @@ class Navbar extends React.Component {
                     aria-expanded="false"
                     title={displayName}
                   >
-                    {displayName} <span className="caret" />
+                    {displayName}
+                    {' '}
+                    <span className="caret" />
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link to={locationsUrl}>Your Locations</Link>
+                      <Link to={locationsUrl}>
+Your Locations
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/profile">Profile</Link>
+                      <Link to="/profile">
+Profile
+                      </Link>
                     </li>
                     <li>
-                      <a href="/" onClick={this.logout} title="Logout">Logout</a>
+                      <a href="/" onClick={this.logout} title="Logout">
+Logout
+                      </a>
                     </li>
                   </ul>
                 </li>
+                )
               }
-              {!loggedIn &&
+              {!loggedIn
+                && (
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link to="/login">
+Login
+                  </Link>
                 </li>
+                )
               }
               <li>
-                <Link to="/help" title="help">Help</Link>
+                <Link to="/help" title="help">
+Help
+                </Link>
               </li>
             </ul>
           </div>

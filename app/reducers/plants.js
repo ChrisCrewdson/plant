@@ -3,9 +3,9 @@
 // If a user is logged in then some of the items in the array
 // might be plants belonging to the user.
 
-const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
 const uniq = require('lodash/uniq');
+const actions = require('../actions');
 
 /**
  * This is a helper function for when the action.payload holds a new plant

@@ -1,16 +1,17 @@
 // Used to show a list of users.
 // Url: /users
 
-const Base = require('../base/Base');
 const React = require('react');
 const { Link } = require('react-router-dom');
-const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
+const utils = require('../../libs/utils');
+const Base = require('../base/Base');
 
 const { makeSlug } = utils;
 
 class Users extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -32,7 +33,8 @@ class Users extends React.Component {
   }
 
   onChange() {
-    const state = this.context.store.getState();
+    const { store } = this.context;
+    const state = store.getState();
     const { users, locations } = state;
     this.setState({ users, locations });
   }
@@ -46,7 +48,8 @@ class Users extends React.Component {
     let link = `/locations/${makeSlug(userName)}/${_id}`;
 
     if (locationIds.length === 1) {
-      const state = this.context.store.getState();
+      const { store } = this.context;
+      const state = store.getState();
       const { locations } = state;
       if (locations) {
         const [firstLocationId] = locationIds;
@@ -63,14 +66,17 @@ class Users extends React.Component {
           style={{ margin: '20px' }}
           to={link}
         >
-          <span>{userName}</span>
+          <span>
+            {userName}
+          </span>
         </Link>
       </div>
     );
   }
 
   renderUsers() {
-    const { users } = this.context.store.getState();
+    const { store } = this.context;
+    const { users } = store.getState();
     if (users && users.length) {
       return users.map(user => this.renderUser(user));
     }

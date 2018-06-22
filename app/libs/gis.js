@@ -1,6 +1,6 @@
-const constants = require('./constants');
 const getIn = require('lodash/get');
 const seamless = require('seamless-immutable').static;
+const constants = require('./constants');
 
 const { gisMultiplier } = constants;
 
@@ -87,4 +87,3 @@ function scaleToCanvas(immutablePlants, width) {
 module.exports = {
   scaleToCanvas,
 };
-

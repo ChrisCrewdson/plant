@@ -1,5 +1,5 @@
-const Helper = require('../../../../lib/db/mongo/helper');
 const seamless = require('seamless-immutable').static;
+const Helper = require('../../../../lib/db/mongo/helper');
 
 describe('/lib/db/mongo/helper', () => {
   describe('removeEmpty', () => {

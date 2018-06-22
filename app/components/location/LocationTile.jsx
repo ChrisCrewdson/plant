@@ -1,10 +1,10 @@
 // Used to show a summary tile/card of a Location
 
-const actions = require('../../actions');
 const React = require('react');
 const { Link } = require('react-router-dom');
-const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
+const utils = require('../../libs/utils');
+const actions = require('../../actions');
 
 const { makeSlug } = utils;
 
@@ -35,7 +35,9 @@ function locationTile(props) {
         to={link}
         onClick={() => { onLinkClick(_id, dispatch); }}
       >
-        <span>{locationTitle}</span>
+        <span>
+          {locationTitle}
+        </span>
       </Link>
     </div>
   );

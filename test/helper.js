@@ -1,7 +1,7 @@
 const _ = require('lodash');
+const request = require('request');
 const constants = require('../app/libs/constants');
 const mongo = require('../lib/db/mongo')();
-const request = require('request');
 const { makeMongoId } = require('../app/libs/utils');
 
 let fakePassport;

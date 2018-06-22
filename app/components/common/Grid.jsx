@@ -1,15 +1,10 @@
 // User grid editor
 
 const AddIcon = require('material-ui/svg-icons/content/add').default;
-const CancelSaveButtons = require('./CancelSaveButtons');
-const EditDeleteButtons = require('./EditDeleteButtons');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const GridCell = require('./GridCell');
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
-const utils = require('../../libs/utils');
-
 const {
   Table,
   TableBody,
@@ -18,6 +13,11 @@ const {
   TableRow,
   TableRowColumn,
 } = require('material-ui/Table');
+
+const utils = require('../../libs/utils');
+const GridCell = require('./GridCell');
+const EditDeleteButtons = require('./EditDeleteButtons');
+const CancelSaveButtons = require('./CancelSaveButtons');
 
 class Grid extends React.Component {
   constructor(props) {
@@ -56,11 +56,11 @@ class Grid extends React.Component {
    */
   confirmDelete(yes, deleteData) {
     if (yes) {
-      const { meta } = this.props;
+      const { meta, delete: deleet } = this.props;
       const { rows } = this.state;
       const { id } = deleteData;
       const row = rows.find(({ _id }) => _id === id);
-      this.props.delete({ row, meta });
+      deleet({ row, meta });
       this.setState({
         rows: rows.filter(({ _id }) => _id !== id),
       });
@@ -87,13 +87,13 @@ class Grid extends React.Component {
    * @param {String} value - New value for the cell
    */
   editCell(rowId, colIndex, value) {
-    const { errors = [] } = this.state;
+    const { errors = [], rows: stateRows } = this.state;
     if (errors[colIndex]) {
       // If we've edited this cell and it previously had an error associated
       // then clear that error
       errors[colIndex] = '';
     }
-    const rows = this.state.rows.map((row) => {
+    const rows = stateRows.map((row) => {
       if (row._id === rowId) {
         const values = row.values.map((currentValue, index) => {
           if (colIndex === index) {
@@ -114,29 +114,32 @@ class Grid extends React.Component {
    * the values from the props to that row in the state.
    */
   cancelEdit() {
-    const { editId, newRow = false } = this.state;
+    const { editId, newRow = false, rows: stateRows } = this.state;
+    const { rows: propRows } = this.props;
     let rows;
     if (newRow) {
-      rows = this.state.rows.filter(row => (row._id !== editId));
+      rows = stateRows.filter(row => (row._id !== editId));
     } else {
-      const propRow = this.props.rows.find(row => row._id === editId) || {};
-      rows = this.state.rows.map(row => (row._id === propRow._id ? propRow : row));
+      const propRow = propRows.find(row => row._id === editId) || {};
+      rows = stateRows.map(row => (row._id === propRow._id ? propRow : row));
     }
     this.setState({ editId: '', rows, newRow: false });
   }
 
   saveEdit() {
     const { rows, editId, newRow: isNew } = this.state;
-    const { meta } = this.props;
+    const {
+      meta, validate, insert, update,
+    } = this.props;
     const row = rows.find(r => r._id === editId);
-    const errors = this.props.validate({ row, meta, isNew });
+    const errors = validate({ row, meta, isNew });
     if (errors.some(error => !!error)) {
       this.setState({ errors });
     } else {
       if (isNew) {
-        this.props.insert({ row, meta });
+        insert({ row, meta });
       } else {
-        this.props.update({ row, meta });
+        update({ row, meta });
       }
       this.setState({ editId: '', newRow: false });
     }
@@ -162,7 +165,8 @@ class Grid extends React.Component {
         }
       }),
     };
-    const rows = this.state.rows.concat(row);
+    const { rows: stateRows } = this.state;
+    const rows = stateRows.concat(row);
     this.setState({ rows, editId, newRow: true });
   }
 
@@ -190,7 +194,9 @@ class Grid extends React.Component {
         style={paperStyle}
         zDepth={5}
       >
-        <h5>{title}</h5>
+        <h5>
+          {title}
+        </h5>
         <Table>
           <TableHeader
             adjustForCheckbox={false}
@@ -200,10 +206,14 @@ class Grid extends React.Component {
             <TableRow>
               {
                 columns.map(column => (
-                  <TableHeaderColumn key={column.title}>{column.title}</TableHeaderColumn>
+                  <TableHeaderColumn key={column.title}>
+                    {column.title}
+                  </TableHeaderColumn>
                 ))
               }
-              <TableHeaderColumn key="action">Action</TableHeaderColumn>
+              <TableHeaderColumn key="action">
+Action
+              </TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -228,24 +238,28 @@ class Grid extends React.Component {
                   }
                   <TableRowColumn key="action">
                     {editId === row._id
-                      ? <CancelSaveButtons
-                        clickCancel={this.cancelEdit}
-                        clickSave={this.saveEdit}
-                        mini
-                        showButtons
-                      />
-                      : <EditDeleteButtons
-                        clickDelete={this.checkDelete}
-                        clickEdit={this.editRow}
-                        confirmDelete={this.confirmDelete}
-                        confirmMsg="Really?"
-                        deleteData={{ id: row._id }}
-                        deleteTitle=""
-                        disabled={!!editId}
-                        mini
-                        showButtons={userCanEdit}
-                        showDeleteConfirmation={deleteId === row._id}
-                      />
+                      ? (
+                        <CancelSaveButtons
+                          clickCancel={this.cancelEdit}
+                          clickSave={this.saveEdit}
+                          mini
+                          showButtons
+                        />
+                      )
+                      : (
+                        <EditDeleteButtons
+                          clickDelete={this.checkDelete}
+                          clickEdit={this.editRow}
+                          confirmDelete={this.confirmDelete}
+                          confirmMsg="Really?"
+                          deleteData={{ id: row._id }}
+                          deleteTitle=""
+                          disabled={!!editId}
+                          mini
+                          showButtons={userCanEdit}
+                          showDeleteConfirmation={deleteId === row._id}
+                        />
+                      )
                     }
                   </TableRowColumn>
                 </TableRow>

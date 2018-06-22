@@ -1,6 +1,6 @@
+const seamless = require('seamless-immutable').static;
 const interim = require('../../../app/reducers/interim');
 const actions = require('../../../app/actions');
-const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers/interim', () => {
   function checkReducer(actionName, state, payload, expected) {

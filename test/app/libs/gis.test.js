@@ -1,5 +1,5 @@
-const gis = require('../../../app/libs/gis');
 const seamless = require('seamless-immutable').static;
+const gis = require('../../../app/libs/gis');
 
 describe('/app/libs/gis', () => {
   describe('scaling to canvas', () => {

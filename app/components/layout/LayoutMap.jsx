@@ -1,10 +1,7 @@
 // Used to show a list of plants for a user.
 // Url: /plants/<optional-user-id>
 
-const Base = require('../base/Base');
 const React = require('react');
-const actions = require('../../actions');
-const gis = require('../../libs/gis');
 const getIn = require('lodash/get');
 
 // const {Layer, Rect, Stage, Group} = require('react-konva');
@@ -12,9 +9,13 @@ const {
   Layer, Text: KonvaText, Circle, Stage, Group,
 } = require('react-konva');
 const PropTypes = require('prop-types');
+const gis = require('../../libs/gis');
+const actions = require('../../actions');
+const Base = require('../base/Base');
 
 class LayoutMap extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -75,7 +76,9 @@ class LayoutMap extends React.Component {
     const { id: userId } = params;
     const userName = getIn(store.getState(), ['users', userId, 'name'], '');
     return (
-      <h2 style={{ textAlign: 'center' }}>{`${userName} Layout Map`}</h2>
+      <h2 style={{ textAlign: 'center' }}>
+        {`${userName} Layout Map`}
+      </h2>
     );
   }
 
@@ -110,6 +113,7 @@ class LayoutMap extends React.Component {
      */
     /*
         */
+    const { color } = this.state;
     return (
       <Group key={plant._id}>
         <KonvaText
@@ -121,7 +125,7 @@ class LayoutMap extends React.Component {
           fill="red"
         />
         <Circle
-          fill={this.state.color}
+          fill={color}
           onClick={this.handleClick}
           radius={5}
           shadowBlur={10}
@@ -137,9 +141,9 @@ class LayoutMap extends React.Component {
       // console.error('Width is less than 30');
       return null;
     }
-
+    const { match } = this.props;
     const { store } = this.context;
-    const params = this.props.match && this.props.match.params;
+    const params = match && match.params;
     if (params && params.id) {
       const { id: userId } = params;
       const user = store.getState().users[userId];
@@ -171,16 +175,20 @@ class LayoutMap extends React.Component {
         <div>
           {this.renderTitle()}
           {plantLocations
-            ?
+            ? (
               <Stage width={canvasWidth} height={plantLocations.canvasHeight}>
                 <Layer>
                   {plantLocations.plants}
                 </Layer>
               </Stage>
-            :
+            )
+            : (
               <h3 style={{ textAlign: 'center' }}>
-                <div style={{ marginTop: '100px' }}>No plants have been mapped yet...</div>
+                <div style={{ marginTop: '100px' }}>
+No plants have been mapped yet...
+                </div>
               </h3>
+            )
           }
         </div>
       </Base>

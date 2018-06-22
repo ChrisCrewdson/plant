@@ -1,5 +1,5 @@
-const Base = require('../base/Base');
 const React = require('react');
+const Base = require('../base/Base');
 
 function login() {
   const devLogin = process.env.NODE_ENV !== 'production';
@@ -31,12 +31,14 @@ function login() {
             />
           </a>
         </div>
-        {devLogin &&
+        {devLogin
+          && (
           <div className="home-subheader">
             <a href="/auth/dev">
               {'Developer Login'}
             </a>
           </div>
+          )
         }
       </div>
     </Base>

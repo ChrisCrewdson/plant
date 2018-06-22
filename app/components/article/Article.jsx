@@ -1,7 +1,7 @@
 // This is a temporary component so that I can quickly get a single article on the site.
 
-const Base = require('../base/Base');
 const React = require('react');
+const Base = require('../base/Base');
 const Markdown = require('../common/Markdown');
 
 // Once this is in the DB use this MongoId for the insert: 58a9d4ec27b363e3630c969b

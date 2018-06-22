@@ -1,8 +1,8 @@
 const { createStore, applyMiddleware } = require('redux');
+const seamless = require('seamless-immutable').static;
 const reducers = require('../reducers'); // combineReducers already called on reducers in her)e
 const api = require('../middleware/api');
 const { setupSubscribe: userSubscribe } = require('./user');
-const seamless = require('seamless-immutable').static;
 
 const middleware = [api];
 

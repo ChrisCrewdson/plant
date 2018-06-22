@@ -1,6 +1,6 @@
 
-const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
+const actions = require('../actions');
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.

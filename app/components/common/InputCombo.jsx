@@ -2,8 +2,8 @@ const MenuItem = require('material-ui/MenuItem').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 const SelectField = require('material-ui/SelectField').default;
-const inputComboText = require('./InputComboText');
 const Toggle = require('material-ui/Toggle').default;
+const inputComboText = require('./InputComboText');
 
 function inputCombo(props = {}) {
   const {
@@ -22,11 +22,13 @@ function inputCombo(props = {}) {
     marginLeft: 20,
   }, style);
 
-  const boolean = () => (<Toggle
-    name={namo}
-    onToggle={changeHandler}
-    toggled={value}
-  />);
+  const boolean = () => (
+    <Toggle
+      name={namo}
+      onToggle={changeHandler}
+      toggled={value}
+    />
+  );
 
   const select = () => (
     <SelectField
@@ -38,8 +40,13 @@ function inputCombo(props = {}) {
       style={styler}
     >
       {
-        Object.keys(options).map(key =>
-          <MenuItem key={key} value={key} primaryText={options[key]} />)
+        Object.keys(options).map(key => (
+          <MenuItem
+            key={key}
+            value={key}
+            primaryText={options[key]}
+          />
+        ))
       }
     </SelectField>);
 

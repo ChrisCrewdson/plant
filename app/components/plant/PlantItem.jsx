@@ -1,14 +1,14 @@
 // Used to show each plant on a user's plant list page.
 // Url: /plants/<optional-user-id>
 const { Link } = require('react-router-dom');
-const { makeSlug } = require('../../libs/utils');
 const React = require('react');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
 const AddIcon = require('material-ui/svg-icons/content/add').default;
-const utils = require('../../libs/utils');
-const actions = require('../../actions');
 const moment = require('moment');
 const PropTypes = require('prop-types');
+const utils = require('../../libs/utils');
+const actions = require('../../actions');
+const { makeSlug } = require('../../libs/utils');
 
 class PlantItem extends React.PureComponent {
   constructor() {
@@ -17,7 +17,8 @@ class PlantItem extends React.PureComponent {
   }
 
   createNote() {
-    const plantIds = [this.props.plant._id];
+    const { plant, dispatch } = this.props;
+    const plantIds = [plant._id];
 
     const note = {
       _id: utils.makeMongoId(),
@@ -28,28 +29,29 @@ class PlantItem extends React.PureComponent {
       errors: {},
     };
 
-    if (!this.props.plant.notesRequested) {
-      if (this.props.plant._id) {
-        this.props.dispatch(actions.loadNotesRequest({
-          plantIds: [this.props.plant._id],
+    if (!plant.notesRequested) {
+      if (plant._id) {
+        dispatch(actions.loadNotesRequest({
+          plantIds: [plant._id],
         }));
       } else {
         // console.error('PlantItem: plant object does not have _id', plant);
       }
     }
 
-    this.props.dispatch(actions.editNoteOpen({
+    dispatch(actions.editNoteOpen({
       note,
-      plant: this.props.plant,
+      plant,
     }));
   }
 
   render() {
     const {
       userCanEdit,
+      plant,
     } = this.props;
 
-    const { _id, title, isTerminated } = this.props.plant;
+    const { _id, title, isTerminated } = plant;
 
     const floatingActionButtonStyle = {
       marginLeft: '10px',
@@ -72,13 +74,16 @@ class PlantItem extends React.PureComponent {
         style={linkStyle}
         to={link}
       >
-        <span>{title}</span>
+        <span>
+          {title}
+        </span>
       </Link>
     );
 
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {userCanEdit &&
+        {userCanEdit
+          && (
           <div style={floatingActionButtonStyle}>
             <FloatingActionButton
               mini
@@ -88,6 +93,7 @@ class PlantItem extends React.PureComponent {
               <AddIcon />
             </FloatingActionButton>
           </div>
+          )
         }
         {renderLink}
       </div>

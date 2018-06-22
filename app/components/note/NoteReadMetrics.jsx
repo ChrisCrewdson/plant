@@ -1,9 +1,9 @@
 const React = require('react');
-const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
+const utils = require('../../libs/utils');
 
 function noteReadMetrics(props) {
-  const { metrics } = props.note;
+  const { note: { metrics } } = props;
   if (!metrics) {
     return null;
   }
@@ -38,7 +38,9 @@ function noteReadMetrics(props) {
 
   return (
     <div>
-      <h5>Metrics:</h5>
+      <h5>
+Metrics:
+      </h5>
       <ul>
         {renderedMetrics}
       </ul>

@@ -3,17 +3,18 @@
 // or the locations for a specific user
 // Url: /locations/<user-name>/<_user_id>
 
-const actions = require('../../actions');
-const Base = require('../base/Base');
 const React = require('react');
 const { withRouter } = require('react-router-dom');
-const AddLocationButton = require('./AddLocationButton');
 const PropTypes = require('prop-types');
-const LocationTile = require('./LocationTile');
 const seamless = require('seamless-immutable').static;
+const actions = require('../../actions');
+const Base = require('../base/Base');
+const AddLocationButton = require('./AddLocationButton');
+const LocationTile = require('./LocationTile');
 
 class Locations extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -59,7 +60,9 @@ class Locations extends React.Component {
 
   static renderTitle(title) {
     return (
-      <h2 style={{ textAlign: 'center' }}>{`${title}`}</h2>
+      <h2 style={{ textAlign: 'center' }}>
+        {`${title}`}
+      </h2>
     );
   }
 
@@ -72,13 +75,15 @@ class Locations extends React.Component {
     const { length: numPlants } = plantIds;
     const { store: { dispatch } } = this.context;
 
-    return (<LocationTile
-      _id={_id}
-      dispatch={dispatch}
-      key={_id}
-      numPlants={numPlants}
-      title={title}
-    />);
+    return (
+      <LocationTile
+        _id={_id}
+        dispatch={dispatch}
+        key={_id}
+        numPlants={numPlants}
+        title={title}
+      />
+    );
   }
 
   renderNoLocations(user) {
@@ -86,7 +91,9 @@ class Locations extends React.Component {
       <div>
         {Locations.renderTitle(user.name)}
         <h3 style={{ textAlign: 'center' }}>
-          <div style={{ marginTop: '100px' }}>No locations added yet...</div>
+          <div style={{ marginTop: '100px' }}>
+No locations added yet...
+          </div>
           <AddLocationButton
             show={this.isOwner(user)}
             style={{ marginTop: '10px' }}
@@ -106,7 +113,8 @@ class Locations extends React.Component {
       return null;
     }
 
-    const { params } = this.props.match;
+    const { match } = this.props;
+    const { params } = match;
     if (params && params.id) {
       const user = users[params.id] || {};
       const { locationIds = [] } = user;

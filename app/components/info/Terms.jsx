@@ -1,10 +1,9 @@
-const Base = require('../base/Base');
 const React = require('react');
 const Paper = require('material-ui/Paper').default;
+const Base = require('../base/Base');
 const Markdown = require('../common/Markdown');
 
-const markdown =
-`# Introduction
+const markdown = `# Introduction
 
 These terms and conditions govern your use of this website; by using this website, you accept these terms and conditions in full. If you disagree with these terms and conditions or any part of these terms and conditions, you must not use this website. 
 

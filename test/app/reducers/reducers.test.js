@@ -1,7 +1,7 @@
+const seamless = require('seamless-immutable').static;
 const rootReducer = require('../../../app/reducers');
 const actions = require('../../../app/actions');
 
-const seamless = require('seamless-immutable').static;
 
 describe('/app/reducers', () => {
   test('should reduce a logout action', () => {

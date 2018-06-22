@@ -20,8 +20,8 @@ Object of notes:
 }
 */
 
-const actions = require('../actions');
 const seamless = require('seamless-immutable').static;
+const actions = require('../actions');
 
 /**
  * Raised when a save event is triggered for a note.

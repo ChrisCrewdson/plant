@@ -3,9 +3,9 @@ const trim = require('lodash/trim');
 const isArray = require('lodash/isArray');
 const uniq = require('lodash/uniq');
 const every = require('lodash/every');
+const validatejs = require('validate.js');
 const { makeMongoId } = require('../libs/utils');
 const constants = require('../libs/constants');
-const validatejs = require('validate.js');
 const utils = require('../libs/utils');
 
 //  The validator receives the following arguments:

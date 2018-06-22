@@ -1,10 +1,10 @@
 // User grid editor
 
-const InputCombo = require('./InputCombo');
 const PropTypes = require('prop-types');
 const React = require('react');
 const CheckBox = require('material-ui/svg-icons/toggle/check-box').default;
 const CheckBoxOutlineBlank = require('material-ui/svg-icons/toggle/check-box-outline-blank').default;
+const InputCombo = require('./InputCombo');
 
 class GridCell extends React.Component {
   constructor() {
@@ -13,7 +13,9 @@ class GridCell extends React.Component {
   }
 
   onChange(e, index, val) {
-    const { type } = this.props;
+    const {
+      type, editCell, rowId, index: idx,
+    } = this.props;
     let value;
     switch (type) {
       case 'select':
@@ -26,7 +28,7 @@ class GridCell extends React.Component {
         ({ value } = e.target);
         break;
     }
-    this.props.editCell(this.props.rowId, this.props.index, value);
+    editCell(rowId, idx, value);
   }
 
   render() {
@@ -61,7 +63,11 @@ class GridCell extends React.Component {
       text = options[value];
     }
 
-    return (<span>{text}</span>);
+    return (
+      <span>
+        {text}
+      </span>
+    );
   }
 }
 

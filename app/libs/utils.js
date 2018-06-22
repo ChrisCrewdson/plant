@@ -1,10 +1,7 @@
-const constants = require('./constants');
 const slug = require('slugify');
 const isDate = require('lodash/isDate');
 const moment = require('moment');
 const seamless = require('seamless-immutable').static;
-
-const { gisMultiplier } = constants;
 
 // bson is currently not being explicitly installed in the project because
 // mongodb depends on mongodb-core which depends on bson. The Npm 3 installer
@@ -16,7 +13,9 @@ const { gisMultiplier } = constants;
 // 2. Reduces the size of the bundle that gets generated for the browser.
 // eslint-disable-next-line import/no-extraneous-dependencies
 const bson = require('bson');
+const constants = require('./constants');
 
+const { gisMultiplier } = constants;
 const { ObjectID } = bson;
 
 function makeMongoId() {
@@ -58,13 +57,13 @@ function makeLayoutUrl(location) {
 function dateToInt(date) {
   if (moment.isMoment(date)) {
     return dateToInt(date.toDate());
-  } else if (isDate(date)) {
-    return (date.getFullYear() * 10000) +
-      ((date.getMonth() + 1) * 100) +
-      date.getDate();
-  } else if (typeof date === 'string') {
+  } if (isDate(date)) {
+    return (date.getFullYear() * 10000)
+      + ((date.getMonth() + 1) * 100)
+      + date.getDate();
+  } if (typeof date === 'string') {
     return dateToInt(new Date(date));
-  } else if (typeof date === 'number') {
+  } if (typeof date === 'number') {
     return date;
   }
   // console.error('Unable to convert in dateToInt:', date);
@@ -146,8 +145,8 @@ function alreadySorted(prop, itemIds, items) {
     // 2. That first value exists and second doesn't
     // 3. That neither exists.
     // i.e. if values are missing then they must be at the end.
-    return (valueA && valueB && valueA <= valueB) ||
-      (valueA && !valueB) || (!valueA && !valueB);
+    return (valueA && valueB && valueA <= valueB)
+      || (valueA && !valueB) || (!valueA && !valueB);
   });
 }
 

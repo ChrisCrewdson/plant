@@ -71,8 +71,8 @@ function lastMeasured(props) {
           if (!metricPlant[metric] || metricPlant[metric] < note.date) {
             metricPlant[metric] = note.date;
           }
-          if (metricDates.includes(metric) &&
-            (!metricPlant.lastDate || metricPlant.lastDate < note.date)) {
+          if (metricDates.includes(metric)
+            && (!metricPlant.lastDate || metricPlant.lastDate < note.date)) {
             metricPlant.lastDate = note.date;
           }
         });
@@ -102,7 +102,9 @@ function lastMeasured(props) {
 
   return (
     <div>
-      <h5>Metrics:</h5>
+      <h5>
+Metrics:
+      </h5>
       <ul>
         {
           sortedMetrics.map(metricPlant => (

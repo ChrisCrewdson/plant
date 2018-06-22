@@ -1,10 +1,9 @@
-const Base = require('../base/Base');
 const React = require('react');
 const Paper = require('material-ui/Paper').default;
+const Base = require('../base/Base');
 const Markdown = require('../common/Markdown');
 
-const markdown =
-`# Plant Privacy Policy
+const markdown = `# Plant Privacy Policy
 
 ## Contents
 

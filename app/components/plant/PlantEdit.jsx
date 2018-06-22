@@ -3,27 +3,28 @@
 // Url Update: /plant/<slug>/<plant-id>
 
 const isEmpty = require('lodash/isEmpty');
-const { makeSlug } = require('../../libs/utils');
-const validators = require('../../models');
-const actions = require('../../actions');
 const Divider = require('material-ui/Divider').default;
-const InputCombo = require('../common/InputCombo');
 const Paper = require('material-ui/Paper').default;
-const CancelSaveButtons = require('../common/CancelSaveButtons');
 const React = require('react');
-const utils = require('../../libs/utils');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
 const MapsAddLocation = require('material-ui/svg-icons/maps/add-location').default;
-const PlantEditTerminated = require('./PlantEditTerminated');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
 const seamless = require('seamless-immutable').static;
+const PlantEditTerminated = require('./PlantEditTerminated');
+const utils = require('../../libs/utils');
+const CancelSaveButtons = require('../common/CancelSaveButtons');
+const InputCombo = require('../common/InputCombo');
+const actions = require('../../actions');
+const validators = require('../../models');
+const { makeSlug } = require('../../libs/utils');
 
 const { plant: plantValidator } = validators;
 
 class PlantEdit extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object,
   };
 
@@ -46,7 +47,8 @@ class PlantEdit extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(actions.editPlantClose());
+    const { dispatch } = this.props;
+    dispatch(actions.editPlantClose());
   }
 
   /**
@@ -58,20 +60,23 @@ class PlantEdit extends React.Component {
    * @memberof PlantEdit
    */
   onChangeLocation(e, index, value) {
-    this.props.dispatch(actions.editPlantChange({
+    const { dispatch } = this.props;
+    dispatch(actions.editPlantChange({
       locationId: value,
     }));
   }
 
   onChange(e) {
     const { name, value } = e.target;
-    this.props.dispatch(actions.editPlantChange({
+    const { dispatch } = this.props;
+    dispatch(actions.editPlantChange({
       [name]: value,
     }));
   }
 
   cancel() {
-    this.props.dispatch(actions.editPlantClose());
+    const { dispatch } = this.props;
+    dispatch(actions.editPlantClose());
   }
 
   addGeo() {
@@ -80,7 +85,8 @@ class PlantEdit extends React.Component {
         if (err) {
           // console.error(err);
         } else {
-          this.props.dispatch(actions.editPlantChange({
+          const { dispatch } = this.props;
+          dispatch(actions.editPlantChange({
             loc: geoJson,
           }));
         }
@@ -91,7 +97,10 @@ class PlantEdit extends React.Component {
   }
 
   save(e) {
-    const plant = seamless.asMutable(this.props.interimPlant);
+    const {
+      interimPlant, user, dispatch, history,
+    } = this.props;
+    const plant = seamless.asMutable(interimPlant);
     const { isNew = false } = plant;
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
@@ -100,9 +109,8 @@ class PlantEdit extends React.Component {
       }
     });
 
-    plant.userId = this.props.user._id;
+    plant.userId = user._id;
 
-    const { dispatch, history } = this.props;
     try {
       const transformed = plantValidator(plant, { isNew });
       if (isNew) {
@@ -179,16 +187,17 @@ class PlantEdit extends React.Component {
 
     const errorDivs = isEmpty(errors)
       ? []
-      : Object.keys(errors).map(key =>
-        (
-          <div key={key}>
-            {`${key} - ${errors[key]}`}
-          </div>
-        ));
+      : Object.keys(errors).map(key => (
+        <div key={key}>
+          {`${key} - ${errors[key]}`}
+        </div>
+      ));
 
     return (
       <Paper style={paperStyle} zDepth={1}>
-        <h2 style={{ textAlign: 'center' }}>{pageTitle}</h2>
+        <h2 style={{ textAlign: 'center' }}>
+          {pageTitle}
+        </h2>
 
         <InputCombo
           changeHandler={this.onChange}
@@ -293,7 +302,8 @@ class PlantEdit extends React.Component {
           {...this.props}
         />
 
-        {hasGeo &&
+        {hasGeo
+          && (
           <div>
             <FloatingActionButton
               onClick={this.addGeo}
@@ -314,14 +324,19 @@ class PlantEdit extends React.Component {
             />
             <Divider />
           </div>
+          )
         }
 
-        {!isEmpty(errors) &&
+        {!isEmpty(errors)
+          && (
           <div>
-            <p className="text-danger col-xs-12">There were errors. Please check your input.</p>
+            <p className="text-danger col-xs-12">
+There were errors. Please check your input.
+            </p>
             {errorDivs}
             <Divider />
           </div>
+          )
         }
 
         <CancelSaveButtons

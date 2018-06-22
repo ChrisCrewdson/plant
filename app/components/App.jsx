@@ -1,9 +1,10 @@
 const React = require('react');
-const actions = require('../actions');
 const PropTypes = require('prop-types');
+const actions = require('../actions');
 
 class App extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -28,9 +29,10 @@ class App extends React.Component {
   }
 
   render() {
+    const { children } = this.props;
     return (
       <div className="react-root">
-        {this.props.children}
+        {children}
       </div>
     );
   }

@@ -1,10 +1,10 @@
 // For the user to manage their Locations (Orchards/Yards)
 
-const actions = require('../../actions');
-const Grid = require('../common/Grid');
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
+const Grid = require('../common/Grid');
+const actions = require('../../actions');
 
 const userColumns = [{
   title: 'Name',
@@ -141,6 +141,7 @@ class LocationsManager extends React.Component {
    * @param {string} data.action - Distinguish between insert and update
    */
   upsertLocationMember({ row, meta }) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [userId, role] = row.values;
     const action = actions.UPSERT_LOCATION_MEMBER;
@@ -148,10 +149,11 @@ class LocationsManager extends React.Component {
     const payload = {
       locationId, userId, role, action,
     };
-    this.props.dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actions.modifyLocationRequest(payload));
   }
 
   upsertLocationWeather({ row, meta }) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [stationId, name, enabled] = row.values;
     const action = actions.UPSERT_LOCATION_WEATHER;
@@ -159,25 +161,27 @@ class LocationsManager extends React.Component {
     const payload = {
       locationId, stationId, name, enabled, action,
     };
-    this.props.dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actions.modifyLocationRequest(payload));
   }
 
   deleteLocationMember({ row, meta }) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [userId] = row.values;
     const action = actions.DELETE_LOCATION_MEMBER;
 
     const payload = { locationId, userId, action };
-    this.props.dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actions.modifyLocationRequest(payload));
   }
 
   deleteLocationWeather({ row, meta }) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [stationId] = row.values;
     const action = actions.DELETE_LOCATION_WEATHER;
 
     const payload = { locationId, stationId, action };
-    this.props.dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actions.modifyLocationRequest(payload));
   }
 
   render() {
@@ -201,7 +205,9 @@ class LocationsManager extends React.Component {
                 style={paperStyle}
                 zDepth={5}
               >
-                <h3>{`${location.title}`}</h3>
+                <h3>
+                  {`${location.title}`}
+                </h3>
                 <Grid
                   columns={userColumns}
                   delete={this.deleteLocationMember}
@@ -223,7 +229,7 @@ class LocationsManager extends React.Component {
                   validate={LocationsManager.validateLocationWeather}
                 />
               </Paper>
-          );
+            );
           })
         }
       </div>

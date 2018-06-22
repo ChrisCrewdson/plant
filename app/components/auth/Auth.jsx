@@ -1,12 +1,14 @@
-const Base = require('../base/Base');
 const React = require('react');
-const actions = require('../../actions');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
+const actions = require('../../actions');
+const Base = require('../base/Base');
 
 class Auth extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -17,9 +19,11 @@ class Auth extends React.Component {
 
   componentDidMount() {
     const { store } = this.context;
+    const { location } = this.props;
+
     this.unsubscribe = store.subscribe(this.onChange);
 
-    const { search } = this.props.location;
+    const { search } = location;
     const params = new URLSearchParams(search);
 
     const code = params.get('jwt');
@@ -57,7 +61,9 @@ class Auth extends React.Component {
   render() {
     return (
       <Base>
-        <h2>Authenticating...</h2>
+        <h2>
+Authenticating...
+        </h2>
       </Base>
     );
   }

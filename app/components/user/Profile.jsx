@@ -1,13 +1,13 @@
 // Used for managing the user's settings.
 // Only the logged in user can get to their profile page.
 
-const Base = require('../base/Base');
-const LocationsManager = require('../location/LocationsManager');
 const PropTypes = require('prop-types');
 const { RadioButton } = require('material-ui/RadioButton');
 const { RadioButtonGroup } = require('material-ui/RadioButton');
 const React = require('react');
 const getIn = require('lodash/get');
+const LocationsManager = require('../location/LocationsManager');
+const Base = require('../base/Base');
 
 // Responsible for:
 // 1. Current user: /profile
@@ -43,7 +43,9 @@ function profile(props, context) {
         <h2 style={{ textAlign: 'center' }}>
           User Profile
         </h2>
-        <h3>Unit of Measurement</h3>
+        <h3>
+Unit of Measurement
+        </h3>
         <RadioButtonGroup
           defaultSelected={unitOfMeasurement}
           name="unitOfMeasurement"
@@ -84,6 +86,7 @@ profile.defaultProps = {
 };
 
 profile.contextTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   store: PropTypes.object.isRequired,
 };
 

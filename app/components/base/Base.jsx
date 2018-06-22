@@ -1,14 +1,15 @@
-const Navbar = require('./Navbar');
 const React = require('react');
-const Footer = require('./Footer');
 const PropTypes = require('prop-types');
+const Navbar = require('./Navbar');
+const Footer = require('./Footer');
 
 function base(props) {
+  const { children } = props;
   return (
     <div className="page">
       <Navbar />
       <div id="main">
-        {props.children}
+        {children}
       </div>
       <Footer />
     </div>

@@ -1,11 +1,11 @@
 const CircularProgress = require('material-ui/CircularProgress').default;
-const metrics = require('../../libs/metrics');
-const NoteRead = require('./NoteRead');
-const NoteEdit = require('./NoteEdit');
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 const getIn = require('lodash/get');
+const NoteEdit = require('./NoteEdit');
+const NoteRead = require('./NoteRead');
+const metrics = require('../../libs/metrics');
 const utils = require('../../libs/utils');
 
 class NotesRead extends React.PureComponent {
@@ -35,9 +35,11 @@ class NotesRead extends React.PureComponent {
     const {
       dispatch,
       interim,
-      userCanEdit,
+      locationId,
       notes,
       plant,
+      plants,
+      userCanEdit,
     } = this.props;
 
     const interimNote = getIn(interim, ['note', 'note'], {});
@@ -46,11 +48,11 @@ class NotesRead extends React.PureComponent {
     if (interimNoteId && userCanEdit && !isNew) {
       return (
         <NoteEdit
-          dispatch={this.props.dispatch}
+          dispatch={dispatch}
           interimNote={interimNote}
-          plant={this.props.plant}
-          plants={this.props.plants}
-          locationId={this.props.locationId}
+          plant={plant}
+          plants={plants}
+          locationId={locationId}
         />
       );
     }
@@ -75,14 +77,16 @@ class NotesRead extends React.PureComponent {
       } = metricNote;
       switch (metricNote.type) {
         case 'note':
-          return (<NoteRead
-            dispatch={dispatch}
-            userCanEdit={userCanEdit}
-            key={noteId}
-            note={note}
-            notes={notes}
-            plant={plant}
-          />);
+          return (
+            <NoteRead
+              dispatch={dispatch}
+              userCanEdit={userCanEdit}
+              key={noteId}
+              note={note}
+              notes={notes}
+              plant={plant}
+            />
+          );
         case 'since':
           return (
             <Paper key={`${noteId}-sincelast`} style={paperStyle} zDepth={1}>

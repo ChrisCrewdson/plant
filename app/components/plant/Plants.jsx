@@ -4,14 +4,16 @@
 // Redirect: /location/slug/_location_id
 
 const React = require('react');
-const utils = require('../../libs/utils');
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
+const utils = require('../../libs/utils');
 
 class Plants extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 

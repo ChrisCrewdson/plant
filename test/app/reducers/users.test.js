@@ -1,7 +1,7 @@
+const seamless = require('seamless-immutable').static;
 const users = require('../../../app/reducers/users');
 const actions = require('../../../app/actions');
 
-const seamless = require('seamless-immutable').static;
 
 function checkReducer(actionName, state, payload) {
   const action = actions[actionName](payload);

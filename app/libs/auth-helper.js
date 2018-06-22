@@ -4,9 +4,9 @@ function isOwner(object, store) {
   const { user } = store.getState();
   const { jwt, _id } = user || {};
 
-  const owner = user && jwt && _id && object &&
+  const owner = user && jwt && _id && object
     // owner is true if no _id (creating) and user is logging in
-    (object.userId === _id || !object._id);
+    && (object.userId === _id || !object._id);
   return !!owner;
 }
 

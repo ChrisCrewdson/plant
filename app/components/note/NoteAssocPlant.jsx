@@ -1,13 +1,13 @@
 
-const actions = require('../../actions');
 const React = require('react');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const InputComboText = require('../common/InputComboText');
 const ArrowLeft = require('material-ui/svg-icons/hardware/keyboard-arrow-left').default;
 const ArrowRight = require('material-ui/svg-icons/hardware/keyboard-arrow-right').default;
+const PropTypes = require('prop-types');
+const InputComboText = require('../common/InputComboText');
 const Errors = require('../common/Errors');
 const utils = require('../../libs/utils');
-const PropTypes = require('prop-types');
+const actions = require('../../actions');
 const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
 class NoteAssocPlant extends React.Component {
@@ -27,30 +27,34 @@ class NoteAssocPlant extends React.Component {
   }
 
   toggle(plantId) {
-    const plantIds = this.props.plantIds.indexOf(plantId) >= 0
-      ? this.props.plantIds.filter(pId => pId !== plantId)
-      : this.props.plantIds.concat(plantId);
+    const { plantIds: propPlantIds, dispatch } = this.props;
+    const plantIds = propPlantIds.indexOf(plantId) >= 0
+      ? propPlantIds.filter(pId => pId !== plantId)
+      : propPlantIds.concat(plantId);
 
-    this.props.dispatch(actions.editNoteChange({ plantIds }));
+    dispatch(actions.editNoteChange({ plantIds }));
   }
 
   expand() {
-    const expanded = !this.state.expanded;
+    const { expanded: exp } = this.state;
+    const expanded = !exp;
     this.setState({ expanded });
   }
 
   renderPlantButton(plant, primary) {
     const { _id, title, isTerminated } = plant;
     const secondary = !primary && !!isTerminated;
-    return (<NoteAssocPlantToggleButton
-      _id={_id}
-      key={_id}
-      label={title}
-      primary={primary}
-      secondary={secondary}
-      style={{ margin: 12 }}
-      toggleFunc={this.toggle}
-    />);
+    return (
+      <NoteAssocPlantToggleButton
+        _id={_id}
+        key={_id}
+        label={title}
+        primary={primary}
+        secondary={secondary}
+        style={{ margin: 12 }}
+        toggleFunc={this.toggle}
+      />
+    );
   }
 
   renderPlantButtons(plantIds, plants, selected) {
@@ -66,7 +70,7 @@ class NoteAssocPlant extends React.Component {
 
   render() {
     const { expanded, filter } = this.state;
-    const { plantIds, plants } = this.props;
+    const { plantIds, plants, error } = this.props;
     // TODO: If the following pattern is to be kept then:
     // If expanded is true then it might be faster to sort the array once before applying
     // the filter twice rather than filtering twice and sorting twice.
@@ -95,16 +99,18 @@ class NoteAssocPlant extends React.Component {
         }
       </FloatingActionButton>);
 
-    const filterInput = (<InputComboText
-      id="note-assoc-plant-filter"
-      changeHandler={this.changeHandler}
-      label="Filter"
-      placeholder="Filter..."
-      value={filter}
-      name="filter"
-    />);
+    const filterInput = (
+      <InputComboText
+        id="note-assoc-plant-filter"
+        changeHandler={this.changeHandler}
+        label="Filter"
+        placeholder="Filter..."
+        value={filter}
+        name="filter"
+      />
+    );
 
-    const errors = this.props.error ? [this.props.error] : [];
+    const errors = error ? [error] : [];
 
     return (
       <div style={{ textAlign: 'left' }}>

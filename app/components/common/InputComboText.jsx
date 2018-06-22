@@ -26,21 +26,23 @@ function inputComboText(props = {}) {
     marginLeft: 20,
   }, style);
 
-  return (<TextField
-    disabled={disabled}
-    errorText={error}
-    floatingLabelText={label}
-    fullWidth={fullWidth}
-    hintText={placeholder}
-    id={id}
-    multiLine={multiLine}
-    name={namo}
-    onChange={changeHandler}
-    style={styler}
-    type={type}
-    underlineStyle={underlineStyle}
-    value={value}
-  />);
+  return (
+    <TextField
+      disabled={disabled}
+      errorText={error}
+      floatingLabelText={label}
+      fullWidth={fullWidth}
+      hintText={placeholder}
+      id={id}
+      multiLine={multiLine}
+      name={namo}
+      onChange={changeHandler}
+      style={styler}
+      type={type}
+      underlineStyle={underlineStyle}
+      value={value}
+    />
+  );
 }
 
 inputComboText.propTypes = {

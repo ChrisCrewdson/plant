@@ -1,6 +1,6 @@
 const _ = require('lodash');
-const Logger = require('../lib/logging/logger');
 const uuid = require('uuid');
+const Logger = require('../lib/logging/logger');
 const mongo = require('../lib/db/mongo');
 
 // Create a unique database name in the setup file because there

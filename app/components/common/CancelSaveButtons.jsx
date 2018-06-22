@@ -16,13 +16,16 @@ function cancelSaveButtons(props = {}) {
 
   const {
     clickAddPhoto,
+    clickCancel,
+    clickSave,
     mini,
   } = props;
 
   return (
     <h2 className="vcenter">
       <div style={{ textAlign: 'right' }}>
-        {clickAddPhoto &&
+        {clickAddPhoto
+          && (
           <FloatingActionButton
             onClick={clickAddPhoto}
             secondary
@@ -31,10 +34,11 @@ function cancelSaveButtons(props = {}) {
           >
             <AddPhotoIcon />
           </FloatingActionButton>
+          )
         }
 
         <FloatingActionButton
-          onClick={props.clickCancel}
+          onClick={clickCancel}
           secondary
           style={{ marginLeft: '10px' }}
           title="Cancel"
@@ -44,7 +48,7 @@ function cancelSaveButtons(props = {}) {
         </FloatingActionButton>
 
         <FloatingActionButton
-          onClick={props.clickSave}
+          onClick={clickSave}
           style={{ marginLeft: '10px' }}
           title="Save"
           mini={mini}

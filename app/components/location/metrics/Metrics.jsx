@@ -1,16 +1,16 @@
 // Used to show a collection of metrics for a location.
 // Url: /metrics/<location-name>/_location_id
 
-const Base = require('../../base/Base');
 const CircularProgress = require('material-ui/CircularProgress').default;
-const PlantItem = require('../../plant/PlantItem');
 const React = require('react');
+const PropTypes = require('prop-types');
+const { withRouter } = require('react-router-dom');
+const Base = require('../../base/Base');
+const PlantItem = require('../../plant/PlantItem');
 const { canEdit } = require('../../../libs/auth-helper');
 const actions = require('../../../actions');
 const utils = require('../../../libs/utils');
 const AddPlantButton = require('../../common/AddPlantButton');
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
 const LastMeasured = require('./LastMeasured');
 
 // TODO: AT THIS POINT THIS FILE IS JUST A COPY OF THE Location file/class
@@ -29,6 +29,7 @@ class Metrics extends React.Component {
   }
 
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -43,8 +44,8 @@ class Metrics extends React.Component {
   UNSAFE_componentWillMount() {
     const { store } = this.context;
     const { locations = {} } = store.getState();
-
-    const { id: locationId } = this.props.match.params;
+    const { match } = this.props;
+    const { id: locationId } = match.params;
 
     const plantIds = locations[locationId] && locations[locationId].plantIds;
     if (!plantIds) {
@@ -84,7 +85,9 @@ class Metrics extends React.Component {
 
   static renderTitle(location) {
     return (
-      <h2 style={{ textAlign: 'center' }}>{`${location.title} - Metrics`}</h2>
+      <h2 style={{ textAlign: 'center' }}>
+        {`${location.title} - Metrics`}
+      </h2>
     );
   }
 
@@ -107,7 +110,9 @@ class Metrics extends React.Component {
         <div>
           {Metrics.renderTitle(location)}
           <h3 style={{ textAlign: 'center' }}>
-            <div style={{ marginTop: '100px' }}>No plants added yet...</div>
+            <div style={{ marginTop: '100px' }}>
+No plants added yet...
+            </div>
             <AddPlantButton
               show={userCanEdit}
               style={{ marginTop: '10px' }}
@@ -121,14 +126,16 @@ class Metrics extends React.Component {
   render() {
     const { store } = this.context;
     const {
-      filter = '',
-      locations,
       allLoadedPlants,
-      interim,
       authUser,
+      filter = '',
+      interim,
+      locations,
     } = this.state || {};
 
-    const location = locations && locations[this.props.match.params.id];
+    const { match } = this.props;
+    const location = locations && locations[match.params.id];
+
     if (!location) {
       return (
         <Base>
@@ -180,8 +187,12 @@ class Metrics extends React.Component {
 
     const stats = (
       <div>
-        <p>{`Total: ${plantStats.total}`}</p>
-        <p>{`Alive: ${plantStats.alive}`}</p>
+        <p>
+          {`Total: ${plantStats.total}`}
+        </p>
+        <p>
+          {`Alive: ${plantStats.alive}`}
+        </p>
       </div>);
 
     // TODO: metricDate must come from a collection of toggle/checkbox inputs that
@@ -199,7 +210,9 @@ class Metrics extends React.Component {
             metricDates={metricDates}
             dispatch={store.dispatch}
           />
-          <div className="clear">&nbsp;</div>
+          <div className="clear">
+&nbsp;
+          </div>
         </div>
       </Base>
     );

@@ -1,11 +1,12 @@
 const { Link } = require('react-router-dom');
-const Base = require('./Base');
 const React = require('react');
-const { isLoggedIn } = require('../../libs/auth-helper');
 const PropTypes = require('prop-types');
+const Base = require('./Base');
+const { isLoggedIn } = require('../../libs/auth-helper');
 
 class Home extends React.Component {
   static contextTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
@@ -31,7 +32,8 @@ class Home extends React.Component {
   }
 
   updateState() {
-    const { users, locations } = this.context.store.getState();
+    const { store } = this.context;
+    const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
 
@@ -49,7 +51,8 @@ class Home extends React.Component {
             {'...measure, compare, and share your awesomeness...'}
           </p>
         </section>
-        {existingUsers &&
+        {existingUsers
+          && (
           <section>
             <Link
               to="/users"
@@ -57,8 +60,10 @@ class Home extends React.Component {
               {'...exlore Farmers and Gardeners...'}
             </Link>
           </section>
+          )
         }
-        {existingLocations &&
+        {existingLocations
+          && (
           <section>
             <Link
               to="/locations"
@@ -66,18 +71,26 @@ class Home extends React.Component {
               {'...exlore Orchards, Gardens, Yards and Farms...'}
             </Link>
           </section>
+          )
         }
-        {!isLoggedIn(store) &&
+        {!isLoggedIn(store)
+          && (
           <section>
-            <div><Link to="/login">Login to get started</Link></div>
+            <div>
+              <Link to="/login">
+Login to get started
+              </Link>
+            </div>
           </section>
+          )
         }
       </div>
     );
   }
 
   renderUsers() {
-    const { users = {}, locations = {} } = this.context.store.getState();
+    const { store } = this.context;
+    const { users = {}, locations = {} } = store.getState();
     const usersCount = Object.keys(users).length;
     const locationsCount = Object.keys(locations).length;
     return this.anonHome(!!usersCount, !!locationsCount);

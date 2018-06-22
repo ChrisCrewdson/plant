@@ -16,4 +16,3 @@ db.user.createIndex({ email: 1 }, { unique: true, sparse: true, name: 'email' })
 
 // station
 db.station.createIndex({ wuId: 1 }, { unique: true, sparse: false, name: 'wuId' });
-
