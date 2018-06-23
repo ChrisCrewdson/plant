@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This script can be used to start the server
 
 # If you have Docker installed then this will setup MongoDB for you.

@@ -60,6 +60,8 @@
   "description": "Plant Tracker",
   "devDependencies": {
     "babel-eslint": "8.2.4",
+    "check-node-version": "3.2.0",
+    "concurrently": "3.6.0",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "17.0.0",
     "eslint-plugin-import": "2.12.0",
@@ -81,8 +83,8 @@
     "webpack-dev-server": "2.x"
   },
   "engines": {
-    "node": ">=9",
-    "npm": ">=5"
+    "node": ">=10",
+    "npm": ">=6"
   },
   "jestConfig": "./jest.config.js",
   "homepage": "https://github.com/guyellis/plant",
@@ -98,8 +100,7 @@
   "pre-commit": {
     "colors": true,
     "run": [
-      "csslint",
-      "test"
+      "precom"
     ],
     "silent": false
   },
@@ -109,6 +110,7 @@
   },
   "scripts": {
     "build": "TARGET=build webpack --bail",
+    "cnv": "check-node-version --package",
     "cover": "jest --coverage && google-chrome coverage/lcov-report/index.html",
     "coverage": "jest --forceExit --coverage",
     "coverage-fast": "jest --forceExit --coverage --onlyChanged",
@@ -117,11 +119,12 @@
     "dependency-update": "node_modules/.bin/npm-update-outdated",
     "lint": "eslint --ext .js --ext .jsx . --max-warnings 0",
     "lintfix": "eslint --ext .js --ext .jsx . --fix",
+    "precom": "concurrently --kill-others-on-fail \"npm:cnv\" \"npm:lint\" \"npm:csslint\" \"npm:build\" \"./devops/run-test.sh\"",
     "prodstart": "npm run build && pm2 start ../site-ops/pm2/plant.config.js --env production",
     "prodstop": "pm2 stop plant",
     "server": ". ./devops/run-server.sh",
     "start": "TARGET=dev webpack-dev-server --port 9090 --progress --colors --hot --inline --history-api-fallback --bail",
-    "test": "npm run lint && npm run build && sh ./devops/run-test.sh",
+    "test": "npm run lint && npm run build && ./devops/run-test.sh",
     "test-only": "jest --forceExit",
     "test-fast": "jest --forceExit --onlyChanged"
   },
