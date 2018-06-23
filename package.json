@@ -59,7 +59,7 @@
   },
   "description": "Plant Tracker",
   "devDependencies": {
-    "babel-eslint": "8.2.4",
+    "babel-eslint": "8.2.5",
     "check-node-version": "3.2.0",
     "concurrently": "3.6.0",
     "eslint": "4.19.1",
