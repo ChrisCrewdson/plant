@@ -21,7 +21,7 @@ describe('/lib/db/mongo/model-location', () => {
       expect.hasAssertions();
       try {
         const loc = {};
-        await mongo.createLocation(loc);
+        await mongo.createLocation(loc, global.loggerMock);
       } catch (e) {
         expect(e.message).toEqual('members and createdBy must be specified as part of location when creating a location');
       }
@@ -33,7 +33,7 @@ describe('/lib/db/mongo/model-location', () => {
         const loc = {
           createdBy: userId,
         };
-        await mongo.createLocation(loc);
+        await mongo.createLocation(loc, global.loggerMock);
       } catch (e) {
         expect(e.message).toEqual('members and createdBy must be specified as part of location when creating a location');
       }
@@ -46,7 +46,7 @@ describe('/lib/db/mongo/model-location', () => {
           [userId]: 'owner',
         },
       };
-      const actual = await mongo.createLocation(loc);
+      const actual = await mongo.createLocation(loc, global.loggerMock);
       const expected = {
         _id: actual._id,
         createdBy: userId,

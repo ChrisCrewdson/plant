@@ -36,7 +36,7 @@ describe('/lib/db/mongo/update', () => {
         sizes,
       };
 
-      await mongo.addSizesToNoteImage(noteUpdate);
+      await mongo.addSizesToNoteImage(noteUpdate, global.loggerMock);
 
       const fetchedNote = await mongo.getNoteById(createdNote._id);
 
