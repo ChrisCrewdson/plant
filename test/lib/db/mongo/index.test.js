@@ -77,7 +77,7 @@ describe('/lib/db/mongo/', () => {
     test('should create a plant', async () => {
       plant.userId = userId;
       expect(typeof plant.userId).toBe('string');
-      const body = await mongo.createPlant(plant, userId);
+      const body = await mongo.createPlant(plant, userId, global.loggerMock);
       expect(body).toBeTruthy();
       expect(body._id).toBeTruthy();
       expect(typeof body._id).toBe('string');
@@ -90,7 +90,7 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get an existing plant', async () => {
-      const result = await mongo.getPlantById(plantId, userId);
+      const result = await mongo.getPlantById(plantId, userId, global.loggerMock);
       expect(typeof result.userId).toBe('string');
       expect(result.name).toBe(plant.name);
       expect(result.plantedOn).toBe(plant.plantedOn);
