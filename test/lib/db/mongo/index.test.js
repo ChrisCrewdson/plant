@@ -98,7 +98,7 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get existing plants', async () => {
-      const results = await mongo.getPlantsByIds([plantId], userId);
+      const results = await mongo.getPlantsByIds([plantId], userId, global.loggerMock);
       expect(_.isArray(results)).toBeTruthy();
       expect(results).toHaveLength(1);
       const result = results[0];
@@ -116,7 +116,7 @@ describe('/lib/db/mongo/', () => {
         userId,
       };
 
-      const result = await mongo.updatePlant(plantUpdate, userId);
+      const result = await mongo.updatePlant(plantUpdate, userId, global.loggerMock);
       expect(result).toEqual(plantUpdate);
     });
   });

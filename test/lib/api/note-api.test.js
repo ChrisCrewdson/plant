@@ -281,7 +281,7 @@ describe('note-api', () => {
       ];
 
       async function createNote(data) {
-        const createdNote = await mongo.upsertNote(note);
+        const createdNote = await mongo.upsertNote(note, global.loggerMock);
         expect(createdNote).toBeTruthy();
         // logger.trace('createdNote', {createdNote});
         // data.createdNote = body;

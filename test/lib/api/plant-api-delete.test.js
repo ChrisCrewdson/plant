@@ -70,7 +70,7 @@ describe('plant-api-delete', () => {
       // 2. Create 3 notes, part 1.2:
       //    Update Note #1
       const updatedNote = Object.assign({}, notes[0], { x: 'random' });
-      const upsertedNote = await mongo.upsertNote(updatedNote);
+      const upsertedNote = await mongo.upsertNote(updatedNote, global.loggerMock);
       expect(upsertedNote).toBeTruthy();
 
       // 2. Create 3 notes, part 2:

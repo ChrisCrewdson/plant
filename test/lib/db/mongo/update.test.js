@@ -26,7 +26,7 @@ describe('/lib/db/mongo/update', () => {
         { width: 2000, name: 'xl' },
       ];
 
-      const createdNote = await mongo.upsertNote(note);
+      const createdNote = await mongo.upsertNote(note, global.loggerMock);
       expect(createdNote).toBeTruthy();
 
       const noteUpdate = {
