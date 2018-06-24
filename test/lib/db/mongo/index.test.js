@@ -53,7 +53,7 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should fetch all users', async () => {
-      const body = await mongo.getAllUsers();
+      const body = await mongo.getAllUsers(global.loggerMock);
       expect(body).toBeTruthy();
       expect(_.isArray(body)).toBeTruthy();
       expect(body).toHaveLength(1);

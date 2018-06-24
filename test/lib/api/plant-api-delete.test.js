@@ -98,7 +98,7 @@ describe('plant-api-delete', () => {
       expect(response4).toEqual({ message: 'Deleted' });
 
       // 4. Confirm that Note #1 is no longer in DB
-      const result2 = await mongo.getNoteById(notes[0]._id);
+      const result2 = await mongo.getNoteById(notes[0]._id, global.loggerMock);
       expect(!result2).toBeTruthy();
 
       // 5. Retrieve plant #2 and confirm that both notes are attached.

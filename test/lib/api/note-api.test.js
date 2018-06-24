@@ -314,7 +314,7 @@ describe('note-api', () => {
       }
 
       async function getNote(createdNote) {
-        const fetchedNote = await mongo.getNoteById(createdNote._id);
+        const fetchedNote = await mongo.getNoteById(createdNote._id, global.loggerMock);
         expect(fetchedNote.images[0].sizes).toEqual(sizes);
         expect(!fetchedNote.images[1].sizes).toBeTruthy();
         return fetchedNote;
