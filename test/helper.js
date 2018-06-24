@@ -95,7 +95,7 @@ async function startServerAuthenticated() {
       updatedAt: '2016-01-28T14:59:32.989Z',
     };
 
-    const user = await mongo.findOrCreateUser(fbUser);
+    const user = await mongo.findOrCreateUser(fbUser, global.loggerMock);
 
     expect(user).toBeTruthy();
     expect(user._id).toBeTruthy();

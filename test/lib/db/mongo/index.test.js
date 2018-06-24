@@ -24,7 +24,7 @@ describe('/lib/db/mongo/', () => {
       'should fail to create a user account if there is no object',
       async () => {
         try {
-          await mongo.findOrCreateUser(null);
+          await mongo.findOrCreateUser(null, global.loggerMock);
         } catch (err) {
           expect(err).toBeTruthy();
           expect(err.message).toBe('No facebook.id or google.id:');
@@ -44,7 +44,7 @@ describe('/lib/db/mongo/', () => {
           id: fbUser.facebook.id,
         },
       };
-      const body = await mongo.findOrCreateUser(user);
+      const body = await mongo.findOrCreateUser(user, global.loggerMock);
       expect(body).toBeTruthy();
       expect(body._id).toBeTruthy();
       expect(constants.mongoIdRE.test(body._id)).toBeTruthy();
