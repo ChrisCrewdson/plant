@@ -95,7 +95,7 @@ propagateToGlobal(global.window);
 // async function. afterAll() didn't wait on it.
 afterAll((done) => {
   async function cleanUp() {
-    const db = await mongoDb.GetDb();
+    const db = await mongoDb.GetDb(global.loggerMock);
     db.dropDatabase();
     done();
   }

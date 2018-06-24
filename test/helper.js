@@ -68,7 +68,7 @@ async function makeRequest(opts) {
 async function startServerAuthenticated() {
   const port = 3000 + parseInt(process.env.JEST_WORKER_ID, 10);
   async function emptyDatabase() {
-    const db = await mongo.GetDb();
+    const db = await mongo.GetDb(global.loggerMock);
     const promises = ['user', 'location', 'plant', 'note'].map((collection) => {
       const coll = db.collection(collection);
       return coll.deleteMany({});
