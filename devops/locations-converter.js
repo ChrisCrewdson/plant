@@ -80,6 +80,6 @@
 //       logger.trace('All complete');
 //     }
 //     logger.trace('Closing...');
-//     mongo._close();
+//     mongo._close(logger);
 //   });
 // });
