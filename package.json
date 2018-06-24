@@ -122,7 +122,7 @@
     "prodstop": "pm2 stop plant",
     "server": ". ./devops/run-server.sh",
     "start": "TARGET=dev webpack-dev-server --port 9090 --progress --colors --hot --inline --history-api-fallback --bail",
-    "test": "concurrently --kill-others-on-fail \"npm:lint\" \"npm:build\" \"./devops/run-test.sh\"",
+    "test": "npm run lint && npm run build && ./devops/run-test.sh",
     "test-only": "jest --forceExit",
     "test-fast": "jest --forceExit --onlyChanged"
   },
