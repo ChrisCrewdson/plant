@@ -1,16 +1,3 @@
-// TODO: Need to setup these two mocks in a setup script?
-jest.mock('winston', () => ({
-  add: () => {},
-  log: () => {},
-}));
-
-// 1. jest.mock takes a function
-// 2. debug returns a function that is used to initialize
-// 3. debug initializer returns a function that's used for debugging
-jest.mock('debug', () => () => () => {});
-
-// const _ = require('lodash');
-// const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
 

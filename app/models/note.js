@@ -127,11 +127,8 @@ module.exports = (atts) => {
     attributes = Object.assign({}, attributes, { images });
   }
 
-  // debug('attributes:', attributes);
   const cleaned = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
-  // debug('cleaned:', cleaned);
   const transformed = transform(cleaned);
-  // debug('transformed:', transformed);
   const errors = validatejs.validate(transformed, constraints);
   const flatErrors = utils.transformErrors(errors);
   if (flatErrors) {

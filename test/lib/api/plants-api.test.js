@@ -1,7 +1,5 @@
 const helper = require('../../helper');
 
-const logger = require('../../../lib/logging/logger').create('test.plants-api');
-
 describe('plants-api', () => {
   let userId;
   let locationId;
@@ -37,7 +35,6 @@ describe('plants-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      logger.trace('response:', { response });
       expect(httpMsg.statusCode).toBe(200);
       expect(response).toBeTruthy();
 

@@ -3,8 +3,6 @@ const validators = require('../../../app/models');
 
 const { plant: plantValidator } = validators;
 
-const logger = require('../../../lib/logging/logger').create('plant:test.plant');
-
 describe('/app/models/plant', () => {
   test('should pass minimum validation', () => {
     const plant = {
@@ -45,7 +43,6 @@ describe('/app/models/plant', () => {
 
     const transformed = plantValidator(plant, { isNew });
     expect(Object.keys(transformed)).toEqual(Object.keys(plant));
-    logger.trace('transformed:', { transformed });
 
     // Issue 1403 - This expect is failing since switching over to Jest
     // because we were using deepEqual instead of deepStrictEqual when

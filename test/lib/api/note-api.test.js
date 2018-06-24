@@ -3,8 +3,6 @@ const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 const mongo = require('../../../lib/db/mongo')();
 
-const logger = require('../../../lib/logging/logger').create('test.note-api');
-
 describe('note-api', () => {
   let userId;
   let locationId;
@@ -14,7 +12,6 @@ describe('note-api', () => {
     expect(data.userId).toBeTruthy();
     userId = data.user._id;
     locationId = data.user.locationIds[0]._id;
-    logger.trace('startServerAuthenticated userId:', { userId });
   });
 
   let initialPlant;
@@ -32,7 +29,6 @@ describe('note-api', () => {
     [initialPlant] = plants;
     plantId = initialPlant._id;
     initialNote.plantIds = [plantId];
-    logger.trace('plant created:', { initialPlant });
   });
 
   describe('create failures', () => {
@@ -101,7 +97,6 @@ describe('note-api', () => {
       // { _id: 'e5fc6fff0a8f48ad90636b3cea6e4f93',
       // title: 'Plant Title',
       // userId: '241ff27e28c7448fb22c4f6fb2580923'}
-      logger.trace('note retrieved:', { response });
       expect(httpMsg.statusCode).toBe(200);
       expect(response).toBeTruthy();
       expect(response.userId).toBeTruthy();

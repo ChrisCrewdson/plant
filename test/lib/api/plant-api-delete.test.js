@@ -2,8 +2,6 @@ const helper = require('../../helper');
 const mongo = require('../../../lib/db/mongo')();
 const utils = require('../../../app/libs/utils');
 
-// const logger = require('../../../lib/logging/logger').create('test.plant-api-delete');
-
 describe('plant-api-delete', () => {
   let userId;
   let locationId;

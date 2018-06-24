@@ -1,7 +1,5 @@
 const helper = require('../../helper');
 
-const logger = require('../../../lib/logging/logger').create('test.plants-api');
-
 describe('api', () => {
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -21,7 +19,6 @@ describe('api', () => {
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
     expect(httpMsg.statusCode).toBe(404);
     const docType = '<!DOCTYPE html>';
-    logger.trace('response:', { response });
     expect(response).toContain(docType);
   });
 });

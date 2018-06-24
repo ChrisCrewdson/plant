@@ -17,8 +17,6 @@ jest.mock('passport', () => {
 // eslint-disable-next-line no-param-reassign, global-require
 const serverModule = require('../lib/server');
 
-const logger = require('../lib/logging/logger').create('test.helper');
-
 const data = {};
 
 function getUrl(url) {
@@ -222,7 +220,6 @@ async function createNote(plantIds, noteOverride = {}) {
   };
 
   const { httpMsg, response } = await makeRequest(reqOptions);
-  logger.trace('createNote', { response });
   expect(httpMsg.statusCode).toBe(200);
   expect(response.success).toBe(true);
   const { note } = response;

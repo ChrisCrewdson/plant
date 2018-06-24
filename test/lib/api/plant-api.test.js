@@ -1,8 +1,6 @@
 const helper = require('../../helper');
 const constants = require('../../../app/libs/constants');
 
-// const logger = require('../../../lib/logging/logger').create('test.plant-api');
-
 describe('plant-api', () => {
   let user;
   let plantId;

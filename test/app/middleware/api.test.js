@@ -9,8 +9,6 @@ jest.mock('../../../app/middleware/ajax', () => mockAjax);
 
 const api = require('../../../app/middleware/api');
 
-// const logger = require('../../../lib/logging/logger').create('test.api');
-
 describe('/app/middleware/api', () => {
   test('should check that functions/url exist', () => {
     const store = {};

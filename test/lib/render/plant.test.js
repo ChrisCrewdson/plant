@@ -1,7 +1,5 @@
 const helper = require('../../helper');
 
-const logger = require('../../../lib/logging/logger').create('test.server-render-plant');
-
 describe('lib/render/plant', () => {
   let data;
   beforeAll(async () => {
@@ -42,7 +40,6 @@ describe('lib/render/plant', () => {
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
     expect(httpMsg.statusCode).toBe(200);
     const docType = '<!DOCTYPE html>';
-    logger.trace('response:', { response });
     expect(response).toContain(docType);
   });
 });

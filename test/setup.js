@@ -36,7 +36,6 @@ global.loggerMockReset = () => {
 
 global.loggerMockReset();
 
-const Logger = require('../lib/logging/logger');
 const mongo = require('../lib/db/mongo');
 
 // Create a unique database name in the setup file because there
@@ -46,11 +45,6 @@ const mongo = require('../lib/db/mongo');
 const dbName = `plant-test-${uuid.v4()}`;
 const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${dbName}`;
 const mongoDb = mongo(mongoConnection);
-
-// Set this ENV to produce verbose trace messages during testing
-if (process.env.TEST_VERBOSE_MESSAGES) {
-  Logger.setLevel('trace');
-}
 
 // React will print a warning to the console if it cannot find requestAnimationFrame()
 // warning(false, 'React depends on requestAnimationFrame. Make sure that you load a ' +
