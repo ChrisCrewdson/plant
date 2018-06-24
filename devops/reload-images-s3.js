@@ -3,7 +3,6 @@
 
 // require('babel-core/register');
 
-// const Logger = require('../lib/logging/logger');
 // const _ = require('lodash');
 // const async = require('async');
 // const AWS = require('aws-sdk');

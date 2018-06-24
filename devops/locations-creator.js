@@ -3,7 +3,6 @@
 
 // const mongo = require('../lib/db/mongo')();
 // const async = require('async');
-// const Logger = require('../lib/logging/logger');
 
 // if (!process.env.DEBUG) {
 //   // eslint-disable-next-line no-console

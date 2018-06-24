@@ -6,8 +6,6 @@ const utils = require('../../../app/libs/utils');
 const { makeMongoId } = utils;
 const { note: noteValidator } = validators;
 
-// const logger = require('../../../lib/logging/logger').create('test.model-note');
-
 describe('/app/models/note', () => {
   test('should pass minimum validation', () => {
     const note = {

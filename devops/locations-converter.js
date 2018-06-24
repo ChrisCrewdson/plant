@@ -41,7 +41,6 @@
 
 // const mongo = require('../lib/db/mongo')();
 // const async = require('async');
-// const Logger = require('../lib/logging/logger');
 
 // /* eslint-disable no-param-reassign, no-console */
 
