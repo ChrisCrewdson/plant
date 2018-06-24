@@ -43,8 +43,8 @@ describe('/lib/db/mongo/', () => {
         // 2 in beforeAll(),
         // 8 in helper.startServerAuthenticated from beforeAll.
         // 8 in calls to logger
-        // 12 in calls to lalog logger
-        expect.assertions(32);
+        // 16 in calls to lalog logger
+        expect.assertions(36);
       },
     );
 
