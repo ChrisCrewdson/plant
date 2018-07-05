@@ -67,7 +67,7 @@
     "eslint-plugin-jsx-a11y": "6.1.0",
     "eslint-plugin-react": "7.10.0",
     "eslint-plugin-security": "1.4.0",
-    "jest": "23.2.0",
+    "jest": "23.3.0",
     "nodemon": "1.17.5",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
