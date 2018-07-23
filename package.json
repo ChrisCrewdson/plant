@@ -14,7 +14,7 @@
     "babel-preset-stage-0": "6.24.1",
     "body-parser": "1.18.3",
     "bootstrap": "3.3.7",
-    "compression": "1.7.2",
+    "compression": "1.7.3",
     "cookie-parser": "1.4.3",
     "css-loader": "0.28.11",
     "express": "4.16.3",
