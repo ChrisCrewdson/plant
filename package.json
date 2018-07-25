@@ -27,7 +27,7 @@
     "lodash": "4.17.10",
     "marked": "0.4.0",
     "material-ui": "0.20.1",
-    "method-override": "2.3.10",
+    "method-override": "3.0.0",
     "moment": "2.22.2",
     "mongodb": "3.0.10",
     "morgan": "1.9.0",
