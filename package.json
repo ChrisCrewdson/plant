@@ -68,7 +68,7 @@
     "eslint-plugin-react": "7.10.0",
     "eslint-plugin-security": "1.4.0",
     "jest": "23.3.0",
-    "nodemon": "1.17.5",
+    "nodemon": "1.18.3",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
     "react-hot-loader": "4.3.3",
