@@ -7,146 +7,152 @@ const { makeMongoId } = utils;
 const { note: noteValidator } = validators;
 
 describe('/app/models/note', () => {
-  test('should pass minimum validation', () => {
-    const note = {
-      _id: makeMongoId(),
-      date: 20160101,
-      plantIds: [makeMongoId()],
-      note: 'some text',
-      userId: makeMongoId(),
-    };
-    const noteCopy = _.clone(note);
+  describe('basic validation', () => {
+    test('should pass minimum validation', () => {
+      const note = {
+        _id: makeMongoId(),
+        date: 20160101,
+        plantIds: [makeMongoId()],
+        note: 'some text',
+        userId: makeMongoId(),
+      };
+      const noteCopy = _.clone(note);
 
-    const transformed = noteValidator(note);
-    expect(transformed.note).toBe(note.note);
-    expect(noteCopy).toEqual(note);
-  });
+      const transformed = noteValidator(note);
+      expect(transformed.note).toBe(note.note);
+      expect(noteCopy).toEqual(note);
+    });
 
-  test('should fail validation', () => {
+    test('should fail validation', () => {
     // All items in note should be invalid
-    const note = {
-      _id: '0e55d91cb33d42', // Not a MongoId
-      date: 'Not a Number',
-      plantIds: ['9ec5c8ffcf885bf'], // Not a MongoId in array
-      note: {}, // not a string
-    };
+      const note = {
+        _id: '0e55d91cb33d42', // Not a MongoId
+        date: 'Not a Number',
+        plantIds: ['9ec5c8ffcf885bf'], // Not a MongoId in array
+        note: {}, // not a string
+      };
 
-    const noteCopy = _.clone(note);
+      const noteCopy = _.clone(note);
 
-    /* eslint-disable no-console */
-    console.error = jest.fn();
-    try {
-      noteValidator(note);
-    } catch (err) {
-      expect(err).toBeTruthy();
+      /* eslint-disable no-console */
+      console.error = jest.fn();
+      try {
+        noteValidator(note);
+      } catch (err) {
+        expect(err).toBeTruthy();
 
-      expect(err._id).toBe(' id is invalid');
-      expect(err.date).toBe('Date must be a number');
-      expect(err.plantIds).toBe('Plant ids must be MongoIds');
+        expect(err._id).toBe(' id is invalid');
+        expect(err.date).toBe('Date must be a number');
+        expect(err.plantIds).toBe('Plant ids must be MongoIds');
+        expect(noteCopy).toEqual(note);
+        expect(console.error).toHaveBeenCalledTimes(1);
+      }
+      console.error.mockReset();
+      /* eslint-enable no-console */
+      expect.assertions(6);
+    });
+
+    test('should strip out props not in the schema', () => {
+      const note = {
+        _id: makeMongoId(),
+        date: 20160101,
+        plantIds: [makeMongoId()],
+        note: 'some text',
+        fakeName1: 'Common Name',
+        fakeName2: 'Description',
+        plantId: 'fake plant id',
+      };
+      const noteCopy = _.clone(note);
+
+      const transformed = noteValidator(note);
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBe(note._id);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.fakeName1).toBeFalsy();
+      expect(transformed.fakeName2).toBeFalsy();
+      expect(transformed.plantId).toBeFalsy();
+      expect(noteCopy).toEqual(note); // no mutation of original note
+    });
+
+    test('should add _id if it is a new record', () => {
+      const note = {
+        date: 20160101,
+        plantIds: [makeMongoId()],
+        note: 'some text',
+      };
+      const noteCopy = _.cloneDeep(note);
+
+      const transformed = noteValidator(note);
+
+      expect(Object.keys(transformed)).toHaveLength(4);
+      expect(transformed._id).toBeTruthy();
+      expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.plantIds).toEqual(note.plantIds);
       expect(noteCopy).toEqual(note);
-      expect(console.error).toHaveBeenCalledTimes(1);
-    }
-    console.error.mockReset();
-    /* eslint-enable no-console */
-    expect.assertions(6);
+    });
+
+    test('should fail if plantIds is empty', (done) => {
+      const note = {
+        _id: makeMongoId(),
+        date: 20160101,
+        plantIds: [],
+        note: 'some text',
+      };
+      const noteCopy = _.clone(note);
+
+      try {
+        noteValidator(note);
+      } catch (err) {
+        expect(err).toBeTruthy();
+        expect(err.plantIds).toBe('You must select at least 1 plant for this note.');
+        expect(noteCopy).toEqual(note);
+        done();
+      }
+    });
+
+    test('should fail if plantIds is missing', (done) => {
+      const note = {
+        _id: makeMongoId(),
+        date: 20160101,
+        note: 'some text',
+      };
+      const noteCopy = _.clone(note);
+
+      try {
+        noteValidator(note);
+      } catch (err) {
+        expect(err).toBeTruthy();
+        expect(err.plantIds).toBe('Plant ids is required');
+        expect(noteCopy).toEqual(note);
+        done();
+      }
+    });
+
+    test('should fail if plantIds is not an array', (done) => {
+      const note = {
+        _id: makeMongoId(),
+        date: 20160101,
+        note: 'some text',
+        plantIds: makeMongoId(),
+      };
+      const noteCopy = _.clone(note);
+
+      try {
+        noteValidator(note);
+      } catch (err) {
+        expect(err).toBeTruthy();
+        expect(err.plantIds).toBe('Plant ids must be an array');
+        expect(noteCopy).toEqual(note);
+        done();
+      }
+    });
   });
 
-  test('should strip out props not in the schema', () => {
-    const note = {
-      _id: makeMongoId(),
-      date: 20160101,
-      plantIds: [makeMongoId()],
-      note: 'some text',
-      fakeName1: 'Common Name',
-      fakeName2: 'Description',
-      plantId: 'fake plant id',
-    };
-    const noteCopy = _.clone(note);
+  describe('metric validation', () => {
 
-    const transformed = noteValidator(note);
-    expect(Object.keys(transformed)).toHaveLength(4);
-    expect(transformed._id).toBe(note._id);
-    expect(transformed.note).toBe(note.note);
-    expect(transformed.userId).toBe(note.userId);
-    expect(transformed.fakeName1).toBeFalsy();
-    expect(transformed.fakeName2).toBeFalsy();
-    expect(transformed.plantId).toBeFalsy();
-    expect(noteCopy).toEqual(note);
-  });
-
-  test('should add _id if it is a new record', () => {
-    const note = {
-      date: 20160101,
-      plantIds: [makeMongoId()],
-      note: 'some text',
-    };
-    const noteCopy = _.cloneDeep(note);
-
-    const transformed = noteValidator(note);
-
-    expect(Object.keys(transformed)).toHaveLength(4);
-    expect(transformed._id).toBeTruthy();
-    expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
-    expect(transformed.note).toBe(note.note);
-    expect(transformed.userId).toBe(note.userId);
-    expect(transformed.plantIds).toEqual(note.plantIds);
-    expect(noteCopy).toEqual(note);
-  });
-
-  test('should fail if plantIds is empty', (done) => {
-    const note = {
-      _id: makeMongoId(),
-      date: 20160101,
-      plantIds: [],
-      note: 'some text',
-    };
-    const noteCopy = _.clone(note);
-
-    try {
-      noteValidator(note);
-    } catch (err) {
-      expect(err).toBeTruthy();
-      expect(err.plantIds).toBe('You must select at least 1 plant for this note.');
-      expect(noteCopy).toEqual(note);
-      done();
-    }
-  });
-
-  test('should fail if plantIds is missing', (done) => {
-    const note = {
-      _id: makeMongoId(),
-      date: 20160101,
-      note: 'some text',
-    };
-    const noteCopy = _.clone(note);
-
-    try {
-      noteValidator(note);
-    } catch (err) {
-      expect(err).toBeTruthy();
-      expect(err.plantIds).toBe('Plant ids is required');
-      expect(noteCopy).toEqual(note);
-      done();
-    }
-  });
-
-  test('should fail if plantIds is not an array', (done) => {
-    const note = {
-      _id: makeMongoId(),
-      date: 20160101,
-      note: 'some text',
-      plantIds: makeMongoId(),
-    };
-    const noteCopy = _.clone(note);
-
-    try {
-      noteValidator(note);
-    } catch (err) {
-      expect(err).toBeTruthy();
-      expect(err.plantIds).toBe('Plant ids must be an array');
-      expect(noteCopy).toEqual(note);
-      done();
-    }
   });
 
   describe('note.model/images validation', () => {
