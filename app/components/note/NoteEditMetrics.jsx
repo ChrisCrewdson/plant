@@ -46,6 +46,7 @@ class NoteEditMetrics extends React.PureComponent {
   }
 
   renderLength(metaMetric, value) {
+    const renderValue = (value || value === 0) ? value.toString() : '';
     return (
       <InputCombo
         changeHandler={this.onChange}
@@ -55,7 +56,7 @@ class NoteEditMetrics extends React.PureComponent {
         name={metaMetric.key}
         placeholder={metaMetric.placeholder}
         type="number"
-        value={value || ''}
+        value={renderValue}
       />
     );
   }
@@ -97,7 +98,11 @@ class NoteEditMetrics extends React.PureComponent {
     const { metrics = {} } = interimNote || {};
     const { metaMetrics } = utils;
 
-    const renderedMetrics = metaMetrics.map(metaMetric => this.renderMetric(metaMetric, metrics[metaMetric.key] || ''));
+    const renderedMetrics = metaMetrics.map((metaMetric) => {
+      const value = metrics[metaMetric.key];
+      const renderValue = (value || value === 0) ? value : '';
+      return this.renderMetric(metaMetric, renderValue);
+    });
 
     return (
       <div style={{ textAlign: 'left' }}>

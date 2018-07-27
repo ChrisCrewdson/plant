@@ -9,29 +9,30 @@ function noteReadMetrics(props) {
   }
 
   const renderedMetrics = utils.metaMetrics.map((metaMetric) => {
-    if (!metrics[metaMetric.key]) {
+    const { key, type, label } = metaMetric;
+    if (!metrics[key] && metrics[key] !== 0) {
       return null;
     }
 
     let value;
-    switch (metaMetric.type) {
+    switch (type) {
       case 'toggle':
         value = '✔';
         break;
       case 'length':
-        value = `: ${metrics[metaMetric.key]} inches`;
+        value = `: ${metrics[key]} inches`;
         break;
       case 'weight':
-        value = `: ${metrics[metaMetric.key]} lbs`;
+        value = `: ${metrics[key]} lbs`;
         break;
       default:
-        value = `: ${metrics[metaMetric.key]}`;
+        value = `: ${metrics[key]}`;
         break;
     }
 
     return (
-      <li key={metaMetric.key}>
-        {`${metaMetric.label} ${value}`}
+      <li key={key}>
+        {`${label} ${value}`}
       </li>
     );
   });
