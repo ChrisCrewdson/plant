@@ -28,6 +28,20 @@ jest.mock('lalog', () => ({
   getLevel: () => 'info',
 }));
 
+const isObject = obj => obj !== null && typeof obj === 'object';
+
+const loggerTimeEndMockFunction = (label, extraLogData) => {
+  if (typeof label !== 'string') {
+    throw new Error(`First param to lalog timeEnd method is not an string: ${typeof label}`);
+  }
+  if (extraLogData && !isObject(extraLogData)) {
+    throw new Error(`Second param to lalog timeEnd method is not an object: ${typeof extraLogData}`);
+  }
+  if (extraLogData) {
+    loggerMockFunction(extraLogData);
+  }
+};
+
 global.loggerMockReset = () => {
   // const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
   global.loggerMock.trace = jest.fn(loggerMockFunction);
@@ -36,6 +50,9 @@ global.loggerMockReset = () => {
   global.loggerMock.error = jest.fn(loggerMockFunction);
   global.loggerMock.fatal = jest.fn(loggerMockFunction);
   global.loggerMock.security = jest.fn(loggerMockFunction);
+  global.loggerMock.timeEnd = jest.fn(loggerTimeEndMockFunction);
+  global.loggerMock.timeEnd.error = jest.fn(loggerTimeEndMockFunction);
+  global.loggerMock.time = jest.fn();
 };
 
 global.loggerMockReset();
