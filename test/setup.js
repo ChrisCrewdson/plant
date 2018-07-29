@@ -1,6 +1,10 @@
 const _ = require('lodash');
 const uuid = require('uuid');
 
+// TODO: Remove jsdom@11.11.0 as a dev-dependency when
+// https://github.com/facebook/jest/issues/6766#issuecomment-408379225
+// has been fixed.
+
 const loggerMockFunction = (errObj, extra) => {
   if (!_.isObject(errObj)) {
     throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
