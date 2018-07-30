@@ -1,5 +1,6 @@
 // Used to show each plant on a user's plant list page.
-// Url: /plants/<optional-user-id>
+// Url: /location/<location-name>/<location-id>
+
 const { Link } = require('react-router-dom');
 const React = require('react');
 const FloatingActionButton = require('material-ui/FloatingActionButton').default;
@@ -51,7 +52,9 @@ class PlantItem extends React.PureComponent {
       plant,
     } = this.props;
 
-    const { _id, title, isTerminated } = plant;
+    const {
+      _id, title, isTerminated, botanicalName,
+    } = plant;
 
     const floatingActionButtonStyle = {
       marginLeft: '10px',
@@ -67,7 +70,7 @@ class PlantItem extends React.PureComponent {
       linkStyle.color = 'red';
     }
 
-    // const link = `/plant/${makeSlug(title)}/${_id}?react_perf`;
+    const fullTitle = `${title}${botanicalName ? ` (${botanicalName})` : ''}`;
     const link = `/plant/${makeSlug(title)}/${_id}`;
     const renderLink = (
       <Link
@@ -75,7 +78,7 @@ class PlantItem extends React.PureComponent {
         to={link}
       >
         <span>
-          {title}
+          {fullTitle}
         </span>
       </Link>
     );
@@ -106,6 +109,7 @@ PlantItem.propTypes = {
   userCanEdit: PropTypes.bool.isRequired,
   plant: PropTypes.shape({
     _id: PropTypes.string,
+    botanicalName: PropTypes.string,
     isTerminated: PropTypes.bool,
     notesRequested: PropTypes.bool,
     title: PropTypes.string,

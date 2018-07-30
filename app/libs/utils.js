@@ -116,8 +116,10 @@ function filterPlants(plantIds, plants, filter) {
   const lowerFilter = (filter || '').toLowerCase();
   return lowerFilter
     ? plantIds.filter((plantId) => {
-      const plant = plants[plantId];
-      return plant && (plant.title || '').toLowerCase().indexOf(lowerFilter) >= 0;
+      const plant = plants[plantId] || {};
+      const { title = '', botanicalName = '' } = plant;
+      const searchText = `${title.toLowerCase()} ${botanicalName.toLowerCase()}`;
+      return searchText.indexOf(lowerFilter) >= 0;
     })
     : plantIds;
 }
