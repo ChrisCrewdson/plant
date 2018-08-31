@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/lib/db/mongo/ user should fetch the user created in the before setup 1`] = `
+Object {
+  "createdAt": Any<Date>,
+  "email": "johnsmith@gmail.com",
+  "google": Object {
+    "aboutMe": "Fake About Me",
+    "cover": Object {
+      "coverInfo": Object {
+        "leftImageOffset": 0,
+        "topImageOffset": 0,
+      },
+      "coverPhoto": Object {
+        "height": 705,
+        "url": "https://lh3.googleusercontent.com/stuff",
+        "width": 940,
+      },
+      "layout": "banner",
+    },
+    "displayName": "John Smith",
+    "emails": Array [
+      Object {
+        "type": "account",
+        "value": "johnsmith@gmail.com",
+      },
+    ],
+    "etag": "\\"etag/etag\\"",
+    "gender": "male",
+    "id": "1234567890",
+    "image": Object {
+      "isDefault": false,
+      "url": "https://lh4.googleusercontent.com/stuff/photo.jpg?sz=50",
+    },
+    "isPlusUser": true,
+    "kind": "plus#person",
+    "name": Object {
+      "familyName": "Smith",
+      "givenName": "John",
+    },
+    "objectType": "person",
+    "occupation": "Director of Happiness",
+    "organizations": Array [],
+    "placesLived": Array [],
+    "tagline": "fake tagline",
+    "url": "https://plus.google.com/+JohnSmith",
+    "urls": Array [],
+    "verified": false,
+  },
+  "name": "John Smith",
+  "updatedAt": Any<Date>,
+}
+`;

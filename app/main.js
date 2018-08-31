@@ -16,7 +16,6 @@ const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
 const React = require('react');
 const ReactDOM = require('react-dom');
 const App = require('./components/App');
-const Auth = require('./components/auth/Auth');
 const DebugSettings = require('./components/DebugSettings');
 const Help = require('./components/base/Help');
 const Home = require('./components/base/Home');
@@ -54,7 +53,6 @@ const routes = (
   <BrowserRouter>
     <Switch>
       <Route path="/" exact component={Home} />
-      <Route path="/auth/token" component={Auth} />
       <Route path="/article/:slug/:id" component={Article} />
       <Route path="/debug-settings" component={DebugSettings} />
       <Route path="/help" component={Help} />

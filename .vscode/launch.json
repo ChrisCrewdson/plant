@@ -84,7 +84,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/.bin/jest",
       "args": [
-        "${workspaceRoot}/test/lib/render/plant.test.js", // replace this file with the file to focus
+        "${workspaceRoot}/test/lib/api/note-api-create-failures.test", // replace this file with the file to focus
         "-i",
         "--forceExit"
       ],
@@ -107,20 +107,6 @@
         "runtimeArgs": [
           "--inspect-brk",
           "${workspaceRoot}/node_modules/.bin/jest",
-          "--runInBand",
-          "--forceExit"
-        ],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
-        "sourceMaps": true
-      }, {
-        "name": "Focused Jest Test",
-        "type": "node",
-        "request": "launch",
-        "runtimeArgs": [
-          "--inspect-brk",
-          "${workspaceRoot}/node_modules/.bin/jest",
-          "${workspaceRoot}/test/app/reducers/plants.test.js", // replace this file with the file to focus
           "--runInBand",
           "--forceExit"
         ],

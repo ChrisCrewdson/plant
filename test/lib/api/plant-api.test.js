@@ -14,7 +14,7 @@ describe('plant-api', () => {
       title: 'Plant Title',
       price: 19.99,
       tags: ['north-east', 'citrus'],
-      locationId: data.user.locationIds[0]._id,
+      locationId: data.user.locationIds[0],
     });
   });
 
@@ -29,9 +29,9 @@ describe('plant-api', () => {
         url: '/api/plant',
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(401);
-      expect(response).toBeTruthy();
-      expect(response.error).toBe('Not Authenticated');
+      expect(response.status).toBe(401);
+      expect(httpMsg).toBeTruthy();
+      expect(httpMsg.error).toBe('Not Authenticated');
     },
   );
 
@@ -44,12 +44,12 @@ describe('plant-api', () => {
       url: '/api/plant',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    // response should look like:
+    // httpMsg should look like:
     // { title: [ 'Title can\'t be blank' ] }
     // ...and status should be 400
-    expect(httpMsg.statusCode).toBe(400);
-    expect(response).toBeTruthy();
-    expect(response.title).toBe('Title is too short (minimum is 1 characters)');
+    expect(response.status).toBe(400);
+    expect(httpMsg).toBeTruthy();
+    expect(httpMsg.title).toBe('Title is too short (minimum is 1 characters)');
   });
 
   test('should create a plant', async () => {
@@ -61,17 +61,17 @@ describe('plant-api', () => {
       url: '/api/plant',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    // response should look like:
+    // httpMsg should look like:
     // {  title: 'Plant Title',
     //    userId: '6d73133d02d14058ac5f86fa',
     //    _id: 'b19d854e0dc045feabd31b3b' }
-    expect(httpMsg.statusCode).toBe(200);
-    expect(response).toBeTruthy();
-    expect(response.title).toBe('Plant Title');
-    expect(response.userId).toBe(user._id);
-    expect(constants.mongoIdRE.test(response._id)).toBeTruthy();
+    expect(response.status).toBe(200);
+    expect(httpMsg).toBeTruthy();
+    expect(httpMsg.title).toBe('Plant Title');
+    expect(httpMsg.userId).toBe(user._id);
+    expect(constants.mongoIdRE.test(httpMsg._id)).toBeTruthy();
 
-    plantId = response._id;
+    plantId = httpMsg._id;
   });
 
   test('should retrieve the just created plant', async () => {
@@ -82,18 +82,18 @@ describe('plant-api', () => {
       url: `/api/plant/${plantId}`,
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    // response should look like:
+    // httpMsg should look like:
     // { _id: 'e5fc6fff0a8f48ad90636b3cea6e4f93',
     // title: 'Plant Title',
     // userId: '241ff27e28c7448fb22c4f6fb2580923'}
-    expect(httpMsg.statusCode).toBe(200);
-    expect(response).toBeTruthy();
-    expect(response.userId).toBeTruthy();
-    expect(response._id).toBe(plantId);
-    expect(response.title).toBe(initialPlant.title);
-    expect(response.notes).toBeTruthy();
-    expect(response.locationId).toBeTruthy();
-    expect(response.notes).toHaveLength(0);
+    expect(response.status).toBe(200);
+    expect(httpMsg).toBeTruthy();
+    expect(httpMsg.userId).toBeTruthy();
+    expect(httpMsg._id).toBe(plantId);
+    expect(httpMsg.title).toBe(initialPlant.title);
+    expect(httpMsg.notes).toBeTruthy();
+    expect(httpMsg.locationId).toBeTruthy();
+    expect(httpMsg.notes).toHaveLength(0);
   });
 
   test('should fail to retrieve a plant if the id does not exist', async () => {
@@ -104,9 +104,9 @@ describe('plant-api', () => {
       url: '/api/plant/does-not-exist',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    expect(httpMsg.statusCode).toBe(404);
-    expect(response).toBeTruthy();
-    expect(response.error).toBe('missing');
+    expect(response.status).toBe(404);
+    expect(httpMsg).toBeTruthy();
+    expect(httpMsg.error).toBe('missing');
   });
 
   let updatedPlant;
@@ -128,10 +128,10 @@ describe('plant-api', () => {
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    const { locationId } = response;
-    expect(httpMsg.statusCode).toBe(200);
+    const { locationId } = httpMsg;
+    expect(response.status).toBe(200);
     const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId });
-    expect(response).toEqual(expected);
+    expect(httpMsg).toEqual(expected);
   });
 
   test('should retrieve the just updated plant', async () => {
@@ -143,11 +143,11 @@ describe('plant-api', () => {
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    expect(httpMsg.statusCode).toBe(200);
-    expect(response).toBeTruthy();
+    expect(response.status).toBe(200);
+    expect(httpMsg).toBeTruthy();
 
-    expect(response.userId).toBeTruthy();
-    expect(response._id).toBe(plantId);
-    expect(response.title).toBe(updatedPlant.title);
+    expect(httpMsg.userId).toBeTruthy();
+    expect(httpMsg._id).toBe(plantId);
+    expect(httpMsg.title).toBe(updatedPlant.title);
   });
 });

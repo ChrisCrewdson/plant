@@ -3,6 +3,9 @@ const _ = require('lodash');
 const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
+const googleOAuth = require('../../../fixtures/google-oauth');
+
+const { id: googleId } = googleOAuth['www.googleapis.com'].result;
 
 describe('/lib/db/mongo/', () => {
   let userId;
@@ -14,8 +17,9 @@ describe('/lib/db/mongo/', () => {
     fbUser = data.user;
     userId = fbUser._id;
     expect(userId).toBeTruthy();
-    locationId = data.user.locationIds[0]._id;
+    [locationId] = data.user.locationIds;
     expect(typeof userId).toBe('string');
+    expect(locationId).toBeTruthy();
     Object.freeze(fbUser);
   });
 
@@ -31,17 +35,17 @@ describe('/lib/db/mongo/', () => {
         }
         // 2 here,
         // 2 in beforeAll(),
-        // 8 in helper.startServerAuthenticated from beforeAll.
+        // 6 in helper.startServerAuthenticated from beforeAll.
         // 8 in calls to logger
         // 8 in calls to lalog logger
-        expect.assertions(28);
+        expect.assertions(26);
       },
     );
 
     test('should fetch the user created in the before setup', async () => {
       const user = {
-        facebook: {
-          id: fbUser.facebook.id,
+        google: {
+          id: googleId,
         },
       };
       const body = await mongo.findOrCreateUser(user, global.loggerMock);
@@ -49,7 +53,12 @@ describe('/lib/db/mongo/', () => {
       expect(body._id).toBeTruthy();
       expect(constants.mongoIdRE.test(body._id)).toBeTruthy();
       expect(constants.mongoIdRE.test(body.locationIds[0]._id)).toBeTruthy();
-      expect(body).toEqual(fbUser);
+      delete body._id;
+      delete body.locationIds;
+      expect(body).toMatchSnapshot({
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      });
     });
 
     test('should fetch all users', async () => {

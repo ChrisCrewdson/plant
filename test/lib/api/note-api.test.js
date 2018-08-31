@@ -11,7 +11,7 @@ describe('note-api', () => {
     const data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
     userId = data.user._id;
-    locationId = data.user.locationIds[0]._id;
+    [locationId] = data.user.locationIds;
   });
 
   let initialPlant;
@@ -41,9 +41,9 @@ describe('note-api', () => {
         url: '/api/note',
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(401);
-      expect(response).toBeTruthy();
-      expect(response.error).toBe('Not Authenticated');
+      expect(response.status).toBe(401);
+      expect(httpMsg).toBeTruthy();
+      expect(httpMsg.error).toBe('Not Authenticated');
     });
 
     test('should fail server validation if plantIds are missing', async () => {
@@ -57,9 +57,9 @@ describe('note-api', () => {
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
       // response should look like:
       // { plantIds: [ 'Plant ids must be an array' ], note: [ 'Note can\'t be blank' ] }
-      expect(httpMsg.statusCode).toBe(400);
-      expect(response).toBeTruthy();
-      expect(response.plantIds).toBe('You must select at least 1 plant for this note.');
+      expect(response.status).toBe(400);
+      expect(httpMsg).toBeTruthy();
+      expect(httpMsg.plantIds).toBe('You must select at least 1 plant for this note.');
     });
   });
 
@@ -75,9 +75,9 @@ describe('note-api', () => {
       // logger.trace('options for note create', {reqOptions});
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
       // logger.trace('result of create note', {response});
-      const { note } = response;
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toBeTruthy();
+      const { note } = httpMsg;
+      expect(response.status).toBe(200);
+      expect(httpMsg).toBeTruthy();
       expect(note.note).toBeTruthy();
       expect(constants.mongoIdRE.test(note._id)).toBeTruthy();
 
@@ -93,18 +93,18 @@ describe('note-api', () => {
         url: `/api/plant/${plantId}`,
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      // response should look like:
+      // httpMsg should look like:
       // { _id: 'e5fc6fff0a8f48ad90636b3cea6e4f93',
       // title: 'Plant Title',
       // userId: '241ff27e28c7448fb22c4f6fb2580923'}
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toBeTruthy();
-      expect(response.userId).toBeTruthy();
-      expect(response._id).toBe(plantId);
-      expect(response.title).toBe(initialPlant.title);
-      expect(response.notes).toBeTruthy();
-      expect(response.notes).toHaveLength(1);
-      expect(constants.mongoIdRE.test(response.notes[0])).toBeTruthy();
+      expect(response.status).toBe(200);
+      expect(httpMsg).toBeTruthy();
+      expect(httpMsg.userId).toBeTruthy();
+      expect(httpMsg._id).toBe(plantId);
+      expect(httpMsg.title).toBe(initialPlant.title);
+      expect(httpMsg.notes).toBeTruthy();
+      expect(httpMsg.notes).toHaveLength(1);
+      expect(constants.mongoIdRE.test(httpMsg.notes[0])).toBeTruthy();
     });
 
     let updatedNote;
@@ -126,13 +126,13 @@ describe('note-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      // response should look like:
+      // httpMsg should look like:
       // { ok: 1, nModified: 1, n: 1 }
       // Mongo 2.x does not return nModified which is what Travis uses so do not check this
-      // logger.trace('*********** response:', {updatedNote, reqOptions, response});
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toBeTruthy();
-      expect(response.success).toBe(true);
+      // logger.trace('*********** httpMsg:', {updatedNote, reqOptions, httpMsg});
+      expect(response.status).toBe(200);
+      expect(httpMsg).toBeTruthy();
+      expect(httpMsg.success).toBe(true);
     });
 
     test(
@@ -146,19 +146,19 @@ describe('note-api', () => {
         };
 
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
-        expect(httpMsg.statusCode).toBe(200);
-        expect(response).toBeTruthy();
+        expect(response.status).toBe(200);
+        expect(httpMsg).toBeTruthy();
 
-        expect(response.userId).toBeTruthy();
-        expect(response._id).toBe(plantId);
-        expect(response.title).toBe(initialPlant.title);
+        expect(httpMsg.userId).toBeTruthy();
+        expect(httpMsg._id).toBe(plantId);
+        expect(httpMsg.title).toBe(initialPlant.title);
 
 
         // Check notes
-        expect(response.notes).toBeTruthy();
-        expect(response.notes).toHaveLength(1);
-        expect(response.notes[0]).toBe(noteId);
-        expect(constants.mongoIdRE.test(response.notes[0])).toBeTruthy();
+        expect(httpMsg.notes).toBeTruthy();
+        expect(httpMsg.notes).toHaveLength(1);
+        expect(httpMsg.notes[0]).toBe(noteId);
+        expect(constants.mongoIdRE.test(httpMsg.notes[0])).toBeTruthy();
       },
     );
 
@@ -173,8 +173,8 @@ describe('note-api', () => {
           url: '/api/notes',
         };
 
-        const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
-        expect(httpMsg.statusCode).toBe(200);
+        const { httpMsg: notes, response } = await helper.makeRequest(reqOptions);
+        expect(response.status).toBe(200);
 
         expect(notes).toBeTruthy();
         expect(notes).toHaveLength(1);
@@ -197,8 +197,8 @@ describe('note-api', () => {
           url: '/api/notes',
         };
 
-        const { httpMsg, response: notes } = await helper.makeRequest(reqOptions);
-        expect(httpMsg.statusCode).toBe(200);
+        const { httpMsg: notes, response } = await helper.makeRequest(reqOptions);
+        expect(response.status).toBe(200);
 
         expect(notes).toBeTruthy();
         expect(notes).toHaveLength(1);
@@ -219,7 +219,7 @@ describe('note-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      // response should look like:
+      // httpMsg should look like:
       // { lastErrorObject: { n: 1 },
       // value:
       // { _id: 'c3478867852c47529ddcc498',
@@ -229,9 +229,9 @@ describe('note-api', () => {
       //   userId: 'f5d12193ae674e7ab6d1e106' },
       // ok: 1 }
 
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toBeTruthy();
-      expect(response.success).toBe(true);
+      expect(response.status).toBe(200);
+      expect(httpMsg).toBeTruthy();
+      expect(httpMsg.success).toBe(true);
     });
 
     test('should confirm that the note has been deleted', async () => {
@@ -243,16 +243,16 @@ describe('note-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toBeTruthy();
+      expect(response.status).toBe(200);
+      expect(httpMsg).toBeTruthy();
 
-      expect(response.userId).toBeTruthy();
-      expect(response._id).toBe(plantId);
-      expect(response.title).toBe(initialPlant.title);
+      expect(httpMsg.userId).toBeTruthy();
+      expect(httpMsg._id).toBe(plantId);
+      expect(httpMsg.title).toBe(initialPlant.title);
 
 
       // Check that there are no notes
-      expect(response.notes).toHaveLength(0);
+      expect(httpMsg.notes).toHaveLength(0);
     });
   });
 
@@ -307,10 +307,10 @@ describe('note-api', () => {
         };
 
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
-        const { success } = response;
-        expect(httpMsg.statusCode).toBe(200);
+        const { success } = httpMsg;
+        expect(response.status).toBe(200);
         expect(success).toBe(true);
-        return response;
+        return httpMsg;
       }
 
       async function getNote(createdNote) {

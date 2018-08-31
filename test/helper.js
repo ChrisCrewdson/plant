@@ -1,20 +1,11 @@
 const _ = require('lodash');
-const request = require('request');
-const constants = require('../app/libs/constants');
+
+const nodeFetch = require('node-fetch');
+// fetch-cookie wraps nodeFetch and preserves cookies.
+const fetch = require('fetch-cookie/node-fetch')(nodeFetch);
+
 const mongo = require('../lib/db/mongo')();
-const { makeMongoId } = require('../app/libs/utils');
 
-let fakePassport;
-
-jest.mock('passport', () => {
-  // eslint-disable-next-line global-require
-  const FakePassport = require('./fake-passport');
-  const mockFakePassport = new FakePassport();
-  fakePassport = mockFakePassport;
-  return mockFakePassport;
-});
-
-// eslint-disable-next-line no-param-reassign, global-require
 const serverModule = require('../lib/server');
 
 const data = {};
@@ -32,37 +23,39 @@ function getUrl(url) {
   return `${'http'}://127.0.0.1:${port}${url}`;
 }
 
-let jwt;
+/**
+ * Is the method a PUT or a POST?
+ * @param {Object} options
+ * @param {String} options.method
+ */
+const isPutOrPost = (options) => {
+  const method = (options.method || '').toLowerCase();
+  return method === 'put' || method === 'post';
+};
+
 async function makeRequest(opts) {
-  const auth = opts.authenticate
-    ? { Authorization: `Bearer ${jwt}` }
-    : {};
+  // fetch is fetch-cookie which will manage the authenticated session cookie.
+  // nodeFetch is plain fetch that will not have a cookie.
+  const fetcher = opts.authenticate ? fetch : nodeFetch;
 
   const headers = Object.assign(
     {},
     opts.headers || {},
-    auth,
   );
 
-  const followRedirect = opts.followRedirect || false;
+  const redirect = opts.followRedirect ? 'follow' : 'manual';
 
-  const options = Object.assign(
-    {},
-    opts,
-    { url: getUrl(opts.url) },
-    { headers },
-    { followRedirect },
-  );
+  const url = getUrl(opts.url);
+  const options = Object.assign({}, opts, { headers, redirect });
+  if (isPutOrPost(options)) {
+    options.body = JSON.stringify(options.body);
+    options.headers = options.headers || {};
+    options.headers['Content-Type'] = 'application/json';
+  }
 
-  // cb will get (error, httpMsg, response);
-  return new Promise((resolve, reject) => {
-    request(options, (err, httpMsg, response) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve({ httpMsg, response });
-    });
-  });
+  const response = await fetcher(url, options);
+  const httpMsg = await (opts.text ? response.text() : response.json());
+  return { response, httpMsg };
 }
 
 async function startServerAuthenticated() {
@@ -76,62 +69,6 @@ async function startServerAuthenticated() {
     return Promise.all(promises);
   }
 
-  async function createUser() {
-    const fbUser = {
-      facebook: {
-        id: makeMongoId(),
-        gender: 'male',
-        link: 'https://www.facebook.com/app_scoped_user_id/1234567890123456/',
-        locale: 'en_US',
-        last_name: 'Smith', // eslint-disable-line camelcase
-        first_name: 'John', // eslint-disable-line camelcase
-        timezone: -7,
-        updated_time: '2015-01-29T23:11:04+0000', // eslint-disable-line camelcase
-        verified: true,
-      },
-      name: 'John Smith',
-      email: 'test@test.com',
-      createdAt: '2016-01-28T14:59:32.989Z',
-      updatedAt: '2016-01-28T14:59:32.989Z',
-    };
-
-    const user = await mongo.findOrCreateUser(fbUser, global.loggerMock);
-
-    expect(user).toBeTruthy();
-    expect(user._id).toBeTruthy();
-    expect(constants.mongoIdRE.test(user._id)).toBe(true);
-    expect(constants.mongoIdRE.test(user.locationIds[0]._id)).toBe(true);
-
-    const expectedUser = {
-      facebook: fbUser.facebook,
-      name: 'John Smith',
-      email: 'test@test.com',
-      createdAt: '2016-01-28T14:59:32.989Z',
-      updatedAt: '2016-01-28T14:59:32.989Z',
-      _id: user._id,
-      locationIds: [
-        {
-          _id: user.locationIds[0]._id,
-          createdBy: user._id,
-          members: {
-            [user._id]: 'owner',
-          },
-          stations: {},
-          title: 'John Smith Yard',
-          plantIds: [],
-        },
-      ],
-    };
-
-    expect(user).toEqual(expectedUser);
-
-    return user;
-  }
-
-  function createPassport(user) {
-    fakePassport.setUser(user);
-  }
-
   function createServer(server) {
     return server || serverModule;
   }
@@ -143,34 +80,54 @@ async function startServerAuthenticated() {
     return server(port); // returns a Promise
   }
 
-  async function authenticateUser() {
-    const { httpMsg } = await makeRequest({
-      url: '/auth/facebook/callback',
-    });
-    expect(httpMsg.headers).toBeTruthy();
-    expect(httpMsg.headers.location).toBeTruthy();
-    const parts = httpMsg.headers.location.split('=');
-    [, jwt] = parts; // 2nd element is jwt
-    // logger.trace('Test jwt:', {jwt});
-    expect(jwt).toBeTruthy();
-    // eslint-disable-next-line no-param-reassign
-    return fakePassport.getUserId();
-  }
+  const googleAuthCallback = async () => {
+    const path = '/auth/google/callback?code=testing-code';
+    const url = getUrl(path);
+    const options = { url, text: true, authenticate: true };
+    const { response } = await makeRequest(options);
+    expect(response.status).toBe(302);
+    const location = response.headers.get('location');
+    const expectedLocation = getUrl('/');
+    expect(location).toBe(expectedLocation);
+  };
 
   try {
     await emptyDatabase();
-    data.user = await createUser();
-    createPassport(data.user);
     data.port = port;
     data.server = createServer(data.server);
     data.app = await startServer(data.app, data.server, data.port);
-    data.userId = await authenticateUser();
+
+    await googleAuthCallback();
+
+    // Now, after the googleAuthCallback(), there should be a single document in the
+    // user collection in the DB. This is the test user.
+    const users = await mongo.getUserByQuery({
+      email: 'johnsmith@gmail.com',
+    });
+    expect(users).toBeInstanceOf(Array);
+    expect(users).toHaveLength(1);
+    const [user] = users;
+    expect(user._id).toBeTruthy();
+    data.userId = user._id.toString();
+
+    // Now get the user from the DB again but use the getUserById() method because
+    // this also adds the user's locations to the object. This is terrible and needs
+    // to be fixed!!
+    data.user = await mongo.getUserById(data.userId, global.loggerMock);
+
     return data;
   } catch (error) {
     throw error;
   }
 }
 
+/**
+ * Create a bunch of plants in the plant collection for testing
+ * @param {Number} numPlants - Number of plants to insert in plant collection for this user
+ * @param {String} userId - User Id of user to create plants for
+ * @param {String} locationId - Location Id at which to create the plants
+ * @returns {Promise}
+ */
 async function createPlants(numPlants, userId, locationId) {
   const plantTemplate = {
     title: 'Plant Title',
@@ -187,8 +144,8 @@ async function createPlants(numPlants, userId, locationId) {
       url: '/api/plant',
     };
 
-    const { httpMsg, response: plant } = await makeRequest(reqOptions);
-    expect(httpMsg.statusCode).toBe(200);
+    const { httpMsg: plant, response } = await makeRequest(reqOptions);
+    expect(response.status).toBe(200);
 
     expect(plant.title).toBeTruthy();
 
@@ -220,12 +177,12 @@ async function createNote(plantIds, noteOverride = {}) {
   };
 
   const { httpMsg, response } = await makeRequest(reqOptions);
-  expect(httpMsg.statusCode).toBe(200);
-  expect(response.success).toBe(true);
-  const { note } = response;
+  expect(response.status).toBe(200);
+  expect(httpMsg.success).toBe(true);
+  const { note } = httpMsg;
   expect(note._id).toBeTruthy();
 
-  return response;
+  return httpMsg;
 }
 
 module.exports = {

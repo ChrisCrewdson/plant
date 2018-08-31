@@ -12,13 +12,12 @@ describe('api', () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
-      json: true,
+      text: true,
       url: '/unknown',
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    expect(httpMsg.statusCode).toBe(404);
-    const docType = '<!DOCTYPE html>';
-    expect(response).toContain(docType);
+    expect(response.status).toBe(404);
+    expect(httpMsg).toMatchSnapshot();
   });
 });

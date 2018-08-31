@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/actions should create a logout failure 1`] = `
+Object {
+  "payload": undefined,
+  "type": "LOGOUT_FAILURE",
+}
+`;
+
+exports[`/app/actions should create a logout request 1`] = `
+Object {
+  "payload": undefined,
+  "type": "LOGOUT_REQUEST",
+}
+`;
+
+exports[`/app/actions should create a logout success 1`] = `
+Object {
+  "payload": undefined,
+  "type": "LOGOUT_SUCCESS",
+}
+`;

@@ -4,17 +4,19 @@ const actions = require('../../../app/actions');
 
 
 describe('/app/reducers', () => {
-  test('should reduce a logout action', () => {
-    const expected = {
-      interim: {},
-      locations: {},
-      notes: {},
-      plants: {},
-      user: {},
-      users: {},
-    };
-    const actual = rootReducer(seamless({}), actions.logout());
-    expect(actual).toEqual(expected);
+  test('should reduce a logout success', () => {
+    const actual = rootReducer(seamless({}), actions.logoutSuccess());
+    expect(actual).toMatchSnapshot();
+  });
+
+  test('should reduce a logout request', () => {
+    const actual = rootReducer(seamless({}), actions.logoutRequest());
+    expect(actual).toMatchSnapshot();
+  });
+
+  test('should reduce a logout failure', () => {
+    const actual = rootReducer(seamless({}), actions.logoutFailure());
+    expect(actual).toMatchSnapshot();
   });
 
   describe('sanity check all reducers', () => {

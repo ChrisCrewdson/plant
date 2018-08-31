@@ -11,7 +11,8 @@ describe('plants-api', () => {
     expect(data.user.locationIds).toBeTruthy();
     expect(data.user.locationIds.length).toBeTruthy();
     userId = data.user._id;
-    locationId = data.user.locationIds[0]._id;
+    [locationId] = data.user.locationIds;
+    expect(locationId).toBeTruthy();
   });
 
 
@@ -35,13 +36,13 @@ describe('plants-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toBeTruthy();
+      expect(response.status).toBe(200);
+      expect(httpMsg).toBeTruthy();
 
-      expect(response).toHaveLength(numPlants);
+      expect(httpMsg).toHaveLength(numPlants);
       // assert that all plants exist
       insertedPlants.forEach((plant) => {
-        const some = response.some(r => r._id === plant._id);
+        const some = httpMsg.some(r => r._id === plant._id);
         expect(some).toBeTruthy();
       });
     });
@@ -52,13 +53,13 @@ describe('plants-api', () => {
       const reqOptions = {
         method: 'GET',
         authenticate: false,
-        json: true,
+        text: true,
         url: '/api/plants',
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(404);
-      expect(response).toBeTruthy();
+      expect(response.status).toBe(404);
+      expect(httpMsg).toBeTruthy();
     });
 
     test(
@@ -67,12 +68,12 @@ describe('plants-api', () => {
         const reqOptions = {
           method: 'GET',
           authenticate: false,
-          json: true,
+          text: true,
           url: '/api/plants/does-not-exist',
         };
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
-        expect(httpMsg.statusCode).toBe(404);
-        expect(!response).toBeTruthy();
+        expect(response.status).toBe(404);
+        expect(!httpMsg).toBeTruthy();
       },
     );
   });

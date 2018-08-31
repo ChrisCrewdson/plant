@@ -2,34 +2,21 @@
 const actions = require('../../../app/actions');
 
 describe('/app/actions', () => {
-  test('should create a logout action', (done) => {
-    const expected = {
-      type: actions.LOGOUT,
-    };
-    const actual = actions.logout();
-    expect(actual).toEqual(expected);
+  test('should create a logout failure', (done) => {
+    const actual = actions.logoutFailure();
+    expect(actual).toMatchSnapshot();
     done();
   });
 
-  test('should create a login request action', (done) => {
-    const payload = { one: 1, two: 2 };
-    const expected = {
-      type: actions.LOGIN_REQUEST,
-      payload,
-    };
-    const actual = actions.loginRequest(payload);
-    expect(actual).toEqual(expected);
+  test('should create a logout request', (done) => {
+    const actual = actions.logoutRequest();
+    expect(actual).toMatchSnapshot();
     done();
   });
 
-  test('should create a login failure action', (done) => {
-    const payload = { one: 1, two: 2 };
-    const expected = {
-      type: actions.LOGIN_FAILURE,
-      payload,
-    };
-    const actual = actions.loginFailure(payload);
-    expect(actual).toEqual(expected);
+  test('should create a logout success', (done) => {
+    const actual = actions.logoutSuccess();
+    expect(actual).toMatchSnapshot();
     done();
   });
 
@@ -54,7 +41,6 @@ describe('/app/actions', () => {
       'EDIT_PLANT_CHANGE',
       'EDIT_PLANT_CLOSE',
       'EDIT_PLANT_OPEN',
-      'UPSERT_LOCATION_MEMBER',
       'LOAD_LOCATIONS_FAILURE',
       'LOAD_LOCATIONS_REQUEST',
       'LOAD_LOCATIONS_SUCCESS',
@@ -76,17 +62,17 @@ describe('/app/actions', () => {
       'LOAD_USERS_FAILURE',
       'LOAD_USERS_REQUEST',
       'LOAD_USERS_SUCCESS',
-      'LOGIN_FAILURE',
-      'LOGIN_REQUEST',
-      'LOGIN_SUCCESS',
-      'LOGOUT',
+      'LOGOUT_FAILURE',
+      'LOGOUT_REQUEST',
+      'LOGOUT_SUCCESS',
       'MODIFY_LOCATION_FAILURE',
       'MODIFY_LOCATION_REQUEST',
       'MODIFY_LOCATION_SUCCESS',
-      'UPSERT_LOCATION_WEATHER',
       'UPDATE_PLANT_FAILURE',
       'UPDATE_PLANT_REQUEST',
       'UPDATE_PLANT_SUCCESS',
+      'UPSERT_LOCATION_MEMBER',
+      'UPSERT_LOCATION_WEATHER',
       'UPSERT_NOTE_FAILURE',
       'UPSERT_NOTE_REQUEST',
       'UPSERT_NOTE_SUCCESS',
@@ -127,10 +113,9 @@ describe('/app/actions', () => {
       'loadUsersRequest',
       'loadUsersSuccess',
       'loadUserSuccess',
-      'loginFailure',
-      'loginRequest',
-      'loginSuccess',
-      'logout',
+      'logoutFailure',
+      'logoutRequest',
+      'logoutSuccess',
       'modifyLocationFailure',
       'modifyLocationRequest',
       'modifyLocationSuccess',

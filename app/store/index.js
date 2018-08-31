@@ -15,7 +15,8 @@ if (process.env.NODE_ENV !== 'production') {
 // Add the api to the pipeline/chain
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
-const store = createStoreWithMiddleware(reducers, seamless.from(window.__INITIAL_STATE__ || {}));
+const initialState = seamless.from(window.__INITIAL_STATE__ || {});
+const store = createStoreWithMiddleware(reducers, initialState);
 
 userSubscribe(store);
 

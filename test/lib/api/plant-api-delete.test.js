@@ -10,7 +10,7 @@ describe('plant-api-delete', () => {
     const data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
     userId = data.user._id;
-    locationId = data.user.locationIds[0]._id;
+    [locationId] = data.user.locationIds;
   });
 
   describe('simple plant deletion', () => {
@@ -24,8 +24,8 @@ describe('plant-api-delete', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(200);
-      expect(response).toEqual({ message: 'Deleted' });
+      expect(response.status).toBe(200);
+      expect(httpMsg).toEqual({ message: 'Deleted' });
     });
 
     test('should return a 404 if plant id does not exist', async () => {
@@ -37,8 +37,8 @@ describe('plant-api-delete', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(httpMsg.statusCode).toBe(404);
-      expect(response.message).toBe('Not Found');
+      expect(response.status).toBe(404);
+      expect(httpMsg.message).toBe('Not Found');
     });
   });
 
@@ -94,7 +94,7 @@ describe('plant-api-delete', () => {
         json: true,
         url: `/api/plant/${plants[0]._id}`,
       };
-      const { response: response4 } = await helper.makeRequest(reqOptions);
+      const { httpMsg: response4 } = await helper.makeRequest(reqOptions);
       expect(response4).toEqual({ message: 'Deleted' });
 
       // 4. Confirm that Note #1 is no longer in DB
@@ -109,7 +109,7 @@ describe('plant-api-delete', () => {
         url: `/api/plant/${plants[1]._id}`,
       };
 
-      const { response: plant } = await helper.makeRequest(reqOptions2);
+      const { httpMsg: plant } = await helper.makeRequest(reqOptions2);
       // expect(httpMsg.statusCode).toBe(200);
       expect(plant).toBeTruthy();
       expect(plant._id).toBe(plants[1]._id);

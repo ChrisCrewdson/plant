@@ -1,9 +1,27 @@
 const _ = require('lodash');
 const uuid = require('uuid');
 
-// TODO: Remove jsdom@11.11.0 as a dev-dependency when
-// https://github.com/facebook/jest/issues/6766#issuecomment-408379225
-// has been fixed.
+jest.setTimeout(60000); // 60 second timeout
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+const oauth2 = require('oauth');
+const googleOAuth = require('./fixtures/google-oauth');
+
+// eslint-disable-next-line operator-linebreak
+oauth2.OAuth2.prototype._executeRequest =
+  function _executeRequest(httpLibrary, options, postBody, callback) {
+    const { host } = options;
+    if (!host) {
+      throw new Error('Expecting host to be truthy');
+    }
+    const request = googleOAuth[host];
+    if (!request) {
+      throw new Error(`Expecting request to be truthy ${host}`);
+    }
+    callback(null, JSON.stringify(request.result));
+  };
+
+process.env.TESTING = true;
 
 const loggerMockFunction = (errObj, extra) => {
   if (!_.isObject(errObj)) {

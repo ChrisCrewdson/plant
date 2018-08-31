@@ -4,11 +4,11 @@
 const actions = require('../actions');
 const ajax = require('./ajax');
 
-function loginRequest(store, action) {
+function logoutRequest(store /* , action */) {
   const options = {
-    url: `/auth/with?code=${action.payload}`,
-    success: actions.loginSuccess,
-    failure: actions.loginFailure,
+    url: '/api/logout',
+    success: actions.logoutSuccess,
+    failure: actions.logoutFailure,
     beforeSend: () => {},
   };
   ajax(store, options);
@@ -299,7 +299,7 @@ const apis = {
   [actions.LOAD_UNLOADED_PLANTS_REQUEST]: loadUnloadedPlantsRequest,
   [actions.LOAD_USER_REQUEST]: loadUserRequest,
   [actions.LOAD_USERS_REQUEST]: loadUsersRequest,
-  [actions.LOGIN_REQUEST]: loginRequest,
+  [actions.LOGOUT_REQUEST]: logoutRequest,
   [actions.MODIFY_LOCATION_REQUEST]: modifyLocationRequest,
   [actions.UPDATE_PLANT_REQUEST]: updatePlant,
   [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequest,

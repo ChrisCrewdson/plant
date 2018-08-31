@@ -39,7 +39,7 @@ class Navbar extends React.Component {
 
   logout() {
     const { store } = this.context;
-    store.dispatch(actions.logout());
+    store.dispatch(actions.logoutRequest());
   }
 
   // When to show the "My Plants" menu and what action to take:
@@ -61,17 +61,19 @@ class Navbar extends React.Component {
       user,
     } = this.state || {};
 
-    const locationId = user.activeLocationId || '';
+    const locationId = user.activeLocationId
+      || (user.locationIds && user.locationIds.length && user.locationIds[0])
+      || '';
 
     if (!locationId) {
-      // console.warn('No default locationId found for user', user);
+      // console.warn('Navbar.makeMyPlantsMenu: No default locationId found for user:', user);
       return null;
     }
     const { store } = this.context;
     const { locations = {} } = store.getState();
     const location = locations[locationId];
     if (!location) {
-      // console.warn('Navbar.makeMyPlantsMenu no location', locationId);
+      // console.warn('Navbar.makeMyPlantsMenu no location. user, locations:', user, locations);
       return null;
     }
     const locationTitle = location.title || '...';

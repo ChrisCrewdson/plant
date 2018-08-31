@@ -2,23 +2,24 @@ const seamless = require('seamless-immutable').static;
 const { initialState } = require('../store/user');
 const actions = require('../actions');
 
-function loginRequest() {
+function logoutRequest() {
   return seamless.from({
-    status: 'fetching',
+    status: 'logout',
+    isLoggedIn: false,
   });
 }
 
-function loginSuccess(state, action) {
+function logoutSuccess(state, action) {
   return seamless.from(Object.assign(
     {}, {
-      status: 'success',
-      isLoggedIn: true,
+      status: 'logout',
+      isLoggedIn: false,
     },
     action.payload,
   ));
 }
 
-function loginFailure(state, action) {
+function logoutFailure(state, action) {
   return seamless.from(Object.assign(
     {}, {
       status: 'failed',
@@ -26,10 +27,6 @@ function loginFailure(state, action) {
     },
     action.payload,
   ));
-}
-
-function logout() {
-  return seamless.from({});
 }
 
 // The action.payload are the returned locations from the server.
@@ -66,10 +63,9 @@ function changeActiveLocationId(state, { payload }) {
 
 const reducers = {
   [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
-  [actions.LOGIN_FAILURE]: loginFailure,
-  [actions.LOGIN_REQUEST]: loginRequest,
-  [actions.LOGIN_SUCCESS]: loginSuccess,
-  [actions.LOGOUT]: logout,
+  [actions.LOGOUT_FAILURE]: logoutFailure,
+  [actions.LOGOUT_REQUEST]: logoutRequest,
+  [actions.LOGOUT_SUCCESS]: logoutSuccess,
   [actions.CHANGE_ACTIVE_LOCATION_ID]: changeActiveLocationId,
 };
 

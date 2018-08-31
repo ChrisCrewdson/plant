@@ -9,7 +9,7 @@ describe('lib/render/plant', () => {
 
   beforeAll(async () => {
     const { userId } = data;
-    const locationId = data.user.locationIds[0]._id;
+    const [locationId] = data.user.locationIds;
     // 1. Create 2 plants
     const plants = await helper.createPlants(1, userId, locationId);
     expect(plants).toHaveLength(1);
@@ -33,13 +33,13 @@ describe('lib/render/plant', () => {
     const reqOptions = {
       method: 'GET',
       authenticate: false,
-      json: true,
+      text: true,
       url: `/plant/slug/${plantId}?noteid=${noteId}`,
     };
 
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
-    expect(httpMsg.statusCode).toBe(200);
+    expect(response.status).toBe(200);
     const docType = '<!DOCTYPE html>';
-    expect(response).toContain(docType);
+    expect(httpMsg).toContain(docType);
   });
 });

@@ -10,32 +10,25 @@ function checkReducer(actionName, state, payload) {
 }
 
 describe('/app/reducers/user', () => {
-  test('should reduce a logout action', () => {
+  test('should reduce a logout request', () => {
     const state = seamless.from({});
     const payload = {};
 
-    checkReducer('logout', state, payload);
+    checkReducer('logoutRequest', state, payload);
   });
 
-  test('should reduce a login request', () => {
+  test('should reduce a logout success', () => {
     const state = seamless.from({});
-    const payload = { one: 1, two: 2 };
+    const payload = {};
 
-    checkReducer('loginRequest', state, payload);
+    checkReducer('logoutSuccess', state, payload);
   });
 
-  test('should reduce a login success', () => {
+  test('should reduce a logout failure', () => {
     const state = seamless.from({});
-    const payload = { one: 1, two: 2 };
+    const payload = {};
 
-    checkReducer('loginSuccess', state, payload);
-  });
-
-  test('should reduce a login failure', () => {
-    const state = seamless.from({});
-    const payload = { one: 1, two: 2 };
-
-    checkReducer('loginFailure', state, payload);
+    checkReducer('logoutFailure', state, payload);
   });
 
   test('should reduce a loadLocationsSuccess', () => {

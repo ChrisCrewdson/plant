@@ -1,13 +1,5 @@
 const isFunction = require('lodash/isFunction');
 const $ = require('jquery');
-const getIn = require('lodash/get');
-
-function setJwtHeader(store, request) {
-  const jwt = getIn(store.getState(), ['user', 'jwt']);
-  if (jwt) {
-    request.setRequestHeader('Authorization', `Bearer ${jwt}`);
-  }
-}
 
 function jqueryAjax(options) {
   return $.ajax(options);
@@ -36,7 +28,7 @@ module.exports = (store, options) => {
 
   const ajaxOptions = {
     type: options.type || 'GET',
-    beforeSend: options.beforeSend || setJwtHeader.bind(null, store),
+    beforeSend: options.beforeSend,
     url: options.url,
     // Success: Function( Anything data, String textStatus, jqXHR jqXHR )
     success: (result) => {

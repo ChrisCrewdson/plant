@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/reducers should reduce a logout failure 1`] = `
+Object {
+  "interim": Object {},
+  "locations": Object {},
+  "notes": Object {},
+  "plants": Object {},
+  "user": Object {
+    "isLoggedIn": false,
+    "status": "failed",
+  },
+  "users": Object {},
+}
+`;
+
+exports[`/app/reducers should reduce a logout request 1`] = `
+Object {
+  "interim": Object {},
+  "locations": Object {},
+  "notes": Object {},
+  "plants": Object {},
+  "user": Object {
+    "isLoggedIn": false,
+    "status": "logout",
+  },
+  "users": Object {},
+}
+`;
+
+exports[`/app/reducers should reduce a logout success 1`] = `
+Object {
+  "interim": Object {},
+  "locations": Object {},
+  "notes": Object {},
+  "plants": Object {},
+  "user": Object {
+    "isLoggedIn": false,
+    "status": "logout",
+  },
+  "users": Object {},
+}
+`;

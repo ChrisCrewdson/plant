@@ -28,31 +28,26 @@ Object {
 }
 `;
 
-exports[`/app/reducers/user should reduce a login failure 1`] = `
+exports[`/app/reducers/user should reduce a logout failure 1`] = `
 Object {
   "isLoggedIn": false,
-  "one": 1,
   "status": "failed",
-  "two": 2,
 }
 `;
 
-exports[`/app/reducers/user should reduce a login request 1`] = `
+exports[`/app/reducers/user should reduce a logout request 1`] = `
 Object {
-  "status": "fetching",
+  "isLoggedIn": false,
+  "status": "logout",
 }
 `;
 
-exports[`/app/reducers/user should reduce a login success 1`] = `
+exports[`/app/reducers/user should reduce a logout success 1`] = `
 Object {
-  "isLoggedIn": true,
-  "one": 1,
-  "status": "success",
-  "two": 2,
+  "isLoggedIn": false,
+  "status": "logout",
 }
 `;
-
-exports[`/app/reducers/user should reduce a logout action 1`] = `Object {}`;
 
 exports[`/app/reducers/user should reduce a missing location 1`] = `
 Object {
