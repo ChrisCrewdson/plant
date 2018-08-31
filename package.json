@@ -7,7 +7,7 @@
     "@passport-next/passport": "0.5.0",
     "@passport-next/passport-facebook": "2.5.0",
     "@passport-next/passport-google-oauth2": "0.2.0",
-    "aws-sdk": "2.306.0",
+    "aws-sdk": "2.307.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.5",
