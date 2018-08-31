@@ -57,8 +57,17 @@ const actionList = [
   'UPSERT_NOTE_SUCCESS',
 ];
 
+/**
+ * Given a type, will create a method that will return the payload and type as an object
+ * @param {String} type - The type of the action - element from actionList array
+ * @returns {Function}
+ */
 const createMethod = type => payload => ({ type, payload });
 
+/**
+ * Change a string into proper case
+ * @param {String} text - a string to turn into proper case.
+ */
 const properCase = text => text[0].toUpperCase() + text.slice(1).toLowerCase();
 
 const actionMap = actionList.reduce((acc, action) => {
