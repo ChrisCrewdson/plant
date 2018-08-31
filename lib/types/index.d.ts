@@ -1,5 +1,4 @@
 // Definitions file for Plant Project
-/// <reference types="express" />
 
 interface Logger {
   trace: Function;
@@ -12,6 +11,8 @@ interface Logger {
   timeEnd: Function;
 }
 
-interface PlantReq extends Express.Request {
-  logger: Logger;
+declare namespace Express {
+  export interface Request {
+    logger: Logger;
+  }
 }
