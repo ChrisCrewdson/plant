@@ -11,8 +11,12 @@ const actions = require('../../actions');
 const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
 class NoteAssocPlant extends React.Component {
-  constructor() {
-    super();
+  /**
+   * Navbar constructor
+   * @param {NoteAssocPlantProps} props
+   */
+  constructor(props) {
+    super(props);
     this.state = {
       expanded: false,
       filter: '',
@@ -22,10 +26,19 @@ class NoteAssocPlant extends React.Component {
     this.changeHandler = this.changeHandler.bind(this);
   }
 
+  /**
+   * Change Handler
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   */
   changeHandler(e) {
     return this.setState({ filter: e.target.value.toLowerCase() });
   }
 
+  /**
+   * Toggles the selected state for the button for an associated plant
+   * @param {String} plantId
+   * @memberof NoteAssocPlant
+   */
   toggle(plantId) {
     const { plantIds: propPlantIds, dispatch } = this.props;
     const plantIds = propPlantIds.indexOf(plantId) >= 0
@@ -57,6 +70,14 @@ class NoteAssocPlant extends React.Component {
     );
   }
 
+  /**
+   * Render Plant Buttons
+   * @param {Array<String>} plantIds
+   * @param {Object} plants
+   * @param {Boolean} selected
+   * @returns {Array<> | null}
+   * @memberof NoteAssocPlant
+   */
   renderPlantButtons(plantIds, plants, selected) {
     return plantIds.map((plantId) => {
       const plant = plants[plantId];

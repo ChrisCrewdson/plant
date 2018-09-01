@@ -13,8 +13,12 @@ class Navbar extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor() {
-    super();
+  /**
+   * Navbar constructor
+   * @param {NavbarProps} props
+   */
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
     this.logout = this.logout.bind(this);
   }
@@ -52,13 +56,17 @@ class Navbar extends React.Component {
   // User has multiple locations: "My Plants" links to /locations/user-slug/user-id
   //   (Allows user to pick a location)
   //   (Just put a placeholder here for now)
+  /**
+   * May My Plants Menu
+   * @param {Boolean} loggedIn
+   */
   makeMyPlantsMenu(loggedIn) {
     if (!loggedIn) {
       return null;
     }
 
     const {
-      user,
+      user = {},
     } = this.state || {};
 
     const locationId = user.activeLocationId
@@ -107,8 +115,8 @@ class Navbar extends React.Component {
 
   render() {
     const {
-      user,
-      interimMap,
+      user = {},
+      interimMap = {},
     } = this.state || {};
     const displayName = user.name || '';
     const { store } = this.context;

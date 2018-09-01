@@ -57,7 +57,7 @@ class Home extends React.Component {
             <Link
               to="/users"
             >
-              {'...exlore Farmers and Gardeners...'}
+              {'...explore Farmers and Gardeners...'}
             </Link>
           </section>
           )
@@ -68,7 +68,7 @@ class Home extends React.Component {
             <Link
               to="/locations"
             >
-              {'...exlore Orchards, Gardens, Yards and Farms...'}
+              {'...explore Orchards, Gardens, Yards and Farms...'}
             </Link>
           </section>
           )
