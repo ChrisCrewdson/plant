@@ -2,41 +2,6 @@ const seamless = require('seamless-immutable').static;
 const authHelper = require('../../../app/libs/auth-helper');
 
 describe('/app/libs/auth-helper', () => {
-  describe('isOwner', () => {
-    test('should return true with matching userIds', () => {
-      const store = {
-        getState: () => ({ user: { jwt: true, _id: 'u-1' } }),
-      };
-      const obj = {
-        userId: 'u-1',
-      };
-      const owner = authHelper.isOwner(obj, store);
-      expect(owner).toBe(true);
-    });
-
-    test('should return true with non-matching userIds and missing _id', () => {
-      const store = {
-        getState: () => ({ user: { jwt: true, _id: 'u-2' } }),
-      };
-      const obj = {
-        userId: 'u-1',
-      };
-      const owner = authHelper.isOwner(obj, store);
-      expect(owner).toBe(true);
-    });
-
-    test('should return false if no user object on store', () => {
-      const store = {
-        getState: () => ({ }),
-      };
-      const obj = {
-        userId: 'u-1',
-      };
-      const owner = authHelper.isOwner(obj, store);
-      expect(owner).toBe(false);
-    });
-  });
-
   describe('canEdit', () => {
     test('should return false if loggedInUserId is falsy', () => {
       expect(authHelper.canEdit()).toBe(false);
