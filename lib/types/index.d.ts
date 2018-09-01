@@ -14,5 +14,8 @@ interface Logger {
 declare namespace Express {
   export interface Request {
     logger: Logger;
+    user?: {
+      _id: string;
+    };
   }
 }
