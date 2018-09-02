@@ -29,7 +29,12 @@ function logoutFailure(state, action) {
   ));
 }
 
-// The action.payload are the returned locations from the server.
+/**
+ * Load Location Success is called after a response from server.
+ * @param {UserState} state
+ * @param {Object} action
+ * @param {Array} action.payload - returned locations from the server
+ */
 function loadLocationsSuccess(state, action) {
   const { payload: locations = [] } = action;
   if (state.isLoggedIn && !state.activeLocationId) {
@@ -50,11 +55,13 @@ function loadLocationsSuccess(state, action) {
 
 /**
  * Change the active location id
- * @param {ImmutableJS} state - existing immutable state
- * @param {object} action - object with {payload: { _id: <mongo-id>}}
+ * @param {UserState} state - existing user state
+ * @param {Object} action - object with {payload: { _id: <mongo-id>}}
+ * @param {Object} action.payload - { _id: <mongo-id>}
+ * @param {String} action.payload._id - mongo-id
  */
 function changeActiveLocationId(state, { payload }) {
-  const { _id } = payload || {};
+  const { _id = '' } = payload || {};
   if (!_id) {
     return state; // should we remove activeLocationId?
   }
