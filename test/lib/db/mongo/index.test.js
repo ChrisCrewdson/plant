@@ -31,7 +31,7 @@ describe('/lib/db/mongo/', () => {
           await mongo.findOrCreateUser(null, global.loggerMock);
         } catch (err) {
           expect(err).toBeTruthy();
-          expect(err.message).toBe('No facebook.id or google.id:');
+          expect(err.message).toBe('No facebook.id or google.id:\nnull');
         }
         // 2 here,
         // 2 in beforeAll(),
