@@ -18,7 +18,8 @@ declare namespace Express {
       _id: String;
     };
     files?: Array<Multer.File>;
-    logout?: Function;
+    logout: Function;
+    logIn: Function;
   }
 }
 

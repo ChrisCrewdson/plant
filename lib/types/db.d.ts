@@ -10,6 +10,7 @@
 
 interface DbLocation {
   _id: string|import('mongodb').ObjectID;
+  createdBy: string|import('mongodb').ObjectID;
 }
 
 interface DbNoteImageSize {
