@@ -20,6 +20,7 @@ declare namespace Express {
     files?: Array<Multer.File>;
     logout: Function;
     logIn: Function;
+    isAuthenticated?: Function;
   }
 }
 
