@@ -75,14 +75,14 @@ function transform(attributes) {
   // If any amounts are preceded by a $ sign then trim that.
   if (attributes.price && typeof attributes.price === 'string') {
     // eslint-disable-next-line no-param-reassign
-    attributes.price = parseFloat(trim(attributes.price, '$'), 10);
+    attributes.price = parseFloat(trim(attributes.price, '$'));
   }
 
   if (attributes.loc) {
     // eslint-disable-next-line no-param-reassign
-    attributes.loc.coordinates[0] = parseFloat(attributes.loc.coordinates[0], 10);
+    attributes.loc.coordinates[0] = parseFloat(attributes.loc.coordinates[0]);
     // eslint-disable-next-line no-param-reassign
-    attributes.loc.coordinates[1] = parseFloat(attributes.loc.coordinates[1], 10);
+    attributes.loc.coordinates[1] = parseFloat(attributes.loc.coordinates[1]);
   }
 
   return attributes;

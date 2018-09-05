@@ -22,6 +22,11 @@ function makeMongoId() {
   return new ObjectID().toString();
 }
 
+/**
+ * Make a slug from text
+ * @param {string} text
+ * @returns {string}
+ */
 function makeSlug(text) {
   if (!text) {
     // console.warn('text is falsey in makeSlug:', text);
@@ -32,27 +37,44 @@ function makeSlug(text) {
   return slug(lower.replace(/[/()]/g, ' '));
 }
 
+/**
+ * Make a url with a trailing id
+ * @param {string} first - first part of path
+ * @param {object} options
+ * @param {string} options.title
+ * @param {string} options._id
+ * @returns {string}
+ */
 function makeUrl(first, { title, _id }) {
   return `/${first}/${makeSlug(title)}/${_id}`;
 }
 
 /**
  * Make a /location/location-name-slug/id url from location object
- * @param {Object} location - an Object
+ * @param {object} location - an Object
+ * @param {string} location.title
+ * @param {string} location._id
  * @returns {string} - a url
  */
 function makeLocationUrl(location) {
   return makeUrl('location', location);
 }
 
+/**
+ * Make a /location/location-name-slug/id url from location object
+ * @param {object} location - an Object
+ * @param {string} location.title
+ * @param {string} location._id
+ * @returns {string} - a url
+ */
 function makeLayoutUrl(location) {
   return makeUrl('layout', location);
 }
 
 /**
  * Convert a date like object to an Integer
- * @param {object} date - could be object, string or Integer
- * @returns {Integer} - a date in the form YYYYMMDD
+ * @param {import('moment').Moment|Date|string|number} date
+ * @returns {number} - a date in the form YYYYMMDD
  */
 function dateToInt(date) {
   if (moment.isMoment(date)) {
@@ -70,6 +92,11 @@ function dateToInt(date) {
   throw new Error(`dateToInt(${date})`);
 }
 
+/**
+ * Convert a number to a Date
+ * @param {number} date
+ * @returns {Date}
+ */
 function intToDate(date) {
   const year = Math.round(date / 10000);
   const month = Math.round((date - (year * 10000)) / 100);
@@ -77,10 +104,20 @@ function intToDate(date) {
   return new Date(year, month - 1, day);
 }
 
+/**
+ * Convert number to a Moment object
+ * @param {number} date
+ * @returns {import('moment').Moment}
+ */
 function intToMoment(date) {
   return moment(intToDate(date));
 }
 
+/**
+ * Convert number date to string date
+ * @param {number} date
+ * @returns {string}
+ */
 function intToString(date) {
   return intToMoment(date).format('MM/DD/YYYY');
 }
@@ -107,7 +144,7 @@ function plantFromBody(body) {
 
 /**
  * Filters the plantIds array based on filter
- * @param {array} plantIds - original plantIds to filter
+ * @param {Array<string>} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
  * @returns {array} - an array of filtered plantIds
@@ -128,7 +165,7 @@ function filterPlants(plantIds, plants, filter) {
  * Checks to see if an array of strings is already sorted by the
  * prop provided.
  * @param {String} prop - the property in the object to sort by
- * @param {Array} itemIds - an array of Ids
+ * @param {Array<string>} itemIds - an array of Ids
  * @param {Object} items - a object that has ids as props
  * @returns {Boolean} - true if already sorted otherwise false
  */
@@ -154,8 +191,8 @@ function alreadySorted(prop, itemIds, items) {
 
 /**
  * Sort the itemIds based on the value of the prop parameter.
- * @param {String} prop - the name of the property from the items object that's being sorted
- * @param {Array} itemIds - array of MongoId strings
+ * @param {string} prop - the name of the property from the items object that's being sorted
+ * @param {Array<string>} itemIds - array of MongoId strings
  * @param {Object} items - an object with MongoIds as keys. The values are objects.
  * @returns {array} - an immutable array of sorted itemIds
  */
@@ -169,7 +206,12 @@ function sortItems(prop, itemIds, items) {
     return itemIds;
   }
 
-  return seamless.from(seamless.asMutable(itemIds).sort((a, b) => {
+  /**
+   * Sort method
+   * @param {string} a
+   * @param {string} b
+   */
+  const sorter = (a, b) => {
     const itemA = items[a];
     const itemB = items[b];
     if (itemA && itemB) {
@@ -188,14 +230,16 @@ function sortItems(prop, itemIds, items) {
       return -1;
     }
     return 1;
-  }));
+  };
+
+  return seamless.from(seamless.asMutable(itemIds).sort(sorter));
 }
 
 /**
  * Sort the noteIds based on the date property.
- * @param {Array} noteIds - array of MongoId strings
+ * @param {Array<string>} noteIds - array of MongoId strings
  * @param {Object} notes - an object with MongoIds as keys. The values are note objects.
- * @returns {array} - an immutable array of sorted noteIds
+ * @returns {Array<string>} - an immutable array of sorted noteIds
  */
 function sortNotes(noteIds, notes) {
   // TODO: Memoize this method
@@ -204,9 +248,9 @@ function sortNotes(noteIds, notes) {
 
 /**
  * Sorts the plantIds based on the plant's title
- * @param {array} plantIds - original plantIds to filter
+ * @param {Array<string>} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
- * @returns {array} - an immutable array of sorted plantIds
+ * @returns {Array<string>} - an immutable array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
   // TODO: Memoize this method
@@ -215,10 +259,10 @@ function sortPlants(plantIds, plants) {
 
 /**
  * Filters the plantIds array and sorts based on the plant's title
- * @param {array} plantIds - original plantIds to filter
+ * @param {Array<string>} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
- * @returns {array} - an array of sorted and filtered plantIds
+ * @returns {Array<string>} - an array of sorted and filtered plantIds
  */
 function filterSortPlants(plantIds, plants, filter) {
   const filteredPlantIds = filterPlants(plantIds, plants, filter);
@@ -226,6 +270,11 @@ function filterSortPlants(plantIds, plants, filter) {
   return sortPlants(filteredPlantIds, plants);
 }
 
+/**
+ * Plant stats
+ * @param {Array<string>} plantIds
+ * @param {object} plants
+ */
 function plantStats(plantIds, plants) {
   return {
     total: plantIds.length,
@@ -252,20 +301,28 @@ function transformErrors(errors) {
   }, {});
 }
 
+/**
+ * Tests to see if JS runtime (window) supports Geo Location
+ */
 function hasGeo() {
   return !!(window && window.navigator && window.navigator.geolocation);
 }
 
-function getGeo(options, cb) {
+/**
+ * Gets the current geo location
+ * @param {object} optionsParam
+ * @param {Function} cb
+ * @returns
+ */
+function getGeo(optionsParam, cb) {
   if (!hasGeo()) {
     return cb('This device does not have geolocation available');
   }
 
-  // eslint-disable-next-line no-param-reassign
-  options = Object.assign({}, {
+  const options = Object.assign({}, {
     enableHighAccuracy: true,
     timeout: 30000, // 30 seconds
-  }, options);
+  }, optionsParam);
 
   return window.navigator.geolocation.getCurrentPosition(
     (position) => {
@@ -324,6 +381,17 @@ function rebaseLocations(plants) {
   }));
 }
 
+/**
+ * @typedef MetaMetric
+ * @property {string} key
+ * @property {string} label
+ * @property {string} placeholder
+ * @property {string} type
+ */
+
+/**
+  * @type {Array<MetaMetric>}
+  */
 const metaMetrics = seamless.from([{
   key: 'height',
   label: 'Height (inches only)', // For InputCombo
@@ -409,10 +477,10 @@ function noteFromBody(body) {
             if (body.metrics[key].includes(' ')) {
               const parts = body.metrics[key].split(' ');
               // eslint-disable-next-line no-param-reassign
-              body.metrics[key] = (parseFloat(parts[0], 10) * 12) + parseFloat(parts[1], 10);
+              body.metrics[key] = (parseFloat(parts[0]) * 12) + parseFloat(parts[1]);
             } else {
               // eslint-disable-next-line no-param-reassign
-              body.metrics[key] = parseFloat(body.metrics[key], 10);
+              body.metrics[key] = parseFloat(body.metrics[key]);
             }
             break;
           /* istanbul ignore next */
@@ -445,7 +513,7 @@ function noteFromBody(body) {
 /**
  * Given a key returns the metaMetric
  * @param {string} key - the key (metric e.g. 'height' or 'blossomStart')
- * @returns {Immutable} - the metaMetric for that key
+ * @returns {MetaMetric|undefined} - the metaMetric for that key
  */
 function metaMetricsGetByKey(key) {
   return metaMetrics.find(value => value.key === key);
