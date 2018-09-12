@@ -4,7 +4,7 @@
     "url": "https://github.com/guyellis/plant/issues"
   },
   "dependencies": {
-    "@passport-next/passport": "1.0.0",
+    "@passport-next/passport": "1.0.1",
     "@passport-next/passport-facebook": "2.5.0",
     "@passport-next/passport-google-oauth2": "0.2.0",
     "aws-sdk": "2.312.0",
