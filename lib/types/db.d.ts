@@ -22,7 +22,7 @@ interface DbNoteImage {
   id: string;
   ext: string;
   originalname: string;
-  size: Number; // file size in bytes
+  size: number; // file size in bytes
   sizes: Array<DbNoteImageSize>;
 }
 
@@ -31,10 +31,19 @@ interface DbNoteMetric {
 }
 
 interface DbNote {
-  _id: string|import('mongodb').ObjectID;
-  plantIds: Array<string|import('mongodb').ObjectID>;
-  date: Number;
-  userId: string|import('mongodb').ObjectID;
+  _id: import('mongodb').ObjectID;
+  plantIds: Array<import('mongodb').ObjectID>;
+  date: number;
+  userId: import('mongodb').ObjectID;
+  images: Array<DbNoteImage>;
+  metrics: DbNoteMetric;
+}
+
+interface BizNote {
+  _id: string;
+  plantIds: Array<string>;
+  date: number;
+  userId: string;
   images: Array<DbNoteImage>;
   metrics: DbNoteMetric;
 }
@@ -47,7 +56,15 @@ interface DbPlant {
   _id: string|import('mongodb').ObjectID;
   plantIds: Array<string|import('mongodb').ObjectID>;
   locationId: string|import('mongodb').ObjectID;
-  date: Number;
+  date: number;
   userId: string|import('mongodb').ObjectID;
 }
 
+interface BizPlant {
+  _id: string;
+  plantIds: Array<string>;
+  locationId: string;
+  date: number;
+  userId: string;
+  notes: Array<string>;
+}
