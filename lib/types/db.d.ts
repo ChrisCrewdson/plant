@@ -8,9 +8,28 @@
 // the business layer.
 // Example: DbNote and BizNote
 
+interface DbLocCoords {
+  0: number;
+  1: number;
+}
+
+interface DbLoc {
+  type: string; // e.g. "Point" - is this the only value
+  coordinates: DbLocCoords;
+}
+
+interface DbLocationStationObj {
+  name: string;
+  enabled: boolean;
+}
+
 interface DbLocation {
-  _id: string|import('mongodb').ObjectID;
-  createdBy: string|import('mongodb').ObjectID;
+  _id: import('mongodb').ObjectID;
+  createdBy: import('mongodb').ObjectID;
+  title: string;
+  loc?: DbLoc;
+  members: object;
+  stations?: object;
 }
 
 interface DbNoteImageSize {
@@ -53,18 +72,76 @@ interface DbNoteWithPlants extends DbNote {
 }
 
 interface DbPlant {
-  _id: string|import('mongodb').ObjectID;
-  plantIds: Array<string|import('mongodb').ObjectID>;
-  locationId: string|import('mongodb').ObjectID;
-  date: number;
-  userId: string|import('mongodb').ObjectID;
+  _id: import('mongodb').ObjectID;
+  botanicalName?: string;
+  loc?: DbLoc;
+  locationId: import('mongodb').ObjectID;
+  plantedDate?: number; // YYYYMMDD
+  price?: number;
+  purchaseDate?: number; // YYYYMMDD
+  terminatedReason?: string; // TODO: One of "died"...
+  title: string;
+  userId: import('mongodb').ObjectID;
 }
 
 interface BizPlant {
   _id: string;
-  plantIds: Array<string>;
+  botanicalName?: string;
+  loc?: DbLoc;
   locationId: string;
-  date: number;
+  plantedDate?: number; // YYYYMMDD
+  price?: number;
+  purchaseDate?: number; // YYYYMMDD
+  terminatedReason?: string; // TODO: One of "died"...
+  title: string;
   userId: string;
-  notes: Array<string>;
+}
+
+interface DbUserFacebook {
+  first_name: string;
+  gender: string;
+  id: string;
+  last_name: string;
+  link: string;
+  locale: string;
+  timezone: number; // offset from UTC
+  updated_time: string;
+  verified: boolean;
+}
+
+interface DbUserGoogle {
+  circledByCount: number;
+  displayName: string;
+  domain: string;
+  emails: Array<object>;
+  etag: string;
+  gender: string;
+  id: string;
+  image: object;
+  isPlusUser: boolean;
+  kind: string;
+  name: object;
+  objectType: string;
+  url: string;
+  verified: boolean;
+}
+
+interface DbUser {
+  _id: import('mongodb').ObjectID;
+  createdAt: Date;
+  email?: string
+  facebook?: DbUserFacebook;
+  google?: DbUserGoogle;
+  name?: string;
+  updatedAt: Date;
+}
+
+interface BizUser {
+  _id: string;
+  createdAt: Date;
+  email?: string
+  facebook?: DbUserFacebook;
+  google?: DbUserGoogle;
+  name?: string;
+  updatedAt: Date;
 }
