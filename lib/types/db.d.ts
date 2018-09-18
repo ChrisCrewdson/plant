@@ -23,13 +23,30 @@ interface DbLocationStationObj {
   enabled: boolean;
 }
 
+interface DbLocationStations {
+  [key: string]: DbLocationStationObj
+}
+
+interface DbLocationMembers {
+  [key: string]: Role;
+}
+
 interface DbLocation {
   _id: import('mongodb').ObjectID;
   createdBy: import('mongodb').ObjectID;
-  title: string;
   loc?: DbLoc;
-  members: object;
-  stations?: object;
+  members: DbLocationMembers;
+  stations?: DbLocationStations;
+  title: string;
+}
+
+interface BizLocation {
+  _id?: string; // Only ? before creating. Do we need another interface to express the created one?
+  createdBy: string;
+  loc?: DbLoc;
+  members: DbLocationMembers;
+  stations?: DbLocationStations;
+  title: string;
 }
 
 interface DbNoteImageSize {
@@ -144,4 +161,5 @@ interface BizUser {
   google?: DbUserGoogle;
   name?: string;
   updatedAt: Date;
+  locationIds?: Array<string>;
 }
