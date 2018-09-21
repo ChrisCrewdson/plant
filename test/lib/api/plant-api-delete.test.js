@@ -99,7 +99,7 @@ describe('plant-api-delete', () => {
 
       // 4. Confirm that Note #1 is no longer in DB
       const result2 = await mongo.getNoteById(notes[0]._id, global.loggerMock);
-      expect(!result2).toBeTruthy();
+      expect(result2).toBeUndefined();
 
       // 5. Retrieve plant #2 and confirm that both notes are attached.
       const reqOptions2 = {
@@ -111,7 +111,7 @@ describe('plant-api-delete', () => {
 
       const { httpMsg: plant } = await helper.makeRequest(reqOptions2);
       // expect(httpMsg.statusCode).toBe(200);
-      expect(plant).toBeTruthy();
+      expect(plant).toBeInstanceOf(Object);
       expect(plant._id).toBe(plants[1]._id);
       expect(plant.notes).toHaveLength(2);
 
