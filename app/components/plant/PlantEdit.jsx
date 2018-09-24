@@ -11,6 +11,7 @@ const MapsAddLocation = require('material-ui/svg-icons/maps/add-location').defau
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const PlantEditTerminated = require('./PlantEditTerminated');
 const utils = require('../../libs/utils');

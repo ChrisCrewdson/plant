@@ -6,6 +6,7 @@ const Dropzone = require('react-dropzone').default;
 const LinearProgress = require('material-ui/LinearProgress').default;
 const CircularProgress = require('material-ui/CircularProgress').default;
 const PropTypes = require('prop-types');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
 const CancelSaveButtons = require('../common/CancelSaveButtons');

@@ -4,6 +4,7 @@ const React = require('react');
 const RaisedButton = require('material-ui/RaisedButton').default;
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const utils = require('../../libs/utils');
 const NotesRead = require('../note/NotesRead');

@@ -2,6 +2,7 @@
 
 // 1. Listen to state changes.
 // 2. If the user object has changed then write to localStorage
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
 let user;

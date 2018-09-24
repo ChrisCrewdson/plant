@@ -3,6 +3,7 @@
 // If a user is logged in then some of the items in the array
 // might be plants belonging to the user.
 
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const uniq = require('lodash/uniq');
 const actions = require('../actions');

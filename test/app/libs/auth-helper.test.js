@@ -1,3 +1,4 @@
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const authHelper = require('../../../app/libs/auth-helper');
 

@@ -1,6 +1,7 @@
 const slug = require('slugify');
 const isDate = require('lodash/isDate');
 const moment = require('moment');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
 // bson is currently not being explicitly installed in the project because

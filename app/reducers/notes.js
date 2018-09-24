@@ -20,6 +20,7 @@ Object of notes:
 }
 */
 
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const actions = require('../actions');
 

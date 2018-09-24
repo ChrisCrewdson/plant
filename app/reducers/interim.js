@@ -1,6 +1,7 @@
 // The most difficult part of creating this module was naming it.
 // "interim" is the least worst of all the bad names I came up with.
 
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const actions = require('../actions');
 

@@ -6,6 +6,7 @@
 const React = require('react');
 const { withRouter } = require('react-router-dom');
 const PropTypes = require('prop-types');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const actions = require('../../actions');
 const Base = require('../base/Base');

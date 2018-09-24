@@ -1,4 +1,5 @@
 const { createStore, applyMiddleware } = require('redux');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const reducers = require('../reducers'); // combineReducers already called on reducers in her)e
 const api = require('../middleware/api');

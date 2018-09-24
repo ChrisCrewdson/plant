@@ -1,4 +1,5 @@
 const getIn = require('lodash/get');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const constants = require('./constants');
 

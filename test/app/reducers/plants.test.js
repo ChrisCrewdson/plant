@@ -1,4 +1,5 @@
 const _ = require('lodash');
+// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const plants = require('../../../app/reducers/plants');
 const actions = require('../../../app/actions');
