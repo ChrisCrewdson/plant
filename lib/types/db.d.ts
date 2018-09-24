@@ -82,6 +82,15 @@ interface BizNote {
   userId: string;
   images: Array<DbNoteImage>;
   metrics: DbNoteMetric;
+  showImages?: boolean;
+}
+
+interface BizNoteMap {
+  [id: string]: BizNote;
+}
+
+interface BizPlantMap {
+  [id: string]: BizPlant;
 }
 
 interface DbNoteWithPlants extends DbNote {
@@ -112,6 +121,11 @@ interface BizPlant {
   terminatedReason?: string; // TODO: One of "died"...
   title: string;
   userId: string;
+  /**
+   * Used by UI to signal if the notes for the plant have been requested
+   * from the server.
+   */
+  notesRequested?: boolean;
 }
 
 interface DbUserFacebook {
