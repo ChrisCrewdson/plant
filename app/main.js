@@ -13,7 +13,6 @@ const {
 const { deepOrange500 } = require('material-ui/styles/colors');
 const { Provider } = require('react-redux');
 const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
-const injectTapEventPlugin = require('react-tap-event-plugin');
 const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -41,8 +40,6 @@ const muiTheme = getMuiTheme({
     accent1Color: deepOrange500,
   },
 });
-
-injectTapEventPlugin();
 
 // /location/**location-name**/_location_id - a list of plants at that location
 //                       (analogous to the old /plants/**user-name**/_user_id)
