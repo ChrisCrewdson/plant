@@ -59,7 +59,7 @@ async function makeRequest(opts) {
 }
 
 async function startServerAuthenticated() {
-  const port = 3000 + parseInt(process.env.JEST_WORKER_ID, 10);
+  const port = 3000 + parseInt(process.env.JEST_WORKER_ID || '1', 10);
   async function emptyDatabase() {
     const db = await mongo.GetDb(global.loggerMock);
     const promises = ['user', 'location', 'plant', 'note'].map((collection) => {
@@ -103,7 +103,7 @@ async function startServerAuthenticated() {
     // user collection in the DB. This is the test user.
     const users = await mongo.getUserByQuery({
       email: 'johnsmith@gmail.com',
-    });
+    }, global.loggerMock);
     expect(users).toBeInstanceOf(Array);
     expect(users).toHaveLength(1);
     const [user] = users;
@@ -135,6 +135,11 @@ async function createPlants(numPlants, userId, locationId) {
     locationId,
   };
 
+  /**
+   * createPlant
+   * @param {number} count
+   * @returns {Promise}
+   */
   async function createPlant(count) {
     const reqOptions = {
       method: 'POST',

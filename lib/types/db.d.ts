@@ -167,6 +167,12 @@ interface DbUser {
   updatedAt: Date;
 }
 
+interface DbUserTiny {
+  _id: import('mongodb').ObjectID;
+  createdAt: Date;
+  name?: string;
+}
+
 interface BizUser {
   _id: string;
   createdAt: Date;
