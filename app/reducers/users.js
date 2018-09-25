@@ -3,15 +3,28 @@
 const seamless = require('seamless-immutable').static;
 const actions = require('../actions');
 
-// The action.payload are the users returned users from the server.
+/**
+ * Called after users received back from server request
+ * The action.payload are the users returned users from the server.
+ * @param {UiUsers} state
+ * @param {UiAction} action
+ * @returns {UiUsers}
+ */
 function loadUsersSuccess(state, action) {
   const { payload: users = [] } = action;
-  const usersSet = users.reduce((acc, user) => {
-    acc[user._id] = Object.assign({}, user, {
-      locationIds: user.locationIds || [],
-    });
-    return acc;
-  }, {});
+  const usersSet = users.reduce(
+    /**
+     * @param {UiUsers} acc
+     * @param {object} user
+     * @param {string} user._id
+     * @param {UiUsersLocation[]} user.locationIds
+     */
+    (acc, user) => {
+      acc[user._id] = Object.assign({}, user, {
+        locationIds: user.locationIds || [],
+      });
+      return acc;
+    }, {});
 
   if (!Object.keys(usersSet).length) {
     return state;
@@ -21,7 +34,12 @@ function loadUsersSuccess(state, action) {
   return newState;
 }
 
-// The action.payload is the returned user from the server.
+/**
+ * The action.payload is the returned user from the server.
+ * @param {UiUsers} state
+ * @param {UiAction} action
+ * @returns {UiUsers}
+ */
 function loadUserSuccess(state, action) {
   return loadUsersSuccess(state, {
     payload: [action.payload],
@@ -107,6 +125,12 @@ const reducers = {
   [actions.LOAD_USERS_SUCCESS]: loadUsersSuccess,
 };
 
+/**
+ * The action.payload is the returned user from the server.
+ * @param {UiUsers} state
+ * @param {UiAction} action
+ * @returns {UiUsers}
+ */
 module.exports = (state = seamless.from({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
