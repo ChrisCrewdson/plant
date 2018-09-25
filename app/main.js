@@ -77,10 +77,12 @@ const routes = (
 function render() {
   const content = document.getElementById('wrapper');
 
+  // @ts-ignore - __SSR__ is something we add on the server
   const { __SSR__: serverRendered } = window;
   const renderer = serverRendered
     ? ReactDOM.hydrate
     : ReactDOM.render;
+  // @ts-ignore - __SSR__ is something we add on the server
   window.__SSR__ = false;
 
   renderer(
@@ -130,11 +132,15 @@ function updateLocalStorage() {
 }
 
 // Polyfill any new browser features we need
-poly((err) => {
-  if (err) {
+poly(
+  /**
+   * @param {Error?} err
+   */
+  (err) => {
+    if (err) {
     // eslint-disable-next-line no-console
-    console.error(err);
-  }
-  updateLocalStorage();
-  main();
-});
+      console.error(err);
+    }
+    updateLocalStorage();
+    main();
+  });

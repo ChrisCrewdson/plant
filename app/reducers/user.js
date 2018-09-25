@@ -10,6 +10,12 @@ function logoutRequest() {
   });
 }
 
+/**
+ * logoutSuccess
+ * @param {UiUser} state
+ * @param {UiAction} action
+ * @returns {UiUser}
+ */
 function logoutSuccess(state, action) {
   return seamless.from(Object.assign(
     {}, {
@@ -20,6 +26,12 @@ function logoutSuccess(state, action) {
   ));
 }
 
+/**
+ * logoutFailure
+ * @param {UiUser} state
+ * @param {UiAction} action
+ * @returns {UiUser}
+ */
 function logoutFailure(state, action) {
   return seamless.from(Object.assign(
     {}, {
@@ -32,9 +44,9 @@ function logoutFailure(state, action) {
 
 /**
  * Load Location Success is called after a response from server.
- * @param {UserState} state
- * @param {Object} action
- * @param {Array} action.payload - returned locations from the server
+ * @param {UiUser} state
+ * @param {UiAction} action
+ * @returns {UiUser}
  */
 function loadLocationsSuccess(state, action) {
   const { payload: locations = [] } = action;
@@ -56,10 +68,9 @@ function loadLocationsSuccess(state, action) {
 
 /**
  * Change the active location id
- * @param {UserState} state - existing user state
- * @param {Object} action - object with {payload: { _id: <mongo-id>}}
- * @param {Object} action.payload - { _id: <mongo-id>}
- * @param {String} action.payload._id - mongo-id
+ * @param {UiUser} state
+ * @param {UiAction} action
+ * @returns {UiUser}
  */
 function changeActiveLocationId(state, { payload }) {
   const { _id = '' } = payload || {};
@@ -77,7 +88,12 @@ const reducers = {
   [actions.CHANGE_ACTIVE_LOCATION_ID]: changeActiveLocationId,
 };
 
-// The login reducer
+/**
+ * The user reducer
+ * @param {UiUser} state
+ * @param {UiAction} action
+ * @returns {UiUser}
+ */
 module.exports = (state, action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);

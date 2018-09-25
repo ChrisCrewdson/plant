@@ -70,11 +70,14 @@ const createMethod = type => payload => ({ type, payload });
  */
 const properCase = text => text[0].toUpperCase() + text.slice(1).toLowerCase();
 
+/** @type {UiActions} */
+const actionMapInit = {};
+
 const actionMap = actionList.reduce((acc, action) => {
   acc[action] = action;
   const funcName = action.split('_').map((part, index) => (index === 0 ? part.toLowerCase() : properCase(part))).join('');
   acc[funcName] = createMethod(action);
   return acc;
-}, {});
+}, actionMapInit);
 
 module.exports = actionMap;

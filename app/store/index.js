@@ -5,6 +5,7 @@ const reducers = require('../reducers'); // combineReducers already called on re
 const api = require('../middleware/api');
 const { setupSubscribe: userSubscribe } = require('./user');
 
+/** @type {Array<any>} */
 const middleware = [api];
 
 if (process.env.NODE_ENV !== 'production') {
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Add the api to the pipeline/chain
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
+// @ts-ignore - __INITIAL_STATE__ is added on the server
 const initialState = seamless.from(window.__INITIAL_STATE__ || {});
 const store = createStoreWithMiddleware(reducers, initialState);
 

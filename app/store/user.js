@@ -5,7 +5,13 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
+/** @type {UiUser} */
 let user;
+
+/**
+ * setup the subscription
+ * @param {import('redux').Store} store
+ */
 function setupSubscribe(store) {
   let currentValue = user || seamless.from({});
 
@@ -26,7 +32,10 @@ function setupSubscribe(store) {
 function initialState() {
   if (!user) {
     try {
-      user = JSON.parse(localStorage.getItem('user'));
+      const localStorageUser = localStorage.getItem('user');
+      if (localStorageUser) {
+        user = JSON.parse(localStorageUser);
+      }
     // eslint-disable-next-line no-empty
     } catch (e) {
     }
