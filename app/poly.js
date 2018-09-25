@@ -9,13 +9,19 @@ const features = [
 ];
 
 function browserSupportsAllFeatures() {
+  // @ts-ignore - because don't want to add an any index to Window
   return features.every(f => window[f]);
 }
 
 function missingFeatures() {
+  // @ts-ignore - because don't want to add an any index to Window
   return features.filter(f => !window[f]);
 }
 
+/**
+ * Load polyfill scripts for missing features
+ * @param {Function} done
+ */
 function loadScript(done) {
   // eslint-disable-next-line prefer-template
   const cdn = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=' + missingFeatures().join();
@@ -31,6 +37,10 @@ function loadScript(done) {
   document.head.appendChild(js);
 }
 
+/**
+ * Load Polyfills for browser features that are missing
+ * @param {Function} done
+ */
 module.exports = (done) => {
   if (browserSupportsAllFeatures()) {
     done();
