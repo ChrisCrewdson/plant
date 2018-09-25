@@ -5,7 +5,7 @@ const DeleteIcon = require('material-ui/svg-icons/action/delete').default;
 const PropTypes = require('prop-types');
 const RemoveConfirm = require('./RemoveConfirm');
 
-function editDeleteButtons(props) {
+function editDeleteButtons(props = {}) {
   const {
     clickDelete,
     clickEdit,
