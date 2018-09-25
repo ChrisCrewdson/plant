@@ -10,8 +10,12 @@ class Home extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor() {
-    super();
+  /**
+   * constructor
+   * @param {object} props
+   */
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
   }
 
@@ -37,6 +41,13 @@ class Home extends React.Component {
     this.setState({ users, locations });
   }
 
+  /**
+   * anonHome
+   * @param {boolean} existingUsers
+   * @param {boolean} existingLocations
+   * @returns {JSX.Element}
+   * @memberof Home
+   */
   anonHome(existingUsers, existingLocations) {
     const { store } = this.context;
     return (

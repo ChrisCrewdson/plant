@@ -3,6 +3,11 @@ const PropTypes = require('prop-types');
 const Navbar = require('./Navbar');
 const Footer = require('./Footer');
 
+/**
+ * base
+ * @param {object} props
+ * @param {object} props.children
+ */
 function base(props) {
   const { children } = props;
   return (

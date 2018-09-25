@@ -43,6 +43,7 @@ class Navbar extends React.Component {
 
   logout() {
     const { store } = this.context;
+    // @ts-ignore - props on actions are strings or functions
     store.dispatch(actions.logoutRequest());
   }
 
