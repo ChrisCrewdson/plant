@@ -5,6 +5,14 @@ const PropTypes = require('prop-types');
 const seamless = require('seamless-immutable');
 const actions = require('../../../actions');
 
+/**
+ *
+ * @param {object} props
+ * @param {Array<string>} props.plantIds
+ * @param {object} props.plants
+ * @param {Array<object>} props.metricDates
+ * @param {Function} props.dispatch
+ */
 function lastMeasured(props) {
   const {
     plantIds, // Array of mongoId strings. These are the plants we're calculating metrics on.
@@ -12,6 +20,9 @@ function lastMeasured(props) {
     metricDates, // An array of metrics keys/props for with to find the most recent date
     dispatch,
   } = props;
+
+  /** @type {Array<string>} */
+  const initMissingPlants = [];
 
   // We need all the plants in this list to have had their notes loaded.
   // This is determined by the "notesRequested" flag on the plant object.
@@ -21,11 +32,15 @@ function lastMeasured(props) {
     }
     acc.push(plantId);
     return acc;
-  }, []);
+  }, initMissingPlants);
 
   if (missingPlants.length) {
+    // @ts-ignore - actions are both strings and Functions
     dispatch(actions.loadUnloadedPlantsRequest(missingPlants));
   }
+
+  /** @type {Array<string>} */
+  const initMissingNotesPlantIds = [];
 
   const missingNotesPlantIds = plantIds.reduce((acc, plantId) => {
     const plant = plants[plantId];
@@ -34,9 +49,10 @@ function lastMeasured(props) {
     }
     acc.push(plantId);
     return acc;
-  }, []);
+  }, initMissingNotesPlantIds);
 
   if (missingNotesPlantIds.length) {
+    // @ts-ignore - actions are both strings and Functions
     dispatch(actions.loadNotesRequest({
       plantIds: missingNotesPlantIds,
     }));

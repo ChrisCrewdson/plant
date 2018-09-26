@@ -92,7 +92,7 @@ company in the United States (and conceivably the world) that operates websites 
 personally identifiable information from California consumers to post a conspicuous privacy \
 policy on its website stating exactly the information being collected and those individuals with \
 whom it is being shared, and to comply with this policy. - See more at: \
-http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf
+https://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf
 
 **According to CalOPPA we agree to the following:**
   

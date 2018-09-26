@@ -5,7 +5,7 @@ const DeleteForeverIcon = require('material-ui/svg-icons/action/delete-forever')
 const PropTypes = require('prop-types');
 
 class RemoveConfirm extends React.Component {
-  constructor(props) {
+  constructor(props = {}) {
     super(props);
     this.reallyDelete = this.reallyDelete.bind(this);
     this.cancelDelete = this.cancelDelete.bind(this);

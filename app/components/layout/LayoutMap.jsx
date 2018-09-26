@@ -19,7 +19,7 @@ class LayoutMap extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor(props) {
+  constructor(props = {}) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -40,6 +40,7 @@ class LayoutMap extends React.Component {
       const user = store.getState().users[userId] || {};
       // This is the user id for this page.
       if (!user.plantIds) {
+        // @ts-ignore - actions have strings and functions
         store.dispatch(actions.loadPlantsRequest(userId));
       }
     }

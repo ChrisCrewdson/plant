@@ -2,8 +2,14 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 
-function errorHelper(props = {}) {
-  let { errors } = props;
+/**
+ * errorHelper
+ * @param {object} props
+ * @param {string[]|string} props.errors
+ * @returns
+ */
+function errorHelper(props) {
+  let { errors = [] } = props;
   if (!errors || !errors.length) {
     return null;
   }

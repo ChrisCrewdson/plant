@@ -7,8 +7,8 @@ const CheckBoxOutlineBlank = require('material-ui/svg-icons/toggle/check-box-out
 const InputCombo = require('./InputCombo');
 
 class GridCell extends React.Component {
-  constructor() {
-    super();
+  constructor(props = {}) {
+    super(props);
     this.onChange = this.onChange.bind(this);
   }
 

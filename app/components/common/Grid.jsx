@@ -20,7 +20,7 @@ const EditDeleteButtons = require('./EditDeleteButtons');
 const CancelSaveButtons = require('./CancelSaveButtons');
 
 class Grid extends React.Component {
-  constructor(props) {
+  constructor(props = {}) {
     super(props);
     this.addNewRow = this.addNewRow.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
@@ -51,16 +51,17 @@ class Grid extends React.Component {
   /**
    * The "Confirm Delete" or "Cancel Delete" was clicked. Either delete the row or restore
    * the Edit/Delete button pair.
-   * @param {Boolean} yes - True if delete was confirmed. False if cancel was clicked
-   * @param {Object} deleteData  - data needed to identify row to be deleted
+   * @param {boolean} yes - True if delete was confirmed. False if cancel was clicked
+   * @param {object} deleteData  - data needed to identify row to be deleted
+   * @param {string} deleteData.id
    */
   confirmDelete(yes, deleteData) {
     if (yes) {
-      const { meta, delete: deleet } = this.props;
+      const { meta, delete: removeRow } = this.props;
       const { rows } = this.state;
       const { id } = deleteData;
       const row = rows.find(({ _id }) => _id === id);
-      deleet({ row, meta });
+      removeRow({ row, meta });
       this.setState({
         rows: rows.filter(({ _id }) => _id !== id),
       });
