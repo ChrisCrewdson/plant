@@ -11,40 +11,67 @@ const actions = require('../actions');
 /**
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
- * @param {object} state - existing object of plants. Each key is a mongoId
- * @param {object} action - has type and payload
- * @returns {object} - new state
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
  */
 function replaceInPlace(state, { payload }) {
   return seamless.set(state, payload._id, payload);
 }
 
-// User clicks save after creating a new plant
+/**
+ * User clicks save after creating a new plant
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
+ */
 function createPlantRequest(state, action) {
   // payload is an object of new plant being POSTed to server
   // an id has already been assigned to this object
   return replaceInPlace(state, action);
 }
 
+/**
+ * ajaxPlantFailure
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
+ */
 function ajaxPlantFailure(state, action) {
   return replaceInPlace(state, action);
 }
 
+/**
+ * updatePlantRequest
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action - payload is an object of plant being PUT to server
+ * @returns {UiPlants} state
+ */
 function updatePlantRequest(state, action) {
-  // payload is an object of plant being PUT to server
   return replaceInPlace(state, action);
 }
 
-// action.payload: <plant-id>
+/**
+ * deletePlantRequest
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action - action.payload: <plant-id>
+ * @returns {UiPlants} state
+ */
 function deletePlantRequest(state, action) {
-  // payload is _id of plant being DELETEd from server
   return seamless.without(state, action.payload.plantId);
 }
 
-// action.payload: <noteId>
-// payload is {id} of note being DELETEd from server
-// Need to remove this note from the notes array in all plants
+/**
+ * payload is {id} of note being DELETEd from server
+ * Need to remove this note from the notes array in all plants
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action - action.payload: <noteId>
+ * @returns {UiPlants} state
+ */
 function deleteNoteRequest(state, { payload: noteId }) {
+  /** @type {UiPlants} */
+  const initPlants = {};
+
   return seamless.from(Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
     if ((plant.notes || []).includes(noteId)) {
@@ -53,31 +80,57 @@ function deleteNoteRequest(state, { payload: noteId }) {
       acc[plantId] = plant;
     }
     return acc;
-  }, {}));
+  }, initPlants));
 }
 
-// action.payload is a plant object
+
+/**
+ * loadPlantSuccess
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action - action.payload is a plant object
+ * @returns {UiPlants} state
+ */
 function loadPlantSuccess(state, action) {
   return replaceInPlace(state, action);
 }
 
+/**
+ * loadPlantFailure
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
+ */
 function loadPlantFailure(state, action) {
   return replaceInPlace(state, action);
 }
 
-// action.payload is an array of plant objects
+/**
+ * loadPlantsSuccess
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action - action.payload is an array of plant objects
+ * @returns {UiPlants} state
+ */
 function loadPlantsSuccess(state, { payload: plants }) {
   if (plants && plants.length > 0) {
-    return seamless.merge(state, plants.reduce((acc, plant) => {
-      acc[plant._id] = plant;
-      return acc;
-    }, {}));
+    return seamless.merge(state, plants.reduce(
+      /**
+       * @param {UiPlants} acc
+       * @param {UiPlantsValue} plant
+       */
+      (acc, plant) => {
+        acc[plant._id] = plant;
+        return acc;
+      }, {}));
   }
   return state;
 }
 
-// The action.payload.note is the returned note from the
-// server.
+/**
+ * The action.payload.note is the returned note from the server.
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
+ */
 function upsertNoteSuccess(state, { payload: { note } }) {
   const {
     _id, // The id of the note
@@ -102,31 +155,36 @@ function upsertNoteSuccess(state, { payload: { note } }) {
 
   // Iterate through all the plants in the state object and get from
   // that a new object of plants that have to be updated.
-  const updatedPlants = Object.keys(state).reduce((acc, plantId) => {
-    const plant = state[plantId];
-    const plantNotes = plant.notes || [];
+  const updatedPlants = Object.keys(state).reduce(
+    /**
+     * @param {UiPlants} acc
+     * @param {string} plantId
+     */
+    (acc, plantId) => {
+      const plant = state[plantId];
+      const plantNotes = plant.notes || [];
 
-    // Should this plant have this note?
-    const shouldHaveNote = plantIds.includes(plantId);
-    // Does this plant have this note?
-    const hasNote = plantNotes.includes(_id);
+      // Should this plant have this note?
+      const shouldHaveNote = plantIds.includes(plantId);
+      // Does this plant have this note?
+      const hasNote = plantNotes.includes(_id);
 
-    // If should have and has, do nothing
-    // If should not have and does not have, do nothing
-    // If should have and does not have, then add it.
-    if (shouldHaveNote && !hasNote) {
-      acc[plantId] = seamless.merge(plant, {
-        notes: plantNotes.concat(_id),
-      });
-    }
+      // If should have and has, do nothing
+      // If should not have and does not have, do nothing
+      // If should have and does not have, then add it.
+      if (shouldHaveNote && !hasNote) {
+        acc[plantId] = seamless.merge(plant, {
+          notes: plantNotes.concat(_id),
+        });
+      }
 
-    // If should not have and has, then remove it
-    if (!shouldHaveNote && hasNote) {
-      acc[plantId] = seamless.set(plant, 'notes', plantNotes.filter(noteId => noteId !== _id));
-    }
+      // If should not have and has, then remove it
+      if (!shouldHaveNote && hasNote) {
+        acc[plantId] = seamless.set(plant, 'notes', plantNotes.filter(noteId => noteId !== _id));
+      }
 
-    return acc;
-  }, {});
+      return acc;
+    }, {});
 
   // if no changes then return the original state.
   if (!Object.keys(updatedPlants).length) {
@@ -136,12 +194,19 @@ function upsertNoteSuccess(state, { payload: { note } }) {
   return seamless.merge(state, updatedPlants);
 }
 
+/**
+ * loadNotesRequest
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
+ */
+function loadNotesRequest(state, action) {
 // action.payload is {
 //   noteIds: [<note-id>, <note-id>, ...]
 // OR
 //   plantIds: [<plant-id>, ...]
 // }
-function loadNotesRequest(state, action) {
+
   const { plantIds, noteIds } = action.payload;
   if (noteIds) {
     return state;
@@ -151,52 +216,74 @@ function loadNotesRequest(state, action) {
     return state;
   }
 
-  const requestedPlants = plantIds.reduce((acc, plantId) => {
-    const plant = state[plantId];
-    if (!plant) {
+  const requestedPlants = plantIds.reduce(
+    /**
+     * @param {UiPlants} acc
+     * @param {string} plantId
+     */
+    (acc, plantId) => {
+      const plant = state[plantId];
+      if (!plant) {
       // console.error('No plant in state for plantId:', plantId);
+        return acc;
+      }
+      acc[plantId] = seamless.set(plant, 'notesRequested', true);
       return acc;
-    }
-    acc[plantId] = seamless.set(plant, 'notesRequested', true);
-    return acc;
-  }, {});
+    }, {});
 
   return seamless.merge(state, requestedPlants);
 }
 
-// action.payload is an array of notes from the server
+/**
+ * action.payload is an array of notes from the server
+ * @param {UiPlants} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiPlants} state
+ */
 function loadNotesSuccess(state, { payload: notes }) {
   if (!notes || !notes.length) {
     return state;
   }
 
-  const plants = notes.reduce((acc, note) => {
-    (note.plantIds || []).forEach((plantId) => {
-      if (acc[plantId]) {
-        acc[plantId].push(note._id);
-      } else {
-        acc[plantId] = [note._id];
-      }
-    });
-    return acc;
-  }, {});
+  const plants = notes.reduce(
+    /**
+     * @param {object} acc
+     * @param {object} note
+     * @param {string[]} note.plantIds
+     * @param {string} note._id
+     */
+    (acc, note) => {
+      (note.plantIds || []).forEach((plantId) => {
+        if (acc[plantId]) {
+          acc[plantId].push(note._id);
+        } else {
+          acc[plantId] = [note._id];
+        }
+      });
+      return acc;
+    }, {});
 
   if (!Object.keys(plants).length) {
     return state;
   }
 
-  return seamless.from(Object.keys(state).reduce((acc, plantId) => {
-    const plant = state[plantId];
+  return seamless.from(Object.keys(state).reduce(
+    /**
+     * @param {UiPlants} acc
+     * @param {string} plantId
+     */
+    (acc, plantId) => {
+      const plant = state[plantId];
 
-    if (!plants[plantId]) {
-      acc[plantId] = plant;
+      if (!plants[plantId]) {
+        acc[plantId] = plant;
+        return acc;
+      }
+
+      const plantNotes = uniq((plant.notes || []).concat(plants[plantId]));
+      acc[plantId] = seamless.set(plant, 'notes', plantNotes);
       return acc;
-    }
-
-    const plantNotes = uniq((plant.notes || []).concat(plants[plantId]));
-    acc[plantId] = seamless.set(plant, 'notes', plantNotes);
-    return acc;
-  }, {}));
+    }, {}));
 }
 
 const reducers = {
@@ -216,6 +303,12 @@ const reducers = {
   [actions.UPSERT_NOTE_SUCCESS]: upsertNoteSuccess,
 };
 
+/**
+ * The plants reducer
+ * @param {UiUser} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiUser}
+ */
 module.exports = (state = seamless.from({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);

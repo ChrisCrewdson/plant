@@ -7,7 +7,7 @@ const actions = require('../actions');
  * Called after users received back from server request
  * The action.payload are the users returned users from the server.
  * @param {UiUsers} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUsers}
  */
 function loadUsersSuccess(state, action) {
@@ -37,7 +37,7 @@ function loadUsersSuccess(state, action) {
 /**
  * The action.payload is the returned user from the server.
  * @param {UiUsers} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUsers}
  */
 function loadUserSuccess(state, action) {
@@ -128,7 +128,7 @@ const reducers = {
 /**
  * The action.payload is the returned user from the server.
  * @param {UiUsers} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUsers}
  */
 module.exports = (state = seamless.from({}), action) => {

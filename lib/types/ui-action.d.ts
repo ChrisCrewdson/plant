@@ -1,7 +1,4 @@
-interface UiAction {
-  payload: any;
-  type: string;
-}
+
 
 interface UiActions {
   // TODO: Should we split out the action object into two objects. One with string values

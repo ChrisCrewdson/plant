@@ -13,7 +13,7 @@ function logoutRequest() {
 /**
  * logoutSuccess
  * @param {UiUser} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUser}
  */
 function logoutSuccess(state, action) {
@@ -29,7 +29,7 @@ function logoutSuccess(state, action) {
 /**
  * logoutFailure
  * @param {UiUser} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUser}
  */
 function logoutFailure(state, action) {
@@ -45,7 +45,7 @@ function logoutFailure(state, action) {
 /**
  * Load Location Success is called after a response from server.
  * @param {UiUser} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUser}
  */
 function loadLocationsSuccess(state, action) {
@@ -69,7 +69,7 @@ function loadLocationsSuccess(state, action) {
 /**
  * Change the active location id
  * @param {UiUser} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUser}
  */
 function changeActiveLocationId(state, { payload }) {
@@ -91,7 +91,7 @@ const reducers = {
 /**
  * The user reducer
  * @param {UiUser} state
- * @param {UiAction} action
+ * @param {import('redux').AnyAction} action
  * @returns {UiUser}
  */
 module.exports = (state, action) => {

@@ -6,14 +6,17 @@ const plants = require('./plants');
 const user = require('./user');
 const users = require('./users');
 
-module.exports = combineReducers({
+/** @type {import('redux').ReducersMapObject} */
+const reducersMap = {
   interim,
   locations,
   notes,
   plants,
   user,
   users,
-});
+};
+
+module.exports = combineReducers(reducersMap);
 
 /*
 State Shapes:
