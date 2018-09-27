@@ -28,7 +28,7 @@ interface DbLocationStations {
 }
 
 interface DbLocationMembers {
-  [key: string]: Role;
+  [id: string]: Role;
 }
 
 interface DbLocation {

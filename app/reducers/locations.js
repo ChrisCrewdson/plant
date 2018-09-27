@@ -10,14 +10,26 @@ const actions = require('../actions');
 // if we discover that we're doing sorting.
 
 // The action.payload are the returned locations from the server.
+
+/**
+ *
+ * @param {UiLocations} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiLocations}
+ */
 function loadLocationsSuccess(state, { payload }) {
-  const locations = Object.keys(payload || {}).reduce((acc, locationId) => {
-    const location = payload[locationId];
-    acc[location._id] = Object.assign({}, location, {
-      plantIds: location.plantIds || [],
-    });
-    return acc;
-  }, {});
+  const locations = Object.keys(payload || {}).reduce(
+    /**
+     * @param {UiLocations} acc
+     * @param {string} locationId
+     */
+    (acc, locationId) => {
+      const location = payload[locationId];
+      acc[location._id] = Object.assign({}, location, {
+        plantIds: location.plantIds || [],
+      });
+      return acc;
+    }, {});
   const newState = seamless.merge(state, locations, { deep: true });
   return newState;
 }
@@ -29,6 +41,12 @@ function loadLocationsSuccess(state, { payload }) {
 // _id
 // title
 // createdBy
+/**
+ *
+ * @param {UiLocations} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiLocations}
+ */
 function createPlantRequest(state, action) {
   // payload is an object of new plant being POSTed to server
   // an _id has already been assigned to this object
@@ -48,19 +66,31 @@ function createPlantRequest(state, action) {
 // If a bunch of plants are loaded then check that the plant
 // is on the locations' plantIds list
 // action.payload is an array of plant objects
+/**
+ *
+ * @param {UiLocations} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiLocations}
+ */
 function loadPlantsSuccess(state, { payload: plants }) {
   if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}
-    const locations = plants.reduce((acc, { locationId, _id: plantId }) => {
-      if (state[locationId]) {
-        acc[locationId] = acc[locationId] || seamless.asMutable(state[locationId], { deep: true });
-        if (!acc[locationId].plantIds.includes(plantId)) {
-          acc[locationId].plantIds.push(plantId);
+    const locations = plants.reduce(
+      /**
+       * @param {UiLocations} acc
+       * @param {UiPlantsValue} plant - should this be a BizPlant?
+       */
+      (acc, { locationId, _id: plantId }) => {
+        if (state[locationId]) {
+          acc[locationId] = acc[locationId]
+            || seamless.asMutable(state[locationId], { deep: true });
+          if (!acc[locationId].plantIds.includes(plantId)) {
+            acc[locationId].plantIds.push(plantId);
+          }
         }
-      }
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
     return seamless.merge(state, locations, { deep: true });
   }
@@ -105,30 +135,3 @@ module.exports = (state = seamless({}), action) => {
 
 // This is only exported for testing
 module.exports.reducers = reducers;
-
-// This state is an object with locationId's as keys and
-// each value is an object with:
-// _id
-// title
-// loc (optional)
-// plantIds: [plantId1, ...]
-
-// Location collection in DB:
-
-/*
-{
-  "_id" : ObjectId("5851d7..."),
-  "createdBy" : ObjectId("57b4e9..."),
-  "members" : {
-    "57b4e90d9...": "owner",
-  },
-  "title" : "The Orchard",
-  "loc" : {
-    "type" : "Point",
-    "coordinates" : {
-      "0" : -99.9999,
-      "1" : 66.66666
-    }
-  }
-}
-*/
