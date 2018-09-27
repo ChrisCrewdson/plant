@@ -8,16 +8,6 @@
 // the business layer.
 // Example: DbNote and BizNote
 
-interface DbLocCoords {
-  0: number;
-  1: number;
-}
-
-interface DbLoc {
-  type: string; // e.g. "Point" - is this the only value
-  coordinates: DbLocCoords;
-}
-
 interface DbLocationStationObj {
   name: string;
   enabled: boolean;
@@ -34,7 +24,7 @@ interface DbLocationMembers {
 interface DbLocation {
   _id: import('mongodb').ObjectID;
   createdBy: import('mongodb').ObjectID;
-  loc?: DbLoc;
+  loc?: Geo;
   members: DbLocationMembers;
   stations?: DbLocationStations;
   title: string;
@@ -43,7 +33,7 @@ interface DbLocation {
 interface BizLocation {
   _id?: string; // Only ? before creating. Do we need another interface to express the created one?
   createdBy: string;
-  loc?: DbLoc;
+  loc?: Geo;
   members: DbLocationMembers;
   stations?: DbLocationStations;
   title: string;
@@ -89,45 +79,10 @@ interface BizNoteMap {
   [id: string]: BizNote;
 }
 
-interface BizPlantMap {
-  [id: string]: BizPlant;
-}
 
 interface DbNoteWithPlants extends DbNote {
   plants: Object[];
 }
-
-interface DbPlant {
-  _id: import('mongodb').ObjectID;
-  botanicalName?: string;
-  loc?: DbLoc;
-  locationId: import('mongodb').ObjectID;
-  plantedDate?: number; // YYYYMMDD
-  price?: number;
-  purchaseDate?: number; // YYYYMMDD
-  terminatedReason?: string; // TODO: One of "died"...
-  title: string;
-  userId: import('mongodb').ObjectID;
-}
-
-interface BizPlant {
-  _id: string;
-  botanicalName?: string;
-  loc?: DbLoc;
-  locationId: string;
-  plantedDate?: number; // YYYYMMDD
-  price?: number;
-  purchaseDate?: number; // YYYYMMDD
-  terminatedReason?: string; // TODO: One of "died"...
-  title: string;
-  userId: string;
-  /**
-   * Used by UI to signal if the notes for the plant have been requested
-   * from the server.
-   */
-  notesRequested?: boolean;
-}
-
 interface DbUserFacebook {
   first_name: string;
   gender: string;

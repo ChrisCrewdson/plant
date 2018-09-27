@@ -36,3 +36,15 @@ declare type Role =
   'owner' |
   'manager' |
   'member';
+
+declare type GeoType = 'Point';
+
+interface GeoCoords {
+  0: number;
+  1: number;
+}
+  
+interface Geo {
+  type: GeoType; // "Point" - is this the only value I know of that's valid
+  coordinates: GeoCoords;
+}

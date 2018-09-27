@@ -1,12 +1,48 @@
-interface UiPlantsNotes {
-
+interface BasePlant {
+  botanicalName?: string;
+  loc?: Geo;
+  plantedDate?: number; // YYYYMMDD
+  price?: number;
+  purchaseDate?: number; // YYYYMMDD
+  terminatedReason?: string; // TODO: One of "died"...
+  title: string;
 }
 
-interface UiPlantsValue {
+// There are 3 data models for each collection:
+// 1. Db<Collection> - Represents what is in the database
+// 2. Biz<Collection> - What is passed around on the server
+// 3. Ui<Collection> - What is passed around on the client
+
+interface DbPlant extends BasePlant {
+  _id: import('mongodb').ObjectID;
+  locationId: import('mongodb').ObjectID;
+  userId: import('mongodb').ObjectID;
+}
+
+interface BizPlant extends BasePlant {
+  _id: string;
+  locationId: string;
+  userId: string;
+  /**
+   * Used by UI to signal if the notes for the plant have been requested
+   * from the server.
+   */
+  notesRequested?: boolean;
+}
+
+interface UiPlantsValue extends BasePlant {
   _id: string;
   notes: Array<UiPlantsNotes>;
   locationId: string;
 }
+
+interface BizPlantMap {
+  [id: string]: BizPlant;
+}  
+
+interface UiPlantsNotes {
+
+}  
 
 interface UiPlants {
   [id: string]: UiPlantsValue;
