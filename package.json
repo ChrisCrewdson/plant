@@ -41,7 +41,7 @@
     "react": "16.5.2",
     "react-bootstrap": "0.32.4",
     "react-dom": "16.5.2",
-    "react-dropzone": "5.1.0",
+    "react-dropzone": "5.1.1",
     "react-konva": "1.7.15",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
@@ -98,7 +98,7 @@
     "stylelint": "9.6.0",
     "stylelint-config-standard": "18.2.0",
     "stylelint-order": "^1.0.0",
-    "typescript": "3.0.3",
+    "typescript": "3.1.1",
     "webpack-dev-server": "2.x"
   },
   "engines": {
