@@ -39,50 +39,6 @@ interface BizLocation {
   title: string;
 }
 
-interface DbNoteImageSize {
-  name: ImageSizeName;
-  width: number;
-}
-
-interface DbNoteImage {
-  id: string;
-  ext: string;
-  originalname: string;
-  size: number; // file size in bytes
-  sizes: Array<DbNoteImageSize>;
-}
-
-interface DbNoteMetric {
-  height: number;
-}
-
-interface DbNote {
-  _id: import('mongodb').ObjectID;
-  plantIds: Array<import('mongodb').ObjectID>;
-  date: number;
-  userId: import('mongodb').ObjectID;
-  images: Array<DbNoteImage>;
-  metrics: DbNoteMetric;
-}
-
-interface BizNote {
-  _id: string;
-  plantIds: Array<string>;
-  date: number;
-  userId: string;
-  images: Array<DbNoteImage>;
-  metrics: DbNoteMetric;
-  showImages?: boolean;
-}
-
-interface BizNoteMap {
-  [id: string]: BizNote;
-}
-
-
-interface DbNoteWithPlants extends DbNote {
-  plants: Object[];
-}
 interface DbUserFacebook {
   first_name: string;
   gender: string;

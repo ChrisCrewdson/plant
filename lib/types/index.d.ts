@@ -24,14 +24,6 @@ declare namespace Express {
   }
 }
 
-declare type ImageSizeName =
-  'orig' |
-  'xl' |
-  'lg' |
-  'md' |
-  'sm' |
-  'thumb';
-
 declare type Role = 
   'owner' |
   'manager' |
