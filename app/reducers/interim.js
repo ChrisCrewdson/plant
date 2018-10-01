@@ -5,14 +5,22 @@
 const seamless = require('seamless-immutable').static;
 const actions = require('../actions');
 
-// action.payload:
-// {note, plant}
+/**
+ * editNoteOpen
+ * @param {UiInterim} state
+ * @param {object} action
+ * @param {UiNotesValue} action.payload
+ * @returns {UiInterim}
+ */
 function editNoteOpen(state, action) {
   return seamless.set(state, 'note', action.payload);
 }
 
-// action.payload:
-// Empty
+/**
+ * editNoteClose
+ * @param {UiInterim} state
+ * @returns {UiInterim}
+ */
 function editNoteClose(state) {
   // Just remove note element if editing is canceled
   // or if the note has been saved
@@ -94,19 +102,3 @@ module.exports = (state = seamless({}), action) => {
 
 // This is only exported for testing
 module.exports.reducers = reducers;
-
-/*
-This state is WIP
-{
-  note: {
-    note: {
-      id: 'some-mongo-id',
-      mode: 'new/update',
-      fileUploadStatus: 'some string percent or object ??'
-    },
-    plant: {
-      // expected props for a plant
-    }
-  }
-}
-*/
