@@ -24,7 +24,12 @@ This state is WIP
 }
 */
 
+interface UiInterimNote {
+  note: UiNotesValue;
+  plant?: UiPlantsValue;
+}
+
 interface UiInterim {
-  note?: UiNotesValue;
+  note?: UiInterimNote;
   plant?: UiPlantsValue;
 }

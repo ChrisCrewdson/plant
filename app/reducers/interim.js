@@ -3,6 +3,7 @@
 
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
+
 const actions = require('../actions');
 
 /**
@@ -33,6 +34,13 @@ function editNoteClose(state) {
 //   note:
 //     note,
 //     plant
+/**
+ * editNoteChange
+ * @param {UiInterim} state
+ * @param {object} action
+ * @param {UiNotesValue} action.payload
+ * @returns {UiInterim}
+ */
 function editNoteChange(state, action) {
   return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
 }
