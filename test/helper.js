@@ -58,6 +58,9 @@ async function makeRequest(opts) {
   return { response, httpMsg };
 }
 
+/** @type {import('net').Server|undefined} */
+let localServer;
+
 async function startServerAuthenticated() {
   const port = 3000 + parseInt(process.env.JEST_WORKER_ID || '1', 10);
   async function emptyDatabase() {
@@ -95,7 +98,8 @@ async function startServerAuthenticated() {
     await emptyDatabase();
     data.port = port;
     data.server = createServer(data.server);
-    data.app = await startServer(data.app, data.server, data.port);
+    data.app = await startServer(data.app, data.server);
+    localServer = data.app;
 
     await googleAuthCallback();
 
@@ -120,6 +124,14 @@ async function startServerAuthenticated() {
     throw error;
   }
 }
+
+const stopServer = async () => new Promise((resolve, reject) => {
+  if (localServer) {
+    localServer.close(
+      /** @param {Error|undefined|null} err */
+      err => (err ? reject(err) : resolve()));
+  }
+});
 
 /**
  * Create a bunch of plants in the plant collection for testing
@@ -196,4 +208,5 @@ module.exports = {
   getUrl,
   makeRequest,
   startServerAuthenticated,
+  stopServer,
 };

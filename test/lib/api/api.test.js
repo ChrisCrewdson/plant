@@ -8,6 +8,8 @@ describe('api', () => {
     expect(port).toBeGreaterThan(3000);
   });
 
+  afterAll(() => helper.stopServer());
+
   test('should get a 404 if the path is not recognized', async () => {
     const reqOptions = {
       method: 'GET',
