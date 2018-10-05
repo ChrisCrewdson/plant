@@ -130,21 +130,16 @@ global.window.FormData = function appender() {
 global.navigator = global.window.navigator;
 propagateToGlobal(global.window);
 
-// Weird that I was unable to mark the afterAll() callback as an
-// async function. afterAll() didn't wait on it.
-afterAll(() => {
-  async function cleanUp() {
-    const db = await mongoDb.GetDb(global.loggerMock);
-    await db.dropDatabase();
-    const client = mongoDb.getDbClient();
-    if (!client) {
-      // eslint-disable-next-line no-console
-      console.error(`client is falsy in setup/afterAll() ${client}`);
-      return null;
-    }
-    return client.close();
+afterAll(async () => {
+  const db = await mongoDb.GetDb(global.loggerMock);
+  await db.dropDatabase();
+  const client = mongoDb.getDbClient();
+  if (!client) {
+    // eslint-disable-next-line no-console
+    console.error(`client is falsy in setup/afterAll() ${client}`);
+    return;
   }
-  return cleanUp();
+  await client.close();
 });
 
 // These modules use 'ref' which causes problems with jest snapshot testing
