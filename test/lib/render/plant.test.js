@@ -6,6 +6,7 @@ describe('lib/render/plant', () => {
     data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();
   });
+  afterAll(() => helper.stopServer());
 
   beforeAll(async () => {
     const { userId } = data;

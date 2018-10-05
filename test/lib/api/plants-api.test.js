@@ -14,6 +14,7 @@ describe('plants-api', () => {
     [locationId] = data.user.locationIds;
     expect(locationId).toBeTruthy();
   });
+  afterAll(() => helper.stopServer());
 
 
   let insertedPlants;

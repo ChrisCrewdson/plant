@@ -12,6 +12,7 @@ describe('plant-api-delete', () => {
     userId = data.user._id;
     [locationId] = data.user.locationIds;
   });
+  afterAll(() => helper.stopServer());
 
   describe('simple plant deletion', () => {
     test('should delete a plant without notes', async () => {

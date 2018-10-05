@@ -15,6 +15,7 @@ describe('/lib/db/mongo/model-location', () => {
     expect(typeof userId).toBe('string');
     Object.freeze(fbUser);
   });
+  afterAll(() => helper.stopServer());
 
   describe('Create', () => {
     test('should fail to create a location if members and createdBy are missing', async () => {

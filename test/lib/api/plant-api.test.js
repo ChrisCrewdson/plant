@@ -17,6 +17,7 @@ describe('plant-api', () => {
       locationId: data.user.locationIds[0],
     });
   });
+  afterAll(() => helper.stopServer());
 
   test(
     'should fail to create a plant record if user is not authenticated',

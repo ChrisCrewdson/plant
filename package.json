@@ -131,8 +131,8 @@
     "build": "TARGET=build webpack --bail",
     "cnv": "check-node-version --package",
     "cover": "jest --coverage && google-chrome coverage/lcov-report/index.html",
-    "coverage": "jest --forceExit --coverage",
-    "coverage-fast": "jest --forceExit --coverage --onlyChanged",
+    "coverage": "jest --coverage",
+    "coverage-fast": "jest --coverage --onlyChanged",
     "coverage-view": "google-chrome coverage/lcov-report/index.html",
     "csslint": "stylelint app/stylesheets/*.css",
     "dependency-update": "node_modules/.bin/npm-update-outdated",
@@ -145,8 +145,8 @@
     "server": ". ./devops/run-server.sh",
     "start": "TARGET=dev webpack-dev-server --port 9090 --progress --colors --hot --inline --history-api-fallback --bail",
     "test": "npm run lint && npm run build && ./devops/run-test.sh",
-    "test-only": "jest --forceExit",
-    "test-fast": "jest --forceExit --onlyChanged"
+    "test-only": "jest",
+    "test-fast": "jest --onlyChanged"
   },
   "version": "0.0.1"
 }

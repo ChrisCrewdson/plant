@@ -22,6 +22,7 @@ describe('/lib/db/mongo/', () => {
     expect(locationId).toBeTruthy();
     Object.freeze(fbUser);
   });
+  afterAll(() => helper.stopServer());
 
   describe('user', () => {
     test(

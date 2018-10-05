@@ -13,6 +13,7 @@ describe('note-api', () => {
     userId = data.user._id;
     [locationId] = data.user.locationIds;
   });
+  afterAll(() => helper.stopServer());
 
   let initialPlant;
   let plantId;
