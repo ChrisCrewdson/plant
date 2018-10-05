@@ -132,13 +132,19 @@ propagateToGlobal(global.window);
 
 // Weird that I was unable to mark the afterAll() callback as an
 // async function. afterAll() didn't wait on it.
-afterAll((done) => {
+afterAll(() => {
   async function cleanUp() {
     const db = await mongoDb.GetDb(global.loggerMock);
-    db.dropDatabase();
-    done();
+    await db.dropDatabase();
+    const client = mongoDb.getDbClient();
+    if (!client) {
+      // eslint-disable-next-line no-console
+      console.error(`client is falsy in setup/afterAll() ${client}`);
+      return null;
+    }
+    return client.close();
   }
-  cleanUp();
+  return cleanUp();
 });
 
 // These modules use 'ref' which causes problems with jest snapshot testing
