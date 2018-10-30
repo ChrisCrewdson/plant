@@ -106,7 +106,7 @@
     "webpack-dev-server": "2.x"
   },
   "engines": {
-    "node": ">=11",
+    "node": ">=10",
     "npm": ">=6"
   },
   "jestConfig": "./jest.config.js",

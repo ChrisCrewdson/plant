@@ -7,21 +7,47 @@ declare type ImageSizeName =
   'thumb';
 
 interface NoteImageSize {
-  name: ImageSizeName; // name of the size, e.g. thumb, sm, md, lg, xl
-  width: number; // (int32) pixels wide, e.g. 100, 500, 1000, 1500, 2000
+  /**
+   * name of the size, e.g. thumb, sm, md, lg, xl
+   */
+  name: ImageSizeName;
+  /**
+   *  how many pixels wide, e.g. 100, 500, 1000, 1500, 2000
+   */
+  width: number;
 }
 
 interface NoteImage {
-  id: string; // MongoId that corresponds to the name of the file in S3
-  ext: string; // file extension e.g. jpg, png
-  originalname: string; // original name of the file when it was uploaded
-  size: number; // size in bytes of the original file
-  sizes: Array<NoteImageSize>; // an array of sizes
+  /**
+   * MongoId that corresponds to the name of the file in S3
+   */
+  id: string;
+  /**
+   * file extension e.g. jpg, png
+   */
+  ext: string;
+  /**
+   * original name of the file when it was uploaded
+   */
+  originalname: string;
+  /**
+   * size in bytes of the original file
+   */
+  size: number;
+  /**
+   * an array of sizes
+   */
+  sizes: Array<NoteImageSize>;
 }
 
-// - an object with key/value pairs. Values are numbers or boolean.
-//- See the app/libs/utils.js file for possible keys in this object and the data types
+/**
+ * an object with key/value pairs. Values are numbers or boolean.
+ * See the app/libs/utils.js file for possible keys in this object and the data types
+ */
 interface NoteMetric {
+  /**
+   * The height of the plant or tree
+   */
   height: number;
 }
 
@@ -53,10 +79,13 @@ interface DbNoteWithPlants extends DbNote {
   plants: Object[]; // TODO: Type this
 }
 
-// new = created in UI but not saved yet
-// saved = upsertNoteSuccess has been received
-// error = an error happened saving / validating etc.
-// deleted = ajax request to delete object not complete yet
+
+/**
+ * new = created in UI but not saved yet
+ * saved = upsertNoteSuccess has been received
+ * error = an error happened saving / validating etc.
+ * deleted = ajax request to delete object not complete yet
+ */
 declare type UiNotesMetaState =
 'new' |
 'saved' |

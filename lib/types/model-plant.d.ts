@@ -1,10 +1,15 @@
+declare type TerminatedReason =
+'culled' |
+'died' |
+'transferred';
+
 interface BasePlant {
   botanicalName?: string;
   loc?: Geo;
   plantedDate?: number; // YYYYMMDD
   price?: number;
   purchaseDate?: number; // YYYYMMDD
-  terminatedReason?: string; // TODO: One of "died"...
+  terminatedReason?: TerminatedReason;
   title: string;
 }
 
