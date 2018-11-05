@@ -90,7 +90,7 @@
     "eslint-plugin-security": "1.4.0",
     "fetch-cookie": "0.7.2",
     "jest": "23.6.0",
-    "node-fetch": "2.2.0",
+    "node-fetch": "2.2.1",
     "nodemon": "1.18.5",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
