@@ -94,3 +94,7 @@ interface BizUser {
   updatedAt: Date;
   locationIds?: Array<string>;
 }
+
+interface LocationLocCache {
+  [key: string]: Geo;
+}
