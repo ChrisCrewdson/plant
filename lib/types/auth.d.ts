@@ -1,6 +1,7 @@
 
 interface FacebookOAuthJson {
   emails: Array<string>|string;
+  id: string;
 }
   
 interface FacebookOAuthName {
@@ -13,8 +14,25 @@ interface FacebookOAuth {
   name: FacebookOAuthName;
 }
 
+interface GoogleOAuthJson {
+  id: string;
+}
+
 interface GoogleOAuth {
-  _json: object;
+  _json: GoogleOAuthJson;
   displayName: string;
-  emails: Array<object>; // { value: string ==> email address }
+  /**
+   * Objects look like: { value: string ==> email address }
+   */
+  emails: Array<object>;
+}
+
+
+interface UserDetails {
+  facebook?: FacebookOAuthJson;
+  google?: GoogleOAuthJson;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email?: string;
 }

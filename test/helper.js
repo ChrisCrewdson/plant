@@ -10,6 +10,11 @@ const serverModule = require('../lib/server');
 
 const data = {};
 
+/**
+ *
+ * @param {string} url
+ * @returns
+ */
 function getUrl(url) {
   if ((url || '').startsWith('http')) {
     return url;
