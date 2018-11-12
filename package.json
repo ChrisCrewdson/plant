@@ -81,7 +81,7 @@
     "babel-eslint": "10.0.1",
     "check-node-version": "3.2.0",
     "concurrently": "4.0.1",
-    "eslint": "5.8.0",
+    "eslint": "5.9.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jest": "22.0.0",
