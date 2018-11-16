@@ -97,7 +97,7 @@
     "react-hot-loader": "4.3.12",
     "react-log-lifecycle": "1.1.0",
     "react-test-renderer": "16.6.3",
-    "redux-devtools": "3.4.1",
+    "redux-devtools": "3.4.2",
     "stylelint": "9.8.0",
     "stylelint-config-standard": "18.2.0",
     "stylelint-order": "^1.0.0",
