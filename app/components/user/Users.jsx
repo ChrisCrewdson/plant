@@ -41,7 +41,7 @@ class Users extends React.Component {
 
   /**
    * Render the users
-   * @param {Object} user - user is from the users collection and not the loggedIn user
+   * @param {object} user - user is from the users collection and not the loggedIn user
    */
   renderUser(user) {
     const { _id, name: userName, locationIds } = user;

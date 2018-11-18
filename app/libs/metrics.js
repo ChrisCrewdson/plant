@@ -28,7 +28,7 @@ function since(acc, note, noteId, lastNoteDate) {
  *   one previous item in the collection.
  * @param {Object[]} metrics - An array of the metrics to this point in time
  * @param {string} prop - the metric being checked: 'height' or 'girth'
- * @returns {Object} - with props prev and last which each have a date and a
+ * @returns {object} - with props prev and last which each have a date and a
  *   'height' or 'girth' prop. Or if there wasn't a previous object with this
  *   prop then null.
  */

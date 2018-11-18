@@ -30,8 +30,8 @@ function getUrl(url) {
 
 /**
  * Is the method a PUT or a POST?
- * @param {Object} options
- * @param {String} options.method
+ * @param {object} options
+ * @param {string} options.method
  */
 const isPutOrPost = (options) => {
   const method = (options.method || '').toLowerCase();
@@ -140,9 +140,9 @@ const stopServer = async () => new Promise((resolve, reject) => {
 
 /**
  * Create a bunch of plants in the plant collection for testing
- * @param {Number} numPlants - Number of plants to insert in plant collection for this user
- * @param {String} userId - User Id of user to create plants for
- * @param {String} locationId - Location Id at which to create the plants
+ * @param {number} numPlants - Number of plants to insert in plant collection for this user
+ * @param {string} userId - User Id of user to create plants for
+ * @param {string} locationId - Location Id at which to create the plants
  * @returns {Promise}
  */
 async function createPlants(numPlants, userId, locationId) {

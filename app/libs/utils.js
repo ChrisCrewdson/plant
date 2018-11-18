@@ -146,7 +146,7 @@ function plantFromBody(body) {
 /**
  * Filters the plantIds array based on filter
  * @param {string[]} plantIds - original plantIds to filter
- * @param {Object} plants - all the plants available to sort
+ * @param {object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
  * @returns {array} - an array of filtered plantIds
  */
@@ -165,10 +165,10 @@ function filterPlants(plantIds, plants, filter) {
 /**
  * Checks to see if an array of strings is already sorted by the
  * prop provided.
- * @param {String} prop - the property in the object to sort by
+ * @param {string} prop - the property in the object to sort by
  * @param {string[]} itemIds - an array of Ids
- * @param {Object} items - a object that has ids as props
- * @returns {Boolean} - true if already sorted otherwise false
+ * @param {object} items - a object that has ids as props
+ * @returns {boolean} - true if already sorted otherwise false
  */
 function alreadySorted(prop, itemIds, items) {
   return itemIds.every((itemId, index) => {
@@ -194,7 +194,7 @@ function alreadySorted(prop, itemIds, items) {
  * Sort the itemIds based on the value of the prop parameter.
  * @param {string} prop - the name of the property from the items object that's being sorted
  * @param {string[]} itemIds - array of MongoId strings
- * @param {Object} items - an object with MongoIds as keys. The values are objects.
+ * @param {object} items - an object with MongoIds as keys. The values are objects.
  * @returns {array} - an immutable array of sorted itemIds
  */
 function sortItems(prop, itemIds, items) {
@@ -239,7 +239,7 @@ function sortItems(prop, itemIds, items) {
 /**
  * Sort the noteIds based on the date property.
  * @param {string[]} noteIds - array of MongoId strings
- * @param {Object} notes - an object with MongoIds as keys. The values are note objects.
+ * @param {object} notes - an object with MongoIds as keys. The values are note objects.
  * @returns {string[]} - an immutable array of sorted noteIds
  */
 function sortNotes(noteIds, notes) {
@@ -250,7 +250,7 @@ function sortNotes(noteIds, notes) {
 /**
  * Sorts the plantIds based on the plant's title
  * @param {string[]} plantIds - original plantIds to filter
- * @param {Object} plants - all the plants available to sort
+ * @param {object} plants - all the plants available to sort
  * @returns {string[]} - an immutable array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
@@ -261,7 +261,7 @@ function sortPlants(plantIds, plants) {
 /**
  * Filters the plantIds array and sorts based on the plant's title
  * @param {string[]} plantIds - original plantIds to filter
- * @param {Object} plants - all the plants available to sort
+ * @param {object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
  * @returns {string[]} - an array of sorted and filtered plantIds
  */
@@ -522,7 +522,7 @@ function metaMetricsGetByKey(key) {
 
 /**
  * Determines if unfinished features should be shown. i.e. Feature Flag
- * @param {Object} user - a user object - possibly falsy
+ * @param {object} user - a user object - possibly falsy
  * @return {boolean} - true to show flag and false otherwise
  */
 function showFeature(user) {

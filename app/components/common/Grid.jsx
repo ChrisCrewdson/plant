@@ -39,7 +39,7 @@ class Grid extends React.Component {
   /**
    * The delete button on a row was clicked. Set a flag to switch the Edit/Delete
    * button pair to Cancel/Delete button pair to confirm the delete action.
-   * @param {Object} deleteData - data needed to identify row to be deleted
+   * @param {object} deleteData - data needed to identify row to be deleted
    */
   checkDelete(deleteData) {
     const { id: deleteId } = deleteData;
@@ -72,7 +72,7 @@ class Grid extends React.Component {
 
   /**
    * Toggle a row from View (read-only) Mode to Edit Mode
-   * @param {Object} editData - holds rowId of the row being switch to edit mode
+   * @param {object} editData - holds rowId of the row being switch to edit mode
    */
   editRow(editData) {
     this.setState({
@@ -83,9 +83,9 @@ class Grid extends React.Component {
   /**
    * Change the value in a row/colum in the rows collection.
    * aka edit a cell in the grid
-   * @param {String} rowId - UUID of the row being edited
-   * @param {Number} colIndex - Integer index of column being edited
-   * @param {String} value - New value for the cell
+   * @param {string} rowId - UUID of the row being edited
+   * @param {number} colIndex - Integer index of column being edited
+   * @param {string} value - New value for the cell
    */
   editCell(rowId, colIndex, value) {
     const { errors = [], rows: stateRows } = this.state;

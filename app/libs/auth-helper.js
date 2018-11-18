@@ -13,7 +13,7 @@ function isLoggedIn(store) {
 /**
  * Returns true or false if the user is able to edit plants at this location.
  * @param {string} loggedInUserId - the id of the user that is logged in
- * @param {Object} location - an Object of the location
+ * @param {object} location - an Object of the location
  */
 function canEdit(loggedInUserId, location) {
   if (!loggedInUserId || !location) {

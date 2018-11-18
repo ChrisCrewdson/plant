@@ -7,8 +7,8 @@ const { gisMultiplier } = constants;
 
 /**
  * Convert Geo long/lat values to canvas x/y pixels
- * @param {Object} immutablePlants - keyed off plantId
- * @param {Number} width - the width of the canvas in pixels?
+ * @param {object} immutablePlants - keyed off plantId
+ * @param {number} width - the width of the canvas in pixels?
  */
 function scaleToCanvas(immutablePlants, width) {
   const plantIds = Object.keys(immutablePlants);

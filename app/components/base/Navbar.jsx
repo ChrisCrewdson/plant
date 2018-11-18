@@ -59,7 +59,7 @@ class Navbar extends React.Component {
   //   (Just put a placeholder here for now)
   /**
    * May My Plants Menu
-   * @param {Boolean} loggedIn
+   * @param {boolean} loggedIn
    */
   makeMyPlantsMenu(loggedIn) {
     if (!loggedIn) {

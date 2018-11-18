@@ -9,7 +9,7 @@ module.exports = {
   */
   imageSizeNames: ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'],
   /**
-  * @type {Number}
+  * @type {number}
   */
   gisMultiplier: 10 ** 7,
 

@@ -36,7 +36,7 @@ class NoteAssocPlant extends React.Component {
 
   /**
    * Toggles the selected state for the button for an associated plant
-   * @param {String} plantId
+   * @param {string} plantId
    * @memberof NoteAssocPlant
    */
   toggle(plantId) {

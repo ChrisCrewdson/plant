@@ -56,12 +56,12 @@ class LocationsManager extends React.Component {
   /**
    * Called with a save on an edit/new is done. Validation is failed by returning an
    * array that has at least 1 truthy value in it.
-   * @param {Object} data.row - The row that is being validated
+   * @param {object} data.row - The row that is being validated
    * @param {string} data.row._id - The _id of the row which is the user's _id
    * @param {any[]} data.row.values - The values being changed/inserted
-   * @param {Object} data.meta - Meta data sent to Grid for passing back container methods
-   * @param {Object} data.meta.location - The location object that this applies to
-   * @param {Object} data.meta.location.member - The members at this location - the key is the
+   * @param {object} data.meta - Meta data sent to Grid for passing back container methods
+   * @param {object} data.meta.location - The location object that this applies to
+   * @param {object} data.meta.location.member - The members at this location - the key is the
    *                                             userId (a UUID) and the value is the role
    * @param {boolean} data.isNew - True if this is a new row
    * @returns {string[]} - An array of errors, empty strings or a mixture of the two
@@ -131,12 +131,12 @@ class LocationsManager extends React.Component {
    * locationId, userId, role
    * On the server we also need the logged-in user to verify that they are an
    * owner of that location and therefore authorized.
-   * @param {Object} data - the data needed for the insert
-   * @param {Object} data.row - the _id and values array from the row in the grid
+   * @param {object} data - the data needed for the insert
+   * @param {object} data.row - the _id and values array from the row in the grid
    * @param {any[]} data.row.values - the values from the row
-   * @param {Object} data.meta - An object we passed to the Grid component to pass back to us
+   * @param {object} data.meta - An object we passed to the Grid component to pass back to us
    *                             when an insert/update/delete is done.
-   * @param {Object} data.meta.location - The location that this insert is for
+   * @param {object} data.meta.location - The location that this insert is for
    * @param {string} data.meta.location._id - The id of the location that this insert is for
    * @param {string} data.action - Distinguish between insert and update
    */
