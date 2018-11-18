@@ -40,3 +40,11 @@ interface Geo {
   type: GeoType; // "Point" - is this the only value I know of that's valid
   coordinates: GeoCoords;
 }
+
+interface StringStringObject {
+  [key: string]: string;
+}
+
+interface AwsKey {
+  Key: string;
+}
