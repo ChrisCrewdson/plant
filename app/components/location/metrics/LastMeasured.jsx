@@ -8,9 +8,9 @@ const actions = require('../../../actions');
 /**
  *
  * @param {object} props
- * @param {Array<string>} props.plantIds
+ * @param {string[]} props.plantIds
  * @param {object} props.plants
- * @param {Array<object>} props.metricDates
+ * @param {object[]} props.metricDates
  * @param {Function} props.dispatch
  */
 function lastMeasured(props) {
@@ -21,7 +21,7 @@ function lastMeasured(props) {
     dispatch,
   } = props;
 
-  /** @type {Array<string>} */
+  /** @type {string[]} */
   const initMissingPlants = [];
 
   // We need all the plants in this list to have had their notes loaded.
@@ -39,7 +39,7 @@ function lastMeasured(props) {
     dispatch(actions.loadUnloadedPlantsRequest(missingPlants));
   }
 
-  /** @type {Array<string>} */
+  /** @type {string[]} */
   const initMissingNotesPlantIds = [];
 
   const missingNotesPlantIds = plantIds.reduce((acc, plantId) => {

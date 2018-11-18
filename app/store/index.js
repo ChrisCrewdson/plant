@@ -5,7 +5,7 @@ const reducers = require('../reducers'); // combineReducers already called on re
 const api = require('../middleware/api');
 const { setupSubscribe: userSubscribe } = require('./user');
 
-/** @type {Array<any>} */
+/** @type {any[]} */
 const middleware = [api];
 
 if (process.env.NODE_ENV !== 'production') {

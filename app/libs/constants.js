@@ -5,7 +5,7 @@ module.exports = {
   maxImageFilesPerUpload: 100,
   awsBucketName: 'i.plaaant.com',
   /**
-  * @type {Array<ImageSizeName>}
+  * @type {ImageSizeName[]}
   */
   imageSizeNames: ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'],
   /**

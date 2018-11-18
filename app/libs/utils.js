@@ -145,7 +145,7 @@ function plantFromBody(body) {
 
 /**
  * Filters the plantIds array based on filter
- * @param {Array<string>} plantIds - original plantIds to filter
+ * @param {string[]} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
  * @returns {array} - an array of filtered plantIds
@@ -166,7 +166,7 @@ function filterPlants(plantIds, plants, filter) {
  * Checks to see if an array of strings is already sorted by the
  * prop provided.
  * @param {String} prop - the property in the object to sort by
- * @param {Array<string>} itemIds - an array of Ids
+ * @param {string[]} itemIds - an array of Ids
  * @param {Object} items - a object that has ids as props
  * @returns {Boolean} - true if already sorted otherwise false
  */
@@ -193,7 +193,7 @@ function alreadySorted(prop, itemIds, items) {
 /**
  * Sort the itemIds based on the value of the prop parameter.
  * @param {string} prop - the name of the property from the items object that's being sorted
- * @param {Array<string>} itemIds - array of MongoId strings
+ * @param {string[]} itemIds - array of MongoId strings
  * @param {Object} items - an object with MongoIds as keys. The values are objects.
  * @returns {array} - an immutable array of sorted itemIds
  */
@@ -238,9 +238,9 @@ function sortItems(prop, itemIds, items) {
 
 /**
  * Sort the noteIds based on the date property.
- * @param {Array<string>} noteIds - array of MongoId strings
+ * @param {string[]} noteIds - array of MongoId strings
  * @param {Object} notes - an object with MongoIds as keys. The values are note objects.
- * @returns {Array<string>} - an immutable array of sorted noteIds
+ * @returns {string[]} - an immutable array of sorted noteIds
  */
 function sortNotes(noteIds, notes) {
   // TODO: Memoize this method
@@ -249,9 +249,9 @@ function sortNotes(noteIds, notes) {
 
 /**
  * Sorts the plantIds based on the plant's title
- * @param {Array<string>} plantIds - original plantIds to filter
+ * @param {string[]} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
- * @returns {Array<string>} - an immutable array of sorted plantIds
+ * @returns {string[]} - an immutable array of sorted plantIds
  */
 function sortPlants(plantIds, plants) {
   // TODO: Memoize this method
@@ -260,10 +260,10 @@ function sortPlants(plantIds, plants) {
 
 /**
  * Filters the plantIds array and sorts based on the plant's title
- * @param {Array<string>} plantIds - original plantIds to filter
+ * @param {string[]} plantIds - original plantIds to filter
  * @param {Object} plants - all the plants available to sort
  * @param {string} filter - optional text to filter title of plant
- * @returns {Array<string>} - an array of sorted and filtered plantIds
+ * @returns {string[]} - an array of sorted and filtered plantIds
  */
 function filterSortPlants(plantIds, plants, filter) {
   const filteredPlantIds = filterPlants(plantIds, plants, filter);
@@ -273,7 +273,7 @@ function filterSortPlants(plantIds, plants, filter) {
 
 /**
  * Plant stats
- * @param {Array<string>} plantIds
+ * @param {string[]} plantIds
  * @param {object} plants
  */
 function plantStats(plantIds, plants) {
@@ -391,7 +391,7 @@ function rebaseLocations(plants) {
  */
 
 /**
-  * @type {Array<MetaMetric>}
+  * @type {MetaMetric[]}
   */
 const metaMetrics = seamless.from([{
   key: 'height',
