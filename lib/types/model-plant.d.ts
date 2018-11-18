@@ -37,7 +37,7 @@ interface BizPlant extends BasePlant {
 
 interface UiPlantsValue extends BasePlant {
   _id: string;
-  notes: Array<UiPlantsNotes>;
+  notes: UiPlantsNotes[];
   locationId: string;
 }
 

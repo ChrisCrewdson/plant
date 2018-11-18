@@ -17,7 +17,7 @@ module.exports = {
   // roles for that location. The roles are, from left to right, most
   // permissive to least permissive.
   /**
-  * @type {Array<Role>}
+  * @type {Role[]}
   */
   roles: ['owner', 'manager', 'member'],
 

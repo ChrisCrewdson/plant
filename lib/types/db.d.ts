@@ -55,7 +55,7 @@ interface DbUserGoogle {
   circledByCount: number;
   displayName: string;
   domain: string;
-  emails: Array<object>;
+  emails: object[];
   etag: string;
   gender: string;
   id: string;
@@ -92,7 +92,7 @@ interface BizUser {
   google?: DbUserGoogle;
   name?: string;
   updatedAt: Date;
-  locationIds?: Array<string>;
+  locationIds?: string[];
 }
 
 interface LocationLocCache {

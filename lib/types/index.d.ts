@@ -17,7 +17,7 @@ declare namespace Express {
     user?: {
       _id: String;
     };
-    files?: Array<Multer.File>;
+    files?: Multer.File[];
     logout: Function;
     logIn: Function;
     isAuthenticated?: Function;

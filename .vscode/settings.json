@@ -14,5 +14,6 @@
         "sinensis",
         "upsert",
         "validators"
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

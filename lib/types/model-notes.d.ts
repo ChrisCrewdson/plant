@@ -37,7 +37,7 @@ interface NoteImage {
   /**
    * an array of sizes
    */
-  sizes: Array<NoteImageSize>;
+  sizes: NoteImageSize[];
 }
 
 /**
@@ -53,20 +53,20 @@ interface NoteMetric {
 
 interface BaseNote {
   date: number;
-  images?: Array<NoteImage>;
+  images?: NoteImage[];
   metrics?: NoteMetric;
   note?: string;
 }
 
 interface DbNote extends BaseNote {
   _id: import('mongodb').ObjectID;
-  plantIds: Array<import('mongodb').ObjectID>;
+  plantIds: import('mongodb').ObjectID[];
   userId: import('mongodb').ObjectID;
 }
 
 interface BizNote extends BaseNote {
   _id: string;
-  plantIds: Array<string>;
+  plantIds: string[];
   userId: string;
   showImages?: boolean;
 }
@@ -94,14 +94,14 @@ declare type UiNotesMetaState =
 
 interface UiNotesMeta {
   state: UiNotesMetaState;
-  errors: Array<string>;
+  errors: string[];
 }
 
 interface UiNotesValue {
   _id: string;
   meta: UiNotesMeta;
   date: number;
-  plantIds: Array<string>;
+  plantIds: string[];
   userId: string;
   showImages?: boolean;
 }

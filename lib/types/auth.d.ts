@@ -1,6 +1,6 @@
 
 interface FacebookOAuthJson {
-  emails: Array<string>|string;
+  emails: string[]|string;
   id: string;
 }
   
@@ -24,7 +24,7 @@ interface GoogleOAuth {
   /**
    * Objects look like: { value: string ==> email address }
    */
-  emails: Array<object>;
+  emails: object[];
 }
 
 

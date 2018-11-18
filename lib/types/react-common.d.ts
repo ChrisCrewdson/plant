@@ -10,7 +10,7 @@ interface OpenGraphMeta {
 interface ServerSideRenderData {
   html?: String;
   initialState?: Object;
-  og?: Array<OpenGraphMeta>; // Facebook Open Graph
+  og?: OpenGraphMeta[]; // Facebook Open Graph
   req?: import('express').Request | Object;
   title?: String;
 }
