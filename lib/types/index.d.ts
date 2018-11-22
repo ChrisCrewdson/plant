@@ -15,7 +15,7 @@ declare namespace Express {
   export interface Request {
     logger: Logger;
     user?: {
-      _id: String;
+      _id: string;
     };
     files?: Multer.File[];
     logout: Function;

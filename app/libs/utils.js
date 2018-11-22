@@ -30,7 +30,7 @@ function makeMongoId() {
  */
 function makeSlug(text) {
   if (!text) {
-    // console.warn('text is falsey in makeSlug:', text);
+    // console.warn('text is falsy in makeSlug:', text);
     return '';
   }
 
