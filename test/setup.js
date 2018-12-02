@@ -7,9 +7,17 @@ jest.setTimeout(60000); // 60 second timeout
 const oauth2 = require('oauth');
 const googleOAuth = require('./fixtures/google-oauth');
 
+// @ts-ignore - _executeRequest is protected - we're deliberately doing this for testing
 // eslint-disable-next-line operator-linebreak
 oauth2.OAuth2.prototype._executeRequest =
-  function _executeRequest(httpLibrary, options, postBody, callback) {
+  /**
+   *
+   * @param {string} _httpLibrary
+   * @param {import('http').RequestOptions} options
+   * @param {any} postBody
+   * @param {import('oauth').dataCallback} callback
+   */
+  function _executeRequest(_httpLibrary, options, postBody, callback) {
     const { host } = options;
     if (!host) {
       throw new Error('Expecting host to be truthy');
