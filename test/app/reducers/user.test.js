@@ -1,10 +1,16 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const user = require('../../../app/reducers/user');
-const actions = require('../../../app/actions');
+const { actionFunc } = require('../../../app/actions/index-next');
 
+/**
+ *
+ * @param {string} actionName
+ * @param {*} state
+ * @param {object|undefined} payload
+ */
 function checkReducer(actionName, state, payload) {
-  const action = actions[actionName](payload);
+  const action = actionFunc[actionName](payload);
   const actual = user(state, action);
 
   expect(actual).toMatchSnapshot();
@@ -73,6 +79,7 @@ describe('/app/reducers/user', () => {
       activeLocationId: false,
     });
 
+    /** @type {undefined} */
     const payload = undefined;
 
     checkReducer('loadLocationsSuccess', state, payload);
@@ -95,6 +102,7 @@ describe('/app/reducers/user', () => {
       activeLocationId: 'l-2',
     });
 
+    /** @type {undefined} */
     const payload = undefined;
 
     checkReducer('changeActiveLocationId', state, payload);
