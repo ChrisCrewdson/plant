@@ -1,15 +1,22 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const notes = require('../../../app/reducers/notes');
-const actions = require('../../../app/actions');
+const { actionFunc } = require('../../../app/actions/index-next');
+
+/**
+ *
+ * @param {string} actionName
+ * @param {*} state
+ * @param {object|undefined|any[]} payload
+ * @param {*} expected
+ */
+function checkReducer(actionName, state, payload, expected) {
+  const action = actionFunc[actionName](payload);
+  const actual = notes(state, action);
+  expect(actual).toEqual(expected);
+}
 
 describe('/app/reducers/notes', () => {
-  function checkReducer(actionName, state, payload, expected) {
-    const action = actions[actionName](payload);
-    const actual = notes(state, action);
-    expect(actual).toEqual(expected);
-  }
-
   describe('reduction', () => {
     test('should upsertNoteRequestSuccess', () => {
       const state = seamless.from({ id1: { _id: 'id1', date: 20160101 } });
@@ -58,6 +65,7 @@ describe('/app/reducers/notes', () => {
 
     test('should loadNotesSuccess with empty payload', () => {
       const state = seamless.from({ id1: { _id: 'id1', date: 20160101 } });
+      /** @type {any[]} */
       const payload = [];
       const expected = state;
       checkReducer('loadNotesSuccess', state, payload, expected);

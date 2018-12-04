@@ -1,16 +1,23 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const interim = require('../../../app/reducers/interim');
-const actions = require('../../../app/actions');
+const { actionFunc } = require('../../../app/actions/index-next');
+
+/**
+ *
+ * @param {string} actionName
+ * @param {*} state
+ * @param {object|undefined|any[]} payload
+ * @param {*} expected
+ */
+function checkReducer(actionName, state, payload, expected) {
+  const action = actionFunc[actionName](payload);
+  const actual = interim(state, action);
+
+  expect(actual).toEqual(expected);
+}
 
 describe('/app/reducers/interim', () => {
-  function checkReducer(actionName, state, payload, expected) {
-    const action = actions[actionName](payload);
-    const actual = interim(state, action);
-
-    expect(actual).toEqual(expected);
-  }
-
   describe('editNoteOpen', () => {
     test('should reduce from empty state and empty payload', () => {
       const state = seamless({});
