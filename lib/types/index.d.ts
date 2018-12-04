@@ -82,12 +82,21 @@ interface DerivedMulterFile {
   noteFile: UploadedNoteFile;
 }
 
+/**
+ * Used by tests making HTTP requests to specify the options for the request
+ */
 interface HelperMakeRequestOptions {
-  headers: StringStringObject;
+  headers?: StringStringObject;
   authenticate: boolean;
-  followRedirect: boolean;
+  followRedirect?: boolean;
   url: string;
-  method: string;
-  body: object;
-  text: boolean;
+  method?: string;
+  body?: object;
+  text?: boolean;
+}
+
+interface HelperData {
+  port?: number;
+  userId?: string;
+  user?: any; // TODO: Change this to the interface that the DB returns
 }

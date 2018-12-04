@@ -2,7 +2,6 @@ const _ = require('lodash');
 
 const nodeFetch = require('node-fetch');
 // fetch-cookie wraps nodeFetch and preserves cookies.
-/** @type {import('node-fetch').default}} */
 // @ts-ignore - cannot find import
 const fetch = require('fetch-cookie/node-fetch')(nodeFetch);
 
@@ -10,6 +9,7 @@ const mongo = require('../lib/db/mongo')();
 
 const serverModule = require('../lib/server');
 
+/** @type {HelperData} */
 const data = {};
 
 /**
@@ -32,12 +32,11 @@ function getUrl(url) {
 
 /**
  * Is the method a PUT or a POST?
- * @param {object} options
- * @param {string} options.method
+ * @param {string} method
  */
-const isPutOrPost = (options) => {
-  const method = (options.method || '').toLowerCase();
-  return method === 'put' || method === 'post';
+const isPutOrPost = (method) => {
+  const methodLower = method.toLowerCase();
+  return methodLower === 'put' || methodLower === 'post';
 };
 
 /**
@@ -46,6 +45,7 @@ const isPutOrPost = (options) => {
 async function makeRequest(opts) {
   // fetch is fetch-cookie which will manage the authenticated session cookie.
   // nodeFetch is plain fetch that will not have a cookie.
+  /** @type {import('node-fetch').default}} */
   const fetcher = opts.authenticate ? fetch : nodeFetch;
 
   const headers = Object.assign(
@@ -53,17 +53,30 @@ async function makeRequest(opts) {
     opts.headers || {},
   );
 
+  /** @type {import('node-fetch').RequestRedirect}} */
   const redirect = opts.followRedirect ? 'follow' : 'manual';
 
   const url = getUrl(opts.url);
   const options = Object.assign({}, opts, { headers, redirect });
-  if (isPutOrPost(options)) {
-    options.body = JSON.stringify(options.body);
+  let body = '';
+  if (isPutOrPost(options.method || '')) {
+    body = JSON.stringify(options.body);
     options.headers = options.headers || {};
     options.headers['Content-Type'] = 'application/json';
   }
 
-  const response = await fetcher(url, options);
+  /** @type {import('node-fetch').RequestInit}} */
+  const nodeFetchOptions = {
+    headers: options.headers,
+    method: options.method,
+    redirect,
+  };
+  if (body) {
+    nodeFetchOptions.body = body;
+  }
+
+  /** @type {import('node-fetch').Response}} */
+  const response = await fetcher(url, nodeFetchOptions);
   const httpMsg = await (opts.text ? response.text() : response.json());
   return { response, httpMsg };
 }
@@ -159,7 +172,7 @@ async function createPlants(numPlants, userId, locationId) {
 
   /**
    * createPlant
-   * @param {number} count
+   * @param {number} count - the plant number/id being created not the number of plants to create
    * @returns {Promise}
    */
   async function createPlant(count) {
@@ -180,10 +193,18 @@ async function createPlants(numPlants, userId, locationId) {
   }
 
   // generate some plants
-  const promises = [...Array(numPlants).keys()].map(a => createPlant(a));
+  /** @type {number[]} */
+  // @ts-ignore - [ts] Type 'IterableIterator<number>' is not an array type.
+  const numbers = [...Array(numPlants).keys()];
+  const promises = numbers.map(a => createPlant(a));
   return Promise.all(promises);
 }
 
+/**
+ *
+ * @param {string[]} plantIds
+ * @param {object} noteOverride
+ */
 async function createNote(plantIds, noteOverride = {}) {
   expect(_.isArray(plantIds)).toBeTruthy();
   const noteTemplate = Object.assign(
@@ -195,11 +216,12 @@ async function createNote(plantIds, noteOverride = {}) {
     noteOverride,
   );
 
+  /** @type {HelperMakeRequestOptions} */
   const reqOptions = {
     method: 'POST',
     authenticate: true,
     body: noteTemplate,
-    json: true,
+    text: false,
     url: '/api/note',
   };
 
