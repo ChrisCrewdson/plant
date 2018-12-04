@@ -2,6 +2,8 @@ const _ = require('lodash');
 
 const nodeFetch = require('node-fetch');
 // fetch-cookie wraps nodeFetch and preserves cookies.
+/** @type {import('node-fetch').default}} */
+// @ts-ignore - cannot find import
 const fetch = require('fetch-cookie/node-fetch')(nodeFetch);
 
 const mongo = require('../lib/db/mongo')();
@@ -38,6 +40,9 @@ const isPutOrPost = (options) => {
   return method === 'put' || method === 'post';
 };
 
+/**
+ * @param {HelperMakeRequestOptions} opts
+ */
 async function makeRequest(opts) {
   // fetch is fetch-cookie which will manage the authenticated session cookie.
   // nodeFetch is plain fetch that will not have a cookie.

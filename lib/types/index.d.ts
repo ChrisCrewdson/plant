@@ -48,6 +48,13 @@ interface StringStringObject {
   [key: string]: string;
 }
 
+/**
+ * An interface mapping string indexes to any values
+ */
+interface StringAnyObject {
+  [key: string]: any;
+}
+
 interface AwsKey {
   Key: string;
 }
@@ -73,4 +80,14 @@ interface UploadedNoteFile {
 interface DerivedMulterFile {
   multerFile: Express.Multer.File;
   noteFile: UploadedNoteFile;
+}
+
+interface HelperMakeRequestOptions {
+  headers: StringStringObject;
+  authenticate: boolean;
+  followRedirect: boolean;
+  url: string;
+  method: string;
+  body: object;
+  text: boolean;
 }

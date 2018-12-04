@@ -2,7 +2,7 @@ const _ = require('lodash');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const plants = require('../../../app/reducers/plants');
-const actions = require('../../../app/actions');
+const { actionFunc } = require('../../../app/actions/index-next');
 
 describe('/app/reducers/plants', () => {
   describe('similar methods', () => {
@@ -29,7 +29,7 @@ describe('/app/reducers/plants', () => {
       const expected = Object.assign({}, state, { 2: payload });
 
       methods.forEach((method) => {
-        const actual = plants(state, actions[method](payload));
+        const actual = plants(state, actionFunc[method](payload));
         expect(actual).toEqual(expected);
       });
     });
@@ -52,7 +52,7 @@ describe('/app/reducers/plants', () => {
       const expected = Object.assign({}, state, { 2: payload });
 
       methods.forEach((method) => {
-        const actual = plants(state, actions[method](payload));
+        const actual = plants(state, actionFunc[method](payload));
         expect(actual).toEqual(expected);
       });
     });
@@ -73,7 +73,7 @@ describe('/app/reducers/plants', () => {
     const payload = { locationId: 'l1', plantId: '2' };
     delete expected['2'];
 
-    const actual = plants(current, actions.deletePlantRequest(payload));
+    const actual = plants(current, actionFunc.deletePlantRequest(payload));
     expect(actual).toEqual(expected);
   });
 
@@ -104,11 +104,12 @@ describe('/app/reducers/plants', () => {
     expected['1'].notes.splice(1, 1);
     expected['2'].notes.splice(1, 1);
 
-    const actual = plants(current, actions.deleteNoteRequest(payload));
+    const actual = plants(current, actionFunc.deleteNoteRequest(payload));
     expect(actual).toEqual(expected);
   });
 
   test('should load a plant', () => {
+    /** @type {StringAnyObject} */
     const expected = {
       1: {
         _id: '1',
@@ -130,12 +131,13 @@ describe('/app/reducers/plants', () => {
     Object.assign(expected, { 3: _.cloneDeep(payload) });
     expected['3'].notes = ['n1', 'n2'];
 
-    const actual = plants(current, actions.loadPlantSuccess(payload));
+    const actual = plants(current, actionFunc.loadPlantSuccess(payload));
 
     expect(actual).toEqual(expected);
   });
 
   test('should load multiple plants', () => {
+    /** @type {StringAnyObject} */
     const expected = {
       1: {
         _id: '1',
@@ -157,7 +159,7 @@ describe('/app/reducers/plants', () => {
     Object.assign(expected, { 3: _.cloneDeep(payload[0]) });
     expected['3'].notes = ['n1', 'n2'];
 
-    const actual = plants(current, actions.loadPlantsSuccess(payload));
+    const actual = plants(current, actionFunc.loadPlantsSuccess(payload));
     expect(actual).toEqual(expected);
   });
 
@@ -174,10 +176,11 @@ describe('/app/reducers/plants', () => {
         notes: ['n1', 'n2', 'n3'],
       },
     };
+    /** @type {any} */
     const payload = [];
     const current = seamless.from(expected);
 
-    const actual = plants(current, actions.loadPlantsSuccess(payload));
+    const actual = plants(current, actionFunc.loadPlantsSuccess(payload));
     expect(actual).toEqual(expected);
     expect(actual).toBe(current);
   });
@@ -205,7 +208,7 @@ describe('/app/reducers/plants', () => {
     expected.p1.notes = ['n1', 'n2', 'n3', 'n5'];
     expected.p2.notes = ['n1', 'n2', 'n5'];
 
-    const actual = plants(current, actions.upsertNoteSuccess(payload));
+    const actual = plants(current, actionFunc.upsertNoteSuccess(payload));
     expect(actual).toEqual(expected);
   });
 
@@ -236,7 +239,7 @@ describe('/app/reducers/plants', () => {
     expected.p1.notes = ['n1', 'n2', 'n3'];
     expected.p2.notes = ['n1', 'n2', 'n5'];
 
-    const actual = plants(current, actions.upsertNoteSuccess(payload));
+    const actual = plants(current, actionFunc.upsertNoteSuccess(payload));
     expect(actual).toEqual(expected);
   });
 
@@ -258,7 +261,7 @@ describe('/app/reducers/plants', () => {
     };
     const current = seamless.from(expected);
 
-    const actual = plants(current, actions.upsertNoteSuccess(payload));
+    const actual = plants(current, actionFunc.upsertNoteSuccess(payload));
     expect(actual).toBe(current);
   });
 
@@ -278,7 +281,7 @@ describe('/app/reducers/plants', () => {
     };
     const current = seamless.from(expected);
 
-    const actual = plants(current, actions.upsertNoteSuccess(payload));
+    const actual = plants(current, actionFunc.upsertNoteSuccess(payload));
     expect(actual).toBe(current);
   });
 
@@ -290,7 +293,7 @@ describe('/app/reducers/plants', () => {
       };
       const current = seamless.from(expected);
 
-      const actual = plants(current, actions.loadNotesRequest(payload));
+      const actual = plants(current, actionFunc.loadNotesRequest(payload));
       expect(actual).toBe(current);
     });
 
@@ -300,7 +303,7 @@ describe('/app/reducers/plants', () => {
       };
       const current = seamless.from(expected);
 
-      const actual = plants(current, actions.loadNotesRequest(payload));
+      const actual = plants(current, actionFunc.loadNotesRequest(payload));
       expect(actual).toBe(current);
     });
 
@@ -311,11 +314,12 @@ describe('/app/reducers/plants', () => {
       };
       const current = seamless.from(expected);
 
-      const actual = plants(current, actions.loadNotesRequest(payload));
+      const actual = plants(current, actionFunc.loadNotesRequest(payload));
       expect(actual).toBe(current);
     });
 
     test('should flag that notes have been requested for a plant', () => {
+      /** @type {StringAnyObject} */
       const expected = {
         1: { },
       };
@@ -325,7 +329,7 @@ describe('/app/reducers/plants', () => {
       const current = seamless.from(expected);
       expected['1'].notesRequested = true;
 
-      const actual = plants(current, actions.loadNotesRequest(payload));
+      const actual = plants(current, actionFunc.loadNotesRequest(payload));
       expect(actual).not.toBe(current);
       expect(actual).toEqual(expected);
     });
@@ -334,10 +338,11 @@ describe('/app/reducers/plants', () => {
   describe('loadNotesSuccess', () => {
     test('should return original state if notes is empty', () => {
       const expected = {};
+      /** @type {any} */
       const payload = [];
       const current = seamless.from(expected);
 
-      const actual = plants(current, actions.loadNotesSuccess(payload));
+      const actual = plants(current, actionFunc.loadNotesSuccess(payload));
       expect(actual).toBe(current);
     });
 
@@ -346,11 +351,12 @@ describe('/app/reducers/plants', () => {
       const payload = [{}];
       const current = seamless.from(expected);
 
-      const actual = plants(current, actions.loadNotesSuccess(payload));
+      const actual = plants(current, actionFunc.loadNotesSuccess(payload));
       expect(actual).toBe(current);
     });
 
     test('should return original state if notes do not have plantIds', () => {
+      /** @type {StringAnyObject} */
       const expected = {
         'p-1': {
           notes: ['n-7', 'n-8'],
@@ -375,7 +381,7 @@ describe('/app/reducers/plants', () => {
       expected['p-2'].notes.push('n-1');
       expected['p-3'].notes = ['n-2'];
 
-      const actual = plants(current, actions.loadNotesSuccess(payload));
+      const actual = plants(current, actionFunc.loadNotesSuccess(payload));
 
       expect(actual).not.toBe(current);
       expect(actual).toEqual(expected);

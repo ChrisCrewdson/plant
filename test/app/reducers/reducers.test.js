@@ -1,22 +1,22 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const rootReducer = require('../../../app/reducers');
-const actions = require('../../../app/actions');
+const { actionFunc } = require('../../../app/actions/index-next');
 
 
 describe('/app/reducers', () => {
   test('should reduce a logout success', () => {
-    const actual = rootReducer(seamless({}), actions.logoutSuccess());
+    const actual = rootReducer(seamless({}), actionFunc.logoutSuccess());
     expect(actual).toMatchSnapshot();
   });
 
   test('should reduce a logout request', () => {
-    const actual = rootReducer(seamless({}), actions.logoutRequest());
+    const actual = rootReducer(seamless({}), actionFunc.logoutRequest());
     expect(actual).toMatchSnapshot();
   });
 
   test('should reduce a logout failure', () => {
-    const actual = rootReducer(seamless({}), actions.logoutFailure());
+    const actual = rootReducer(seamless({}), actionFunc.logoutFailure());
     expect(actual).toMatchSnapshot();
   });
 
