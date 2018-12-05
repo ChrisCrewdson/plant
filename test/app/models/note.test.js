@@ -322,14 +322,14 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
 
       expect(Object.keys(transformed)).toHaveLength(5);
       expect(transformed._id).toBe(note._id);
       expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(transformed.images[0].size).toBe(123);
       expect(noteCopy).toEqual(note);
     });
