@@ -1,14 +1,14 @@
 // This file is responsible for making the Ajax calls to
 // the server as part of the store's dispatch(action) call.
 
-const actions = require('../actions');
+const { actionEnum, actionFunc } = require('../actions/index-next');
 const ajax = require('./ajax');
 
 function logoutRequest(store /* , action */) {
   const options = {
     url: '/api/logout',
-    success: actions.logoutSuccess,
-    failure: actions.logoutFailure,
+    success: actionFunc.logoutSuccess,
+    failure: actionFunc.logoutFailure,
     beforeSend: () => {},
   };
   ajax(store, options);
@@ -17,19 +17,20 @@ function logoutRequest(store /* , action */) {
 function createPlant(store, action, next) {
   function success(ajaxResult) {
     // This will cause the edit note window to close
-    store.dispatch(actions.editPlantClose());
-    return actions.createPlantSuccess(ajaxResult);
+    store.dispatch(actionFunc.editPlantClose());
+    return actionFunc.createPlantSuccess(ajaxResult);
   }
 
   function failure(ajaxResult) {
-    store.dispatch(actions.editPlantChange({
+    store.dispatch(actionFunc.editPlantChange({
       errors: {
         general: ajaxResult.toString(),
       },
     }));
-    return actions.createPlantFailure(ajaxResult);
+    return actionFunc.createPlantFailure(ajaxResult);
   }
 
+  /** @type {AjaxOptions} */
   const options = {
     type: 'POST',
     url: '/api/plant',
@@ -59,13 +60,14 @@ function saveFilesRequest(store, action, opts, next) {
   });
   data.append('note', JSON.stringify(action.payload.note));
 
+  /** @type {AjaxOptions} */
   const options = {
     contentType: 'multipart/form-data',
     data,
     failure: opts.failure,
     note: action.payload.note,
     success: opts.success,
-    progress: actions.editNoteChange,
+    progress: actionFunc.editNoteChange,
     type: 'POST',
     url: '/api/upload',
     fileUpload: true, // removed in ajax function
@@ -81,23 +83,24 @@ function saveFilesRequest(store, action, opts, next) {
 function upsertNoteRequest(store, action, next) {
   function success(ajaxResult) {
     // This will cause the edit note window to close
-    store.dispatch(actions.editNoteClose());
-    return actions.upsertNoteSuccess(ajaxResult);
+    store.dispatch(actionFunc.editNoteClose());
+    return actionFunc.upsertNoteSuccess(ajaxResult);
   }
 
   function failure(ajaxResult) {
-    store.dispatch(actions.editNoteChange({
+    store.dispatch(actionFunc.editNoteChange({
       errors: {
         general: ajaxResult.toString(),
       },
     }));
-    return actions.upsertNoteFailure(ajaxResult);
+    return actionFunc.upsertNoteFailure(ajaxResult);
   }
   const opts = { success, failure };
 
   if (action.payload.files && action.payload.files.length) {
     saveFilesRequest(store, action, opts, next);
   } else {
+    /** @type {AjaxOptions} */
     const options = {
       type: 'POST',
       url: '/api/note',
@@ -113,19 +116,20 @@ function upsertNoteRequest(store, action, next) {
 function updatePlant(store, action, next) {
   function success(ajaxResult) {
     // This will cause the edit note window to close
-    store.dispatch(actions.editPlantClose());
-    return actions.updatePlantSuccess(ajaxResult);
+    store.dispatch(actionFunc.editPlantClose());
+    return actionFunc.updatePlantSuccess(ajaxResult);
   }
 
   function failure(ajaxResult) {
-    store.dispatch(actions.editPlantChange({
+    store.dispatch(actionFunc.editPlantChange({
       errors: {
         general: ajaxResult.toString(),
       },
     }));
-    return actions.updatePlantFailure(ajaxResult);
+    return actionFunc.updatePlantFailure(ajaxResult);
   }
 
+  /** @type {AjaxOptions} */
   const options = {
     type: 'PUT',
     url: '/api/plant',
@@ -141,19 +145,20 @@ function deletePlantRequest(store, action, next) {
   const options = {
     type: 'DELETE',
     url: `/api/plant/${action.payload.plantId}`,
-    success: actions.deletePlantSuccess,
-    failure: actions.deletePlantFailure,
+    success: actionFunc.deletePlantSuccess,
+    failure: actionFunc.deletePlantFailure,
   };
   ajax(store, options);
   next(action);
 }
 
 function deleteNoteRequest(store, action, next) {
+  /** @type {AjaxOptions} */
   const options = {
     type: 'DELETE',
     url: `/api/note/${action.payload}`,
-    success: actions.deleteNoteSuccess,
-    failure: actions.deleteNoteFailure,
+    success: actionFunc.deleteNoteSuccess,
+    failure: actionFunc.deleteNoteFailure,
   };
   ajax(store, options);
   next(action);
@@ -163,10 +168,11 @@ function loadPlantRequest(store, action) {
   if (!action.payload._id) {
     // console.error('No _id in loadPlantRequest', (new Error()).stack);
   } else {
+    /** @type {AjaxOptions} */
     const options = {
       url: `/api/plant/${action.payload._id}`,
-      success: actions.loadPlantSuccess,
-      failure: actions.loadPlantFailure,
+      success: actionFunc.loadPlantSuccess,
+      failure: actionFunc.loadPlantFailure,
     };
     ajax(store, options);
   }
@@ -176,10 +182,11 @@ function loadPlantRequest(store, action) {
 // action.payload is a locationId
 function loadPlantsRequest(store, action, next) {
   const locationId = action.payload;
+  /** @type {AjaxOptions} */
   const options = {
     url: `/api/plants/${locationId}`,
-    success: actions.loadPlantsSuccess,
-    failure: actions.loadPlantsFailure,
+    success: actionFunc.loadPlantsSuccess,
+    failure: actionFunc.loadPlantsFailure,
   };
   ajax(store, options);
   next(action);
@@ -188,10 +195,11 @@ function loadPlantsRequest(store, action, next) {
 // Get a specific user
 function loadUserRequest(store, action) {
   const userId = action.payload;
+  /** @type {AjaxOptions} */
   const options = {
     url: `/api/user/${userId}`,
-    success: actions.loadUserSuccess,
-    failure: actions.loadUserFailure,
+    success: actionFunc.loadUserSuccess,
+    failure: actionFunc.loadUserFailure,
   };
   ajax(store, options);
 }
@@ -200,10 +208,11 @@ function loadUserRequest(store, action) {
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
 function loadUsersRequest(store) {
+  /** @type {AjaxOptions} */
   const options = {
     url: '/api/users',
-    success: actions.loadUsersSuccess,
-    failure: actions.loadUsersFailure,
+    success: actionFunc.loadUsersSuccess,
+    failure: actionFunc.loadUsersFailure,
   };
   ajax(store, options);
 }
@@ -212,10 +221,11 @@ function loadUsersRequest(store) {
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
 function loadLocationsRequest(store) {
+  /** @type {AjaxOptions} */
   const options = {
     url: '/api/locations',
-    success: actions.loadLocationsSuccess,
-    failure: actions.loadLocationsFailure,
+    success: actionFunc.loadLocationsSuccess,
+    failure: actionFunc.loadLocationsFailure,
   };
   ajax(store, options);
 }
@@ -232,10 +242,11 @@ function loadNotesRequest(store, action, next) {
     return next(action);
   }
 
+  /** @type {AjaxOptions} */
   const options = {
     data: { noteIds, plantIds },
-    failure: actions.loadNotesFailure,
-    success: actions.loadNotesSuccess,
+    failure: actionFunc.loadNotesFailure,
+    success: actionFunc.loadNotesSuccess,
     type: 'POST', // Because we don't know how big the payload will be
     url: '/api/notes',
   };
@@ -252,10 +263,11 @@ function loadUnloadedPlantsRequest(store, action) {
     console.error('No plantIds on payload, action:', action);
   }
 
+  /** @type {AjaxOptions} */
   const options = {
     data: { plantIds: action.payload },
-    failure: actions.loadUnloadedPlantsFailure,
-    success: actions.loadUnloadedPlantsSuccess,
+    failure: actionFunc.loadUnloadedPlantsFailure,
+    success: actionFunc.loadUnloadedPlantsSuccess,
     type: 'POST', // Because we don't know how big the payload will be
     url: '/api/unloaded-plants',
   };
@@ -276,10 +288,11 @@ function loadUnloadedPlantsRequest(store, action) {
 function modifyLocationRequest(store, action, next) {
   const { payload: data } = action;
 
+  /** @type {AjaxOptions} */
   const options = {
     data,
-    failure: actions.modifyLocationFailure,
-    success: actions.modifyLocationSuccess,
+    failure: actionFunc.modifyLocationFailure,
+    success: actionFunc.modifyLocationSuccess,
     type: 'POST',
     url: '/api/location',
   };
@@ -289,20 +302,20 @@ function modifyLocationRequest(store, action, next) {
 }
 
 const apis = {
-  [actions.CREATE_PLANT_REQUEST]: createPlant,
-  [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
-  [actions.DELETE_PLANT_REQUEST]: deletePlantRequest,
-  [actions.LOAD_LOCATIONS_REQUEST]: loadLocationsRequest,
-  [actions.LOAD_NOTES_REQUEST]: loadNotesRequest,
-  [actions.LOAD_PLANT_REQUEST]: loadPlantRequest,
-  [actions.LOAD_PLANTS_REQUEST]: loadPlantsRequest,
-  [actions.LOAD_UNLOADED_PLANTS_REQUEST]: loadUnloadedPlantsRequest,
-  [actions.LOAD_USER_REQUEST]: loadUserRequest,
-  [actions.LOAD_USERS_REQUEST]: loadUsersRequest,
-  [actions.LOGOUT_REQUEST]: logoutRequest,
-  [actions.MODIFY_LOCATION_REQUEST]: modifyLocationRequest,
-  [actions.UPDATE_PLANT_REQUEST]: updatePlant,
-  [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
+  [actionEnum.CREATE_PLANT_REQUEST]: createPlant,
+  [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
+  [actionEnum.DELETE_PLANT_REQUEST]: deletePlantRequest,
+  [actionEnum.LOAD_LOCATIONS_REQUEST]: loadLocationsRequest,
+  [actionEnum.LOAD_NOTES_REQUEST]: loadNotesRequest,
+  [actionEnum.LOAD_PLANT_REQUEST]: loadPlantRequest,
+  [actionEnum.LOAD_PLANTS_REQUEST]: loadPlantsRequest,
+  [actionEnum.LOAD_UNLOADED_PLANTS_REQUEST]: loadUnloadedPlantsRequest,
+  [actionEnum.LOAD_USER_REQUEST]: loadUserRequest,
+  [actionEnum.LOAD_USERS_REQUEST]: loadUsersRequest,
+  [actionEnum.LOGOUT_REQUEST]: logoutRequest,
+  [actionEnum.MODIFY_LOCATION_REQUEST]: modifyLocationRequest,
+  [actionEnum.UPDATE_PLANT_REQUEST]: updatePlant,
+  [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
 };
 
 module.exports = store => next => (action) => {

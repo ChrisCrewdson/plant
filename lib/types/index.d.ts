@@ -49,6 +49,13 @@ interface StringStringObject {
 }
 
 /**
+ * An interface mapping string indexes to boolean values in an object
+ */
+interface StringBooleanObject {
+  [key: string]: boolean;
+}
+
+/**
  * An interface mapping string indexes to any values
  */
 interface StringAnyObject {
@@ -99,4 +106,18 @@ interface HelperData {
   port?: number;
   userId?: string;
   user?: any; // TODO: Change this to the interface that the DB returns
+}
+
+interface AjaxOptions {
+  beforeSend? (jqXHR: JQueryXHR, settings: JQueryAjaxSettings): any;
+  contentType?: string;
+  data?: any;
+  error?: Function;
+  failure: Function;
+  fileUpload?: boolean;
+  progress?: Function;
+  success: Function;
+  type?: string;
+  url: string;
+  note?: any;
 }

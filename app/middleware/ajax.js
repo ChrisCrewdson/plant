@@ -1,13 +1,29 @@
 const isFunction = require('lodash/isFunction');
 const $ = require('jquery');
 
+/**
+ * Make the AJAX call to the server
+ * @param {JQueryAjaxSettings} options
+ * @returns
+ */
 function jqueryAjax(options) {
   return $.ajax(options);
 }
 
+/** @type {StringBooleanObject} */
 const pending = {};
 
+/**
+ * Flags a URL as waiting on a response from the server to prevent an identical second
+ * call being made to the server.
+ * @param {JQueryAjaxSettings} options
+ * @returns {boolean}
+ */
 function callPending(options) {
+  if (!options.url) {
+    return false;
+  }
+
   if (options.type === 'GET' && pending[options.url]) {
     return true;
   }
@@ -17,15 +33,27 @@ function callPending(options) {
   return false;
 }
 
+/**
+ * Clears the pending flag once a response has been received back from the server.
+ * @param {JQueryAjaxSettings} options
+ * @returns {void}
+ */
 function clearPending(options) {
-  pending[options.url] = false;
+  if (options.url) {
+    pending[options.url] = false;
+  }
 }
 
+/**
+ * @param {import("redux").Store} store
+ * @param {AjaxOptions} options
+ */
 module.exports = (store, options) => {
   if (!options.url || !isFunction(options.success) || !isFunction(options.failure)) {
     // console.error('Invalid options for ajax:', options);
   }
 
+  /** @type {JQueryAjaxSettings} */
   const ajaxOptions = {
     type: options.type || 'GET',
     beforeSend: options.beforeSend,
