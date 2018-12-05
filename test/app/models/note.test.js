@@ -16,7 +16,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         userId: makeMongoId(),
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
       expect(transformed.note).toBe(note.note);
@@ -32,7 +32,7 @@ describe('/app/models/note', () => {
         note: {}, // not a string
       };
 
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       /* eslint-disable no-console */
       console.error = jest.fn();
@@ -62,7 +62,7 @@ describe('/app/models/note', () => {
         fakeName2: 'Description',
         plantId: 'fake plant id',
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
       expect(Object.keys(transformed)).toHaveLength(4);
@@ -101,7 +101,7 @@ describe('/app/models/note', () => {
         plantIds: [],
         note: 'some text',
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -119,7 +119,7 @@ describe('/app/models/note', () => {
         date: 20160101,
         note: 'some text',
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -138,7 +138,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: makeMongoId(),
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -171,7 +171,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
 
       const transformed = noteValidator(note);
@@ -190,7 +190,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
       expect(Object.keys(transformed)).toHaveLength(5);
@@ -208,7 +208,7 @@ describe('/app/models/note', () => {
         note: '',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
       expect(Object.keys(transformed)).toHaveLength(5);
@@ -225,7 +225,7 @@ describe('/app/models/note', () => {
         images: [image],
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
       expect(Object.keys(transformed)).toHaveLength(4);
@@ -242,7 +242,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -262,7 +262,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -282,7 +282,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -302,7 +302,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -342,7 +342,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);
@@ -362,7 +362,7 @@ describe('/app/models/note', () => {
         note: 'some text',
         plantIds: [makeMongoId()],
       };
-      const noteCopy = _.clone(note);
+      const noteCopy = _.cloneDeep(note);
 
       try {
         noteValidator(note);

@@ -12,7 +12,7 @@ describe('/app/models/plant', () => {
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -37,7 +37,7 @@ describe('/app/models/plant', () => {
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -68,7 +68,7 @@ describe('/app/models/plant', () => {
       userId: 123, // Not a MongoId
       locationId: 789, // Not a MongoId
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -107,7 +107,7 @@ describe('/app/models/plant', () => {
       title: 'Title is required',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -127,7 +127,7 @@ describe('/app/models/plant', () => {
       title: 'Title is required',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = true;
     const transformed = plantValidator(plant, { isNew });
@@ -144,7 +144,7 @@ describe('/app/models/plant', () => {
       locationId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -164,7 +164,7 @@ describe('/app/models/plant', () => {
       userId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -192,7 +192,7 @@ describe('/app/models/plant', () => {
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -220,7 +220,7 @@ describe('/app/models/plant', () => {
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -248,7 +248,7 @@ describe('/app/models/plant', () => {
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
@@ -276,7 +276,7 @@ describe('/app/models/plant', () => {
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',
     };
-    const plantCopy = _.clone(plant);
+    const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
 
