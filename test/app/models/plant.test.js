@@ -93,6 +93,7 @@ describe('/app/models/plant', () => {
       expect(plantCopy).toEqual(plant);
       expect(console.error).toHaveBeenCalledTimes(3);
     }
+    // @ts-ignore - mockReset does not existing on console.error
     console.error.mockReset();
     /* eslint-enable no-console */
     expect.assertions(14);

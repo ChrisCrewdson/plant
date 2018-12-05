@@ -1,4 +1,5 @@
 
+/** @type {number} */
 let ajaxCallCounter;
 let opts;
 jest.mock('jquery', () => ({

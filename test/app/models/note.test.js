@@ -47,6 +47,7 @@ describe('/app/models/note', () => {
         expect(noteCopy).toEqual(note);
         expect(console.error).toHaveBeenCalledTimes(1);
       }
+      // @ts-ignore - mockReset does not existing on console.error
       console.error.mockReset();
       /* eslint-enable no-console */
       expect.assertions(6);
@@ -68,7 +69,7 @@ describe('/app/models/note', () => {
       expect(Object.keys(transformed)).toHaveLength(4);
       expect(transformed._id).toBe(note._id);
       expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(transformed.fakeName1).toBeFalsy();
       expect(transformed.fakeName2).toBeFalsy();
       expect(transformed.plantId).toBeFalsy();
@@ -89,7 +90,7 @@ describe('/app/models/note', () => {
       expect(transformed._id).toBeTruthy();
       expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
       expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(transformed.plantIds).toEqual(note.plantIds);
       expect(noteCopy).toEqual(note);
     });
@@ -178,7 +179,7 @@ describe('/app/models/note', () => {
       expect(Object.keys(transformed)).toHaveLength(5);
       expect(transformed._id).toBe(note._id);
       expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(noteCopy).toEqual(note);
     });
 
@@ -196,7 +197,7 @@ describe('/app/models/note', () => {
       expect(Object.keys(transformed)).toHaveLength(5);
       expect(transformed._id).toBe(note._id);
       expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(noteCopy).toEqual(note);
     });
 
@@ -214,7 +215,7 @@ describe('/app/models/note', () => {
       expect(Object.keys(transformed)).toHaveLength(5);
       expect(transformed._id).toBe(note._id);
       expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(noteCopy).toEqual(note);
     });
 
@@ -230,7 +231,7 @@ describe('/app/models/note', () => {
       const transformed = noteValidator(note);
       expect(Object.keys(transformed)).toHaveLength(4);
       expect(transformed._id).toBe(note._id);
-      expect(transformed.userId).toBe(note.userId);
+      expect(transformed.userId).toBeUndefined();
       expect(noteCopy).toEqual(note);
     });
 
