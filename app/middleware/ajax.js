@@ -10,7 +10,7 @@ function jqueryAjax(options) {
   return $.ajax(options);
 }
 
-/** @type {StringBooleanObject} */
+/** @type {Dictionary<boolean>} */
 const pending = {};
 
 /**

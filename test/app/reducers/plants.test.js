@@ -109,7 +109,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load a plant', () => {
-    /** @type {StringAnyObject} */
+    /** @type {Dictionary<object>} */
     const expected = {
       1: {
         _id: '1',
@@ -137,7 +137,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load multiple plants', () => {
-    /** @type {StringAnyObject} */
+    /** @type {Dictionary<object>} */
     const expected = {
       1: {
         _id: '1',
@@ -319,7 +319,7 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should flag that notes have been requested for a plant', () => {
-      /** @type {StringAnyObject} */
+      /** @type {Dictionary<object>} */
       const expected = {
         1: { },
       };
@@ -356,7 +356,7 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should return original state if notes do not have plantIds', () => {
-      /** @type {StringAnyObject} */
+      /** @type {Dictionary<object>} */
       const expected = {
         'p-1': {
           notes: ['n-7', 'n-8'],

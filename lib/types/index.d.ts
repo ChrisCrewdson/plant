@@ -42,24 +42,10 @@ interface Geo {
 }
 
 /**
- * An interface mapping string indexes to string values in an object
+ * An interface mapping string indexes to T values in an object
  */
-interface StringStringObject {
-  [key: string]: string;
-}
-
-/**
- * An interface mapping string indexes to boolean values in an object
- */
-interface StringBooleanObject {
-  [key: string]: boolean;
-}
-
-/**
- * An interface mapping string indexes to any values
- */
-interface StringAnyObject {
-  [key: string]: any;
+interface Dictionary<T> {
+  [key: string]: T;
 }
 
 interface AwsKey {
@@ -93,7 +79,7 @@ interface DerivedMulterFile {
  * Used by tests making HTTP requests to specify the options for the request
  */
 interface HelperMakeRequestOptions {
-  headers?: StringStringObject;
+  headers?: Dictionary<string>;
   authenticate: boolean;
   followRedirect?: boolean;
   url: string;
