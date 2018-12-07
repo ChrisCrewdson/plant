@@ -70,9 +70,11 @@ function createPlant(store, action, next) {
  */
 function saveFilesRequest(store, action, opts, next) {
   const data = new FormData();
-  action.payload.files.forEach((file) => {
-    data.append('file', file);
-  });
+  action.payload.files.forEach(
+    /** @param {string} file - TODO: Might be a Blob and not a string */
+    (file) => {
+      data.append('file', file);
+    });
   data.append('note', JSON.stringify(action.payload.note));
 
   /** @type {AjaxOptions} */
@@ -368,6 +370,9 @@ function modifyLocationRequest(store, action, next) {
   return next(action);
 }
 
+/**
+ * @type {Dictionary<Function>}
+ */
 const apis = {
   [actionEnum.CREATE_PLANT_REQUEST]: createPlant,
   [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
@@ -389,6 +394,7 @@ const apis = {
  * @param {import('redux').Store} store
  * @returns {Function}
  */
+// @ts-ignore - TODO: How does this get typed?
 module.exports = store => next => (action) => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);

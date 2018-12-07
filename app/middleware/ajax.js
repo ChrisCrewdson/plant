@@ -79,6 +79,10 @@ module.exports = (store, options) => {
     return;
   }
 
+  /**
+   * Provides a way to show the user the progress on the upload
+   * @param {ProgressEvent} e
+   */
   function progressHandlingFunction(e) {
     if (e.lengthComputable) {
       const uploadProgress = { value: e.loaded, max: e.total, note: options.note };
