@@ -69,7 +69,7 @@ interface UiActionsNextEnum {
 }
 
 interface UiActionsNextFunction {
-  [key:string]: Function;
+  [key:string]: ActionMethod;
 }
 
 interface UiActionsAcc {

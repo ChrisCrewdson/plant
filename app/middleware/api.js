@@ -4,7 +4,11 @@
 const { actionEnum, actionFunc } = require('../actions/index-next');
 const ajax = require('./ajax');
 
+/**
+ * @param {import('redux').Store} store
+ */
 function logoutRequest(store /* , action */) {
+  /** @type {AjaxOptions} */
   const options = {
     url: '/api/logout',
     success: actionFunc.logoutSuccess,
@@ -14,13 +18,20 @@ function logoutRequest(store /* , action */) {
   ajax(store, options);
 }
 
+/**
+ * @param {import('redux').Store} store
+ * @param {any} action
+ * @param {Function} next
+ */
 function createPlant(store, action, next) {
+  /** @param {object} ajaxResult */
   function success(ajaxResult) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
     return actionFunc.createPlantSuccess(ajaxResult);
   }
 
+  /** @param {object} ajaxResult */
   function failure(ajaxResult) {
     store.dispatch(actionFunc.editPlantChange({
       errors: {
@@ -42,17 +53,21 @@ function createPlant(store, action, next) {
   next(action);
 }
 
-// Upload files
-// action.payload is an array of file objects:
-/*
-lastModified: 1472318340000
-lastModifiedDate: Sat Aug 27 2016 10:19:00 GMT-0700 (MST)
-name: "2016-08-27 10.19.00.jpg"
-preview: "blob:http://localhost:9090/43590135-cb1a-42f6-9d75-ea737ea2ce91"
-size: 6674516
-type: "image/jpeg"
-webkitRelativePath:""
-*/
+/**
+ * Upload files
+ * action.payload is an array of file objects:
+ * lastModified: 1472318340000
+ * lastModifiedDate: Sat Aug 27 2016 10:19:00 GMT-0700 (MST)
+ * name: "2016-08-27 10.19.00.jpg"
+ * preview: "blob:http://localhost:9090/43590135-cb1a-42f6-9d75-ea737ea2ce91"
+ * size: 6674516
+ * type: "image/jpeg"
+ * webkitRelativePath:""
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {any} opts
+ * @param {Function} next
+ */
 function saveFilesRequest(store, action, opts, next) {
   const data = new FormData();
   action.payload.files.forEach((file) => {
@@ -80,13 +95,20 @@ function saveFilesRequest(store, action, opts, next) {
 // action.payload is an object with two properties
 // files: An optional array of files
 // note: The note being created
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {Function} next
+ */
 function upsertNoteRequest(store, action, next) {
+  /** @param {object} ajaxResult */
   function success(ajaxResult) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editNoteClose());
     return actionFunc.upsertNoteSuccess(ajaxResult);
   }
 
+  /** @param {object} ajaxResult */
   function failure(ajaxResult) {
     store.dispatch(actionFunc.editNoteChange({
       errors: {
@@ -113,13 +135,20 @@ function upsertNoteRequest(store, action, next) {
   }
 }
 
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {Function} next
+ */
 function updatePlant(store, action, next) {
+  /** @param {object} ajaxResult */
   function success(ajaxResult) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
     return actionFunc.updatePlantSuccess(ajaxResult);
   }
 
+  /** @param {object} ajaxResult */
   function failure(ajaxResult) {
     store.dispatch(actionFunc.editPlantChange({
       errors: {
@@ -141,6 +170,11 @@ function updatePlant(store, action, next) {
   return next(action);
 }
 
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {Function} next
+ */
 function deletePlantRequest(store, action, next) {
   const options = {
     type: 'DELETE',
@@ -152,6 +186,11 @@ function deletePlantRequest(store, action, next) {
   next(action);
 }
 
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {Function} next
+ */
 function deleteNoteRequest(store, action, next) {
   /** @type {AjaxOptions} */
   const options = {
@@ -164,6 +203,10 @@ function deleteNoteRequest(store, action, next) {
   next(action);
 }
 
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ */
 function loadPlantRequest(store, action) {
   if (!action.payload._id) {
     // console.error('No _id in loadPlantRequest', (new Error()).stack);
@@ -180,6 +223,11 @@ function loadPlantRequest(store, action) {
 
 // Get all the plants a user has created
 // action.payload is a locationId
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {Function} next
+ */
 function loadPlantsRequest(store, action, next) {
   const locationId = action.payload;
   /** @type {AjaxOptions} */
@@ -193,6 +241,10 @@ function loadPlantsRequest(store, action, next) {
 }
 
 // Get a specific user
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ */
 function loadUserRequest(store, action) {
   const userId = action.payload;
   /** @type {AjaxOptions} */
@@ -207,6 +259,9 @@ function loadUserRequest(store, action) {
 // Load all the users.
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
+/**
+ * @param {import('redux').Store} store
+ */
 function loadUsersRequest(store) {
   /** @type {AjaxOptions} */
   const options = {
@@ -220,6 +275,9 @@ function loadUsersRequest(store) {
 // Load all the locations.
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
+/**
+ * @param {import('redux').Store} store
+ */
 function loadLocationsRequest(store) {
   /** @type {AjaxOptions} */
   const options = {
@@ -234,6 +292,11 @@ function loadLocationsRequest(store) {
 // action.payload is an object with one of 2 properties:
 // noteIds: an array of noteIds
 // plantIds: an array of plantIds
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ * @param {Function} next
+ */
 function loadNotesRequest(store, action, next) {
   const { noteIds, plantIds } = action.payload;
   if (!noteIds && !plantIds) {
@@ -257,6 +320,10 @@ function loadNotesRequest(store, action, next) {
 
 // Get all the plants listed
 // action.payload is an array of plantIds
+/**
+ * @param {import('redux').Store} store
+ * @param {ActionMethodResult} action
+ */
 function loadUnloadedPlantsRequest(store, action) {
   if (!action.payload || !action.payload.length) {
     // eslint-disable-next-line no-console
@@ -318,6 +385,10 @@ const apis = {
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
 };
 
+/**
+ * @param {import('redux').Store} store
+ * @returns {Function}
+ */
 module.exports = store => next => (action) => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);

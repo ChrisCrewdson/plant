@@ -61,7 +61,7 @@ const actionList = [
 /**
  * Given a type, will create a method that will return the payload and type as an object
  * @param {string} type - The type of the action - element from actionList array
- * @returns {(payload: object) => object}
+ * @returns {ActionMethod}
  */
 const createMethod = type => payload => ({ type, payload });
 

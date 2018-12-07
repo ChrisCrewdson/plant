@@ -107,3 +107,10 @@ interface AjaxOptions {
   url: string;
   note?: any;
 }
+
+interface ActionMethodResult {
+  type: string;
+  payload: Dictionary<any>;
+}
+
+declare type ActionMethod = (payload?: object) => ActionMethodResult;
