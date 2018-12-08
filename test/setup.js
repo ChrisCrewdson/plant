@@ -44,6 +44,11 @@ const loggerMockFunction = (errObj, extra) => {
 global.loggerMock = {};
 
 jest.mock('lalog', () => ({
+  /**
+   * @param {object} options
+   * @param {string} options.serviceName
+   * @param {string} options.moduleName
+   */
   create: ({ serviceName, moduleName }) => {
     expect(serviceName).toBeTruthy();
     expect(moduleName).toBeTruthy();
