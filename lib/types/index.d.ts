@@ -110,7 +110,13 @@ interface AjaxOptions {
 
 interface ActionMethodResult {
   type: string;
-  payload: Dictionary<any>;
+  payload?: Dictionary<any>;
 }
 
-declare type ActionMethod = (payload?: object) => ActionMethodResult;
+declare type ActionMethod = (payload?: Dictionary<any>) => ActionMethodResult;
+
+interface AddPlantButtonProps {
+  mini?: boolean;
+  show: boolean;
+  style?: object;
+}

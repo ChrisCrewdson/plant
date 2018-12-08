@@ -19,8 +19,8 @@ class Locations extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
     this.onLinkClick = this.onLinkClick.bind(this);
     this.renderLocation = this.renderLocation.bind(this);

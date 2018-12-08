@@ -36,6 +36,10 @@ const weatherColumns = [{
   width: 33,
 }];
 
+/**
+ *
+ * @param {Dictionary<Role>} members
+ */
 const getMembers = members => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
   return {
@@ -56,12 +60,13 @@ class LocationsManager extends React.Component {
   /**
    * Called with a save on an edit/new is done. Validation is failed by returning an
    * array that has at least 1 truthy value in it.
+   * @param {object} data
    * @param {object} data.row - The row that is being validated
    * @param {string} data.row._id - The _id of the row which is the user's _id
    * @param {any[]} data.row.values - The values being changed/inserted
    * @param {object} data.meta - Meta data sent to Grid for passing back container methods
    * @param {object} data.meta.location - The location object that this applies to
-   * @param {object} data.meta.location.member - The members at this location - the key is the
+   * @param {object} data.meta.location.members - The members at this location - the key is the
    *                                             userId (a UUID) and the value is the role
    * @param {boolean} data.isNew - True if this is a new row
    * @returns {string[]} - An array of errors, empty strings or a mixture of the two

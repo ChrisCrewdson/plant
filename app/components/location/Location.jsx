@@ -9,12 +9,16 @@ const Base = require('../base/Base');
 const InputComboText = require('../common/InputComboText');
 const PlantItem = require('../plant/PlantItem');
 const { canEdit } = require('../../libs/auth-helper');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const NoteCreate = require('../note/NoteCreate');
 const utils = require('../../libs/utils');
 const AddPlantButton = require('../common/AddPlantButton');
 
 class Location extends React.Component {
+  /**
+   *
+   * @param {boolean} userCanEdit
+   */
   static addPlantButton(userCanEdit) {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
@@ -46,7 +50,7 @@ class Location extends React.Component {
 
     const plantIds = locations[locationId] && locations[locationId].plantIds;
     if (!plantIds) {
-      store.dispatch(actions.loadPlantsRequest(locationId));
+      store.dispatch(actionFunc.loadPlantsRequest(locationId));
     }
     this.onChange();
     this.unsubscribe = store.subscribe(this.onChange);
@@ -77,7 +81,7 @@ class Location extends React.Component {
 
   postSaveSuccessCreateNote() {
     const { store } = this.context;
-    store.dispatch(actions.editNoteClose());
+    store.dispatch(actionFunc.editNoteClose());
   }
 
   static renderTitle(location) {
@@ -210,7 +214,7 @@ No plants added yet...
     }, { found: [], unloaded: [] });
 
     if (tileElements.unloaded.length) {
-      store.dispatch(actions.loadUnloadedPlantsRequest(tileElements.unloaded));
+      store.dispatch(actionFunc.loadUnloadedPlantsRequest(tileElements.unloaded));
     }
 
     const filterInput = (

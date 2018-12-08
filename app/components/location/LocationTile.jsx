@@ -4,12 +4,17 @@ const React = require('react');
 const { Link } = require('react-router-dom');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 
 const { makeSlug } = utils;
 
+/**
+ *
+ * @param {string} _id
+ * @param {import('redux').Dispatch} dispatch
+ */
 function onLinkClick(_id, dispatch) {
-  dispatch(actions.changeActiveLocationId({ _id }));
+  dispatch(actionFunc.changeActiveLocationId({ _id }));
 }
 
 function locationTile(props) {

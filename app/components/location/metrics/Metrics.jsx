@@ -18,6 +18,10 @@ const LastMeasured = require('./LastMeasured');
 // With this as an initial commit it is easy to iterate on this.
 
 class Metrics extends React.Component {
+  /**
+   *
+   * @param {boolean} userCanEdit
+   */
   static addPlantButton(userCanEdit) {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
