@@ -1,11 +1,12 @@
-const _ = require('lodash');
 const uuid = require('uuid');
 
 jest.setTimeout(60000); // 60 second timeout
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const oauth2 = require('oauth');
+
 const googleOAuth = require('./fixtures/google-oauth');
+const { mockLogger } = require('./mock-logger');
 
 // @ts-ignore - _executeRequest is protected - we're deliberately doing this for testing
 // eslint-disable-next-line operator-linebreak
@@ -30,63 +31,6 @@ oauth2.OAuth2.prototype._executeRequest =
   };
 
 process.env.TESTING = true;
-
-const loggerMockFunction = (errObj, extra) => {
-  if (!_.isObject(errObj)) {
-    throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
-  }
-  if (extra) {
-    const { res, code } = extra;
-    res.status(code).send({ one: 1 });
-  }
-};
-
-global.loggerMock = {};
-
-jest.mock('lalog', () => ({
-  /**
-   * @param {object} options
-   * @param {string} options.serviceName
-   * @param {string} options.moduleName
-   */
-  create: ({ serviceName, moduleName }) => {
-    expect(serviceName).toBeTruthy();
-    expect(moduleName).toBeTruthy();
-    expect(typeof serviceName).toBe('string');
-    expect(typeof moduleName).toBe('string');
-    return global.loggerMock;
-  },
-  getLevel: () => 'info',
-}));
-
-const isObject = obj => obj !== null && typeof obj === 'object';
-
-const loggerTimeEndMockFunction = (label, extraLogData) => {
-  if (typeof label !== 'string') {
-    throw new Error(`First param to lalog timeEnd method is not an string: ${typeof label}`);
-  }
-  if (extraLogData && !isObject(extraLogData)) {
-    throw new Error(`Second param to lalog timeEnd method is not an object: ${typeof extraLogData}`);
-  }
-  if (extraLogData) {
-    loggerMockFunction(extraLogData);
-  }
-};
-
-global.loggerMockReset = () => {
-  // const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
-  global.loggerMock.trace = jest.fn(loggerMockFunction);
-  global.loggerMock.info = jest.fn(loggerMockFunction);
-  global.loggerMock.warn = jest.fn(loggerMockFunction);
-  global.loggerMock.error = jest.fn(loggerMockFunction);
-  global.loggerMock.fatal = jest.fn(loggerMockFunction);
-  global.loggerMock.security = jest.fn(loggerMockFunction);
-  global.loggerMock.timeEnd = jest.fn(loggerTimeEndMockFunction);
-  global.loggerMock.timeEnd.error = jest.fn(loggerTimeEndMockFunction);
-  global.loggerMock.time = jest.fn();
-};
-
-global.loggerMockReset();
 
 const mongo = require('../lib/db/mongo');
 
@@ -144,7 +88,7 @@ global.navigator = global.window.navigator;
 propagateToGlobal(global.window);
 
 afterAll(async () => {
-  const db = await mongoDb.GetDb(global.loggerMock);
+  const db = await mongoDb.GetDb(mockLogger);
   await db.dropDatabase();
   const client = mongoDb.getDbClient();
   if (!client) {

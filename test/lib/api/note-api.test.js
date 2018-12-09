@@ -2,8 +2,7 @@ const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 const mongo = require('../../../lib/db/mongo')();
-
-const { mockLogger } = helper;
+const { mockLogger } = require('../../mock-logger');
 
 describe('note-api', () => {
   let userId;

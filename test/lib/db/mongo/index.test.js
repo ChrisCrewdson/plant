@@ -4,9 +4,9 @@ const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
 const googleOAuth = require('../../../fixtures/google-oauth');
+const { mockLogger } = require('../../../mock-logger');
 
 const { id: googleId } = googleOAuth['www.googleapis.com'].result;
-const { mockLogger } = helper;
 
 describe('/lib/db/mongo/', () => {
   let userId;

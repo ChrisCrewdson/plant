@@ -1,7 +1,6 @@
 const utils = require('../../../../app/libs/utils');
 const mongo = require('../../../../lib/db/mongo')();
-
-const { mockLogger } = require('../../../helper');
+const { mockLogger } = require('../../../mock-logger');
 
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {

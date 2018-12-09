@@ -1,7 +1,6 @@
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
-
-const { mockLogger } = helper;
+const { mockLogger } = require('../../../mock-logger');
 
 describe('/lib/db/mongo/model-location', () => {
   let userId;
