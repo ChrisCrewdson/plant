@@ -6,6 +6,7 @@ const mongo = require('../../../../lib/db/mongo')();
 const googleOAuth = require('../../../fixtures/google-oauth');
 
 const { id: googleId } = googleOAuth['www.googleapis.com'].result;
+const { mockLogger } = helper;
 
 describe('/lib/db/mongo/', () => {
   let userId;
@@ -29,7 +30,7 @@ describe('/lib/db/mongo/', () => {
       'should fail to create a user account if there is no object',
       async () => {
         try {
-          await mongo.findOrCreateUser(null, global.loggerMock);
+          await mongo.findOrCreateUser(null, mockLogger);
         } catch (err) {
           expect(err).toBeTruthy();
           expect(err.message).toBe('No facebook.id or google.id:\nnull');
@@ -49,7 +50,7 @@ describe('/lib/db/mongo/', () => {
           id: googleId,
         },
       };
-      const body = await mongo.findOrCreateUser(user, global.loggerMock);
+      const body = await mongo.findOrCreateUser(user, mockLogger);
       expect(body).toBeTruthy();
       expect(body._id).toBeTruthy();
       expect(constants.mongoIdRE.test(body._id)).toBeTruthy();
@@ -63,7 +64,7 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should fetch all users', async () => {
-      const body = await mongo.getAllUsers(global.loggerMock);
+      const body = await mongo.getAllUsers(mockLogger);
       expect(body).toBeTruthy();
       expect(_.isArray(body)).toBeTruthy();
       expect(body).toHaveLength(1);
@@ -87,7 +88,7 @@ describe('/lib/db/mongo/', () => {
     test('should create a plant', async () => {
       plant.userId = userId;
       expect(typeof plant.userId).toBe('string');
-      const body = await mongo.createPlant(plant, userId, global.loggerMock);
+      const body = await mongo.createPlant(plant, userId, mockLogger);
       expect(body).toBeTruthy();
       expect(body._id).toBeTruthy();
       expect(typeof body._id).toBe('string');
@@ -100,7 +101,7 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get an existing plant', async () => {
-      const result = await mongo.getPlantById(plantId, userId, global.loggerMock);
+      const result = await mongo.getPlantById(plantId, userId, mockLogger);
       expect(typeof result.userId).toBe('string');
       expect(result.name).toBe(plant.name);
       expect(result.plantedOn).toBe(plant.plantedOn);
@@ -108,7 +109,7 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get existing plants', async () => {
-      const results = await mongo.getPlantsByIds([plantId], userId, global.loggerMock);
+      const results = await mongo.getPlantsByIds([plantId], userId, mockLogger);
       expect(_.isArray(results)).toBeTruthy();
       expect(results).toHaveLength(1);
       const result = results[0];
@@ -126,7 +127,7 @@ describe('/lib/db/mongo/', () => {
         userId,
       };
 
-      const result = await mongo.updatePlant(plantUpdate, userId, global.loggerMock);
+      const result = await mongo.updatePlant(plantUpdate, userId, mockLogger);
       expect(result).toEqual(plantUpdate);
     });
   });

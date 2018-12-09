@@ -3,6 +3,8 @@ const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 const mongo = require('../../../lib/db/mongo')();
 
+const { mockLogger } = helper;
+
 describe('note-api', () => {
   let userId;
   let locationId;
@@ -282,7 +284,7 @@ describe('note-api', () => {
       ];
 
       async function createNote(data) {
-        const createdNote = await mongo.upsertNote(note, global.loggerMock);
+        const createdNote = await mongo.upsertNote(note, mockLogger);
         expect(createdNote).toBeTruthy();
         // logger.trace('createdNote', {createdNote});
         // data.createdNote = body;
@@ -315,7 +317,7 @@ describe('note-api', () => {
       }
 
       async function getNote(createdNote) {
-        const fetchedNote = await mongo.getNoteById(createdNote._id, global.loggerMock);
+        const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
         expect(fetchedNote.images[0].sizes).toEqual(sizes);
         expect(!fetchedNote.images[1].sizes).toBeTruthy();
         return fetchedNote;

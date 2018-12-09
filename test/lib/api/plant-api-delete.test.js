@@ -2,6 +2,8 @@ const helper = require('../../helper');
 const mongo = require('../../../lib/db/mongo')();
 const utils = require('../../../app/libs/utils');
 
+const { mockLogger } = helper;
+
 describe('plant-api-delete', () => {
   let userId;
   let locationId;
@@ -71,7 +73,7 @@ describe('plant-api-delete', () => {
       // 2. Create 3 notes, part 1.2:
       //    Update Note #1
       const updatedNote = Object.assign({}, notes[0], { x: 'random' });
-      const upsertedNote = await mongo.upsertNote(updatedNote, global.loggerMock);
+      const upsertedNote = await mongo.upsertNote(updatedNote, mockLogger);
       expect(upsertedNote).toBeTruthy();
 
       // 2. Create 3 notes, part 2:
@@ -99,7 +101,7 @@ describe('plant-api-delete', () => {
       expect(response4).toEqual({ message: 'Deleted' });
 
       // 4. Confirm that Note #1 is no longer in DB
-      const result2 = await mongo.getNoteById(notes[0]._id, global.loggerMock);
+      const result2 = await mongo.getNoteById(notes[0]._id, mockLogger);
       expect(result2).toBeUndefined();
 
       // 5. Retrieve plant #2 and confirm that both notes are attached.

@@ -1,6 +1,8 @@
 const utils = require('../../../../app/libs/utils');
 const mongo = require('../../../../lib/db/mongo')();
 
+const { mockLogger } = require('../../../helper');
+
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {
     test('should update the image sizes in a note', async () => {
@@ -26,7 +28,7 @@ describe('/lib/db/mongo/update', () => {
         { width: 2000, name: 'xl' },
       ];
 
-      const createdNote = await mongo.upsertNote(note, global.loggerMock);
+      const createdNote = await mongo.upsertNote(note, mockLogger);
       expect(createdNote).toBeTruthy();
 
       const noteUpdate = {
@@ -36,9 +38,9 @@ describe('/lib/db/mongo/update', () => {
         sizes,
       };
 
-      await mongo.addSizesToNoteImage(noteUpdate, global.loggerMock);
+      await mongo.addSizesToNoteImage(noteUpdate, mockLogger);
 
-      const fetchedNote = await mongo.getNoteById(createdNote._id, global.loggerMock);
+      const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
 
       expect(fetchedNote.images[0].sizes).toEqual(sizes);
       expect(fetchedNote.images[1].sizes).toBeFalsy();

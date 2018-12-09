@@ -1,6 +1,8 @@
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
 
+const { mockLogger } = helper;
+
 describe('/lib/db/mongo/model-location', () => {
   let userId;
   let fbUser;
@@ -22,7 +24,7 @@ describe('/lib/db/mongo/model-location', () => {
       expect.hasAssertions();
       try {
         const loc = {};
-        await mongo.createLocation(loc, global.loggerMock);
+        await mongo.createLocation(loc, mockLogger);
       } catch (e) {
         expect(e.message).toEqual('members and createdBy must be specified as part of location when creating a location');
       }
@@ -34,7 +36,7 @@ describe('/lib/db/mongo/model-location', () => {
         const loc = {
           createdBy: userId,
         };
-        await mongo.createLocation(loc, global.loggerMock);
+        await mongo.createLocation(loc, mockLogger);
       } catch (e) {
         expect(e.message).toEqual('members and createdBy must be specified as part of location when creating a location');
       }
@@ -47,7 +49,7 @@ describe('/lib/db/mongo/model-location', () => {
           [userId]: 'owner',
         },
       };
-      const actual = await mongo.createLocation(loc, global.loggerMock);
+      const actual = await mongo.createLocation(loc, mockLogger);
       const expected = {
         _id: actual._id,
         createdBy: userId,
