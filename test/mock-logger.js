@@ -1,8 +1,20 @@
 const _ = require('lodash');
 
 /** @type {Logger} */
-const mockLogger = {};
+const mockLogger = {
+  trace: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+  fatal: jest.fn(),
+  security: jest.fn(),
+  timeEnd: jest.fn(),
+  time: jest.fn(),
+};
 
+/**
+ * @param {object} obj
+ */
 const isObject = obj => obj !== null && typeof obj === 'object';
 
 jest.mock('lalog', () => ({
@@ -21,6 +33,10 @@ jest.mock('lalog', () => ({
   getLevel: () => 'info',
 }));
 
+/**
+ * @param {object|undefined} errObj
+ * @param {object=} extra
+ */
 const loggerMockFunction = (errObj, extra) => {
   if (!_.isObject(errObj)) {
     throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
@@ -31,6 +47,10 @@ const loggerMockFunction = (errObj, extra) => {
   }
 };
 
+/**
+ * @param {string} label
+ * @param {object|undefined} extraLogData
+ */
 const loggerTimeEndMockFunction = (label, extraLogData) => {
   if (typeof label !== 'string') {
     throw new Error(`First param to lalog timeEnd method is not an string: ${typeof label}`);
@@ -43,7 +63,7 @@ const loggerTimeEndMockFunction = (label, extraLogData) => {
   }
 };
 
-const loggerMockReset = () => {
+const mockLoggerReset = () => {
   // const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
   mockLogger.trace = jest.fn(loggerMockFunction);
   mockLogger.info = jest.fn(loggerMockFunction);
@@ -56,9 +76,9 @@ const loggerMockReset = () => {
   mockLogger.time = jest.fn();
 };
 
-loggerMockReset();
+mockLoggerReset();
 
 module.exports = {
   mockLogger,
-  mockLoggerReset: loggerMockReset,
+  mockLoggerReset,
 };
