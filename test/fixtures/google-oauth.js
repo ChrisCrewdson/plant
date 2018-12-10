@@ -1,3 +1,4 @@
+/** @type {Dictionary<object>} */
 const requests = {
   'accounts.google.com': {
     options: {

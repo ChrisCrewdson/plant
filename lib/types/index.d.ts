@@ -48,10 +48,6 @@ interface Dictionary<T> {
   [key: string]: T;
 }
 
-interface Window {
-  [key:string]: any;
-}
-
 interface AwsKey {
   Key: string;
 }
@@ -125,3 +121,13 @@ interface AddPlantButtonProps {
   style?: object;
 }
 
+interface Window {
+  [key:string]: any;
+  // FormData: Function;
+}
+
+interface Global extends NodeJS.Global {
+  [key: string]: any;
+  // window: Window;
+  // requestAnimationFrame?: (callback: Function) => void;
+}
