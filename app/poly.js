@@ -39,7 +39,7 @@ function loadScript(done) {
 
 /**
  * Load Polyfills for browser features that are missing
- * @param {Function} done
+ * @param {(err?: Error) => void} done
  */
 module.exports = (done) => {
   if (browserSupportsAllFeatures()) {

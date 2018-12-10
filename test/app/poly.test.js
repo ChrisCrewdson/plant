@@ -55,6 +55,7 @@ describe('/app/poly', () => {
     // Discover the features that are missing from the window object
     // and set each one to true to force a different code path.
     const { features } = poly;
+    /** @type {string[]} */
     const missing = [];
     features.forEach((feature) => {
       if (!window[feature]) {

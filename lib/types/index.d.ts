@@ -48,6 +48,10 @@ interface Dictionary<T> {
   [key: string]: T;
 }
 
+interface Window {
+  [key:string]: any;
+}
+
 interface AwsKey {
   Key: string;
 }
@@ -120,3 +124,4 @@ interface AddPlantButtonProps {
   show: boolean;
   style?: object;
 }
+

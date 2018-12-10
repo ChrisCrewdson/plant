@@ -132,15 +132,11 @@ function updateLocalStorage() {
 }
 
 // Polyfill any new browser features we need
-poly(
-  /**
-   * @param {Error?} err
-   */
-  (err) => {
-    if (err) {
+poly((err) => {
+  if (err) {
     // eslint-disable-next-line no-console
-      console.error(err);
-    }
-    updateLocalStorage();
-    main();
-  });
+    console.error(err);
+  }
+  updateLocalStorage();
+  main();
+});
