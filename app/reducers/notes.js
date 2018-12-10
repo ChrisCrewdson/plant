@@ -2,7 +2,7 @@
 
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
-const actions = require('../actions');
+const { actionEnum } = require('../actions/index-next');
 
 /**
  * Raised when a save event is triggered for a note.
@@ -91,14 +91,14 @@ function showNoteImages(state, { payload: _id }) {
 }
 
 const reducers = seamless.from({
-  [actions.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
-  [actions.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
+  [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
+  [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
 
-  [actions.SHOW_NOTE_IMAGES]: showNoteImages,
+  [actionEnum.SHOW_NOTE_IMAGES]: showNoteImages,
 
-  [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
+  [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
 
-  [actions.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
+  [actionEnum.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
 
 });
 

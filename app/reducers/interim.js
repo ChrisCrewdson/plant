@@ -4,7 +4,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
-const actions = require('../actions');
+const { actionEnum } = require('../actions/index-next');
 
 /**
  * editNoteOpen
@@ -89,15 +89,15 @@ function loadPlantsFailure(state) {
 const reducers = {
   // Init the note prop in the interim state with something
   // so that the note is editable
-  [actions.EDIT_NOTE_OPEN]: editNoteOpen,
-  [actions.EDIT_NOTE_CHANGE]: editNoteChange,
-  [actions.EDIT_NOTE_CLOSE]: editNoteClose,
-  [actions.EDIT_PLANT_OPEN]: editPlantOpen,
-  [actions.EDIT_PLANT_CHANGE]: editPlantChange,
-  [actions.EDIT_PLANT_CLOSE]: editPlantClose,
-  [actions.LOAD_PLANTS_REQUEST]: loadPlantsRequest,
-  [actions.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
-  [actions.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
+  [actionEnum.EDIT_NOTE_OPEN]: editNoteOpen,
+  [actionEnum.EDIT_NOTE_CHANGE]: editNoteChange,
+  [actionEnum.EDIT_NOTE_CLOSE]: editNoteClose,
+  [actionEnum.EDIT_PLANT_OPEN]: editPlantOpen,
+  [actionEnum.EDIT_PLANT_CHANGE]: editPlantChange,
+  [actionEnum.EDIT_PLANT_CLOSE]: editPlantClose,
+  [actionEnum.LOAD_PLANTS_REQUEST]: loadPlantsRequest,
+  [actionEnum.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
+  [actionEnum.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
 module.exports = (state = seamless({}), action) => {

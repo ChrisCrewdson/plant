@@ -3,7 +3,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable');
-const actions = require('../../../actions');
+const { actionFunc } = require('../../../actions/index-next');
 
 /**
  *
@@ -35,8 +35,7 @@ function lastMeasured(props) {
   }, initMissingPlants);
 
   if (missingPlants.length) {
-    // @ts-ignore - actions are both strings and Functions
-    dispatch(actions.loadUnloadedPlantsRequest(missingPlants));
+    dispatch(actionFunc.loadUnloadedPlantsRequest(missingPlants));
   }
 
   /** @type {string[]} */
@@ -52,8 +51,7 @@ function lastMeasured(props) {
   }, initMissingNotesPlantIds);
 
   if (missingNotesPlantIds.length) {
-    // @ts-ignore - actions are both strings and Functions
-    dispatch(actions.loadNotesRequest({
+    dispatch(actionFunc.loadNotesRequest({
       plantIds: missingNotesPlantIds,
     }));
   }

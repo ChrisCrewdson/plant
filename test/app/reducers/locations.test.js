@@ -1,7 +1,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const locations = require('../../../app/reducers/locations');
-const actions = require('../../../app/actions');
+const { actionFunc } = require('../../../app/actions/index-next');
 
 describe('/app/reducers/locations', () => {
   const stateA = seamless.from({
@@ -37,13 +37,13 @@ describe('/app/reducers/locations', () => {
       },
     };
 
-    const actual = locations(stateA, actions.loadLocationsSuccess(payload));
+    const actual = locations(stateA, actionFunc.loadLocationsSuccess(payload));
     expect(actual).toMatchSnapshot();
     expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should load locations with undefined payload', () => {
-    const actual = locations(stateA, actions.loadLocationsSuccess(undefined));
+    const actual = locations(stateA, actionFunc.loadLocationsSuccess(undefined));
     expect(actual).toMatchSnapshot();
     // The same object should be returned
     expect(actual).toBe(stateA);
@@ -55,7 +55,7 @@ describe('/app/reducers/locations', () => {
       locationId: '1',
       _id: 'plant-1',
     };
-    const actual = locations(stateA, actions.createPlantRequest(plant));
+    const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
     expect(actual).not.toBe(stateA);
     expect(seamless.isImmutable(actual)).toBe(true);
@@ -66,7 +66,7 @@ describe('/app/reducers/locations', () => {
       locationId: '7',
       _id: 'plant-1',
     };
-    const actual = locations(stateA, actions.createPlantRequest(plant));
+    const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);
     expect(seamless.isImmutable(actual)).toBe(true);
@@ -77,7 +77,7 @@ describe('/app/reducers/locations', () => {
       locationId: '3',
       _id: 'plant-1',
     };
-    const actual = locations(stateA, actions.createPlantRequest(plant));
+    const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
     expect(actual).not.toBe(stateA);
     expect(seamless.isImmutable(actual)).toBe(true);
@@ -97,14 +97,14 @@ describe('/app/reducers/locations', () => {
       locationId: '1',
       _id: 'one', // a duplicate from stateA
     }];
-    const actual = locations(stateA, actions.loadPlantsSuccess(plants));
+    const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
     expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a loadPlantsSuccess for an empty array of plants', () => {
     const plants = [];
-    const actual = locations(stateA, actions.loadPlantsSuccess(plants));
+    const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);
     expect(seamless.isImmutable(actual)).toBe(true);
@@ -115,7 +115,7 @@ describe('/app/reducers/locations', () => {
       locationId: '1',
       plantId: 'one',
     };
-    const actual = locations(stateA, actions.deletePlantRequest(deletePlant));
+    const actual = locations(stateA, actionFunc.deletePlantRequest(deletePlant));
     expect(actual).toMatchSnapshot();
     expect(seamless.isImmutable(actual)).toBe(true);
   });
@@ -125,7 +125,7 @@ describe('/app/reducers/locations', () => {
       locationId: '7',
       plantId: 'one',
     };
-    const actual = locations(stateA, actions.deletePlantRequest(deletePlant));
+    const actual = locations(stateA, actionFunc.deletePlantRequest(deletePlant));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);
     expect(seamless.isImmutable(actual)).toBe(true);

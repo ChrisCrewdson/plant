@@ -10,7 +10,7 @@ const {
 } = require('react-konva');
 const PropTypes = require('prop-types');
 const gis = require('../../libs/gis');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const Base = require('../base/Base');
 
 class LayoutMap extends React.Component {
@@ -40,8 +40,7 @@ class LayoutMap extends React.Component {
       const user = store.getState().users[userId] || {};
       // This is the user id for this page.
       if (!user.plantIds) {
-        // @ts-ignore - actions have strings and functions
-        store.dispatch(actions.loadPlantsRequest(userId));
+        store.dispatch(actionFunc.loadPlantsRequest(userId));
       }
     }
     const state = {

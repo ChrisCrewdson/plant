@@ -10,7 +10,7 @@ const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
 const { canEdit } = require('../../libs/auth-helper');
 const { makeMongoId } = require('../../libs/utils');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const Base = require('../base/Base');
 const PlantEdit = require('./PlantEdit');
 const PlantRead = require('./PlantRead');
@@ -80,7 +80,7 @@ class Plant extends React.Component {
       const { notes = {} } = store.getState();
       const note = notes[noteId] || {};
       if (!note.showImages) {
-        store.dispatch(actions.showNoteImages(noteId));
+        store.dispatch(actionFunc.showNoteImages(noteId));
       }
     }
 
@@ -88,7 +88,7 @@ class Plant extends React.Component {
     if (_id) {
       plant = plants[_id];
       if (!plant && first) {
-        store.dispatch(actions.loadPlantRequest({ _id }));
+        store.dispatch(actionFunc.loadPlantRequest({ _id }));
       }
     } else {
       const { _id: userId = '', activeLocationId } = user;
@@ -100,7 +100,7 @@ class Plant extends React.Component {
       const locationId = (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
         || locationIds[0];
 
-      store.dispatch(actions.editPlantOpen({
+      store.dispatch(actionFunc.editPlantOpen({
         plant: {
           _id: makeMongoId(),
           isNew: true,

@@ -1,4 +1,4 @@
-const actions = require('../../../app/actions');
+const { actionEnum } = require('../../../app/actions/index-next');
 
 let ajax = () => {};
 const mockAjax = (store, options) => {
@@ -58,7 +58,7 @@ describe('/app/middleware/api', () => {
           note: { _id: '123' },
           files: [{}],
         },
-        type: actions.UPSERT_NOTE_REQUEST,
+        type: actionEnum.UPSERT_NOTE_REQUEST,
       };
 
       api(store)(next)(action);

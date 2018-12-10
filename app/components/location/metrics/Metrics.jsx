@@ -8,7 +8,7 @@ const { withRouter } = require('react-router-dom');
 const Base = require('../../base/Base');
 const PlantItem = require('../../plant/PlantItem');
 const { canEdit } = require('../../../libs/auth-helper');
-const actions = require('../../../actions');
+const { actionFunc } = require('../../../actions/index-next');
 const utils = require('../../../libs/utils');
 const AddPlantButton = require('../../common/AddPlantButton');
 const LastMeasured = require('./LastMeasured');
@@ -53,7 +53,7 @@ class Metrics extends React.Component {
 
     const plantIds = locations[locationId] && locations[locationId].plantIds;
     if (!plantIds) {
-      store.dispatch(actions.loadPlantsRequest(locationId));
+      store.dispatch(actionFunc.loadPlantsRequest(locationId));
     }
     this.onChange();
     this.unsubscribe = store.subscribe(this.onChange);
@@ -84,7 +84,7 @@ class Metrics extends React.Component {
 
   postSaveSuccessCreateNote() {
     const { store } = this.context;
-    store.dispatch(actions.editNoteClose());
+    store.dispatch(actionFunc.editNoteClose());
   }
 
   static renderTitle(location) {
@@ -186,7 +186,7 @@ No plants added yet...
     }, { found: [], unloaded: [] });
 
     if (tileElements.unloaded.length) {
-      store.dispatch(actions.loadUnloadedPlantsRequest(tileElements.unloaded));
+      store.dispatch(actionFunc.loadUnloadedPlantsRequest(tileElements.unloaded));
     }
 
     const stats = (

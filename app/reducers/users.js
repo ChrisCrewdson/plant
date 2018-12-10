@@ -1,7 +1,7 @@
 
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
-const actions = require('../actions');
+const { actionEnum } = require('../actions/index-next');
 
 /**
  * Called after users received back from server request
@@ -118,11 +118,11 @@ function loadUserSuccess(state, action) {
 // }
 
 const reducers = {
-  // [actions.CREATE_LOCATION_REQUEST]: createLocationRequest,
-  // [actions.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
-  // [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
-  [actions.LOAD_USER_SUCCESS]: loadUserSuccess,
-  [actions.LOAD_USERS_SUCCESS]: loadUsersSuccess,
+  // [actionEnum.CREATE_LOCATION_REQUEST]: createLocationRequest,
+  // [actionEnum.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
+  // [actionEnum.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
+  [actionEnum.LOAD_USER_SUCCESS]: loadUserSuccess,
+  [actionEnum.LOAD_USERS_SUCCESS]: loadUsersSuccess,
 };
 
 /**

@@ -5,7 +5,7 @@ const { RadioButton } = require('material-ui/RadioButton');
 const { RadioButtonGroup } = require('material-ui/RadioButton');
 const PropTypes = require('prop-types');
 const InputComboText = require('../common/InputComboText');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 
 class PlantEditTerminated extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class PlantEditTerminated extends React.Component {
     let { terminatedReason } = interimPlant;
     if (!terminatedReason) {
       terminatedReason = 'died';
-      dispatch(actions.editPlantChange({
+      dispatch(actionFunc.editPlantChange({
         terminatedReason,
       }));
     }
@@ -31,7 +31,7 @@ class PlantEditTerminated extends React.Component {
     const { name: inputName } = e.target;
     const value = inputName === 'isTerminated' ? e.target.checked : e.target.value;
 
-    dispatch(actions.editPlantChange({
+    dispatch(actionFunc.editPlantChange({
       [inputName]: value,
     }));
   }

@@ -9,7 +9,7 @@ const seamless = require('seamless-immutable').static;
 const utils = require('../../libs/utils');
 const NotesRead = require('../note/NotesRead');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 
 const dateFormat = 'DD-MMM-YYYY';
 
@@ -32,7 +32,7 @@ class PlantRead extends React.PureComponent {
     const { plant: { notesRequested, _id }, dispatch } = this.props;
     if (!notesRequested) {
       if (_id) {
-        dispatch(actions.loadNotesRequest({
+        dispatch(actionFunc.loadNotesRequest({
           plantIds: [_id],
         }));
       } else {
@@ -50,7 +50,7 @@ class PlantRead extends React.PureComponent {
         plant[dateField] = utils.intToString(plant[dateField]);
       }
     });
-    dispatch(actions.editPlantOpen({ plant, meta: { isNew: false } }));
+    dispatch(actionFunc.editPlantOpen({ plant, meta: { isNew: false } }));
   }
 
   checkDelete() {
@@ -60,7 +60,7 @@ class PlantRead extends React.PureComponent {
   showImages() {
     const { plant: { notes } = {}, dispatch } = this.props;
     const noteIds = notes || [];
-    dispatch(actions.showNoteImages(noteIds));
+    dispatch(actionFunc.showNoteImages(noteIds));
   }
 
   confirmDelete(yes) {
@@ -78,7 +78,7 @@ class PlantRead extends React.PureComponent {
         plantId: _id,
       };
       const location = locations[locationId];
-      dispatch(actions.deletePlantRequest(payload));
+      dispatch(actionFunc.deletePlantRequest(payload));
       if (location) {
         // Transition to /location/:slug/:id
         const locationUrl = utils.makeLocationUrl(location);

@@ -1,6 +1,6 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const actions = require('../actions');
+const { actionFunc } = require('../actions/index-next');
 
 class App extends React.Component {
   static contextTypes = {
@@ -20,11 +20,11 @@ class App extends React.Component {
     const locationsCount = Object.keys(locations).length;
 
     if (!usersCount) {
-      store.dispatch(actions.loadUsersRequest());
+      store.dispatch(actionFunc.loadUsersRequest());
     }
 
     if (!locationsCount) {
-      store.dispatch(actions.loadLocationsRequest());
+      store.dispatch(actionFunc.loadLocationsRequest());
     }
   }
 

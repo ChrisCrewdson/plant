@@ -1,7 +1,7 @@
 
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
-const actions = require('../actions');
+const { actionEnum } = require('../actions/index-next');
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.
@@ -115,14 +115,14 @@ function deletePlantRequest(state, { payload: { locationId, plantId } }) {
 // }
 
 const reducers = {
-  // [actions.CREATE_LOCATION_REQUEST]: createLocationRequest,
-  [actions.CREATE_PLANT_REQUEST]: createPlantRequest,
-  // [actions.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
-  [actions.DELETE_PLANT_REQUEST]: deletePlantRequest,
-  [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
-  [actions.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
-  [actions.LOAD_UNLOADED_PLANTS_SUCCESS]: loadPlantsSuccess,
-  // [actions.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
+  // [actionEnum.CREATE_LOCATION_REQUEST]: createLocationRequest,
+  [actionEnum.CREATE_PLANT_REQUEST]: createPlantRequest,
+  // [actionEnum.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
+  [actionEnum.DELETE_PLANT_REQUEST]: deletePlantRequest,
+  [actionEnum.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
+  [actionEnum.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
+  [actionEnum.LOAD_UNLOADED_PLANTS_SUCCESS]: loadPlantsSuccess,
+  // [actionEnum.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
 module.exports = (state = seamless({}), action) => {

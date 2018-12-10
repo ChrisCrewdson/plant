@@ -17,7 +17,7 @@ const PlantEditTerminated = require('./PlantEditTerminated');
 const utils = require('../../libs/utils');
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const InputCombo = require('../common/InputCombo');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const validators = require('../../models');
 const { makeSlug } = require('../../libs/utils');
 
@@ -49,7 +49,7 @@ class PlantEdit extends React.Component {
 
   componentWillUnmount() {
     const { dispatch } = this.props;
-    dispatch(actions.editPlantClose());
+    dispatch(actionFunc.editPlantClose());
   }
 
   /**
@@ -62,7 +62,7 @@ class PlantEdit extends React.Component {
    */
   onChangeLocation(e, index, value) {
     const { dispatch } = this.props;
-    dispatch(actions.editPlantChange({
+    dispatch(actionFunc.editPlantChange({
       locationId: value,
     }));
   }
@@ -70,14 +70,14 @@ class PlantEdit extends React.Component {
   onChange(e) {
     const { name, value } = e.target;
     const { dispatch } = this.props;
-    dispatch(actions.editPlantChange({
+    dispatch(actionFunc.editPlantChange({
       [name]: value,
     }));
   }
 
   cancel() {
     const { dispatch } = this.props;
-    dispatch(actions.editPlantClose());
+    dispatch(actionFunc.editPlantClose());
   }
 
   addGeo() {
@@ -87,7 +87,7 @@ class PlantEdit extends React.Component {
           // console.error(err);
         } else {
           const { dispatch } = this.props;
-          dispatch(actions.editPlantChange({
+          dispatch(actionFunc.editPlantChange({
             loc: geoJson,
           }));
         }
@@ -115,15 +115,15 @@ class PlantEdit extends React.Component {
     try {
       const transformed = plantValidator(plant, { isNew });
       if (isNew) {
-        dispatch(actions.createPlantRequest(transformed));
+        dispatch(actionFunc.createPlantRequest(transformed));
       } else {
-        dispatch(actions.updatePlantRequest(transformed));
+        dispatch(actionFunc.updatePlantRequest(transformed));
       }
-      dispatch(actions.editPlantClose());
+      dispatch(actionFunc.editPlantClose());
       const newLocation = `/plant/${makeSlug(transformed.title)}/${transformed._id}`;
       history.push(newLocation);
     } catch (errors) {
-      dispatch(actions.editPlantChange({ errors }));
+      dispatch(actionFunc.editPlantChange({ errors }));
     }
     e.preventDefault();
     e.stopPropagation();

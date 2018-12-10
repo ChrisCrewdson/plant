@@ -1,26 +1,29 @@
 // const _ = require('lodash');
-const actions = require('../../../app/actions');
+const { actionFunc, actionEnum } = require('../../../app/actions/index-next');
 
 describe('/app/actions', () => {
   test('should create a logout failure', (done) => {
-    const actual = actions.logoutFailure();
+    const actual = actionFunc.logoutFailure();
     expect(actual).toMatchSnapshot();
     done();
   });
 
   test('should create a logout request', (done) => {
-    const actual = actions.logoutRequest();
+    const actual = actionFunc.logoutRequest();
     expect(actual).toMatchSnapshot();
     done();
   });
 
   test('should create a logout success', (done) => {
-    const actual = actions.logoutSuccess();
+    const actual = actionFunc.logoutSuccess();
     expect(actual).toMatchSnapshot();
     done();
   });
 
   test('should ensure that simplified actions has all of previous exports', () => {
+    /**
+     * @param {string} letter
+     */
     const isUpper = letter => letter >= 'A' && letter <= 'Z';
     const originalExports = [
       'CHANGE_ACTIVE_LOCATION_ID',
@@ -127,11 +130,11 @@ describe('/app/actions', () => {
       'upsertNoteSuccess',
     ];
     originalExports.forEach((exp) => {
-      const [firstLetter] = exp;
+      const firstLetter = exp[0];
       if (isUpper(firstLetter)) {
-        expect(typeof actions[exp]).toBe('string');
+        expect(typeof actionEnum[exp]).toBe('string');
       } else {
-        expect(typeof actions[exp]).toBe('function');
+        expect(typeof actionFunc[exp]).toBe('function');
       }
     });
   });

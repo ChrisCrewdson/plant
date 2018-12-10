@@ -4,7 +4,7 @@ const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 const Grid = require('../common/Grid');
-const actions = require('../../actions');
+const { actionFunc, actionEnum } = require('../../actions/index-next');
 
 const userColumns = [{
   title: 'Name',
@@ -149,44 +149,44 @@ class LocationsManager extends React.Component {
     const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [userId, role] = row.values;
-    const action = actions.UPSERT_LOCATION_MEMBER;
+    const action = actionEnum.UPSERT_LOCATION_MEMBER;
 
     const payload = {
       locationId, userId, role, action,
     };
-    dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
   upsertLocationWeather({ row, meta }) {
     const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [stationId, name, enabled] = row.values;
-    const action = actions.UPSERT_LOCATION_WEATHER;
+    const action = actionEnum.UPSERT_LOCATION_WEATHER;
 
     const payload = {
       locationId, stationId, name, enabled, action,
     };
-    dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
   deleteLocationMember({ row, meta }) {
     const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [userId] = row.values;
-    const action = actions.DELETE_LOCATION_MEMBER;
+    const action = actionEnum.DELETE_LOCATION_MEMBER;
 
     const payload = { locationId, userId, action };
-    dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
   deleteLocationWeather({ row, meta }) {
     const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [stationId] = row.values;
-    const action = actions.DELETE_LOCATION_WEATHER;
+    const action = actionEnum.DELETE_LOCATION_WEATHER;
 
     const payload = { locationId, stationId, action };
-    dispatch(actions.modifyLocationRequest(payload));
+    dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
   render() {

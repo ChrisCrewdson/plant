@@ -1,7 +1,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const { initialState } = require('../store/user');
-const actions = require('../actions');
+const { actionEnum } = require('../actions/index-next');
 
 function logoutRequest() {
   return seamless.from({
@@ -81,11 +81,11 @@ function changeActiveLocationId(state, { payload }) {
 }
 
 const reducers = {
-  [actions.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
-  [actions.LOGOUT_FAILURE]: logoutFailure,
-  [actions.LOGOUT_REQUEST]: logoutRequest,
-  [actions.LOGOUT_SUCCESS]: logoutSuccess,
-  [actions.CHANGE_ACTIVE_LOCATION_ID]: changeActiveLocationId,
+  [actionEnum.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
+  [actionEnum.LOGOUT_FAILURE]: logoutFailure,
+  [actionEnum.LOGOUT_REQUEST]: logoutRequest,
+  [actionEnum.LOGOUT_SUCCESS]: logoutSuccess,
+  [actionEnum.CHANGE_ACTIVE_LOCATION_ID]: changeActiveLocationId,
 };
 
 /**

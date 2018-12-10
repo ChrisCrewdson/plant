@@ -7,7 +7,7 @@ const PropTypes = require('prop-types');
 const InputComboText = require('../common/InputComboText');
 const Errors = require('../common/Errors');
 const utils = require('../../libs/utils');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
 class NoteAssocPlant extends React.Component {
@@ -45,7 +45,7 @@ class NoteAssocPlant extends React.Component {
       ? propPlantIds.filter(pId => pId !== plantId)
       : propPlantIds.concat(plantId);
 
-    dispatch(actions.editNoteChange({ plantIds }));
+    dispatch(actionFunc.editNoteChange({ plantIds }));
   }
 
   expand() {

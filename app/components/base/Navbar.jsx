@@ -2,7 +2,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const { Link } = require('react-router-dom');
 
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const utils = require('../../libs/utils');
 const { isLoggedIn } = require('../../libs/auth-helper');
 const AddPlantButton = require('../common/AddPlantButton');
@@ -43,8 +43,7 @@ class Navbar extends React.Component {
 
   logout() {
     const { store } = this.context;
-    // @ts-ignore - props on actions are strings or functions
-    store.dispatch(actions.logoutRequest());
+    store.dispatch(actionFunc.logoutRequest());
   }
 
   // When to show the "My Plants" menu and what action to take:

@@ -6,7 +6,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const uniq = require('lodash/uniq');
-const actions = require('../actions');
+const { actionEnum } = require('../actions/index-next');
 
 /**
  * This is a helper function for when the action.payload holds a new plant
@@ -287,20 +287,20 @@ function loadNotesSuccess(state, { payload: notes }) {
 }
 
 const reducers = {
-  [actions.CREATE_PLANT_FAILURE]: ajaxPlantFailure,
-  [actions.CREATE_PLANT_REQUEST]: createPlantRequest,
-  [actions.DELETE_NOTE_REQUEST]: deleteNoteRequest,
-  [actions.DELETE_PLANT_FAILURE]: ajaxPlantFailure,
-  [actions.DELETE_PLANT_REQUEST]: deletePlantRequest,
-  [actions.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
-  [actions.LOAD_NOTES_REQUEST]: loadNotesRequest,
-  [actions.LOAD_PLANT_FAILURE]: loadPlantFailure,
-  [actions.LOAD_PLANT_SUCCESS]: loadPlantSuccess,
-  [actions.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
-  [actions.LOAD_UNLOADED_PLANTS_SUCCESS]: loadPlantsSuccess,
-  [actions.UPDATE_PLANT_FAILURE]: ajaxPlantFailure,
-  [actions.UPDATE_PLANT_REQUEST]: updatePlantRequest,
-  [actions.UPSERT_NOTE_SUCCESS]: upsertNoteSuccess,
+  [actionEnum.CREATE_PLANT_FAILURE]: ajaxPlantFailure,
+  [actionEnum.CREATE_PLANT_REQUEST]: createPlantRequest,
+  [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
+  [actionEnum.DELETE_PLANT_FAILURE]: ajaxPlantFailure,
+  [actionEnum.DELETE_PLANT_REQUEST]: deletePlantRequest,
+  [actionEnum.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
+  [actionEnum.LOAD_NOTES_REQUEST]: loadNotesRequest,
+  [actionEnum.LOAD_PLANT_FAILURE]: loadPlantFailure,
+  [actionEnum.LOAD_PLANT_SUCCESS]: loadPlantSuccess,
+  [actionEnum.LOAD_PLANTS_SUCCESS]: loadPlantsSuccess,
+  [actionEnum.LOAD_UNLOADED_PLANTS_SUCCESS]: loadPlantsSuccess,
+  [actionEnum.UPDATE_PLANT_FAILURE]: ajaxPlantFailure,
+  [actionEnum.UPDATE_PLANT_REQUEST]: updatePlantRequest,
+  [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteSuccess,
 };
 
 /**

@@ -11,7 +11,7 @@ const seamless = require('seamless-immutable').static;
 
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const InputComboText = require('../common/InputComboText');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const utils = require('../../libs/utils');
 const NoteAssocPlant = require('./NoteAssocPlant');
 const NoteEditMetrics = require('./NoteEditMetrics');
@@ -55,12 +55,12 @@ class NoteEdit extends React.PureComponent {
 
   componentWillUnmount() {
     const { dispatch } = this.props;
-    dispatch(actions.editNoteClose());
+    dispatch(actionFunc.editNoteClose());
   }
 
   onChange(e) {
     const { dispatch } = this.props;
-    dispatch(actions.editNoteChange({
+    dispatch(actionFunc.editNoteChange({
       [e.target.name]: e.target.value,
     }));
   }
@@ -75,7 +75,7 @@ class NoteEdit extends React.PureComponent {
 
   cancel() {
     const { dispatch } = this.props;
-    dispatch(actions.editNoteClose());
+    dispatch(actionFunc.editNoteClose());
   }
 
   saveNote(files) {
@@ -87,10 +87,10 @@ class NoteEdit extends React.PureComponent {
 
     try {
       const note = noteValidator(interimNote);
-      dispatch(actions.upsertNoteRequest({ note, files }));
+      dispatch(actionFunc.upsertNoteRequest({ note, files }));
       postSaveSuccess();
     } catch (errors) {
-      dispatch(actions.editNoteChange({ errors }));
+      dispatch(actionFunc.editNoteChange({ errors }));
     }
   }
 

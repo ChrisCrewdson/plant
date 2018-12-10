@@ -7,7 +7,7 @@ const moment = require('moment');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
 const NoteEdit = require('./NoteEdit');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 
 class NoteCreate extends React.PureComponent {
   constructor(props) {
@@ -39,7 +39,7 @@ class NoteCreate extends React.PureComponent {
       plants,
     };
 
-    dispatch(actions.editNoteOpen({ note, plant }));
+    dispatch(actionFunc.editNoteOpen({ note, plant }));
   }
 
   render() {

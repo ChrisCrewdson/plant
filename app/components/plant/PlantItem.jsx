@@ -8,7 +8,7 @@ const AddIcon = require('material-ui/svg-icons/content/add').default;
 const moment = require('moment');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const { makeSlug } = require('../../libs/utils');
 
 class PlantItem extends React.PureComponent {
@@ -32,7 +32,7 @@ class PlantItem extends React.PureComponent {
 
     if (!plant.notesRequested) {
       if (plant._id) {
-        dispatch(actions.loadNotesRequest({
+        dispatch(actionFunc.loadNotesRequest({
           plantIds: [plant._id],
         }));
       } else {
@@ -40,7 +40,7 @@ class PlantItem extends React.PureComponent {
       }
     }
 
-    dispatch(actions.editNoteOpen({
+    dispatch(actionFunc.editNoteOpen({
       note,
       plant,
     }));

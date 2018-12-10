@@ -4,7 +4,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const Paper = require('material-ui/Paper').default;
 const moment = require('moment');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
 const utils = require('../../libs/utils');
 const Markdown = require('../common/Markdown');
@@ -55,7 +55,7 @@ class NoteRead extends React.PureComponent {
   confirmDelete(yes) {
     if (yes) {
       const { dispatch, note: { _id } } = this.props;
-      dispatch(actions.deleteNoteRequest(_id));
+      dispatch(actionFunc.deleteNoteRequest(_id));
     } else {
       this.setState({ showDeleteConfirmation: false });
     }
@@ -69,7 +69,7 @@ class NoteRead extends React.PureComponent {
       isNew: false,
     };
     const { plant } = this.props;
-    dispatch(actions.editNoteOpen({ plant, note }));
+    dispatch(actionFunc.editNoteOpen({ plant, note }));
   }
 
   static renderImage(image) {
@@ -103,7 +103,7 @@ class NoteRead extends React.PureComponent {
         <div>
           <RaisedButton
             label={label}
-            onMouseUp={() => dispatch(actions.showNoteImages(_id))}
+            onMouseUp={() => dispatch(actionFunc.showNoteImages(_id))}
             primary
           />
         </div>

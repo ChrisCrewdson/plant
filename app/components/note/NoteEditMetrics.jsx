@@ -3,7 +3,7 @@ const seamless = require('seamless-immutable').static;
 const React = require('react');
 const Toggle = require('material-ui/Toggle').default;
 const PropTypes = require('prop-types');
-const actions = require('../../actions');
+const { actionFunc } = require('../../actions/index-next');
 const Errors = require('../common/Errors');
 const InputCombo = require('../common/InputCombo');
 const utils = require('../../libs/utils');
@@ -43,7 +43,7 @@ class NoteEditMetrics extends React.PureComponent {
 
     const metrics = seamless.set(interimMetrics, inputName, value);
 
-    dispatch(actions.editNoteChange({ metrics }));
+    dispatch(actionFunc.editNoteChange({ metrics }));
   }
 
   renderLength(metaMetric, value) {
