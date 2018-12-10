@@ -58,8 +58,8 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
   "include": [
-    "lib/**/*.js",
-    "app/**/*.js",
-    "test/**/*.js"
+    "lib/**/*",
+    "app/**/*",
+    "test/**/*"
   ]
 }
