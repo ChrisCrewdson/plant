@@ -228,15 +228,20 @@ There were errors. Please check your input.
         />
 
         <Dropzone
-          activeStyle={dropZoneActiveStyle}
           onDrop={this.onDrop}
           accept="image/*"
           ref={(node) => { this.dropzone = node; }}
-          style={dropZoneStyle}
         >
-          <div>
-Drop images here or tap to select images to upload.
-          </div>
+          {({ getRootProps, getInputProps, isDragActive }) => {
+            let styles = { ...dropZoneStyle };
+            styles = isDragActive ? { ...styles, ...dropZoneActiveStyle } : styles;
+            return (
+              <div {...getRootProps()} style={styles}>
+                <input {...getInputProps()} />
+                <div>Drop images here or tap to select images to upload.</div>
+              </div>
+            );
+          }}
         </Dropzone>
 
         {associatedPlants}
