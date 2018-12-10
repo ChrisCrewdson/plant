@@ -5,7 +5,7 @@ const { RadioButton } = require('material-ui/RadioButton');
 const { RadioButtonGroup } = require('material-ui/RadioButton');
 const PropTypes = require('prop-types');
 const InputComboText = require('../common/InputComboText');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 
 class PlantEditTerminated extends React.Component {
   constructor(props) {

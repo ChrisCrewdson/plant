@@ -6,7 +6,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const uniq = require('lodash/uniq');
-const { actionEnum } = require('../actions/index-next');
+const { actionEnum } = require('../actions');
 
 /**
  * This is a helper function for when the action.payload holds a new plant

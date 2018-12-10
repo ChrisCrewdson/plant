@@ -10,7 +10,7 @@ const {
 } = require('react-konva');
 const PropTypes = require('prop-types');
 const gis = require('../../libs/gis');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 
 class LayoutMap extends React.Component {

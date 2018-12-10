@@ -4,7 +4,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
-const { actionEnum } = require('../actions/index-next');
+const { actionEnum } = require('../actions');
 
 /**
  * editNoteOpen

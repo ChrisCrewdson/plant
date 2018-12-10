@@ -1,7 +1,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const interim = require('../../../app/reducers/interim');
-const { actionFunc } = require('../../../app/actions/index-next');
+const { actionFunc } = require('../../../app/actions');
 
 /**
  *

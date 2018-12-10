@@ -3,7 +3,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable');
-const { actionFunc } = require('../../../actions/index-next');
+const { actionFunc } = require('../../../actions');
 
 /**
  *

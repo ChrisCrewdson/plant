@@ -8,7 +8,7 @@ const { withRouter } = require('react-router-dom');
 const PropTypes = require('prop-types');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 const AddLocationButton = require('./AddLocationButton');
 const LocationTile = require('./LocationTile');

@@ -1,7 +1,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const locations = require('../../../app/reducers/locations');
-const { actionFunc } = require('../../../app/actions/index-next');
+const { actionFunc } = require('../../../app/actions');
 
 describe('/app/reducers/locations', () => {
   const stateA = seamless.from({

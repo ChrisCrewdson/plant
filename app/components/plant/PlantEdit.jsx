@@ -17,7 +17,7 @@ const PlantEditTerminated = require('./PlantEditTerminated');
 const utils = require('../../libs/utils');
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const InputCombo = require('../common/InputCombo');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const validators = require('../../models');
 const { makeSlug } = require('../../libs/utils');
 

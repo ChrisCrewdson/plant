@@ -1,6 +1,6 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const { actionFunc } = require('../actions/index-next');
+const { actionFunc } = require('../actions');
 
 class App extends React.Component {
   static contextTypes = {

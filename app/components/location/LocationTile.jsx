@@ -4,7 +4,7 @@ const React = require('react');
 const { Link } = require('react-router-dom');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 
 const { makeSlug } = utils;
 

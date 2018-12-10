@@ -11,7 +11,7 @@ const seamless = require('seamless-immutable').static;
 
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const InputComboText = require('../common/InputComboText');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const utils = require('../../libs/utils');
 const NoteAssocPlant = require('./NoteAssocPlant');
 const NoteEditMetrics = require('./NoteEditMetrics');

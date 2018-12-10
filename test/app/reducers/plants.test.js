@@ -2,7 +2,7 @@ const _ = require('lodash');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const plants = require('../../../app/reducers/plants');
-const { actionFunc } = require('../../../app/actions/index-next');
+const { actionFunc } = require('../../../app/actions');
 
 describe('/app/reducers/plants', () => {
   describe('similar methods', () => {

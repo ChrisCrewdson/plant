@@ -4,7 +4,7 @@ const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
 const Grid = require('../common/Grid');
-const { actionFunc, actionEnum } = require('../../actions/index-next');
+const { actionFunc, actionEnum } = require('../../actions');
 
 const userColumns = [{
   title: 'Name',

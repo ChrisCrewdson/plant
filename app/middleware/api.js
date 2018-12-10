@@ -1,7 +1,7 @@
 // This file is responsible for making the Ajax calls to
 // the server as part of the store's dispatch(action) call.
 
-const { actionEnum, actionFunc } = require('../actions/index-next');
+const { actionEnum, actionFunc } = require('../actions');
 const ajax = require('./ajax');
 
 /**

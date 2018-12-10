@@ -2,7 +2,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const { Link } = require('react-router-dom');
 
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const utils = require('../../libs/utils');
 const { isLoggedIn } = require('../../libs/auth-helper');
 const AddPlantButton = require('../common/AddPlantButton');

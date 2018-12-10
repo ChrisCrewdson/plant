@@ -1,4 +1,4 @@
-const { actionEnum } = require('../../../app/actions/index-next');
+const { actionEnum } = require('../../../app/actions');
 
 let ajax = () => {};
 const mockAjax = (store, options) => {

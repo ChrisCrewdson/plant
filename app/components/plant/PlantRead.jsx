@@ -9,7 +9,7 @@ const seamless = require('seamless-immutable').static;
 const utils = require('../../libs/utils');
 const NotesRead = require('../note/NotesRead');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 
 const dateFormat = 'DD-MMM-YYYY';
 

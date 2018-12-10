@@ -1,5 +1,5 @@
 // const _ = require('lodash');
-const { actionFunc, actionEnum } = require('../../../app/actions/index-next');
+const { actionFunc, actionEnum } = require('../../../app/actions');
 
 describe('/app/actions', () => {
   test('should create a logout failure', (done) => {

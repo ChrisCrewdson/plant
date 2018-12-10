@@ -8,7 +8,7 @@ const AddIcon = require('material-ui/svg-icons/content/add').default;
 const moment = require('moment');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const { makeSlug } = require('../../libs/utils');
 
 class PlantItem extends React.PureComponent {

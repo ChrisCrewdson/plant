@@ -7,7 +7,7 @@ const PropTypes = require('prop-types');
 const InputComboText = require('../common/InputComboText');
 const Errors = require('../common/Errors');
 const utils = require('../../libs/utils');
-const { actionFunc } = require('../../actions/index-next');
+const { actionFunc } = require('../../actions');
 const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
 class NoteAssocPlant extends React.Component {

@@ -1,7 +1,7 @@
 
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
-const { actionEnum } = require('../actions/index-next');
+const { actionEnum } = require('../actions');
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.

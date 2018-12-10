@@ -1,7 +1,7 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const { initialState } = require('../store/user');
-const { actionEnum } = require('../actions/index-next');
+const { actionEnum } = require('../actions');
 
 function logoutRequest() {
   return seamless.from({
