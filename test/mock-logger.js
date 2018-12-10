@@ -72,6 +72,8 @@ const mockLoggerReset = () => {
   mockLogger.fatal = jest.fn(loggerMockFunction);
   mockLogger.security = jest.fn(loggerMockFunction);
   mockLogger.timeEnd = jest.fn(loggerTimeEndMockFunction);
+  // TODO: Fix the ignore below
+  // @ts-ignore - [ts] Property 'error' does not exist on type 'Function'. [2339]
   mockLogger.timeEnd.error = jest.fn(loggerTimeEndMockFunction);
   mockLogger.time = jest.fn();
 };

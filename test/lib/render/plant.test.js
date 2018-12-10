@@ -1,6 +1,7 @@
 const helper = require('../../helper');
 
 describe('lib/render/plant', () => {
+  /** @type {Dictionary<any>} */
   let data;
   beforeAll(async () => {
     data = await helper.startServerAuthenticated();

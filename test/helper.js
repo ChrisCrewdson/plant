@@ -84,6 +84,10 @@ async function makeRequest(opts) {
 /** @type {import('net').Server|undefined} */
 let localServer;
 
+/**
+ * Starts an authenticated server
+ * @returns {Promise<HelperData>}
+ */
 async function startServerAuthenticated() {
   const port = 3000 + parseInt(process.env.JEST_WORKER_ID || '1', 10);
   async function emptyDatabase() {
@@ -95,12 +99,17 @@ async function startServerAuthenticated() {
     return Promise.all(promises);
   }
 
-  function createServer(server) {
-    return server || serverModule;
-  }
-
+  /**
+   *
+   *
+   * @param {import('net').Server|undefined} app
+   * @param {*} server
+   * @returns {Promise<import('net').Server>}
+   */
   function startServer(app, server) {
     if (app) {
+      // @ts-ignore - [ts] Type 'Server' is missing the following properties from type
+      // 'Promise<Server>': then, catch, [Symbol.toStringTag], finally [2739]
       return app;
     }
     return server(port); // returns a Promise
@@ -120,7 +129,7 @@ async function startServerAuthenticated() {
   try {
     await emptyDatabase();
     data.port = port;
-    data.server = createServer(data.server);
+    data.server = data.server || serverModule;
     data.app = await startServer(data.app, data.server);
     localServer = data.app;
 

@@ -92,6 +92,8 @@ interface HelperData {
   port?: number;
   userId?: string;
   user?: any; // TODO: Change this to the interface that the DB returns
+  server?: (port: number | undefined, mongoConnection: string) => Promise<import('net').Server>;
+  app?: import('net').Server;
 }
 
 interface AjaxOptions {
