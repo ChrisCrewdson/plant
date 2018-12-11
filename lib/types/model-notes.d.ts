@@ -51,13 +51,6 @@ interface NoteMetric {
   height: number;
 }
 
-interface BaseNote {
-  date: number;
-  images?: NoteImage[];
-  metrics?: NoteMetric;
-  note?: string;
-}
-
 interface DbNote {
   _id: import('mongodb').ObjectID;
   plantIds: import('mongodb').ObjectID[];

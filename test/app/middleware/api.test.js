@@ -1,6 +1,16 @@
 const { actionEnum } = require('../../../app/actions');
+const helper = require('../../helper');
 
-let ajax = () => {};
+/**
+ * @param {import("redux").Store} store
+ * @param {AjaxOptions} options
+ */
+// eslint-disable-next-line no-unused-vars
+let ajax = (store, options) => {};
+/**
+ * @param {import("redux").Store} store
+ * @param {AjaxOptions} options
+ */
 const mockAjax = (store, options) => {
   ajax(store, options);
 };
@@ -11,7 +21,7 @@ const api = require('../../../app/middleware/api');
 
 describe('/app/middleware/api', () => {
   test('should check that functions/url exist', () => {
-    const store = {};
+    const store = helper.getFakeStore();
     const next = () => {};
     let callCounter = 0;
 
@@ -39,7 +49,7 @@ describe('/app/middleware/api', () => {
   test(
     'should check that upsertNoteRequest calls saveNoteRequest when files is present',
     () => {
-      const store = {};
+      const store = helper.getFakeStore();
       const next = () => {};
       let callCounter = 0;
       ajax = (state, options) => {
@@ -68,7 +78,7 @@ describe('/app/middleware/api', () => {
   );
 
   test('should check that next gets called if no match', () => {
-    const store = {};
+    const store = helper.getFakeStore();
     const action = {
       payload: { _id: '123' },
     };

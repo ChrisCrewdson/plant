@@ -245,12 +245,23 @@ async function createNote(plantIds, noteOverride = {}) {
   return httpMsg;
 }
 
+/**
+ * @returns {import('redux').Store}
+ */
+const getFakeStore = () => ({
+  dispatch: jest.fn(),
+  getState: jest.fn(),
+  replaceReducer: jest.fn(),
+  subscribe: jest.fn(),
+});
+
 module.exports = {
   createNote,
   createPlants,
+  getFakeStore,
   getUrl,
   makeRequest,
+  mockLogger,
   startServerAuthenticated,
   stopServer,
-  mockLogger,
 };
