@@ -182,7 +182,7 @@ async function createPlants(numPlants, userId, locationId) {
   /**
    * createPlant
    * @param {number} count - the plant number/id being created not the number of plants to create
-   * @returns {Promise}
+   * @returns {Promise<BizPlant>}
    */
   async function createPlant(count) {
     const reqOptions = {
@@ -193,9 +193,11 @@ async function createPlants(numPlants, userId, locationId) {
       url: '/api/plant',
     };
 
-    const { httpMsg: plant, response } = await makeRequest(reqOptions);
-    expect(response.status).toBe(200);
+    const { httpMsg, response } = await makeRequest(reqOptions);
+    /** @type {BizPlant} */
+    const plant = httpMsg;
 
+    expect(response.status).toBe(200);
     expect(plant.title).toBeTruthy();
 
     return plant;

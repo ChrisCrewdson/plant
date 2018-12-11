@@ -1,7 +1,9 @@
 const helper = require('../../helper');
 
 describe('plants-api', () => {
+  /** @type {string} */
   let userId;
+  /** @type {string} */
   let locationId;
 
   beforeAll(async () => {
@@ -16,7 +18,7 @@ describe('plants-api', () => {
   });
   afterAll(() => helper.stopServer());
 
-
+  /** @type {BizPlant[]} */
   let insertedPlants;
   const numPlants = 2;
 
@@ -37,14 +39,17 @@ describe('plants-api', () => {
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      expect(response.status).toBe(200);
-      expect(httpMsg).toBeTruthy();
+      /** @type {BizPlant[]} */
+      const plants = httpMsg;
 
-      expect(httpMsg).toHaveLength(numPlants);
+      expect(response.status).toBe(200);
+      expect(plants).toBeTruthy();
+
+      expect(plants).toHaveLength(numPlants);
       // assert that all plants exist
       insertedPlants.forEach((plant) => {
-        const some = httpMsg.some(r => r._id === plant._id);
-        expect(some).toBeTruthy();
+        const some = plants.some(r => r._id === plant._id);
+        expect(some).toBe(true);
       });
     });
   });

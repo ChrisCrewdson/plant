@@ -2,8 +2,11 @@ const helper = require('../../helper');
 const constants = require('../../../app/libs/constants');
 
 describe('plant-api', () => {
+  /** @type {BizUser} */
   let user;
+  /** @type {string} */
   let plantId;
+  /** @type {BasePlant} */
   let initialPlant;
 
   beforeAll(async () => {
@@ -110,6 +113,7 @@ describe('plant-api', () => {
     expect(httpMsg.error).toBe('missing');
   });
 
+  /** @type {BasePlant} */
   let updatedPlant;
   test('should update the just created plant', async () => {
     updatedPlant = Object.assign(

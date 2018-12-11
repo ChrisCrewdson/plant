@@ -43,7 +43,7 @@ interface UiPlantsValue extends BasePlant {
 }
 
 interface BizPlantMap {
-  [id: string]: BizPlant;
+  [mongoId: string]: BizPlant;
 }  
 
 interface UiPlantsNotes {
@@ -51,5 +51,5 @@ interface UiPlantsNotes {
 }  
 
 interface UiPlants {
-  [id: string]: UiPlantsValue;
+  [mongoId: string]: UiPlantsValue;
 }
