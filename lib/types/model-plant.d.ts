@@ -33,6 +33,7 @@ interface BizPlant extends BasePlant {
    * from the server.
    */
   notesRequested?: boolean;
+  plantedOn?: number;
 }
 
 interface UiPlantsValue extends BasePlant {

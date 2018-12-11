@@ -81,9 +81,12 @@ describe('/lib/db/mongo/', () => {
 
   describe('plant', () => {
     const plant = {
-      name: 'Plant Name',
+      locationId,
+      title: 'Plant Name',
       plantedOn: 20150701,
+      userId,
     };
+    /** @type {string} */
     let plantId;
 
     beforeAll(() => {
@@ -107,10 +110,13 @@ describe('/lib/db/mongo/', () => {
 
     test('should get an existing plant', async () => {
       const result = await mongo.getPlantById(plantId, userId, mockLogger);
-      expect(typeof result.userId).toBe('string');
-      expect(result.name).toBe(plant.name);
-      expect(result.plantedOn).toBe(plant.plantedOn);
-      expect(result.userId).toBe(plant.userId.toString());
+      if (result) {
+        expect(typeof result.userId).toBe('string');
+        expect(result.title).toBe(plant.title);
+        expect(result.plantedOn).toBe(plant.plantedOn);
+        expect(result.userId).toBe(plant.userId.toString());
+      }
+      expect.assertions(4);
     });
 
     test('should get existing plants', async () => {
@@ -119,14 +125,14 @@ describe('/lib/db/mongo/', () => {
       expect(results).toHaveLength(1);
       const result = results[0];
       expect(typeof result.userId).toBe('string');
-      expect(result.name).toBe(plant.name);
+      expect(result.title).toBe(plant.title);
       expect(result.plantedOn).toBe(plant.plantedOn);
       expect(result.userId).toBe(plant.userId.toString());
     });
 
     test('should update an existing plant with "Set"', async () => {
       const plantUpdate = {
-        name: 'New Name',
+        title: 'New Name',
         other: 'Other Text',
         _id: plantId,
         userId,
