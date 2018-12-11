@@ -4,7 +4,9 @@ const utils = require('../../../app/libs/utils');
 const { mockLogger } = require('../../mock-logger');
 
 describe('plant-api-delete', () => {
+  /** @type {string} */
   let userId;
+  /** @type {string} */
   let locationId;
 
   beforeAll(async () => {

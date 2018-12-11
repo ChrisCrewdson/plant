@@ -58,16 +58,25 @@ interface BaseNote {
   note?: string;
 }
 
-interface DbNote extends BaseNote {
+interface DbNote {
   _id: import('mongodb').ObjectID;
   plantIds: import('mongodb').ObjectID[];
   userId: import('mongodb').ObjectID;
+  date: number;
+  images?: NoteImage[];
+  metrics?: NoteMetric;
+  note?: string;
 }
 
-interface BizNote extends BaseNote {
+interface BizNote extends Omit<DbNote, '_id' | 'plantIds' | 'userId'> {
   _id: string;
   plantIds: string[];
   userId: string;
+  /**
+   * Although showImages is used in the UI layer it might need to be set in the server/biz
+   * layer based on the type of request. E.g. if the noteId is in the URL then we show the
+   * images for that note.
+   */
   showImages?: boolean;
 }
 
@@ -99,11 +108,12 @@ interface UiNotesMeta {
 
 interface UiNotesValue {
   _id: string;
-  meta: UiNotesMeta;
   date: number;
+  meta: UiNotesMeta;
+  note?: string;
   plantIds: string[];
-  userId: string;
   showImages?: boolean;
+  userId: string;
 }
 
 interface UiNotes {

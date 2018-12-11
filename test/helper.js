@@ -170,7 +170,7 @@ const stopServer = async () => new Promise((resolve, reject) => {
  * @param {number} numPlants - Number of plants to insert in plant collection for this user
  * @param {string} userId - User Id of user to create plants for
  * @param {string} locationId - Location Id at which to create the plants
- * @returns {Promise}
+ * @returns {Promise<BizPlant[]>}
  */
 async function createPlants(numPlants, userId, locationId) {
   const plantTemplate = {

@@ -5,7 +5,9 @@ const mongo = require('../../../lib/db/mongo')();
 const { mockLogger } = require('../../mock-logger');
 
 describe('note-api', () => {
+  /** @type {string} */
   let userId;
+  /** @type {string} */
   let locationId;
 
   beforeAll(async () => {
@@ -16,13 +18,16 @@ describe('note-api', () => {
   });
   afterAll(() => helper.stopServer());
 
+  /** @type {BizPlant} */
   let initialPlant;
+  /** @type {string} */
   let plantId;
 
   const initialNote = {
     note: 'This is a note',
     date: 20160101,
   };
+  /** @type {string} */
   let noteId;
 
   beforeAll(async () => {
