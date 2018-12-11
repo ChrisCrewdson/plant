@@ -24,6 +24,13 @@ function makeMongoId() {
 }
 
 /**
+ * @returns {import('mongodb').ObjectID}
+ */
+function makeMongoIdObject() {
+  return new ObjectID();
+}
+
+/**
  * Make a slug from text
  * @param {string} text
  * @returns {string}
@@ -567,6 +574,7 @@ module.exports = {
   makeLayoutUrl,
   makeLocationUrl,
   makeMongoId,
+  makeMongoIdObject,
   makeSlug,
   metaMetrics,
   metaMetricsGetByKey,

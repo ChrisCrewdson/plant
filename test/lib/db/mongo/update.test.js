@@ -7,17 +7,22 @@ describe('/lib/db/mongo/update', () => {
     test('should update the image sizes in a note', async () => {
       /** @type {DbNote} */
       const note = {
-        userId: utils.makeMongoId(),
+        date: 20180101,
+        plantIds: [],
+        _id: utils.makeMongoIdObject(),
+        userId: utils.makeMongoIdObject(),
         images: [{
           id: utils.makeMongoId(),
           ext: 'jpg',
           originalname: 'flower',
           size: 999,
+          sizes: [],
         }, {
           id: utils.makeMongoId(),
           ext: 'jpg',
           originalname: 'leaf',
           size: 666,
+          sizes: [],
         }],
       };
       const sizes = [
@@ -34,7 +39,7 @@ describe('/lib/db/mongo/update', () => {
       const noteUpdate = {
         _id: createdNote._id,
         userId: note.userId,
-        imageId: note.images[0].id,
+        imageId: note.images && note.images[0].id,
         sizes,
       };
 
@@ -43,7 +48,7 @@ describe('/lib/db/mongo/update', () => {
       const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
 
       expect(fetchedNote.images[0].sizes).toEqual(sizes);
-      expect(fetchedNote.images[1].sizes).toBeFalsy();
+      expect(fetchedNote.images[1].sizes).toHaveLength(0);
     });
   });
 });

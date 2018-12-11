@@ -34,9 +34,9 @@ interface UserDetails {
   // socialJson: FacebookOAuthJson|GoogleOAuthJson;
   facebook?: FacebookOAuthJson;
   google?: GoogleOAuthJson;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  name?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
   email?: string;
 }
 

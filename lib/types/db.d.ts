@@ -92,7 +92,7 @@ interface BizUser {
   google?: DbUserGoogle;
   name?: string;
   updatedAt: Date;
-  locationIds?: string[];
+  locationIds?: DbLocation[];
 }
 
 interface LocationLocCache {

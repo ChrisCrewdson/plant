@@ -9,8 +9,10 @@ const { mockLogger } = require('../../../mock-logger');
 const { id: googleId } = googleOAuth['www.googleapis.com'].result;
 
 describe('/lib/db/mongo/', () => {
+  /** @type {string} */
   let userId;
   let fbUser;
+  /** @type {string} */
   let locationId;
 
   beforeAll(async () => {
@@ -30,6 +32,7 @@ describe('/lib/db/mongo/', () => {
       'should fail to create a user account if there is no object',
       async () => {
         try {
+          // @ts-ignore - intentional badly typed param to test exception
           await mongo.findOrCreateUser(null, mockLogger);
         } catch (err) {
           expect(err).toBeTruthy();
@@ -54,7 +57,9 @@ describe('/lib/db/mongo/', () => {
       expect(body).toBeTruthy();
       expect(body._id).toBeTruthy();
       expect(constants.mongoIdRE.test(body._id)).toBeTruthy();
-      expect(constants.mongoIdRE.test(body.locationIds[0]._id)).toBeTruthy();
+      expect(body.locationIds).toBeTruthy();
+      const bodyLocationId = _.get(body, 'locationIds.0._id');
+      expect(constants.mongoIdRE.test(bodyLocationId)).toBeTruthy();
       delete body._id;
       delete body.locationIds;
       expect(body).toMatchSnapshot({

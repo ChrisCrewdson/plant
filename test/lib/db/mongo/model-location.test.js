@@ -3,6 +3,7 @@ const mongo = require('../../../../lib/db/mongo')();
 const { mockLogger } = require('../../../mock-logger');
 
 describe('/lib/db/mongo/model-location', () => {
+  /** @type {string} */
   let userId;
   let fbUser;
   // let locationId;
