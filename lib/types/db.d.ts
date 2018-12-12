@@ -13,20 +13,13 @@ interface DbLocationStationObj {
   enabled: boolean;
 }
 
-interface DbLocationStations {
-  [key: string]: DbLocationStationObj
-}
-
-interface DbLocationMembers {
-  [id: string]: Role;
-}
 
 interface DbLocation {
   _id: import('mongodb').ObjectID;
   createdBy: import('mongodb').ObjectID;
   loc?: Geo;
-  members: DbLocationMembers;
-  stations?: DbLocationStations;
+  members: Dictionary<Role>;
+  stations?: Dictionary<DbLocationStationObj>;
   title: string;
 }
 
@@ -34,8 +27,8 @@ interface BizLocation {
   _id?: string; // Only ? before creating. Do we need another interface to express the created one?
   createdBy: string;
   loc?: Geo;
-  members: DbLocationMembers;
-  stations?: DbLocationStations;
+  members: Dictionary<Role>;
+  stations?: Dictionary<DbLocationStationObj>;
   title: string;
 }
 
