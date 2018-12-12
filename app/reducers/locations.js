@@ -72,7 +72,9 @@ function createPlantRequest(state, action) {
  * @param {import('redux').AnyAction} action
  * @returns {UiLocations}
  */
-function loadPlantsSuccess(state, { payload: plants }) {
+function loadPlantsSuccess(state, action) {
+/** @type {UiPlantsValue[]} */
+  const plants = action.payload;
   if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}

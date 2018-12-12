@@ -103,6 +103,7 @@ describe('/app/reducers/locations', () => {
   });
 
   test('should handle a loadPlantsSuccess for an empty array of plants', () => {
+    /** @type {UiPlantsValue[]} */
     const plants = [];
     const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();

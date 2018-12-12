@@ -26,6 +26,8 @@ describe('note-api', () => {
   const initialNote = {
     note: 'This is a note',
     date: 20160101,
+    /** @type {string[]} */
+    plantIds: [],
   };
   /** @type {string} */
   let noteId;
@@ -287,12 +289,12 @@ describe('note-api', () => {
         { width: 2000, name: 'xl' },
       ];
 
-      async function createNote(data) {
+      async function createNote() {
         const createdNote = await mongo.upsertNote(note, mockLogger);
         expect(createdNote).toBeTruthy();
         // logger.trace('createdNote', {createdNote});
         // data.createdNote = body;
-        return Object.assign({}, data, { createdNote });
+        return Object.assign({}, { createdNote });
       }
 
       async function makePutRequest(createdNote) {
@@ -320,21 +322,22 @@ describe('note-api', () => {
         return httpMsg;
       }
 
-      async function getNote(createdNote) {
-        const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
-        expect(fetchedNote.images[0].sizes).toEqual(sizes);
-        expect(!fetchedNote.images[1].sizes).toBeTruthy();
-        return fetchedNote;
-      }
-
       const { createdNote } = await createNote();
       expect(createdNote).toBeTruthy();
       expect(createdNote._id).toHaveLength(24);
       expect(createdNote.images).toHaveLength(2);
+
       const putResponse = await makePutRequest(createdNote);
       expect(putResponse).toBeTruthy();
       expect(putResponse.success).toBe(true);
-      const fetchedNote = await getNote(createdNote);
+
+      const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
+      // This makes tsc happy.
+      if (!fetchedNote || !fetchedNote.images) {
+        throw new Error(`fetchedNote or fetchedNote.images is falsy ${fetchedNote}`);
+      }
+      expect(fetchedNote.images[0].sizes).toEqual(sizes);
+      expect(!fetchedNote.images[1].sizes).toBeTruthy();
       expect(fetchedNote).toBeTruthy();
       expect(fetchedNote._id).toHaveLength(24);
       expect(fetchedNote.images).toHaveLength(2);

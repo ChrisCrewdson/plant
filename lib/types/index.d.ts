@@ -117,7 +117,7 @@ interface ActionMethodResult {
   payload?: Dictionary<any>;
 }
 
-declare type ActionMethod = (payload?: Dictionary<any>) => ActionMethodResult;
+declare type ActionMethod = (payload?: Dictionary<any> | string) => ActionMethodResult;
 
 interface AddPlantButtonProps {
   mini?: boolean;

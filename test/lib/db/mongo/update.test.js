@@ -47,6 +47,11 @@ describe('/lib/db/mongo/update', () => {
 
       const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
 
+      // This makes tsc happy.
+      if (!fetchedNote || !fetchedNote.images) {
+        throw new Error(`fetchedNote or fetchedNote.images is falsy ${fetchedNote}`);
+      }
+
       expect(fetchedNote.images[0].sizes).toEqual(sizes);
       expect(fetchedNote.images[1].sizes).toHaveLength(0);
     });
