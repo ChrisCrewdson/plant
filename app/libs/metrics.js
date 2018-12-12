@@ -5,11 +5,11 @@ const utils = require('./utils');
 /**
  * Create the object that represents the component that goes between notes describing
  * what has happened between the notes.
- * @param {Object[]} acc - An array of render information for the list of notes
- * @param {Immutable.Map} note - the note being processed
+ * @param {object[]} acc - An array of render information for the list of notes
+ * @param {UiNotesValue} note - the note being processed
  * @param {string} noteId - current note's id
- * @param {Moment} lastNoteDate - the date of the previous note
- * @returns {Moment} - The date from the note object as a Moment object
+ * @param {import('moment').Moment|undefined} lastNoteDate - the date of the previous note
+ * @returns {import('moment').Moment} - The date from the note object as a Moment object
  */
 function since(acc, note, noteId, lastNoteDate) {
   const { date } = note || {};
@@ -74,7 +74,13 @@ function crunchChangeNumbers(metric, prop) {
   return `The ${prop} has changed by ${valueDelta} inches over the last ${dateDelta} days.`;
 }
 
-function calculateMetrics(acc, note = {}, noteId, metrics) {
+/**
+ * @param {MetricNote[]} acc
+ * @param {UiNotesValue} note
+ * @param {string} noteId
+ * @param {*} metrics
+ */
+function calculateMetrics(acc, note, noteId, metrics) {
   const { height, girth } = note.metrics || {};
   if (height || girth) {
     const date = utils.intToMoment(note.date);
@@ -102,16 +108,22 @@ function calculateMetrics(acc, note = {}, noteId, metrics) {
 }
 
 /**
- *
- * @param {String[]} sortedNoteIds - an array of noteIds sorted by date
- * @param {Immutable.Map} notes - An Immutable map of notes
- * @returns {Object[]} - A collection of objects that can be rendered on
+ * @param {string[]} sortedNoteIds - an array of noteIds sorted by date
+ * @param {UiNotes} notes - An Immutable map of notes
+ * @returns {MetricNote[]} - A collection of objects that can be rendered on
  *   a Plant's page
  */
 function notesToMetricNotes(sortedNoteIds, notes) {
+  /** @type {import('moment').Moment} */
   let lastNoteDate;
   const metrics = [];
-  return sortedNoteIds.reduce((acc, noteId) => {
+
+  /**
+   * @param {MetricNote[]} acc
+   * @param {string} noteId
+   * @returns {MetricNote[]}
+   */
+  const metricReducer = (acc, noteId) => {
     const note = notes[noteId];
     if (note) {
       lastNoteDate = since(acc, note, noteId, lastNoteDate);
@@ -121,7 +133,9 @@ function notesToMetricNotes(sortedNoteIds, notes) {
       acc.push({ noteId, type: 'unfound' });
     }
     return acc;
-  }, []);
+  };
+
+  return sortedNoteIds.reduce(metricReducer, []);
 }
 
 module.exports = {

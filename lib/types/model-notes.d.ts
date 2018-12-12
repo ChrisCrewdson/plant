@@ -51,6 +51,14 @@ interface NoteMetric {
   height: number;
 }
 
+interface MetricNote {
+  noteId: string;
+  note: string;
+  sinceLast: any;
+  change: any;
+  type: string;
+}
+
 interface DbNote {
   _id: import('mongodb').ObjectID;
   plantIds: import('mongodb').ObjectID[];
