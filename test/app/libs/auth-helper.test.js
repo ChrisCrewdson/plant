@@ -1,14 +1,17 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const authHelper = require('../../../app/libs/auth-helper');
+const helper = require('../../helper');
 
 describe('/app/libs/auth-helper', () => {
   describe('canEdit', () => {
     test('should return false if loggedInUserId is falsy', () => {
+      // @ts-ignore - intentionally mistyping for testing
       expect(authHelper.canEdit()).toBe(false);
     });
 
     test('should return false if location is falsy', () => {
+      // @ts-ignore - intentionally mistyping for testing
       expect(authHelper.canEdit('fake-user-id')).toBe(false);
     });
 
@@ -47,18 +50,16 @@ describe('/app/libs/auth-helper', () => {
 
   describe('isLoggedIn', () => {
     test('should return false if user is not logged in', () => {
-      const store = {
-        getState: () => seamless.from({
-          user: {},
-        }),
-      };
+      const store = helper.getFakeStore();
+      store.getState = () => seamless.from({
+        user: {},
+      });
       expect(authHelper.isLoggedIn(store)).toBe(false);
     });
 
     test('should return false if user is missing from state', () => {
-      const store = {
-        getState: () => seamless.from({}),
-      };
+      const store = helper.getFakeStore();
+      store.getState = () => seamless.from({});
       expect(authHelper.isLoggedIn(store)).toBe(false);
     });
   });

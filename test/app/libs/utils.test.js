@@ -177,7 +177,11 @@ describe('/app/libs/utils', () => {
         _id: '3',
         loc: { coordinates: [10.1, 4.4] },
       }];
+      // @ts-ignore - intentional mistyping for testing
       const rebased = utils.rebaseLocations(plants);
+      if (!rebased[0].loc || !rebased[1].loc || !rebased[2].loc) {
+        throw new Error(`rebased loc is falsy ${rebased}`);
+      }
       expect(rebased[0].loc.coordinates[0]).toBe(0);
       expect(rebased[0].loc.coordinates[1]).toBe(5.7);
       expect(rebased[1].loc.coordinates[0]).toBe(9.65);
@@ -187,12 +191,14 @@ describe('/app/libs/utils', () => {
     });
 
     test('should return plants if plants is an empty array', () => {
+      /** @type {BizPlant[]} */
       const plants = [];
       const actual = utils.rebaseLocations(plants);
       expect(actual).toBe(plants);
     });
 
     test('should return undefined if plants is undefined', () => {
+      // @ts-ignore - intentional mistyping for testing
       const actual = utils.rebaseLocations();
       expect(actual).toBeUndefined();
     });
@@ -250,9 +256,11 @@ describe('/app/libs/utils', () => {
       expect(utils.constantEquals('12', '123')).toBe(false);
     });
     test('should fail if 1st param is not a string', () => {
+      // @ts-ignore - intentional mistyping for testing
       expect(utils.constantEquals(123, '123')).toBe(false);
     });
     test('should fail if 2nd param is not a string', () => {
+      // @ts-ignore - intentional mistyping for testing
       expect(utils.constantEquals('123', 123)).toBe(false);
     });
     test(
@@ -284,10 +292,12 @@ describe('/app/libs/utils', () => {
 
     test('should return plantIds if array is empty', () => {
       const plantIds = seamless.from([]);
+      // @ts-ignore - intentional mistyping for testing
       expect(utils.sortPlants(plantIds)).toBe(plantIds);
     });
 
     test('should return an array if param is falsy', () => {
+      // @ts-ignore - intentional mistyping for testing
       expect(utils.sortPlants()).toEqual([]);
     });
 
@@ -346,10 +356,12 @@ describe('/app/libs/utils', () => {
 
     test('should return noteIds if array is empty', () => {
       const noteIds = seamless.from([]);
+      // @ts-ignore - intentional mistyping for testing
       expect(utils.sortNotes(noteIds)).toBe(noteIds);
     });
 
     test('should return an array if param is falsy', () => {
+      // @ts-ignore - intentional mistyping for testing
       expect(utils.sortNotes()).toEqual([]);
     });
 
@@ -422,11 +434,13 @@ describe('/app/libs/utils', () => {
 
   describe('hasGeo', () => {
     test('that window.navigator.geolocation exists', () => {
+      // @ts-ignore - intentional mistyping for testing
       window.navigator.geolocation = true;
       expect(utils.hasGeo()).toBe(true);
     });
 
     test('that window.navigator.geolocation does not exists', () => {
+      // @ts-ignore - intentional mistyping for testing
       window.navigator.geolocation = undefined;
       expect(utils.hasGeo()).toBe(false);
     });
@@ -434,10 +448,14 @@ describe('/app/libs/utils', () => {
 
   describe('getGeo', () => {
     test('that getGeo returns an error if not supported', (done) => {
-      utils.getGeo({}, (err) => {
-        expect(err).toBe('This device does not have geolocation available');
-        done();
-      });
+      utils.getGeo({},
+        /**
+         * @param {Error} err
+         */
+        (err) => {
+          expect(err).toBe('This device does not have geolocation available');
+          done();
+        });
     });
 
     test('that getGeo returns a result', (done) => {
@@ -446,43 +464,74 @@ describe('/app/libs/utils', () => {
         coordinates: [1, 2],
       };
 
+      /** @type {Position} */
+      const fakePosition = {
+        coords: {
+          longitude: 1,
+          latitude: 2,
+          // We don't need the following items but the Position interface has them so
+          // supplying them here to appease tsc.
+          accuracy: 1,
+          altitude: 1,
+          altitudeAccuracy: 1,
+          heading: 1,
+          speed: 1,
+        },
+        timestamp: 1,
+      };
+
+      // @ts-ignore - intentional mistyping for testing
       window.navigator.geolocation = {
-        getCurrentPosition: (cb) => {
-          cb({
-            coords: {
-              longitude: 1,
-              latitude: 2,
-            },
-          });
+        getCurrentPosition:
+        /**
+         * @param {PositionCallback} cb
+         */
+        (cb) => {
+          cb(fakePosition);
         },
       };
 
-      utils.getGeo({}, (err, geo) => {
-        expect(err).toBeFalsy();
-        expect(geo).toEqual(expected);
-        done();
-      });
+      utils.getGeo({},
+        /**
+         * @param {Error} err
+         * @param {Geo} geo
+         */
+        (err, geo) => {
+          expect(err).toBeFalsy();
+          expect(geo).toEqual(expected);
+          done();
+        });
     });
 
     test('should return a fake timeout error', (done) => {
-      // PERMISSION_DENIED (numeric value 1)
-      // POSITION_UNAVAILABLE (numeric value 2)
-      // TIMEOUT (numeric value 3)
+      /** @type {PositionError} */
       const positionError = {
         code: 3, // TIMEOUT
         message: 'Timeout',
+        PERMISSION_DENIED: 1,
+        POSITION_UNAVAILABLE: 2,
+        TIMEOUT: 3,
       };
 
+      // @ts-ignore - intentional assignment to readonly for testing
       window.navigator.geolocation = {
+        /**
+         * @param {PositionCallback} cb
+         * @param {PositionErrorCallback} errCb
+         */
         getCurrentPosition: (cb, errCb) => {
           errCb(positionError);
         },
       };
 
-      utils.getGeo({}, (err) => {
-        expect(err).toBe(positionError);
-        done();
-      });
+      utils.getGeo({},
+        /**
+         * @param {Error} err
+         */
+        (err) => {
+          expect(err).toBe(positionError);
+          done();
+        });
     });
   });
 
