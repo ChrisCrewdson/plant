@@ -83,6 +83,7 @@ describe('/app/libs/utils', () => {
 
     test('should throw and Error for an unknown type', (done) => {
       try {
+        // @ts-ignore - intentionally mistyping for testing
         utils.dateToInt({});
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
@@ -94,6 +95,10 @@ describe('/app/libs/utils', () => {
 
   describe('intToDate()', () => {
     test('should create a Date from an Integer', () => {
+      /**
+       * @param {Date} act
+       * @param {Date} exp
+       */
       function compareDates(act, exp) {
         expect(act.toString()).toBe(exp.toString());
       }
@@ -491,6 +496,7 @@ describe('/app/libs/utils', () => {
 
   describe('showFeature', () => {
     test('should not show feature if no user', () => {
+      // @ts-ignore - intentionally omitting showFeature() param for testing
       expect(utils.showFeature()).toBe(false);
     });
 

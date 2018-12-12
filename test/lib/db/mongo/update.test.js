@@ -7,19 +7,19 @@ describe('/lib/db/mongo/update', () => {
     test('should update the image sizes in a note', async () => {
       /** @type {DbNote} */
       const note = {
+        _id: utils.makeMongoIdObject(),
         date: 20180101,
         plantIds: [],
-        _id: utils.makeMongoIdObject(),
         userId: utils.makeMongoIdObject(),
         images: [{
-          id: utils.makeMongoId(),
           ext: 'jpg',
+          id: utils.makeMongoId(),
           originalname: 'flower',
           size: 999,
           sizes: [],
         }, {
-          id: utils.makeMongoId(),
           ext: 'jpg',
+          id: utils.makeMongoId(),
           originalname: 'leaf',
           size: 666,
           sizes: [],

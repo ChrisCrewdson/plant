@@ -1,9 +1,14 @@
+const helper = require('../../helper');
 
 /** @type {number} */
 let ajaxCallCounter;
+/** @type {JQueryAjaxSettings} */
 let opts;
 jest.mock('jquery', () => ({
   count: 0,
+  /**
+   * @param {JQueryAjaxSettings} options
+   */
   ajax: (options) => {
     ajaxCallCounter += 1;
     opts = options;
@@ -14,7 +19,8 @@ const ajax = require('../../../app/middleware/ajax');
 
 describe('/app/middleware/ajax', () => {
   test('should return an object if data is object', (done) => {
-    const store = {};
+    /** @type {import("redux").Store} */
+    const store = helper.getFakeStore();
     const options = {
       url: '/something',
       success: () => {},
@@ -35,7 +41,8 @@ describe('/app/middleware/ajax', () => {
   });
 
   test('should not change a native data type', (done) => {
-    const store = {};
+    /** @type {import("redux").Store} */
+    const store = helper.getFakeStore();
     const data = 'do not change me';
     const options = {
       url: '/something',

@@ -1,5 +1,6 @@
 const slug = require('slugify');
 const isDate = require('lodash/isDate');
+const isNumber = require('lodash/isNumber');
 const moment = require('moment');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
@@ -42,6 +43,7 @@ function makeSlug(text) {
   }
 
   const lower = text.toString().toLowerCase();
+  // @ts-ignore - looks like the type definition in this module is messed up
   return slug(lower.replace(/[/()]/g, ' '));
 }
 
@@ -154,7 +156,7 @@ function plantFromBody(body) {
  * Filters the plantIds array based on filter
  * @param {string[]} plantIds - original plantIds to filter
  * @param {object} plants - all the plants available to sort
- * @param {string} filter - optional text to filter title of plant
+ * @param {string=} filter - optional text to filter title of plant
  * @returns {array} - an array of filtered plantIds
  */
 function filterPlants(plantIds, plants, filter) {
@@ -295,18 +297,23 @@ function plantStats(plantIds, plants) {
 
 /**
  * The values of the errors object are arrays. Take the first item out of each array.
- * @param {object} errors - values are arrays
+ * @param {Dictionary<string[]>} errors - values are arrays
  * @returns {object} - first element of value for each key
  */
 function transformErrors(errors) {
   if (!errors) {
     return errors;
   }
-  return Object.keys(errors).reduce((acc, key) => {
-    // Assign first element of errors[key] (which is an arry) to acc[key]
-    [acc[key]] = errors[key];
-    return acc;
-  }, {});
+  return Object.keys(errors).reduce(
+    /**
+     * @param {Dictionary<string>} acc
+     * @param {string} key
+     */
+    (acc, key) => {
+      // Assign first element of errors[key] (which is an arry) to acc[key]
+      [acc[key]] = errors[key];
+      return acc;
+    }, {});
 }
 
 /**
@@ -318,7 +325,7 @@ function hasGeo() {
 
 /**
  * Gets the current geo location
- * @param {object} optionsParam
+ * @param {PositionOptions} optionsParam
  * @param {Function} cb
  * @returns
  */
@@ -327,6 +334,7 @@ function getGeo(optionsParam, cb) {
     return cb('This device does not have geolocation available');
   }
 
+  /** @type {PositionOptions} */
   const options = Object.assign({}, {
     enableHighAccuracy: true,
     timeout: 30000, // 30 seconds
@@ -344,7 +352,9 @@ function getGeo(optionsParam, cb) {
         ],
       };
       return cb(null, geoJson);
-    }, cb, options);
+    }, (err) => {
+      cb(err);
+    }, options);
 }
 
 
@@ -362,9 +372,22 @@ function subtractGis(left, right) {
 }
 
 /**
+ * @param {BizPlant} plant
+ * @returns {number[]|boolean}
+ */
+const getLongLat = (plant) => {
+  const long = plant.loc && plant.loc.coordinates && plant.loc.coordinates[0];
+  const lat = plant.loc && plant.loc.coordinates && plant.loc.coordinates[1];
+  if (isNumber(long) && isNumber(lat)) {
+    return [long, lat];
+  }
+  return false;
+};
+
+/**
  * Rebase the long and lat of the plant locations
- * @param {array} plants - an array of plants with just the _id and loc fields
- * @returns {array} - same array of plants with the locations rebased to 0,0
+ * @param {BizPlant[]} plants - an array of plants with just the _id and loc fields
+ * @returns {BizPlant[]} - same array of plants with the locations rebased to 0,0
  */
 function rebaseLocations(plants) {
   if (!plants || !plants.length) {
@@ -372,21 +395,31 @@ function rebaseLocations(plants) {
   }
 
   const northWestPoints = plants.reduce((acc, plant) => {
-    const [long, lat] = plant.loc.coordinates;
-    acc.long = Math.min(acc.long, long);
-    acc.lat = Math.min(acc.lat, lat);
+    const coordinates = getLongLat(plant);
+    if (Array.isArray(coordinates)) {
+      const [long, lat] = coordinates;
+      acc.long = Math.min(acc.long, long);
+      acc.lat = Math.min(acc.lat, lat);
+    }
     return acc;
   }, { long: 180, lat: 90 });
 
-  return plants.map(plant => ({
-    _id: plant._id.toString(),
-    loc: {
-      coordinates: [
-        subtractGis(plant.loc.coordinates[0], northWestPoints.long),
-        subtractGis(plant.loc.coordinates[1], northWestPoints.lat),
-      ],
-    },
-  }));
+  return plants.map((plant) => {
+    const coordinates = getLongLat(plant);
+    if (Array.isArray(coordinates)) {
+      const type = plant.loc && plant.loc.type;
+      return Object.assign({}, plant, {
+        loc: {
+          type,
+          coordinates: {
+            0: subtractGis(coordinates[0], northWestPoints.long),
+            1: subtractGis(coordinates[1], northWestPoints.lat),
+          },
+        },
+      });
+    }
+    return plant;
+  });
 }
 
 /**
@@ -458,6 +491,11 @@ const metaMetrics = seamless.from([{
 },
 ]);
 
+/**
+ * Converts the body from a POST (Upsert) operation from a client into a BizNote
+ * @param {any} body
+ * @returns {BizNote}
+ */
 function noteFromBody(body) {
   // eslint-disable-next-line no-param-reassign
   body.date = parseInt(body.date, 10);

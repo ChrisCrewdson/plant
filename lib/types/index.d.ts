@@ -34,7 +34,9 @@ declare type Role =
 declare type GeoType = 'Point';
 
 interface GeoCoords {
+  /** Longitude */
   0: number;
+  /** Latitude */
   1: number;
 }
   

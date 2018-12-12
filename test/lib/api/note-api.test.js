@@ -267,18 +267,24 @@ describe('note-api', () => {
 
   describe('note-api /api/image-complete', () => {
     test('should confirm a complete image', async () => {
+      /** @type {DbNote} */
       const note = {
-        userId: utils.makeMongoId(),
+        _id: utils.makeMongoIdObject(),
+        date: 20180101,
+        plantIds: [],
+        userId: utils.makeMongoIdObject(),
         images: [{
-          id: utils.makeMongoId(),
           ext: 'jpg',
+          id: utils.makeMongoId(),
           originalname: 'flower',
           size: 999,
+          sizes: [],
         }, {
-          id: utils.makeMongoId(),
           ext: 'jpg',
+          id: utils.makeMongoId(),
           originalname: 'leaf',
           size: 666,
+          sizes: [],
         }],
       };
       const sizes = [
@@ -297,11 +303,15 @@ describe('note-api', () => {
         return Object.assign({}, { createdNote });
       }
 
+      /**
+       * @param {BizNote} createdNote
+       * @returns
+       */
       async function makePutRequest(createdNote) {
         const putData = {
           metadata: {
             noteid: createdNote._id,
-            id: note.images[0].id,
+            id: note.images && note.images[0].id,
             userid: note.userId,
           },
           sizes,
@@ -337,7 +347,9 @@ describe('note-api', () => {
         throw new Error(`fetchedNote or fetchedNote.images is falsy ${fetchedNote}`);
       }
       expect(fetchedNote.images[0].sizes).toEqual(sizes);
-      expect(!fetchedNote.images[1].sizes).toBeTruthy();
+      expect(fetchedNote.images[1].sizes).toBeTruthy();
+      expect(fetchedNote.images[0].sizes).toHaveLength(sizes.length);
+      expect(fetchedNote.images[1].sizes).toHaveLength(0);
       expect(fetchedNote).toBeTruthy();
       expect(fetchedNote._id).toHaveLength(24);
       expect(fetchedNote.images).toHaveLength(2);
