@@ -16,9 +16,7 @@ interface Logger {
 declare namespace Express {
   export interface Request {
     logger: Logger;
-    user?: {
-      _id: string;
-    };
+    user?: BizUser;
     files?: Multer.File[];
     logout: Function;
     logIn: Function;

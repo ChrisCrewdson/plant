@@ -84,6 +84,8 @@ interface DbUserTiny {
   name?: string;
 }
 
+declare type BizUserStatus = 'success';
+
 interface BizUser {
   _id: string;
   createdAt: Date;
@@ -93,6 +95,9 @@ interface BizUser {
   name?: string;
   updatedAt: Date;
   locationIds?: DbLocation[];
+  activeLocationId?: string;
+  isLoggedIn?: boolean;
+  status?: BizUserStatus;
 }
 
 interface LocationLocCache {
