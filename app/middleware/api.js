@@ -70,19 +70,20 @@ function createPlant(store, action, next) {
  */
 function saveFilesRequest(store, action, opts, next) {
   const data = new FormData();
-  action.payload.files.forEach(
-    /** @param {string} file - TODO: Might be a Blob and not a string */
-    (file) => {
-      data.append('file', file);
-    });
-  data.append('note', JSON.stringify(action.payload.note));
+  /** @type {(string|Blob)[]} */
+  const files = action.payload && action.payload.files;
+  const note = action.payload && action.payload.note;
+  files.forEach((file) => {
+    data.append('file', file);
+  });
+  data.append('note', JSON.stringify(note));
 
   /** @type {AjaxOptions} */
   const options = {
     contentType: 'multipart/form-data',
     data,
     failure: opts.failure,
-    note: action.payload.note,
+    note,
     success: opts.success,
     progress: actionFunc.editNoteChange,
     type: 'POST',

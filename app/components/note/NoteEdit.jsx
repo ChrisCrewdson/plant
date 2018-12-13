@@ -70,6 +70,7 @@ class NoteEdit extends React.PureComponent {
   }
 
   onOpenClick() {
+    // @ts-ignore - TODO: Come back to this.
     this.dropzone.open();
   }
 
