@@ -122,14 +122,14 @@ function upsertNoteRequest(store, action, next) {
   }
   const opts = { success, failure };
 
-  if (action.payload.files && action.payload.files.length) {
+  if (action.payload && action.payload.files && action.payload.files.length) {
     saveFilesRequest(store, action, opts, next);
   } else {
     /** @type {AjaxOptions} */
     const options = {
       type: 'POST',
       url: '/api/note',
-      data: action.payload.note,
+      data: action.payload && action.payload.note,
       success,
       failure,
     };
@@ -181,7 +181,7 @@ function updatePlant(store, action, next) {
 function deletePlantRequest(store, action, next) {
   const options = {
     type: 'DELETE',
-    url: `/api/plant/${action.payload.plantId}`,
+    url: `/api/plant/${action.payload && action.payload.plantId}`,
     success: actionFunc.deletePlantSuccess,
     failure: actionFunc.deletePlantFailure,
   };
@@ -211,7 +211,7 @@ function deleteNoteRequest(store, action, next) {
  * @param {ActionMethodResult} action
  */
 function loadPlantRequest(store, action) {
-  if (!action.payload._id) {
+  if (!(action.payload && action.payload._id)) {
     // console.error('No _id in loadPlantRequest', (new Error()).stack);
   } else {
     /** @type {AjaxOptions} */
@@ -301,7 +301,8 @@ function loadLocationsRequest(store) {
  * @param {Function} next
  */
 function loadNotesRequest(store, action, next) {
-  const { noteIds, plantIds } = action.payload;
+  const noteIds = action.payload && action.payload.noteIds;
+  const plantIds = action.payload && action.payload.plantIds;
   if (!noteIds && !plantIds) {
     // eslint-disable-next-line no-console
     console.error('No noteIds or plantIds on payload, action:', action);

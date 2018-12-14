@@ -40,6 +40,7 @@ interface UiPlantsValue extends BasePlant {
   _id: string;
   notes: UiPlantsNotes[];
   locationId: string;
+  isTerminated?: boolean;
 }
 
 interface BizPlantMap {

@@ -12,7 +12,6 @@ const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
 class NoteAssocPlant extends React.Component {
   /**
-   * Navbar constructor
    * @param {NoteAssocPlantProps} props
    */
   constructor(props) {
@@ -40,7 +39,15 @@ class NoteAssocPlant extends React.Component {
    * @memberof NoteAssocPlant
    */
   toggle(plantId) {
-    const { plantIds: propPlantIds, dispatch } = this.props;
+    // const {
+    //   /** @type {NoteAssocPlantProps} */
+    //   props,
+    // } = this;
+    const {
+      /** @type {string[]} */
+      plantIds: propPlantIds,
+      dispatch,
+    } = this.props;
     const plantIds = propPlantIds.indexOf(plantId) >= 0
       ? propPlantIds.filter(pId => pId !== plantId)
       : propPlantIds.concat(plantId);
@@ -54,6 +61,12 @@ class NoteAssocPlant extends React.Component {
     this.setState({ expanded });
   }
 
+  /**
+   * Renders a button that allows for attaching or removing a plant on
+   * a note.
+   * @param {UiPlantsValue} plant
+   * @param {boolean} primary
+   */
   renderPlantButton(plant, primary) {
     const { _id, title, isTerminated } = plant;
     const secondary = !primary && !!isTerminated;

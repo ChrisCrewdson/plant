@@ -7,8 +7,12 @@ const RaisedButton = require('material-ui/RaisedButton').default;
 const PropTypes = require('prop-types');
 
 class NoteAssocPlantToggleButton extends React.PureComponent {
-  constructor() {
-    super();
+  /**
+   *
+   * @param {NoteAssocPlantToggleButtonProps} props
+   */
+  constructor(props) {
+    super(props);
     this.toggle = this.toggle.bind(this);
   }
 

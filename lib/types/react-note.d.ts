@@ -5,3 +5,12 @@ interface NoteAssocPlantProps {
   plantIds: String[];
   plants: Object;
 }
+
+interface NoteAssocPlantToggleButtonProps {
+  _id: string;
+  label: string;
+  primary: boolean;
+  secondary: boolean;
+  style: object;
+  toggleFunc: Function;
+}
