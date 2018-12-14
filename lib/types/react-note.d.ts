@@ -6,6 +6,14 @@ interface NoteAssocPlantProps {
   plants: Object;
 }
 
+interface NoteAssocPlantState {
+  expanded: boolean;
+  filter: string;
+}
+
+interface INoteAssocPlant extends React.Component<NoteAssocPlantProps, NoteAssocPlantState> {
+}
+
 interface NoteAssocPlantToggleButtonProps {
   _id: string;
   label: string;
@@ -14,3 +22,4 @@ interface NoteAssocPlantToggleButtonProps {
   style: object;
   toggleFunc: Function;
 }
+

@@ -10,12 +10,18 @@ const utils = require('../../libs/utils');
 const { actionFunc } = require('../../actions');
 const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
 
+/**
+ * @class
+ * @type {INoteAssocPlant}
+ */
 class NoteAssocPlant extends React.Component {
   /**
+   * @constructor
    * @param {NoteAssocPlantProps} props
    */
   constructor(props) {
     super(props);
+    /** @type {NoteAssocPlantState} */
     this.state = {
       expanded: false,
       filter: '',
@@ -39,15 +45,10 @@ class NoteAssocPlant extends React.Component {
    * @memberof NoteAssocPlant
    */
   toggle(plantId) {
-    // const {
-    //   /** @type {NoteAssocPlantProps} */
-    //   props,
-    // } = this;
     const {
-      /** @type {string[]} */
       plantIds: propPlantIds,
       dispatch,
-    } = this.props;
+    } = /** @type {NoteAssocPlantProps} */ (this.props);
     const plantIds = propPlantIds.indexOf(plantId) >= 0
       ? propPlantIds.filter(pId => pId !== plantId)
       : propPlantIds.concat(plantId);
