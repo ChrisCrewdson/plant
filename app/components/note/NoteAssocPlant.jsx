@@ -87,7 +87,7 @@ class NoteAssocPlant extends React.Component {
   /**
    * Render Plant Buttons
    * @param {string[]} plantIds
-   * @param {object} plants
+   * @param {Dictionary<UiPlantsValue>} plants
    * @param {boolean} selected
    * @returns {Array<> | null}
    * @memberof NoteAssocPlant
@@ -105,7 +105,7 @@ class NoteAssocPlant extends React.Component {
 
   render() {
     const { expanded, filter } = this.state;
-    const { plantIds, plants, error } = this.props;
+    const { plantIds, plants, error } = /** @type {NoteAssocPlantProps} */ (this.props);
     // TODO: If the following pattern is to be kept then:
     // If expanded is true then it might be faster to sort the array once before applying
     // the filter twice rather than filtering twice and sorting twice.

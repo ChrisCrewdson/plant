@@ -1,9 +1,9 @@
 
 interface NoteAssocPlantProps {
-  dispatch: Function;
-  error: String;
-  plantIds: String[];
-  plants: Object;
+  dispatch: import('redux').Dispatch;
+  error: string;
+  plantIds: string[];
+  plants: Dictionary<UiPlantsValue>;
 }
 
 interface NoteAssocPlantState {
