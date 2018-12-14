@@ -17,7 +17,7 @@ class NoteAssocPlantToggleButton extends React.PureComponent {
   }
 
   toggle() {
-    const { toggleFunc, _id } = this.props;
+    const { toggleFunc, _id } = /** @type {NoteAssocPlantToggleButtonProps} */ (this.props);
     toggleFunc(_id);
   }
 
@@ -27,7 +27,7 @@ class NoteAssocPlantToggleButton extends React.PureComponent {
       primary,
       secondary,
       style,
-    } = this.props;
+    } = /** @type {NoteAssocPlantToggleButtonProps} */ (this.props);
 
     return (
       <RaisedButton

@@ -191,7 +191,7 @@ Upload complete... Finishing up... Hang on...
         <InputComboText
           changeHandler={this.onChange}
           error={errors.date}
-          floatingLabelText="Date"
+          label="Date"
           id="note-date"
           name="date"
           placeholder="MM/DD/YYYY"
@@ -202,7 +202,7 @@ Upload complete... Finishing up... Hang on...
         <InputComboText
           changeHandler={this.onChange}
           error={errors.note}
-          floatingLabelText="Note"
+          label="Note"
           id="note-text"
           multiLine
           name="note"

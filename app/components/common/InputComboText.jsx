@@ -2,7 +2,11 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const TextField = require('material-ui/TextField').default;
 
-function inputComboText(props = {}) {
+/**
+ * A very light wrapper around the MaterialUI TextField component
+ * @param {InputComboTextProps} props
+ */
+function inputComboText(props) {
   const {
     changeHandler,
     disabled = false,

@@ -16,10 +16,10 @@ interface INoteAssocPlant extends React.Component<NoteAssocPlantProps, NoteAssoc
 
 interface NoteAssocPlantToggleButtonProps {
   _id: string;
-  label: string;
+  label: React.ReactNode;
   primary: boolean;
   secondary: boolean;
-  style: object;
-  toggleFunc: Function;
+  style: React.CSSProperties;
+  toggleFunc: (id: string) => void;
 }
 
