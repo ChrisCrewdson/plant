@@ -29,3 +29,19 @@ interface InputComboTextProps {
   type?: string;
   value: string | number;
 }
+
+interface InputComboProps {
+  changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
+  disabled?: boolean;
+  error: React.ReactNode;
+  fullWidth?: boolean;
+  id: string;
+  label: React.ReactNode;
+  multiLine?: boolean;
+  name: string;
+  placeholder: string;
+  style?: React.CSSProperties;
+  type?: string;
+  value: string | number;
+  options?: Dictionary<string>;
+}

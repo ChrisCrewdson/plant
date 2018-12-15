@@ -5,7 +5,11 @@ const SelectField = require('material-ui/SelectField').default;
 const Toggle = require('material-ui/Toggle').default;
 const inputComboText = require('./InputComboText');
 
-function inputCombo(props = {}) {
+/**
+ *
+ * @param {InputComboProps} props
+ */
+function inputCombo(props) {
   const {
     changeHandler,
     error,
@@ -30,16 +34,22 @@ function inputCombo(props = {}) {
     />
   );
 
-  const select = () => (
-    <SelectField
-      errorText={error}
-      floatingLabelText={label}
-      id={id}
-      value={value}
-      onChange={changeHandler}
-      style={styler}
-    >
-      {
+  const select = () => {
+    if (!options) {
+      // eslint-disable-next-line no-console
+      console.error(`No options were passed in for the select: ${options}`);
+      return null;
+    }
+    return (
+      <SelectField
+        errorText={error}
+        floatingLabelText={label}
+        id={id}
+        value={value}
+        onChange={changeHandler}
+        style={styler}
+      >
+        {
         Object.keys(options).map(key => (
           <MenuItem
             key={key}
@@ -48,7 +58,9 @@ function inputCombo(props = {}) {
           />
         ))
       }
-    </SelectField>);
+      </SelectField>
+    );
+  };
 
   switch (type) {
     case 'text':
