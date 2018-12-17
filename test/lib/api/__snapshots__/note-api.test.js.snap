@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`note-api note-api create/retrieve notes should retrieve the just updated noteId as part of a plant request 1`] = `
+Object {
+  "notes": Array [],
+  "title": "Plant Title 0",
+}
+`;
+
+exports[`note-api note-api create/retrieve notes should update the just created note 1`] = `
+Object {
+  "note": Object {
+    "date": 20160101,
+    "note": "A New Note",
+    "plantIds": Array [],
+  },
+  "success": true,
+}
+`;

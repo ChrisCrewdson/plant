@@ -84,7 +84,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/.bin/jest",
       "args": [
-        "${workspaceRoot}/test/lib/api/note-api-create-failures.test", // replace this file with the file to focus
+        "${workspaceRoot}/test/lib/api/note-api.test", // replace this file with the file to focus
         "-i",
         "--forceExit"
       ],

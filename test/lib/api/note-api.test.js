@@ -1,8 +1,12 @@
+const { produce } = require('immer');
+
 const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 const mongo = require('../../../lib/db/mongo')();
 const { mockLogger } = require('../../mock-logger');
+
+/* eslint-disable no-param-reassign */
 
 describe('note-api', () => {
   /** @type {string} */
@@ -140,8 +144,20 @@ describe('note-api', () => {
       // Mongo 2.x does not return nModified which is what Travis uses so do not check this
       // logger.trace('*********** httpMsg:', {updatedNote, reqOptions, httpMsg});
       expect(response.status).toBe(200);
-      expect(httpMsg).toBeTruthy();
-      expect(httpMsg.success).toBe(true);
+
+      // Remove the volatile elements from httpMsg
+      const httpMsgSnap = produce(httpMsg, (draft) => {
+        helper.expectMongoId([
+          draft.note._id,
+          draft.note.userId,
+          draft.note.plantIds[0],
+        ]);
+        delete draft.note._id;
+        delete draft.note.userId;
+        draft.note.plantIds.pop();
+      });
+
+      expect(httpMsgSnap).toMatchSnapshot();
     });
 
     test(
@@ -156,18 +172,25 @@ describe('note-api', () => {
 
         const { httpMsg, response } = await helper.makeRequest(reqOptions);
         expect(response.status).toBe(200);
-        expect(httpMsg).toBeTruthy();
 
-        expect(httpMsg.userId).toBeTruthy();
         expect(httpMsg._id).toBe(plantId);
-        expect(httpMsg.title).toBe(initialPlant.title);
-
-
-        // Check notes
-        expect(httpMsg.notes).toBeTruthy();
-        expect(httpMsg.notes).toHaveLength(1);
         expect(httpMsg.notes[0]).toBe(noteId);
-        expect(constants.mongoIdRE.test(httpMsg.notes[0])).toBeTruthy();
+
+        // Remove the volatile elements from httpMsg
+        const httpMsgSnap = produce(httpMsg, (draft) => {
+          helper.expectMongoId([
+            draft._id,
+            draft.userId,
+            draft.locationId,
+            draft.notes[0],
+          ]);
+          delete draft._id;
+          delete draft.userId;
+          delete draft.locationId;
+          draft.notes.pop();
+        });
+
+        expect(httpMsgSnap).toMatchSnapshot();
       },
     );
 
@@ -356,3 +379,5 @@ describe('note-api', () => {
     });
   });
 });
+
+/* eslint-enable no-param-reassign */

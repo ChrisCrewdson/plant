@@ -4,6 +4,7 @@ const nodeFetch = require('node-fetch');
 // @ts-ignore - cannot find import
 const fetch = require('fetch-cookie/node-fetch')(nodeFetch);
 
+const constants = require('../app/libs/constants');
 const { mockLogger } = require('./mock-logger');
 const mongo = require('../lib/db/mongo')();
 
@@ -255,11 +256,19 @@ const getFakeStore = () => ({
   subscribe: jest.fn(),
 });
 
+/**
+ * @param {string[]} values
+ */
+const expectMongoId = (values) => {
+  values.forEach(value => expect(constants.mongoIdRE.test(value)).toBe(true));
+};
+
 module.exports = {
   createNote,
   createPlants,
   getFakeStore,
   getUrl,
+  expectMongoId,
   makeRequest,
   mockLogger,
   startServerAuthenticated,
