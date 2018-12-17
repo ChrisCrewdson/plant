@@ -23,3 +23,19 @@ interface NoteAssocPlantToggleButtonProps {
   toggleFunc: (id: string) => void;
 }
 
+interface NoteCreateProps {
+  dispatch: import('redux').Dispatch;
+  userCanEdit: boolean;
+  interimNote: UiInterimNote;
+  plant: UiPlantsValue;
+  plants: UiPlants;
+  locationId: string;
+}
+
+interface NoteEditProps {
+  dispatch: import('redux').Dispatch;
+  interimNote: UiInterimNote;
+  plants: UiPlants;
+  postSaveSuccess: Function;
+  locationId: string;
+}

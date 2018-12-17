@@ -10,6 +10,9 @@ const NoteEdit = require('./NoteEdit');
 const { actionFunc } = require('../../actions');
 
 class NoteCreate extends React.PureComponent {
+  /**
+   * @param {NoteCreateProps} props
+   */
   constructor(props) {
     super(props);
 
@@ -19,7 +22,7 @@ class NoteCreate extends React.PureComponent {
   createNote() {
     const {
       plant, locationId, plants: plantsObj, dispatch,
-    } = this.props;
+    } = /** @type {NoteCreateProps} */ (this.props);
 
     const plants = Object.keys(plantsObj).reduce((acc, plantId) => {
       const p = plantsObj[plantId];
@@ -27,7 +30,7 @@ class NoteCreate extends React.PureComponent {
         acc[plantId] = p;
       }
       return acc;
-    }, {});
+    }, /** @type {UiPlants} */ ({}));
 
     const note = {
       _id: utils.makeMongoId(),
@@ -50,7 +53,7 @@ class NoteCreate extends React.PureComponent {
       plant,
       plants,
       userCanEdit,
-    } = this.props;
+    } = /** @type {NoteCreateProps} */ (this.props);
 
     if (!userCanEdit) {
       return null;

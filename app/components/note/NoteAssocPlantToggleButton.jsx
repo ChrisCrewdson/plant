@@ -8,7 +8,6 @@ const PropTypes = require('prop-types');
 
 class NoteAssocPlantToggleButton extends React.PureComponent {
   /**
-   *
    * @param {NoteAssocPlantToggleButtonProps} props
    */
   constructor(props) {

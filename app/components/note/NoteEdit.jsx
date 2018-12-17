@@ -19,15 +19,27 @@ const validators = require('../../models');
 
 const { note: noteValidator } = validators;
 
+/** @type {React.CSSProperties} */
+const paperStyle = {
+  padding: 20,
+  width: '100%',
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+/** @type {React.CSSProperties} */
 const textAreaStyle = {
   textAlign: 'left',
 };
 
+/** @type {React.CSSProperties} */
 const textFieldStyle = {
   marginLeft: 20,
   textAlign: 'left',
 };
 
+/** @type {React.CSSProperties} */
 const dropZoneStyle = {
   backgroundColor: 'beige',
   borderColor: 'khaki',
@@ -37,12 +49,16 @@ const dropZoneStyle = {
   width: '100%',
 };
 
+/** @type {React.CSSProperties} */
 const dropZoneActiveStyle = {
   backgroundColor: 'darkseagreen',
   borderColor: 'tan',
 };
 
 class NoteEdit extends React.PureComponent {
+  /**
+   * @param {NoteEditProps} props
+   */
   constructor(props) {
     super(props);
     this.cancel = this.cancel.bind(this);
@@ -54,12 +70,16 @@ class NoteEdit extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {NoteEditProps} */ (this.props);
     dispatch(actionFunc.editNoteClose());
   }
 
+  /**
+   * Change Handler
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   */
   onChange(e) {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {NoteEditProps} */ (this.props);
     dispatch(actionFunc.editNoteChange({
       [e.target.name]: e.target.value,
     }));
@@ -75,12 +95,14 @@ class NoteEdit extends React.PureComponent {
   }
 
   cancel() {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {NoteEditProps} */ (this.props);
     dispatch(actionFunc.editNoteClose());
   }
 
   saveNote(files) {
-    const { dispatch, interimNote: propInterimNote, postSaveSuccess } = this.props;
+    const {
+      dispatch, interimNote: propInterimNote, postSaveSuccess,
+    } = /** @type {NoteEditProps} */ (this.props);
     const interimNote = seamless.asMutable(propInterimNote, { deep: true });
 
     interimNote._id = interimNote._id || utils.makeMongoId();
@@ -99,6 +121,10 @@ class NoteEdit extends React.PureComponent {
     this.saveNote(files);
   }
 
+  /**
+   * Change Handler
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   */
   save(e) {
     this.saveNote();
     e.preventDefault();
@@ -106,20 +132,12 @@ class NoteEdit extends React.PureComponent {
   }
 
   render() {
-    const paperStyle = {
-      padding: 20,
-      width: '100%',
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
-
     const {
       dispatch,
       interimNote,
       locationId,
       plants,
-    } = this.props;
+    } = /** @type {NoteEditProps} */ (this.props);
     const { uploadProgress } = interimNote;
 
     if (uploadProgress) {
@@ -171,7 +189,7 @@ Upload complete... Finishing up... Hang on...
         acc[plantId] = plant;
       }
       return acc;
-    }, {});
+    }, /** @type {UiPlants} */ ({}));
 
     const associatedPlants = (
       <NoteAssocPlant

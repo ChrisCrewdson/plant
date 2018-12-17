@@ -24,9 +24,20 @@ This state is WIP
 }
 */
 
+interface UiInterimUploadProgress {
+  value: number;
+  max: number;
+  note?: UiNotesValue;
+}
+
 interface UiInterimNote {
   note: UiNotesValue;
   plant?: UiPlantsValue;
+  isNew?: boolean;
+  uploadProgress: UiInterimUploadProgress;
+  date?: string;
+  errors?: Dictionary<string>;
+  plantIds: string[];
 }
 
 interface UiInterim {
