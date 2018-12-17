@@ -11,6 +11,19 @@ exports[`note-api note-api create/retrieve notes should update the just created 
 Object {
   "note": Object {
     "date": 20160101,
+    "metrics": Object {
+      "firstBlossom": true,
+      "firstBud": true,
+      "girth": 5,
+      "harvestCount": 1,
+      "harvestEnd": true,
+      "harvestStart": true,
+      "harvestWeight": 3.6,
+      "height": 65,
+      "lastBlossom": true,
+      "leafShedEnd": true,
+      "leafShedStart": true,
+    },
     "note": "A New Note",
     "plantIds": Array [],
   },

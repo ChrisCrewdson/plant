@@ -135,3 +135,17 @@ interface Global extends NodeJS.Global {
   // window: Window;
   // requestAnimationFrame?: (callback: Function) => void;
 }
+
+declare type MetaMetricType =
+  'length' |
+  'count' |
+  'toggle' |
+  'weight';
+
+interface MetaMetric {
+ key: string;
+ label: string;
+ placeholder: string;
+ type: MetaMetricType;
+}
+

@@ -422,18 +422,8 @@ function rebaseLocations(plants) {
   });
 }
 
-/**
- * @typedef MetaMetric
- * @property {string} key
- * @property {string} label
- * @property {string} placeholder
- * @property {string} type
- */
-
-/**
-  * @type {MetaMetric[]}
-  */
-const metaMetrics = seamless.from([{
+/** @type {MetaMetric[]} */
+const metaMetricsRaw = [{
   key: 'height',
   label: 'Height (inches only)', // For InputCombo
   placeholder: 'Enter height of plant', // Input hint
@@ -488,8 +478,10 @@ const metaMetrics = seamless.from([{
   label: 'Leaf Shed End',
   placeholder: 'Check when leaf shed (abscission) ends',
   type: 'toggle',
-},
-]);
+}];
+
+/** @type {MetaMetric[]} */
+const metaMetrics = seamless.from(metaMetricsRaw);
 
 /**
  * Converts the body from a POST (Upsert) operation from a client into a BizNote
@@ -529,9 +521,11 @@ function noteFromBody(body) {
               body.metrics[key] = parseFloat(body.metrics[key]);
             }
             break;
-          /* istanbul ignore next */
-          default:
+          case 'weight':
             // eslint-disable-next-line no-param-reassign
+            body.metrics[key] = parseFloat(body.metrics[key]);
+            break;
+          default:
             throw new Error(`Unknown metric type ${metaMetric.type}`);
         }
         // eslint-disable-next-line no-restricted-globals

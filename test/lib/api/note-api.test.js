@@ -127,6 +127,19 @@ describe('note-api', () => {
         initialNote, {
           note: 'A New Note',
           _id: noteId,
+          metrics: {
+            height: '5 5', // 5' 5"
+            girth: '5',
+            harvestCount: '1',
+            harvestWeight: '3.6',
+            firstBlossom: 'true',
+            lastBlossom: 'true',
+            firstBud: 'true',
+            harvestStart: 'true',
+            harvestEnd: 'true',
+            leafShedStart: 'true',
+            leafShedEnd: 'true',
+          },
         },
       );
 
