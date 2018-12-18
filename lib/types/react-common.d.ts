@@ -41,7 +41,7 @@ interface InputComboProps {
   label: React.ReactNode;
   multiLine?: boolean;
   name: string;
-  placeholder: string;
+  placeholder?: string;
   style?: React.CSSProperties;
   type?: string;
   value: string | number;

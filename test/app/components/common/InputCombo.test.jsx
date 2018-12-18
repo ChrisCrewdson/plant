@@ -36,6 +36,7 @@ describe('InputCombo', () => {
                 changeHandler={changeHandler}
                 id="test-id"
                 name="test-name"
+                placeholder="placeholder text"
                 value="test-value"
               />
             </MemoryRouter>
@@ -49,8 +50,8 @@ describe('InputCombo', () => {
   test('should render Select Input', () => {
     const changeHandler = () => {};
     const options = {
-      one: 1,
-      two: 2,
+      one: '1',
+      two: '2',
     };
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -61,9 +62,9 @@ describe('InputCombo', () => {
                 changeHandler={changeHandler}
                 id="test-id"
                 name="test-name"
+                options={options}
                 type="select"
                 value="test-value"
-                options={options}
               />
             </MemoryRouter>
           </App>
