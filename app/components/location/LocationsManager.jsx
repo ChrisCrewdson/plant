@@ -48,6 +48,9 @@ const getMembers = members => Object.keys(members || {}).map((_id) => {
   };
 });
 
+/**
+ * @param {Dictionary<UiLocationsStation>} stations
+ */
 const getStations = stations => Object.keys(stations || {}).map((_id) => {
   const { name, enabled } = stations[_id];
   return {
@@ -60,15 +63,7 @@ class LocationsManager extends React.Component {
   /**
    * Called with a save on an edit/new is done. Validation is failed by returning an
    * array that has at least 1 truthy value in it.
-   * @param {object} data
-   * @param {object} data.row - The row that is being validated
-   * @param {string} data.row._id - The _id of the row which is the user's _id
-   * @param {any[]} data.row.values - The values being changed/inserted
-   * @param {object} data.meta - Meta data sent to Grid for passing back container methods
-   * @param {object} data.meta.location - The location object that this applies to
-   * @param {object} data.meta.location.members - The members at this location - the key is the
-   *                                             userId (a UUID) and the value is the role
-   * @param {boolean} data.isNew - True if this is a new row
+   * @param {LocationsManagerRowUpdate} data
    * @returns {string[]} - An array of errors, empty strings or a mixture of the two
    */
   static validateLocationMember({ row, meta, isNew }) {
@@ -88,6 +83,9 @@ class LocationsManager extends React.Component {
     return errors;
   }
 
+  /**
+   * @param {LocationsManagerRowUpdate} data
+   */
   static validateLocationWeather({ row, meta, isNew }) {
     const { values } = row;
     const [stationId, name] = values;
@@ -115,6 +113,9 @@ class LocationsManager extends React.Component {
     return errors;
   }
 
+  /**
+   * @param {LocationsManagerProps} props
+   */
   constructor(props) {
     super(props);
     this.upsertLocationMember = this.upsertLocationMember.bind(this);
@@ -136,17 +137,10 @@ class LocationsManager extends React.Component {
    * locationId, userId, role
    * On the server we also need the logged-in user to verify that they are an
    * owner of that location and therefore authorized.
-   * @param {object} data - the data needed for the insert
-   * @param {object} data.row - the _id and values array from the row in the grid
-   * @param {any[]} data.row.values - the values from the row
-   * @param {object} data.meta - An object we passed to the Grid component to pass back to us
-   *                             when an insert/update/delete is done.
-   * @param {object} data.meta.location - The location that this insert is for
-   * @param {string} data.meta.location._id - The id of the location that this insert is for
-   * @param {string} data.action - Distinguish between insert and update
+   * @param {LocationsManagerRowUpdate} data
    */
   upsertLocationMember({ row, meta }) {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
     const { _id: locationId } = meta.location;
     const [userId, role] = row.values;
     const action = actionEnum.UPSERT_LOCATION_MEMBER;
@@ -157,8 +151,11 @@ class LocationsManager extends React.Component {
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
+  /**
+   * @param {LocationsManagerRowUpdate} data
+   */
   upsertLocationWeather({ row, meta }) {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
     const { _id: locationId } = meta.location;
     const [stationId, name, enabled] = row.values;
     const action = actionEnum.UPSERT_LOCATION_WEATHER;
@@ -169,8 +166,11 @@ class LocationsManager extends React.Component {
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
+  /**
+   * @param {LocationsManagerRowUpdate} data
+   */
   deleteLocationMember({ row, meta }) {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
     const { _id: locationId } = meta.location;
     const [userId] = row.values;
     const action = actionEnum.DELETE_LOCATION_MEMBER;
@@ -179,8 +179,11 @@ class LocationsManager extends React.Component {
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
+  /**
+   * @param {LocationsManagerRowUpdate} data
+   */
   deleteLocationWeather({ row, meta }) {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
     const { _id: locationId } = meta.location;
     const [stationId] = row.values;
     const action = actionEnum.DELETE_LOCATION_WEATHER;
@@ -197,7 +200,7 @@ class LocationsManager extends React.Component {
       display: 'inline-block',
     };
 
-    const { locationIds, locations } = this.props;
+    const { locationIds, locations } = /** @type {LocationsManagerProps} */ (this.props);
 
     return (
       <div>

@@ -1,18 +1,20 @@
 
-interface UiMembers {
-  [id: string]: Role;
-}
-
 interface UiLocationsLoc {
   type: string;
   coordinates: object;
+}
+
+interface UiLocationsStation {
+  name: string;
+  enabled: boolean;
 }
 
 interface UiLocationsValue {
   _id: string;
   loc: UiLocationsLoc;
   createdBy: string;
-  members: UiMembers;
+  members: Dictionary<Role>;
+  stations: Dictionary<UiLocationsStation>
   title: string;
   plantIds: string[];
 }

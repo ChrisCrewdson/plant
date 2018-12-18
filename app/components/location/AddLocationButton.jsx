@@ -4,6 +4,9 @@ const AddIcon = require('material-ui/svg-icons/content/add').default;
 const { Link } = require('react-router-dom');
 const PropTypes = require('prop-types');
 
+/**
+ * @param {AddPlantButtonProps} props
+ */
 function addLocationButton(props) {
   const {
     mini,
