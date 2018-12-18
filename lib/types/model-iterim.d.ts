@@ -38,6 +38,7 @@ interface UiInterimNote {
   date?: string;
   errors?: Dictionary<string>;
   plantIds: string[];
+  metrics: any; // TODO: Fix this.
 }
 
 interface UiInterim {

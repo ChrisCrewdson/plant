@@ -39,3 +39,9 @@ interface NoteEditProps {
   postSaveSuccess: Function;
   locationId: string;
 }
+
+interface NoteEditMetricProps {
+  dispatch: import('redux').Dispatch;
+  interimNote: UiInterimNote;
+  error: string;
+}

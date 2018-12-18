@@ -12,6 +12,10 @@ class GridCell extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
+  /**
+   * Change Handler
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   */
   onChange(e, index, val) {
     const {
       type, editCell, rowId, index: idx,

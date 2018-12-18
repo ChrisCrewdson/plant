@@ -9,8 +9,11 @@ const InputCombo = require('../common/InputCombo');
 const utils = require('../../libs/utils');
 
 class NoteEditMetrics extends React.PureComponent {
-  constructor() {
-    super();
+  /**
+   * @param {NoteEditMetricProps} props
+   */
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
     this.renderMetric = this.renderMetric.bind(this);
     this.renderLength = this.renderLength.bind(this);
@@ -18,6 +21,7 @@ class NoteEditMetrics extends React.PureComponent {
     this.renderWeight = this.renderWeight.bind(this);
     this.renderToggle = this.renderToggle.bind(this);
 
+    /** @type {Dictionary<Function>} */
     this.metricTypes = Object.freeze({
       length: this.renderLength,
       count: this.renderCount,
@@ -26,26 +30,64 @@ class NoteEditMetrics extends React.PureComponent {
     });
   }
 
-  onChange(e) {
-    // console.log('onChange:', e.target.name);
-    const { name: inputName } = e.target;
-    const { interimNote, dispatch } = this.props;
+  /**
+   * Change handler for materialui Toggle control - placeholder - currently unused
+   * @param {React.MouseEvent<{}>} e
+   * @param {boolean} isInputChecked
+   */
+  onChangeToggle(e /* , isInputChecked */) {
+    const { name, checked, value } = e.target;
+    const { interimNote, dispatch } = /** @type {NoteEditMetricProps} */ (this.props);
     const interimMetrics = interimNote.metrics || {};
-    const metaMetric = utils.metaMetricsGetByKey(inputName);
+    const metaMetric = utils.metaMetricsGetByKey(name);
+    if (!metaMetric) {
+      return;
+    }
     const { type } = metaMetric;
-    // based on inputName (e.g. blossom or height) we need to lookup
+    // based on name (e.g. blossom or height) we need to lookup
     // the type to determine where to pull the value. Types of toggle
     // have their values in "checked" otherwise in "value"
     // The change will be something like:
     // {metrics: { height: 23.4, blossom: true }}
 
-    const value = type === 'toggle' ? e.target.checked : e.target.value;
+    const controlValue = type === 'toggle' ? checked : value;
 
-    const metrics = seamless.set(interimMetrics, inputName, value);
+    const metrics = seamless.set(interimMetrics, name, controlValue);
 
     dispatch(actionFunc.editNoteChange({ metrics }));
   }
 
+  /**
+   * Change Handler for InputCombo
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   */
+  onChange(e) {
+    // console.log('onChange:', e.target.name);
+    const { name, checked, value } = e.target;
+    const { interimNote, dispatch } = /** @type {NoteEditMetricProps} */ (this.props);
+    const interimMetrics = interimNote.metrics || {};
+    const metaMetric = utils.metaMetricsGetByKey(name);
+    if (!metaMetric) {
+      return;
+    }
+    const { type } = metaMetric;
+    // based on name (e.g. blossom or height) we need to lookup
+    // the type to determine where to pull the value. Types of toggle
+    // have their values in "checked" otherwise in "value"
+    // The change will be something like:
+    // {metrics: { height: 23.4, blossom: true }}
+
+    const controlValue = type === 'toggle' ? checked : value;
+
+    const metrics = seamless.set(interimMetrics, name, controlValue);
+
+    dispatch(actionFunc.editNoteChange({ metrics }));
+  }
+
+  /**
+   * @param {MetaMetric} metaMetric
+   * @param {*} value
+   */
   renderLength(metaMetric, value) {
     const renderValue = (value || value === 0) ? value.toString() : '';
     return (
@@ -62,14 +104,26 @@ class NoteEditMetrics extends React.PureComponent {
     );
   }
 
+  /**
+   * @param {MetaMetric} metaMetric
+   * @param {*} value
+   */
   renderCount(metaMetric, value) {
     return this.renderLength(metaMetric, value);
   }
 
+  /**
+   * @param {MetaMetric} metaMetric
+   * @param {*} value
+   */
   renderWeight(metaMetric, value) {
     return this.renderLength(metaMetric, value);
   }
 
+  /**
+   * @param {MetaMetric} metaMetric
+   * @param {*} value
+   */
   renderToggle(metaMetric, value) {
     const isToggled = value === 'true' || value === true;
     return (
@@ -95,7 +149,7 @@ class NoteEditMetrics extends React.PureComponent {
   }
 
   render() {
-    const { interimNote, error } = this.props;
+    const { interimNote, error } = /** @type {NoteEditMetricProps} */ (this.props);
     const { metrics = {} } = interimNote || {};
     const { metaMetrics } = utils;
 

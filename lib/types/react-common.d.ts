@@ -32,7 +32,8 @@ interface InputComboTextProps {
 }
 
 interface InputComboProps {
-  changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
+  changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
+  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
   disabled?: boolean;
   error: React.ReactNode;
   fullWidth?: boolean;
