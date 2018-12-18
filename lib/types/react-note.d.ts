@@ -45,3 +45,20 @@ interface NoteEditMetricProps {
   interimNote: UiInterimNote;
   error: string;
 }
+
+interface LastMeasuredProps {
+  plantIds: string[];
+  plants: UiPlants;
+  metricDates: object;
+  dispatch: import('redux').Dispatch;
+ }
+
+interface LastMetricDates {
+  plantId: string;
+  title: string;
+  lastDate?: Date;
+  height?: Date;
+  girth?: Date;
+  harvestCount?: Date;
+  harvestEnd?: Date;
+}

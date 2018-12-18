@@ -2,21 +2,16 @@ const React = require('react');
 // const utils = require('../../../libs/utils');
 const PropTypes = require('prop-types');
 // @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable');
+const seamless = require('seamless-immutable').static;
 const { actionFunc } = require('../../../actions');
 
 /**
- *
- * @param {object} props
- * @param {string[]} props.plantIds
- * @param {object} props.plants
- * @param {object[]} props.metricDates
- * @param {Function} props.dispatch
+ * @param {LastMeasuredProps} props
  */
 function lastMeasured(props) {
   const {
-    plantIds, // Array of mongoId strings. These are the plants we're calculating metrics on.
-    plants, // An object with mongoId keys and plant values
+    plantIds,
+    plants,
     metricDates, // An array of metrics keys/props for with to find the most recent date
     dispatch,
   } = props;
@@ -74,6 +69,7 @@ function lastMeasured(props) {
     // harvestCount: 6/7/2016
     // harvestEnd: 6/7/2016
 
+    /** @type {LastMetricDates} */
     const metricPlant = {
       plantId,
       title: plant.title,

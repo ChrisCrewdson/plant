@@ -41,6 +41,11 @@ interface UiPlantsValue extends BasePlant {
   notes: UiPlantsNotes[];
   locationId: string;
   isTerminated?: boolean;
+  /**
+   * Used by UI to signal if the notes for the plant have been requested
+   * from the server.
+   */
+  notesRequested?: boolean;
 }
 
 interface BizPlantMap {
@@ -48,7 +53,7 @@ interface BizPlantMap {
 }  
 
 interface UiPlantsNotes {
-
+  date: number; // Is this right?
 }  
 
 interface UiPlants {
