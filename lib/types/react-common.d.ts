@@ -47,3 +47,76 @@ interface InputComboProps {
   value: string | number;
   options?: Dictionary<string>;
 }
+
+declare type GridCellInputType = 'select' | 'boolean';
+
+interface GridCellProps {
+  editCell: Function;
+  editId?: string,
+  error: string;
+  index: number,
+  options?: Dictionary<string>;
+  rowId: string;
+  title: string;
+  type: GridCellInputType;
+  value: string|boolean;
+}
+
+interface CancelSaveButtonsProps {
+  clickAddPhoto: React.MouseEventHandler<{}>;
+  clickCancel: React.MouseEventHandler<{}>;
+  clickSave: React.MouseEventHandler<{}>;
+  showButtons: boolean;
+  mini?: boolean;
+}
+
+interface EditDeleteButtonsProps {
+  clickDelete: Function;
+  clickEdit: Function;
+  confirmDelete: Function;
+  confirmMsg?: string;
+  deleteData?: object;
+  deleteTitle: string;
+  disabled?: boolean;
+  mini?: boolean;
+  showButtons: boolean;
+  showDeleteConfirmation: boolean;
+}
+
+interface GridPropsColumn {
+  options?: Dictionary<string>; // Might not be right
+  title: string;
+  type: string;
+  width: number;
+}
+
+interface GridPropsRow {
+  _id: string;
+  values: (string|boolean)[];
+}
+
+interface GridRowValidate {
+  isNew?: boolean;
+  meta?: object;
+  row?: GridPropsRow;
+}
+
+interface GridProps {
+  columns: GridPropsColumn[];
+  delete: Function;
+  insert: Function;
+  meta?: object;
+  rows?: GridPropsRow[];
+  title: string;
+  update: Function;
+  validate: (data: GridRowValidate) => string[];
+}
+
+// TODO: This is probably a subset of GridProps - if so contruct that way
+interface GridState {
+  rows?: GridPropsRow[];
+  errors?: string[];
+  newRow?: boolean;
+  editId?: string;
+  deleteId?: string;
+}

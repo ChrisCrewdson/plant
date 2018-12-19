@@ -89,6 +89,9 @@ class NoteEdit extends React.PureComponent {
     this.saveFiles(files);
   }
 
+  /**
+   * @type {React.MouseEventHandler<{}>}
+   */
   onOpenClick() {
     // @ts-ignore - TODO: Come back to this.
     this.dropzone.open();

@@ -5,10 +5,13 @@ const DoneIcon = require('material-ui/svg-icons/action/done').default;
 const AddPhotoIcon = require('material-ui/svg-icons/image/add-a-photo').default;
 const PropTypes = require('prop-types');
 
-function cancelSaveButtons(props = {}) {
+/**
+ * @param {CancelSaveButtonsProps} props
+ */
+function cancelSaveButtons(props) {
   const {
     showButtons,
-  } = props;
+  } = /** @type {CancelSaveButtonsProps} */ (props);
 
   if (!showButtons) {
     return null;
@@ -19,7 +22,7 @@ function cancelSaveButtons(props = {}) {
     clickCancel,
     clickSave,
     mini,
-  } = props;
+  } = /** @type {CancelSaveButtonsProps} */ (props);
 
   return (
     <h2 className="vcenter">
@@ -61,10 +64,7 @@ function cancelSaveButtons(props = {}) {
 }
 
 cancelSaveButtons.propTypes = {
-  clickAddPhoto: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.object,
-  ]),
+  clickAddPhoto: PropTypes.func,
   clickCancel: PropTypes.func.isRequired,
   clickSave: PropTypes.func.isRequired,
   showButtons: PropTypes.bool.isRequired,

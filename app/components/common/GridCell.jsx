@@ -7,7 +7,10 @@ const CheckBoxOutlineBlank = require('material-ui/svg-icons/toggle/check-box-out
 const InputCombo = require('./InputCombo');
 
 class GridCell extends React.Component {
-  constructor(props = {}) {
+  /**
+   * @param {GridCellProps} props
+   */
+  constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
   }
@@ -19,7 +22,7 @@ class GridCell extends React.Component {
   onChange(e, index, val) {
     const {
       type, editCell, rowId, index: idx,
-    } = this.props;
+    } = /** @type {GridCellProps} */ (this.props);
     let value;
     switch (type) {
       case 'select':
@@ -38,7 +41,7 @@ class GridCell extends React.Component {
   render() {
     const {
       editId, rowId, value, type, title, options, error, index,
-    } = this.props;
+    } = /** @type {GridCellProps} */ (this.props);
     const htmlId = `${editId}-${index}`;
     if (editId === rowId) {
       return (
@@ -64,7 +67,7 @@ class GridCell extends React.Component {
 
     let text = value;
     if (type === 'select') {
-      text = options[value];
+      text = options && options[value];
     }
 
     return (

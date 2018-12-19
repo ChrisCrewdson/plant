@@ -20,7 +20,11 @@ const EditDeleteButtons = require('./EditDeleteButtons');
 const CancelSaveButtons = require('./CancelSaveButtons');
 
 class Grid extends React.Component {
-  constructor(props = {}) {
+  /**
+   *
+   * @param {GridProps} props
+   */
+  constructor(props) {
     super(props);
     this.addNewRow = this.addNewRow.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
@@ -31,6 +35,7 @@ class Grid extends React.Component {
     this.saveEdit = this.saveEdit.bind(this);
     // We need to keep a reference of these rows because this component is going
     // to manager the editing and state of the rows from here onwards.
+    /** @type {GridState} */
     this.state = {
       rows: props.rows,
     };
@@ -54,11 +59,15 @@ class Grid extends React.Component {
    * @param {boolean} yes - True if delete was confirmed. False if cancel was clicked
    * @param {object} deleteData  - data needed to identify row to be deleted
    * @param {string} deleteData.id
+   * @returns {void}
    */
   confirmDelete(yes, deleteData) {
     if (yes) {
-      const { meta, delete: removeRow } = this.props;
-      const { rows } = this.state;
+      const { meta, delete: removeRow } = /** @type {GridProps} */ (this.props);
+      const { rows } = /** @type {GridState} */ (this.state);
+      if (!rows || !rows.length) {
+        return;
+      }
       const { id } = deleteData;
       const row = rows.find(({ _id }) => _id === id);
       removeRow({ row, meta });
@@ -88,12 +97,21 @@ class Grid extends React.Component {
    * @param {string} value - New value for the cell
    */
   editCell(rowId, colIndex, value) {
-    const { errors = [], rows: stateRows } = this.state;
+    const {
+      errors = /** @type {string[]} */ ([]),
+      rows: stateRows,
+    } = /** @type {GridState} */ (this.state);
+
     if (errors[colIndex]) {
       // If we've edited this cell and it previously had an error associated
       // then clear that error
       errors[colIndex] = '';
     }
+
+    if (!stateRows || !stateRows.length) {
+      return;
+    }
+
     const rows = stateRows.map((row) => {
       if (row._id === rowId) {
         const values = row.values.map((currentValue, index) => {
@@ -115,23 +133,32 @@ class Grid extends React.Component {
    * the values from the props to that row in the state.
    */
   cancelEdit() {
-    const { editId, newRow = false, rows: stateRows } = this.state;
-    const { rows: propRows } = this.props;
+    const { editId, newRow = false, rows: stateRows } = /** @type {GridState} */ (this.state);
+    if (!stateRows) {
+      return;
+    }
     let rows;
     if (newRow) {
       rows = stateRows.filter(row => (row._id !== editId));
     } else {
-      const propRow = propRows.find(row => row._id === editId) || {};
-      rows = stateRows.map(row => (row._id === propRow._id ? propRow : row));
+      const { rows: propRows } = /** @type {GridProps} */ (this.props);
+      if (!propRows) {
+        return;
+      }
+      const propRow = propRows.find(row => row._id === editId);
+      rows = stateRows.map(row => (propRow && row._id === propRow._id ? propRow : row));
     }
     this.setState({ editId: '', rows, newRow: false });
   }
 
   saveEdit() {
-    const { rows, editId, newRow: isNew } = this.state;
+    const { rows, editId, newRow: isNew } = /** @type {GridState} */ (this.state);
+    if (!rows) {
+      return;
+    }
     const {
       meta, validate, insert, update,
-    } = this.props;
+    } = /** @type {GridProps} */ (this.props);
     const row = rows.find(r => r._id === editId);
     const errors = validate({ row, meta, isNew });
     if (errors.some(error => !!error)) {
@@ -147,26 +174,30 @@ class Grid extends React.Component {
   }
 
   addNewRow() {
-    const { columns: cols } = this.props;
+    const { columns: cols } = /** @type {GridProps} */ (this.props);
     const editId = utils.makeMongoId();
+    /** @type {GridPropsRow} */
     const row = {
       _id: editId,
-      values: cols.map((col) => {
-        switch (col.type) {
+      values: cols.map(({ type, options }) => {
+        switch (type) {
           case 'text':
             return '';
           case 'boolean':
             return true;
           case 'select':
-            return col.options['<select>'];
+            return (options && options['<select>']) || '';
           default:
             // eslint-disable-next-line no-console
-            console.warn('Unknown type in addNewRow', col.type);
+            console.warn('Unknown type in addNewRow', type);
             return '';
         }
       }),
     };
-    const { rows: stateRows } = this.state;
+    const { rows: stateRows } = /** @type {GridState} */ (this.state);
+    if (!stateRows) {
+      return;
+    }
     const rows = stateRows.concat(row);
     this.setState({ rows, editId, newRow: true });
   }
@@ -182,13 +213,13 @@ class Grid extends React.Component {
     // TODO: Shouldn't this value be pulled from somewhere?
     const userCanEdit = true;
 
-    const { columns, title } = this.props;
+    const { columns, title } = /** @type {GridProps} */ (this.props);
     const {
       rows,
       deleteId, // If has a value then in process of confirming delete of this row
       editId, // If has value then currently editing this row
-      errors = [],
-    } = this.state || {};
+      errors = /** @type {string[]} */ ([]),
+    } = /** @type {GridState} */ (this.state);
 
     return (
       <Paper
@@ -201,7 +232,6 @@ class Grid extends React.Component {
         <Table>
           <TableHeader
             adjustForCheckbox={false}
-            displayRowCheckbox={false}
             displaySelectAll={false}
           >
             <TableRow>
@@ -218,8 +248,8 @@ Action
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
-            {
-              rows.map(row => (
+            {rows
+              && rows.map(row => (
                 <TableRow key={row._id}>
                   {
                     row.values.map((value, index) => (
