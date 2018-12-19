@@ -15,6 +15,8 @@ interface ServerSideRenderData {
   title?: String;
 }
 
+declare type InputComboTextPropsType = 'text' | 'number';
+
 interface InputComboTextProps {
   // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
@@ -25,11 +27,13 @@ interface InputComboTextProps {
   label: React.ReactNode;
   multiLine?: boolean;
   name: string;
-  placeholder: string;
+  placeholder?: string;
   style?: React.CSSProperties;
-  type?: string;
+  type?: InputComboTextPropsType;
   value: string | number;
 }
+
+declare type InputComboPropsType = 'text' | 'number' | 'boolean' | 'select';
 
 interface InputComboProps {
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
@@ -43,7 +47,7 @@ interface InputComboProps {
   name: string;
   placeholder?: string;
   style?: React.CSSProperties;
-  type?: string;
+  type?: InputComboPropsType;
   value: string | number;
   options?: Dictionary<string>;
 }
@@ -119,4 +123,16 @@ interface GridState {
   newRow?: boolean;
   editId?: string;
   deleteId?: string;
+}
+
+interface RemoveConfirmProps {
+  confirmFn: Function;
+  confirmMsg: string;
+  deleteData?: object;
+  mini: boolean;
+  title?: string;
+}
+
+interface MarkdownProps {
+  markdown: string;
 }

@@ -3,7 +3,10 @@ const marked = require('marked');
 const React = require('react');
 const PropTypes = require('prop-types');
 
-function markdown(props = {}) {
+/**
+ * @param {MarkdownProps} props
+ */
+function markdown(props) {
   const { markdown: md } = props;
   const mkn = { __html: marked(md || '') };
   // eslint-disable-next-line react/no-danger
@@ -11,11 +14,7 @@ function markdown(props = {}) {
 }
 
 markdown.propTypes = {
-  markdown: PropTypes.string,
-};
-
-markdown.defaultProps = {
-  markdown: '',
+  markdown: PropTypes.string.isRequired,
 };
 
 module.exports = markdown;

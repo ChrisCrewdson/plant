@@ -9,7 +9,7 @@ const PropTypes = require('prop-types');
  * @returns
  */
 function errorHelper(props) {
-  let { errors = [] } = props;
+  let { errors } = props;
   if (!errors || !errors.length) {
     return null;
   }
