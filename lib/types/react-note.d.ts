@@ -46,10 +46,12 @@ interface NoteEditMetricProps {
   error: string;
 }
 
+declare type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
+
 interface LastMeasuredProps {
   plantIds: string[];
   plants: UiPlants;
-  metricDates: object;
+  metricDates: MetricDate[];
   dispatch: import('redux').Dispatch;
  }
 

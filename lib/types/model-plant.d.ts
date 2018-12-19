@@ -38,7 +38,7 @@ interface BizPlant extends BasePlant {
 
 interface UiPlantsValue extends BasePlant {
   _id: string;
-  notes: UiPlantsNotes[];
+  notes: UiPlantsNote[];
   locationId: string;
   isTerminated?: boolean;
   /**
@@ -52,8 +52,9 @@ interface BizPlantMap {
   [mongoId: string]: BizPlant;
 }  
 
-interface UiPlantsNotes {
+interface UiPlantsNote {
   date: number; // Is this right?
+  metrics?: LastMetricDates;
 }  
 
 interface UiPlants {
