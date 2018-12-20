@@ -115,6 +115,7 @@ interface UiNotesValue {
   plantIds: string[];
   showImages?: boolean;
   userId: string;
+  metrics?: NoteMetric;
 }
 
 interface UiNotes {

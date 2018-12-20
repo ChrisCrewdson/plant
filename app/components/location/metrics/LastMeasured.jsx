@@ -52,6 +52,7 @@ function lastMeasured(props) {
   }
 
   // Get an array with flattened metrics and their most recent date.
+  /** @type {LastMetricDates[]} */
   const plantsWithLatestMetrics = plantIds.reduce((acc, plantId) => {
     const plant = plants[plantId];
     if (!plant) {
@@ -92,24 +93,34 @@ function lastMeasured(props) {
 
     acc.push(metricPlant);
     return acc;
-  }, []);
+  }, /** @type {LastMetricDates[]} */ ([]));
 
-  const sortedMetrics = seamless.asMutable(plantsWithLatestMetrics).sort((a, b) => {
-    // TODO: Move to utils module and write tests around this.
-    if (!a.lastDate && !b.lastDate) {
-      return 0;
-    }
-    if (!a.lastDate && b.lastDate) {
-      return -1;
-    }
-    if (a.lastDate && !b.lastDate) {
+  /** @type {LastMetricDates[]} */
+  const sortedMetrics = seamless.asMutable(plantsWithLatestMetrics).sort(
+    /**
+     * @param {LastMetricDates} a
+     * @param {LastMetricDates} b
+     */
+    (a, b) => {
+      // TODO: Move to utils module and write tests around this.
+      if (a.lastDate && b.lastDate) {
+        if (a.lastDate.valueOf() === b.lastDate.valueOf()) {
+          return 0;
+        }
+        return a.lastDate.valueOf() > b.lastDate.valueOf() ? 1 : -1;
+      }
+
+      if (!a.lastDate && !b.lastDate) {
+        return 0;
+      }
+      if (!a.lastDate && b.lastDate) {
+        return -1;
+      }
+      // if (a.lastDate && !b.lastDate) {
       return 1;
-    }
-    if (a.lastDate.valueOf() === b.lastDate.valueOf()) {
-      return 0;
-    }
-    return a.lastDate.valueOf() > b.lastDate.valueOf() ? 1 : -1;
-  });
+      // }
+    },
+  );
 
   return (
     <div>
