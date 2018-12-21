@@ -37,6 +37,7 @@ class Metrics extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
+  // @ts-ignore - This file is a copy of the Location file and needs to be finished
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -87,6 +88,7 @@ class Metrics extends React.Component {
     store.dispatch(actionFunc.editNoteClose());
   }
 
+  // @ts-ignore - This file is a copy of the Location file and needs to be finished
   static renderTitle(location) {
     return (
       <h2 style={{ textAlign: 'center' }}>
@@ -95,6 +97,7 @@ class Metrics extends React.Component {
     );
   }
 
+  // @ts-ignore - This file is a copy of the Location file and needs to be finished
   static renderWaiting(location) {
     return (
       <Base>
@@ -108,6 +111,7 @@ class Metrics extends React.Component {
     );
   }
 
+  // @ts-ignore - This file is a copy of the Location file and needs to be finished
   static renderNoPlants(location, userCanEdit) {
     return (
       <Base>
@@ -130,10 +134,14 @@ No plants added yet...
   render() {
     const { store } = this.context;
     const {
+      // @ts-ignore - This file is a copy of the Location file and needs to be finished
       allLoadedPlants,
+      // @ts-ignore - This file is a copy of the Location file and needs to be finished
       authUser,
       filter = '',
+      // @ts-ignore - This file is a copy of the Location file and needs to be finished
       interim,
+      // @ts-ignore - This file is a copy of the Location file and needs to be finished
       locations,
     } = this.state || {};
 
@@ -172,14 +180,17 @@ No plants added yet...
       const plant = allLoadedPlants[plantId];
       if (plant) {
         const { _id } = plant;
+        // @ts-ignore - This file is a copy of the Location file and needs to be finished
         acc.found.push(<PlantItem
           key={_id}
           dispatch={store.dispatch}
+  // @ts-ignore - This file is a copy of the Location file and needs to be finished
           createNote={this.createNote}
           userCanEdit={userCanEdit}
           plant={plant}
         />);
       } else {
+        // @ts-ignore - This file is a copy of the Location file and needs to be finished
         acc.unloaded.push(plantId);
       }
       return acc;
@@ -201,6 +212,7 @@ No plants added yet...
 
     // TODO: metricDate must come from a collection of toggle/checkbox inputs that
     // the user selects to determine what the most recent date is for that metric
+    /** @type {MetricDate[]} */
     const metricDates = ['height', 'girth'];
 
     return (

@@ -12,16 +12,14 @@ function isLoggedIn(store) {
 
 /**
  * Returns true or false if the user is able to edit plants at this location.
- * @param {string} loggedInUserId - the id of the user that is logged in
- * @param {object} location - an Object of the location
+ * @param {string?|undefined} loggedInUserId - the id of the user that is logged in
+ * @param {UiLocationsValue?} location - an Object of the location
  */
 function canEdit(loggedInUserId, location) {
   if (!loggedInUserId || !location) {
     return false;
   }
-  /**
-   * @type Role
-   */
+  /** @type {Role?} */
   const role = getIn(location, ['members', loggedInUserId]);
   if (!role) {
     return false;

@@ -80,11 +80,16 @@ function lastMeasured(props) {
     (plant.notes || []).forEach((note) => {
       if (note.metrics) {
         Object.keys(note.metrics).forEach((metric) => {
+          // @ts-ignore - TODO - return to this and fix it
           if (!metricPlant[metric] || metricPlant[metric] < note.date) {
+            // @ts-ignore - TODO - return to this and fix it
             metricPlant[metric] = note.date;
           }
+          // @ts-ignore - TODO - return to this and fix it
           if (metricDates.includes(metric)
+            // @ts-ignore - TODO - return to this and fix it
             && (!metricPlant.lastDate || metricPlant.lastDate < note.date)) {
+            // @ts-ignore - TODO - return to this and fix it
             metricPlant.lastDate = note.date;
           }
         });

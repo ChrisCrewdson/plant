@@ -34,10 +34,14 @@ class Location extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
+  /**
+   * @param {LocationProps} props
+   */
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.postSaveSuccessCreateNote = this.postSaveSuccessCreateNote.bind(this);
+    /** @type {LocationState} */
     this.state = { filter: '' };
   }
 
@@ -84,6 +88,12 @@ class Location extends React.Component {
     store.dispatch(actionFunc.editNoteClose());
   }
 
+  /**
+   * @static
+   * @param {UiLocationsValue} location
+   * @returns
+   * @memberof Location
+   */
   static renderTitle(location) {
     return (
       <h2 style={{ textAlign: 'center' }}>
@@ -92,6 +102,12 @@ class Location extends React.Component {
     );
   }
 
+  /**
+   * @static
+   * @param {UiLocationsValue} location
+   * @returns
+   * @memberof Location
+   */
   static renderWaiting(location) {
     return (
       <Base>
@@ -105,6 +121,13 @@ class Location extends React.Component {
     );
   }
 
+  /**
+   * @static
+   * @param {UiLocationsValue} location
+   * @param {boolean} userCanEdit
+   * @returns
+   * @memberof Location
+   */
   static renderNoPlants(location, userCanEdit) {
     return (
       <Base>
@@ -132,7 +155,7 @@ No plants added yet...
       allLoadedPlants,
       interim,
       authUser,
-    } = this.state || {};
+    } = this.state;
     const { match: { params } } = this.props;
 
     const location = locations && locations[params.id];
@@ -149,13 +172,14 @@ No plants added yet...
     const {
       note: interimNote,
       plant: plantCreateNote,
-    } = interim.note || {};
+    } = (interim && interim.note) || {};
     const createNote = !!interimNote && interimNote.isNew;
 
-    const userCanEdit = canEdit(authUser._id, location);
+    const userCanEdit = canEdit(authUser && authUser._id, location);
     const { _id: locationId } = location;
 
     if (createNote && userCanEdit) {
+      /** @type {React.CSSProperties} */
       const style = {
         paddingTop: '30px',
         textAlign: 'center',

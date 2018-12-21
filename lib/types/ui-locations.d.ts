@@ -49,3 +49,24 @@ interface UiLocations {
   }
 }
 */
+
+interface LocationPropsMatchParams {
+  id: string;
+  slug: string;
+}
+
+interface LocationPropsMatch {
+  params: LocationPropsMatchParams;
+}
+
+interface LocationProps {
+  match: LocationPropsMatch;
+}
+
+interface LocationState {
+  filter: string;
+  locations?: Dictionary<UiLocationsValue>;
+  allLoadedPlants?: Dictionary<UiPlantsValue>;
+  interim?: UiInterim;
+  authUser?: UiUsersValue;
+}
