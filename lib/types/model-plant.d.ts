@@ -60,3 +60,9 @@ interface UiPlantsNote {
 interface UiPlants {
   [mongoId: string]: UiPlantsValue;
 }
+
+interface PlantItemProps {
+  dispatch: import('redux').Dispatch;
+  userCanEdit: boolean;
+  plant: UiPlantsValue;
+}

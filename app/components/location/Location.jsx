@@ -169,11 +169,10 @@ No plants added yet...
       );
     }
 
-    const {
-      note: interimNote,
-      plant: plantCreateNote,
-    } = (interim && interim.note) || {};
-    const createNote = !!interimNote && interimNote.isNew;
+    const interimNote = interim && interim.note && interim.note.note;
+    const plantCreateNote = interim && interim.note && interim.note.plant;
+
+    const createNote = !!(interimNote && interimNote.isNew);
 
     const userCanEdit = canEdit(authUser && authUser._id, location);
     const { _id: locationId } = location;
@@ -188,7 +187,7 @@ No plants added yet...
         <Base>
           <div>
             <h4 style={style}>
-              {`Create a Note for ${plantCreateNote.title}`}
+              {`Create a Note for ${plantCreateNote && plantCreateNote.title}`}
             </h4>
             <NoteCreate
               dispatch={store.dispatch}
@@ -204,9 +203,9 @@ No plants added yet...
       );
     }
 
-    const { plantIds = [] } = location;
-    if (!plantIds.length) {
-      if (interim.loadPlantRequest) {
+    const { plantIds } = location;
+    if (!plantIds || !plantIds.length) {
+      if (interim && interim.loadPlantRequest) {
         return Location.renderWaiting(location);
       }
       return Location.renderNoPlants(location, userCanEdit);
@@ -221,13 +220,12 @@ No plants added yet...
     // in the name:
     // title={location.title}
     const tileElements = sortedPlantIds.reduce((acc, plantId) => {
-      const plant = allLoadedPlants[plantId];
+      const plant = allLoadedPlants && allLoadedPlants[plantId];
       if (plant) {
         const { _id } = plant;
         acc.found.push(<PlantItem
           key={_id}
           dispatch={store.dispatch}
-          createNote={this.createNote}
           userCanEdit={userCanEdit}
           plant={plant}
         />);
@@ -235,7 +233,10 @@ No plants added yet...
         acc.unloaded.push(plantId);
       }
       return acc;
-    }, { found: [], unloaded: [] });
+    }, {
+      found: /** @type {JSX.Element[]} */ ([]),
+      unloaded: /** @type {string[]} */ ([]),
+    });
 
     if (tileElements.unloaded.length) {
       store.dispatch(actionFunc.loadUnloadedPlantsRequest(tileElements.unloaded));
@@ -288,4 +289,5 @@ Location.propTypes = {
   }).isRequired,
 };
 
+// @ts-ignore - TODO: Solve withRouter() param and tsc
 module.exports = withRouter(Location);

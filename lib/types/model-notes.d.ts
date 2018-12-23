@@ -116,6 +116,10 @@ interface UiNotesValue {
   showImages?: boolean;
   userId: string;
   metrics?: NoteMetric;
+  /**
+   * Used when this is in the interim object
+   */
+  isNew?: boolean;
 }
 
 interface UiNotes {

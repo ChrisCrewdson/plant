@@ -44,4 +44,5 @@ interface UiInterimNote {
 interface UiInterim {
   note?: UiInterimNote;
   plant?: UiPlantsValue;
+  loadPlantRequest?: boolean;
 }

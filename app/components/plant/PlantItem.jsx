@@ -12,8 +12,13 @@ const { actionFunc } = require('../../actions');
 const { makeSlug } = require('../../libs/utils');
 
 class PlantItem extends React.PureComponent {
-  constructor() {
-    super();
+  /**
+   *Creates an instance of PlantItem.
+   * @param {PlantItemProps} props
+   * @memberof PlantItem
+   */
+  constructor(props) {
+    super(props);
     this.createNote = this.createNote.bind(this);
   }
 
@@ -67,6 +72,7 @@ class PlantItem extends React.PureComponent {
       margin: '20px',
     };
     if (isTerminated === true) {
+      // @ts-ignore - Fix this later by defining a style type for this
       linkStyle.color = 'red';
     }
 
