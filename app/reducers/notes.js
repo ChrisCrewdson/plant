@@ -61,7 +61,7 @@ function loadNotesSuccess(state, { payload: notes }) {
  * @param {UiNotes} state
  * @param {import('redux').AnyAction} action - action.payload is the _id of the note whose
  *                                             images we are going to tag as showable
- * @returns {UiNotes} state
+ * @returns {UiNotes}
  */
 function showNoteImages(state, { payload: _id }) {
   const noteIds = Array.isArray(_id) ? _id : [_id];
@@ -103,7 +103,6 @@ const reducers = seamless.from({
 });
 
 /**
- *
  * @param {UiNotes} state
  * @param {import('redux').AnyAction} action
  * @returns {UiNotes}

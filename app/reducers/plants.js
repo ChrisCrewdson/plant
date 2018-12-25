@@ -305,9 +305,9 @@ const reducers = {
 
 /**
  * The plants reducer
- * @param {UiUser} state
+ * @param {UiPlants} state
  * @param {import('redux').AnyAction} action
- * @returns {UiUser}
+ * @returns {UiPlants}
  */
 module.exports = (state = seamless.from({}), action) => {
   if (reducers[action.type]) {

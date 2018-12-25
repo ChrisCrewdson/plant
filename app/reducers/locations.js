@@ -99,7 +99,12 @@ function loadPlantsSuccess(state, action) {
   return state;
 }
 
-// action.payload: {plantId: <plant-id>, locationId: <location-id>}
+/**
+ * @param {UiLocations} state
+ * @param {import('redux').AnyAction} action - payload:
+ *                                             {plantId: <plant-id>, locationId: <location-id>}
+ * @returns {UiLocations}
+ */
 function deletePlantRequest(state, { payload: { locationId, plantId } }) {
   const plantIds = seamless.getIn(state, [locationId, 'plantIds'], []);
   if (plantIds.includes(plantId)) {
@@ -127,6 +132,11 @@ const reducers = {
   // [actionEnum.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
+/**
+ * @param {UiLocations} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiLocations}
+ */
 module.exports = (state = seamless({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);

@@ -9,11 +9,11 @@ const { actionEnum } = require('../actions');
 /**
  * editNoteOpen
  * @param {UiInterim} state
- * @param {object} action
- * @param {UiNotesValue} action.payload
+ * @param {import('redux').AnyAction} action
  * @returns {UiInterim}
  */
 function editNoteOpen(state, action) {
+//  * @param {UiNotesValue} action.payload
   return seamless.set(state, 'note', action.payload);
 }
 
@@ -28,25 +28,30 @@ function editNoteClose(state) {
   return seamless.without(state, 'note');
 }
 
-// action.payload:
-// {note-key: note-value, ...}
-// state:
-//   note:
-//     note,
-//     plant
 /**
  * editNoteChange
+ * action.payload:
+ * {note-key: note-value, ...}
+ * state:
+ *   note:
+ *     note,
+ *     plant
  * @param {UiInterim} state
- * @param {object} action
- * @param {UiNotesValue} action.payload
+ * @param {import('redux').AnyAction} action
  * @returns {UiInterim}
  */
 function editNoteChange(state, action) {
+//  * @param {UiNotesValue} action.payload
   return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
 }
 
 // action.payload:
 // {plant}
+/**
+ * @param {UiInterim} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiInterim}
+ */
 function editPlantOpen(state, { payload }) {
   let { plant = {} } = payload;
   if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
@@ -57,31 +62,52 @@ function editPlantOpen(state, { payload }) {
   return seamless.set(state, 'plant', { plant });
 }
 
-// action.payload:
-// Empty
+/**
+ * action.payload is empty
+ * @param {UiInterim} state
+ * @returns {UiInterim}
+ */
 function editPlantClose(state) {
   // Just remove plant element if editing is canceled
   // or if the plant has been saved
   return seamless.without(state, 'plant');
 }
 
-// action.payload:
-// {plant-key: plant-value, ...}
-// state:
-//   plant:
-//     plant
+/**
+ * action.payload:
+ * {plant-key: plant-value, ...}
+ * state:
+ *   plant:
+ *     plant
+ * @param {UiInterim} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiInterim}
+ */
 function editPlantChange(state, action) {
   return seamless.merge(state, { plant: { plant: action.payload } }, { deep: true });
 }
 
+/**
+ * @param {UiInterim} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiInterim}
+ */
 function loadPlantsRequest(state, action) {
   return seamless.set(state, 'loadPlantRequest', action.payload);
 }
 
+/**
+ * @param {UiInterim} state
+ * @returns {UiInterim}
+ */
 function loadPlantsSuccess(state) {
   return seamless.without(state, 'loadPlantRequest');
 }
 
+/**
+ * @param {UiInterim} state
+ * @returns {UiInterim}
+ */
 function loadPlantsFailure(state) {
   return seamless.without(state, 'loadPlantRequest');
 }
@@ -100,6 +126,11 @@ const reducers = {
   [actionEnum.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
+/**
+ * @param {UiInterim} state
+ * @param {import('redux').AnyAction} action
+ * @returns {UiInterim}
+ */
 module.exports = (state = seamless({}), action) => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
