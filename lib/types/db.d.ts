@@ -13,7 +13,6 @@ interface DbLocationStationObj {
   enabled: boolean;
 }
 
-
 interface DbLocation {
   _id: import('mongodb').ObjectID;
   createdBy: import('mongodb').ObjectID;

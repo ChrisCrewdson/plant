@@ -6,8 +6,6 @@
 const React = require('react');
 const { withRouter } = require('react-router-dom');
 const PropTypes = require('prop-types');
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
 const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 const AddLocationButton = require('./AddLocationButton');
@@ -19,6 +17,11 @@ class Locations extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
+  /**
+   * Shares the same props shape as Location
+   * @param {LocationProps} props
+   * @memberof Locations
+   */
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -67,6 +70,11 @@ class Locations extends React.Component {
     );
   }
 
+  /**
+   * @param {UiLocationsValue} location
+   * @returns
+   * @memberof Locations
+   */
   renderLocation(location) {
     if (!location) {
       return null;
@@ -87,10 +95,15 @@ class Locations extends React.Component {
     );
   }
 
+  /**
+   * @param {UiUsersValue|undefined} user
+   * @returns
+   * @memberof Locations
+   */
   renderNoLocations(user) {
     return (
       <div>
-        {Locations.renderTitle(user.name)}
+        {Locations.renderTitle(user && user.name)}
         <h3 style={{ textAlign: 'center' }}>
           <div style={{ marginTop: '100px' }}>
 No locations added yet...
@@ -105,25 +118,33 @@ No locations added yet...
   }
 
   renderLocations() {
-    const { store } = this.context;
-    const { locations = {}, users = seamless.from({}) } = store.getState();
+    // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
+    const store = /** @type {import('redux').Store} */ (this.context.store);
+    const {
+      /** @type {UiUsers|undefined} */
+      users,
+      /** @type {UiLocations|undefined} */
+      locations,
+    } = store.getState();
 
     const locationsCount = Object.keys(locations || {}).length;
 
-    if (!locationsCount) {
+    if (!locations || !locationsCount) {
       return null;
     }
 
     const { match } = this.props;
     const { params } = match;
     if (params && params.id) {
-      const user = users[params.id] || {};
-      const { locationIds = [] } = user;
-      if (locationIds.length) {
-        return locationIds.map((locationId) => {
-          const location = locations[locationId];
-          return this.renderLocation(location);
-        });
+      const user = users && users[params.id];
+      if (user) {
+        const { locationIds } = user;
+        if (locationIds && locationIds.length) {
+          return locationIds.map((locationId) => {
+            const location = locations[locationId];
+            return this.renderLocation(location);
+          });
+        }
       }
       return this.renderNoLocations(user);
     }

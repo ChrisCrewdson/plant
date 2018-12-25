@@ -25,3 +25,10 @@ interface LocationsManagerProps {
   locations: UiLocations,
   users: UiUsers,
 }
+
+interface LocationTileProps {
+  _id: string;
+  dispatch: import('redux').Dispatch;
+  numPlants: number;
+  title: string;
+}

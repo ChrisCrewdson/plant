@@ -9,7 +9,6 @@ const { actionFunc } = require('../../actions');
 const { makeSlug } = utils;
 
 /**
- *
  * @param {string} _id
  * @param {import('redux').Dispatch} dispatch
  */
@@ -17,6 +16,9 @@ function onLinkClick(_id, dispatch) {
   dispatch(actionFunc.changeActiveLocationId({ _id }));
 }
 
+/**
+ * @param {LocationTileProps} props
+ */
 function locationTile(props) {
   const {
     _id,

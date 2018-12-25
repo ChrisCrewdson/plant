@@ -146,9 +146,8 @@ declare type MetaMetricType =
   'weight';
 
 interface MetaMetric {
- key: string;
- label: string;
- placeholder: string;
- type: MetaMetricType;
+  key: string;
+  label: string;
+  placeholder: string;
+  type: MetaMetricType;
 }
-

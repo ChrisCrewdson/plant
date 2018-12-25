@@ -2,6 +2,9 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
 
+/**
+ * @param {NoteReadMetricsProps} props
+ */
 function noteReadMetrics(props) {
   const { note: { metrics } } = props;
   if (!metrics) {

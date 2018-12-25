@@ -18,6 +18,8 @@ class GridCell extends React.Component {
   /**
    * Change Handler
    * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @param {string} index
+   * @param {string} val
    */
   onChange(e, index, val) {
     const {

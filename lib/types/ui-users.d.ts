@@ -12,5 +12,5 @@ interface UiUsersValue {
 }
 
 interface UiUsers {
-  [id: string]: UiUsers;
+  [id: string]: UiUsersValue;
 }

@@ -9,11 +9,26 @@ const metrics = require('../../libs/metrics');
 const utils = require('../../libs/utils');
 
 class NotesRead extends React.PureComponent {
+  /**
+   *Creates an instance of NotesRead.
+   * @param {NotesReadProps} props
+   * @memberof NotesRead
+   */
+  constructor(props) {
+    super(props);
+    /** @type {NotesReadState} */
+    this.state = {};
+  }
+
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
     this.sortNotes();
   }
 
+  /**
+   * @param {any} nextProps
+   * @memberof NotesRead
+   */
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.sortNotes(nextProps);
@@ -57,7 +72,7 @@ class NotesRead extends React.PureComponent {
       );
     }
 
-    const { sortedIds } = this.state || {};
+    const { sortedIds } = this.state;
     if (!sortedIds || !sortedIds.length) {
       return null;
     }

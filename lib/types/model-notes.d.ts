@@ -120,6 +120,7 @@ interface UiNotesValue {
    * Used when this is in the interim object
    */
   isNew?: boolean;
+  images?: NoteImage[];
 }
 
 interface UiNotes {

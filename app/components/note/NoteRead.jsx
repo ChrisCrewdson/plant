@@ -11,6 +11,13 @@ const Markdown = require('../common/Markdown');
 const NoteReadMetrics = require('./NoteReadMetrics');
 
 class NoteRead extends React.PureComponent {
+  /**
+   * @static
+   * @param {ImageSizeName} size
+   * @param {NoteImage} image
+   * @returns
+   * @memberof NoteRead
+   */
   static buildImageUrl(size, image) {
     const { id, ext } = image;
     const folder = process.env.NODE_ENV === 'production' ? 'up' : 'test';
@@ -18,6 +25,12 @@ class NoteRead extends React.PureComponent {
     return `//${imageCache}i.plaaant.com/${folder}/${size}/${id}${ext && ext.length ? '.' : ''}${ext}`;
   }
 
+  /**
+   * @static
+   * @param {NoteImage} image
+   * @returns
+   * @memberof NoteRead
+   */
   static buildImageSrc(image) {
     const sizes = image.sizes || [];
     const size = sizes && sizes.length
@@ -26,6 +39,12 @@ class NoteRead extends React.PureComponent {
     return NoteRead.buildImageUrl(size, image);
   }
 
+  /**
+   * @static
+   * @param {NoteImage} image
+   * @returns
+   * @memberof NoteRead
+   */
   static buildImageSrcSet(image) {
     // If the cache is live then don't set a value for srcset
     if (process.env.PLANT_IMAGE_CACHE) {
@@ -41,17 +60,33 @@ class NoteRead extends React.PureComponent {
     return '';
   }
 
+  /**
+   *Creates an instance of NoteRead.
+   * @param {NoteReadProps} props
+   * @memberof NoteRead
+   */
   constructor(props) {
     super(props);
     this.checkDelete = this.checkDelete.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.editNote = this.editNote.bind(this);
+    /** @type {NoteReadState} */
+    this.state = { showDeleteConfirmation: false };
   }
 
+  /**
+   * Called after user clicks on delete
+   * @memberof NoteRead
+   */
   checkDelete() {
     this.setState({ showDeleteConfirmation: true });
   }
 
+  /**
+   * Called after user confirms or cancels a delete action
+   * @param {boolean} yes
+   * @memberof NoteRead
+   */
   confirmDelete(yes) {
     if (yes) {
       const { dispatch, note: { _id } } = this.props;
@@ -72,6 +107,12 @@ class NoteRead extends React.PureComponent {
     dispatch(actionFunc.editNoteOpen({ plant, note }));
   }
 
+  /**
+   * @static
+   * @param {NoteImage} image
+   * @returns
+   * @memberof NoteRead
+   */
   static renderImage(image) {
     const imageStyle = {
       maxWidth: '100%',
@@ -89,6 +130,11 @@ class NoteRead extends React.PureComponent {
     );
   }
 
+  /**
+   * @param {UiNotesValue} note
+   * @returns
+   * @memberof NoteRead
+   */
   renderImages({ images, showImages, _id }) {
     if (images && images.length) {
       if (showImages) {
@@ -121,13 +167,13 @@ class NoteRead extends React.PureComponent {
     };
 
     const {
-      showDeleteConfirmation = false,
-    } = this.state || {};
+      showDeleteConfirmation,
+    } = this.state;
 
     const {
       userCanEdit,
       note,
-    } = this.props;
+    } = /** @type {NoteReadProps} */ (this.props);
 
     const images = this.renderImages(note);
 
@@ -149,7 +195,7 @@ class NoteRead extends React.PureComponent {
         <h5>
           {noteDate}
         </h5>
-        <Markdown markdown={note.note} />
+        <Markdown markdown={note.note || ''} />
         <NoteReadMetrics note={note} />
         <EditDeleteButtons
           clickDelete={this.checkDelete}
