@@ -114,7 +114,7 @@ interface AjaxOptions {
 
 interface ActionMethodResult {
   type: string;
-  payload?: Dictionary<any>;
+  payload?: Dictionary<any>|string;
 }
 
 declare type ActionMethod = (payload?: Dictionary<any> | string) => ActionMethodResult;

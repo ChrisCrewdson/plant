@@ -48,11 +48,11 @@ interface InputComboProps {
   placeholder?: string;
   style?: React.CSSProperties;
   type?: InputComboPropsType;
-  value: string | number;
+  value: string | number | boolean;
   options?: Dictionary<string>;
 }
 
-declare type GridCellInputType = 'select' | 'boolean';
+declare type GridCellInputType = 'select' | 'boolean' | 'text';
 
 interface GridCellProps {
   editCell: (rowId: string, colIndex: number, value: string) => void;

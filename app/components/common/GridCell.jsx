@@ -33,9 +33,13 @@ class GridCell extends React.Component {
       case 'boolean':
         value = index;
         break;
-      default:
+      case 'text':
         ({ value } = e.target);
         break;
+      default:
+        // eslint-disable-next-line no-console
+        console.error(`unknown type ${type} with e.target ${e.target} index ${index} val ${val}`);
+        value = '';
     }
     editCell(rowId, idx, value);
   }
@@ -45,6 +49,9 @@ class GridCell extends React.Component {
       editId, rowId, value, type, title, options, error, index,
     } = /** @type {GridCellProps} */ (this.props);
     const htmlId = `${editId}-${index}`;
+
+    // If we're in edit mode for this cell then return an edit component
+    // Edit mode is defined as the condition below
     if (editId === rowId) {
       return (
         <InputCombo
@@ -61,15 +68,23 @@ class GridCell extends React.Component {
       );
     }
 
-    if (type === 'boolean') {
+    // We're in read-only mode for this cell
+
+    // If the type is boolean then show a checkbox div.
+    // value will be typeof boolean
+    if (type === 'boolean' || typeof value === 'boolean') {
       return value
         ? <CheckBox />
         : <CheckBoxOutlineBlank />;
     }
 
+    // Assume that the text to show will be the value
     let text = value;
+
+    // If the type is "select" then the value is a MongoId prop in the options that
+    // will have the value.
     if (type === 'select') {
-      text = options && options[value];
+      text = (options && options[value]) || '';
     }
 
     return (

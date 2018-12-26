@@ -26,13 +26,19 @@ function inputCombo(props) {
     marginLeft: 20,
   }, style);
 
-  const boolean = () => (
-    <Toggle
-      name={namo}
-      onToggle={changeHandler}
-      toggled={value}
-    />
-  );
+  const boolean = () => {
+    if (typeof value !== 'boolean') {
+      return null;
+    }
+
+    return (
+      <Toggle
+        name={namo}
+        onToggle={changeHandler}
+        toggled={value}
+      />
+    );
+  };
 
   const select = () => {
     if (!options) {
