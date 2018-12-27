@@ -55,7 +55,7 @@ interface InputComboProps {
 declare type GridCellInputType = 'select' | 'boolean' | 'text';
 
 interface GridCellProps {
-  editCell: (rowId: string, colIndex: number, value: string) => void;
+  editCell: (rowId: string, colIndex: number, value: string|boolean) => void;
   editId?: string,
   error: string;
   index: number,

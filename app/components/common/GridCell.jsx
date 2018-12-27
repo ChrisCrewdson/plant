@@ -18,8 +18,9 @@ class GridCell extends React.Component {
   /**
    * Change Handler
    * @param {React.ChangeEvent<HTMLInputElement>} e
-   * @param {string} index
-   * @param {string} val
+   * @param {string|boolean} index - index will be a number when the type is "select". We don't
+   * type it here as a number because it's not used when it's a number.
+   * @param {string} val - this is undefined unless the type is "select" and then it's the value.
    */
   onChange(e, index, val) {
     const {

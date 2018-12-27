@@ -94,7 +94,7 @@ class Grid extends React.Component {
    * aka edit a cell in the grid
    * @param {string} rowId - UUID of the row being edited
    * @param {number} colIndex - Integer index of column being edited
-   * @param {string} value - New value for the cell
+   * @param {string|boolean} value - New value for the cell
    * @returns {void}
    */
   editCell(rowId, colIndex, value) {
