@@ -19,6 +19,9 @@ class PlantRead extends React.PureComponent {
     router: PropTypes.object.isRequired,
   };
 
+  /**
+   * @param {PlantReadProps} props
+   */
   constructor(props) {
     super(props);
     this.edit = this.edit.bind(this);
@@ -29,7 +32,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
-    const { plant: { notesRequested, _id }, dispatch } = this.props;
+    const { plant: { notesRequested, _id }, dispatch } = /** @type {PlantReadProps} */ (this.props);
     if (!notesRequested) {
       if (_id) {
         dispatch(actionFunc.loadNotesRequest({
@@ -42,7 +45,7 @@ class PlantRead extends React.PureComponent {
   }
 
   edit() {
-    const { plant: propsPlant, dispatch } = this.props;
+    const { plant: propsPlant, dispatch } = /** @type {PlantReadProps} */ (this.props);
     const plant = seamless.asMutable(propsPlant);
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
@@ -58,11 +61,15 @@ class PlantRead extends React.PureComponent {
   }
 
   showImages() {
-    const { plant: { notes } = {}, dispatch } = this.props;
+    const { plant: { notes } = {}, dispatch } = /** @type {PlantReadProps} */ (this.props);
     const noteIds = notes || [];
     dispatch(actionFunc.showNoteImages(noteIds));
   }
 
+  /**
+   * @param {boolean} yes
+   * @memberof PlantRead
+   */
   confirmDelete(yes) {
     if (yes) {
       const {
@@ -71,8 +78,8 @@ class PlantRead extends React.PureComponent {
           locationId,
         },
         dispatch,
-      } = this.props;
-      const { locations, history } = this.props;
+      } = /** @type {PlantReadProps} */ (this.props);
+      const { locations, history } = /** @type {PlantReadProps} */ (this.props);
       const payload = {
         locationId,
         plantId: _id,
@@ -93,7 +100,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this
   plantedDateTitle() {
-    const { plant: { plantedDate } } = this.props;
+    const { plant: { plantedDate } } = /** @type {PlantReadProps} */ (this.props);
     if (plantedDate) {
       const date = utils.intToMoment(plantedDate);
       const daysAgo = date.isSame(moment(), 'day')
@@ -105,7 +112,7 @@ class PlantRead extends React.PureComponent {
   }
 
   renderDetails() {
-    const { plant } = this.props;
+    const { plant } = /** @type {PlantReadProps} */ (this.props);
     if (!plant) {
       return null;
     }
@@ -198,7 +205,7 @@ class PlantRead extends React.PureComponent {
       notes,
       plant,
       plants,
-    } = this.props;
+    } = /** @type {PlantReadProps} */ (this.props);
 
     const {
       showDeleteConfirmation = false,

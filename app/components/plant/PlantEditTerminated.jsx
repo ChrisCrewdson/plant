@@ -8,6 +8,9 @@ const InputComboText = require('../common/InputComboText');
 const { actionFunc } = require('../../actions');
 
 class PlantEditTerminated extends React.Component {
+  /**
+   * @param {PlantEditTerminatedProps} props
+   */
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);

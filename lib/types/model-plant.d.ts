@@ -66,3 +66,19 @@ interface PlantItemProps {
   userCanEdit: boolean;
   plant: UiPlantsValue;
 }
+
+interface PlantEditTerminatedProps {
+  dispatch: import('redux').Dispatch;
+  interimPlant: UiPlantsValue;
+}
+
+interface PlantReadProps {
+  dispatch: import('redux').Dispatch;
+  history: import('history').History;
+  interim: UiInterim;
+  userCanEdit: boolean;
+  notes: UiNotes;
+  locations: UiLocations;
+  plant: UiPlantsValue;
+  plants: UiPlants;
+}
