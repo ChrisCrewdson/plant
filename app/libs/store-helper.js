@@ -46,6 +46,7 @@ const getUser = store => store.getState().user;
  */
 const getUsers = store => store.getState().users;
 
+/** @type {Dictionary<(store: import('redux').Store) => object>} */
 module.exports = {
   getInterim,
   getLocations,
