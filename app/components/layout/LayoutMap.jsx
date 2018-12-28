@@ -3,12 +3,13 @@
 
 const React = require('react');
 const getIn = require('lodash/get');
-
 // const {Layer, Rect, Stage, Group} = require('react-konva');
 const {
   Layer, Text: KonvaText, Circle, Stage, Group,
 } = require('react-konva');
 const PropTypes = require('prop-types');
+
+const storeHelper = require('../../libs/store-helper');
 const gis = require('../../libs/gis');
 const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
@@ -19,7 +20,10 @@ class LayoutMap extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor(props = {}) {
+  /**
+   * @param {import('react-router').RouteComponentProps} props
+   */
+  constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -31,10 +35,10 @@ class LayoutMap extends React.Component {
     this.setState({
       color: 'green',
       plants: store.getState().plants,
-      users: store.getState().users,
+      users: storeHelper.getUsers(store),
     });
 
-    const { match } = this.props;
+    const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
     if (match.params && match.params.id) {
       const { id: userId } = match.params;
       const user = store.getState().users[userId] || {};
@@ -72,7 +76,8 @@ class LayoutMap extends React.Component {
 
   renderTitle() {
     const { store } = this.context;
-    const { params = {} } = (this.props || {}).match || {};
+    const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
+    const { params = {} } = match || {};
     const { id: userId } = params;
     const userName = getIn(store.getState(), ['users', userId, 'name'], '');
     return (
@@ -136,12 +141,17 @@ class LayoutMap extends React.Component {
     );
   }
 
+  /**
+   * @param {number} width
+   * @returns
+   * @memberof LayoutMap
+   */
   renderPlantLocations(width) {
     if (width < 30) {
       // console.error('Width is less than 30');
       return null;
     }
-    const { match } = this.props;
+    const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
     const { store } = this.context;
     const params = match && match.params;
     if (params && params.id) {
