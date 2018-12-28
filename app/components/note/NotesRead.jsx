@@ -106,12 +106,14 @@ class NotesRead extends React.PureComponent {
           return (
             <Paper key={`${noteId}-sincelast`} style={paperStyle} zDepth={1}>
               {sinceLast}
-            </Paper>);
+            </Paper>
+          );
         case 'metric':
           return (
             <Paper key={`${noteId}-change`} style={paperStyle} zDepth={1}>
               {change}
-            </Paper>);
+            </Paper>
+          );
         case 'unfound':
           return (<CircularProgress key={noteId} />);
         default:

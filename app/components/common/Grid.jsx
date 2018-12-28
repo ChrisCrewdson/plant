@@ -266,7 +266,8 @@ Action
                           type={columns[index].type}
                           value={value}
                         />
-                      </TableRowColumn>))
+                      </TableRowColumn>
+                    ))
                   }
                   <TableRowColumn key="action">
                     {editId === row._id

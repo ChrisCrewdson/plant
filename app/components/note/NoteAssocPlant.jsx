@@ -132,7 +132,8 @@ class NoteAssocPlant extends React.Component {
           ? <ArrowLeft />
           : <ArrowRight />
         }
-      </FloatingActionButton>);
+      </FloatingActionButton>
+    );
 
     const filterInput = (
       <InputComboText

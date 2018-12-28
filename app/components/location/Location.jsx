@@ -261,7 +261,8 @@ No plants added yet...
         <p>
           {`Alive: ${plantStats.alive}`}
         </p>
-      </div>);
+      </div>
+    );
 
     return (
       <Base>

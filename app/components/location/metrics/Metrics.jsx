@@ -208,7 +208,8 @@ No plants added yet...
         <p>
           {`Alive: ${plantStats.alive}`}
         </p>
-      </div>);
+      </div>
+    );
 
     // TODO: metricDate must come from a collection of toggle/checkbox inputs that
     // the user selects to determine what the most recent date is for that metric

@@ -137,7 +137,8 @@ Metrics:
           sortedMetrics.map(metricPlant => (
             <div key={metricPlant.plantId}>
               {metricPlant.title}
-            </div>),
+            </div>
+          ),
           )
         }
       </ul>

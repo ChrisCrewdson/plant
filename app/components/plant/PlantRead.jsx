@@ -131,7 +131,8 @@ class PlantRead extends React.PureComponent {
       return (
         <div key={title.name}>
           {renderText}
-        </div>);
+        </div>
+      );
     });
 
     const plantedDateTitle = this.plantedDateTitle();
