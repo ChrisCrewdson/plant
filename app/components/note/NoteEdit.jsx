@@ -85,8 +85,17 @@ class NoteEdit extends React.PureComponent {
     }));
   }
 
-  onDrop(files) {
-    this.saveFiles(files);
+  /**
+   * @param {File[]} acceptedFiles
+   * @param {File[]} rejectedFiles
+   * param {React.DragEvent<HTMLElement>}
+   */
+  onDrop(acceptedFiles, rejectedFiles) {
+    if (rejectedFiles && rejectedFiles.length) {
+      // eslint-disable-next-line no-console
+      console.warn('Some files were rejected', rejectedFiles);
+    }
+    this.saveFiles(acceptedFiles);
   }
 
   /**
@@ -102,11 +111,16 @@ class NoteEdit extends React.PureComponent {
     dispatch(actionFunc.editNoteClose());
   }
 
+  /**
+   * @param {File[]=} files
+   */
   saveNote(files) {
     const {
       dispatch, interimNote: propInterimNote, postSaveSuccess,
     } = /** @type {NoteEditProps} */ (this.props);
-    const interimNote = seamless.asMutable(propInterimNote, { deep: true });
+    const interimNote = /** @type {UiInterimNote} */ (seamless.asMutable(propInterimNote, {
+      deep: true,
+    }));
 
     interimNote._id = interimNote._id || utils.makeMongoId();
     interimNote.date = utils.dateToInt(interimNote.date);
@@ -120,13 +134,17 @@ class NoteEdit extends React.PureComponent {
     }
   }
 
+  /**
+   * @param {File[]} files
+   */
   saveFiles(files) {
     this.saveNote(files);
   }
 
   /**
    * Change Handler
-   * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @param {React.MouseEvent<{}>} e
+   * @returns {void}
    */
   save(e) {
     this.saveNote();

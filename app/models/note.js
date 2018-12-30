@@ -96,9 +96,13 @@ validatejs.validators.imagesValidate = (value) => {
   return null;
 };
 
-// Don't need an _id if we're creating a document, db will do this.
-// Don't need a userId if we're in the client, this will get added on the server
-// to prevent tampering with the logged in user.
+/**
+ * Don't need an _id if we're creating a document, db will do this.
+ * Don't need a userId if we're in the client, this will get added on the server
+ * to prevent tampering with the logged in user.
+ * @param {UiInterimNote} atts
+ * @returns {UiInterimNote}
+ */
 module.exports = (atts) => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },

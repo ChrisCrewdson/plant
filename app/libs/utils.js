@@ -83,7 +83,7 @@ function makeLayoutUrl(location) {
 
 /**
  * Convert a date like object to an Integer
- * @param {import('moment').Moment|Date|string|number} date
+ * @param {import('moment').Moment|Date|string|number|undefined} date
  * @returns {number} - a date in the form YYYYMMDD
  */
 function dateToInt(date) {
@@ -99,7 +99,7 @@ function dateToInt(date) {
     return date;
   }
   // console.error('Unable to convert in dateToInt:', date);
-  throw new Error(`dateToInt(${date})`);
+  throw new Error(`dateToInt(${date}) for typeof date: ${typeof date}`);
 }
 
 /**

@@ -87,7 +87,7 @@ describe('/app/libs/utils', () => {
         utils.dateToInt({});
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
-        expect(e.message).toBe('dateToInt([object Object])');
+        expect(e.message).toBe('dateToInt([object Object]) for typeof date: object');
         done();
       }
     });

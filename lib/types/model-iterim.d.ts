@@ -31,18 +31,25 @@ interface UiInterimUploadProgress {
 }
 
 interface UiInterimNote {
+  _id?: string;
   note: UiNotesValue;
   plant?: UiPlantsValue;
   isNew?: boolean;
   uploadProgress: UiInterimUploadProgress;
-  date?: string;
+  date?: string|number;
   errors?: Dictionary<string>;
   plantIds: string[];
   metrics: any; // TODO: Fix this.
+  images?: NoteImage[];
 }
 
 interface UiInterim {
   note?: UiInterimNote;
   plant?: UiPlantsValue;
   loadPlantRequest?: boolean;
+}
+
+interface UpsertNoteRequestPayload {
+  note: UiInterimNote;
+  files?: File[];
 }

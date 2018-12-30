@@ -65,17 +65,22 @@ function createPlant(store, action, next) {
  * webkitRelativePath:""
  * @param {import('redux').Store} store
  * @param {ActionMethodResult} action
- * @param {any} opts
+ * @param {object} opts
  * @param {Function} next
  */
 function saveFilesRequest(store, action, opts, next) {
+  // eslint-disable-next-line prefer-destructuring
+  const payload = /** @type {UpsertNoteRequestPayload} */ (action.payload);
+
   const data = new FormData();
   /** @type {(string|Blob)[]} */
-  const files = action.payload && action.payload.files;
-  const note = action.payload && action.payload.note;
-  files.forEach((file) => {
-    data.append('file', file);
-  });
+  const files = payload && payload.files;
+  const note = payload && payload.note;
+  if (files && files.length) {
+    files.forEach((file) => {
+      data.append('file', file);
+    });
+  }
   data.append('note', JSON.stringify(note));
 
   /** @type {AjaxOptions} */
@@ -104,6 +109,9 @@ function saveFilesRequest(store, action, opts, next) {
  * @param {Function} next
  */
 function upsertNoteRequest(store, action, next) {
+  // eslint-disable-next-line prefer-destructuring
+  const payload = /** @type {UpsertNoteRequestPayload} */ (action.payload);
+
   /** @param {object} ajaxResult */
   function success(ajaxResult) {
     // This will cause the edit note window to close
@@ -122,14 +130,14 @@ function upsertNoteRequest(store, action, next) {
   }
   const opts = { success, failure };
 
-  if (action.payload && action.payload.files && action.payload.files.length) {
+  if (payload && payload.files && payload.files.length) {
     saveFilesRequest(store, action, opts, next);
   } else {
     /** @type {AjaxOptions} */
     const options = {
       type: 'POST',
       url: '/api/note',
-      data: action.payload && action.payload.note,
+      data: payload && payload.note,
       success,
       failure,
     };
