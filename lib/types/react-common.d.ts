@@ -125,6 +125,13 @@ interface GridState {
   deleteId?: string;
 }
 
+interface GridColumn {
+  options?: Dictionary<string>;
+  title: string;
+  type: string;
+  width: number;
+}
+
 interface RemoveConfirmProps {
   confirmFn: Function;
   confirmMsg: string;
@@ -136,3 +143,4 @@ interface RemoveConfirmProps {
 interface MarkdownProps {
   markdown: string;
 }
+

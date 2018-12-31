@@ -6,6 +6,7 @@ const React = require('react');
 const Grid = require('../common/Grid');
 const { actionFunc, actionEnum } = require('../../actions');
 
+/** @type {GridColumn[]} */
 const userColumns = [{
   title: 'Name',
   type: 'select',
@@ -22,6 +23,7 @@ const userColumns = [{
   width: 50,
 }];
 
+/** @type {GridColumn[]} */
 const weatherColumns = [{
   title: 'Station ID',
   type: 'text',
@@ -70,6 +72,7 @@ class LocationsManager extends React.Component {
     const { values, _id } = row;
 
     // Check that each of the Select components has a value selected
+    /** @type {string[]} */
     const errors = values.map(value => (value === '<select>' ? 'You must select a value' : ''));
 
     // For an insert, check that the user is not already listed at the location
@@ -128,7 +131,7 @@ class LocationsManager extends React.Component {
       const { _id, name } = props.users[userId];
       acc[_id] = name;
       return acc;
-    }, {});
+    }, /** @type {Dictionary<string>} */ ({}));
     userColumns[0].options['<select>'] = '<select>';
   }
 
