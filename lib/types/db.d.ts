@@ -86,7 +86,10 @@ interface BizUser {
   google?: DbUserGoogle;
   name?: string;
   updatedAt: Date;
-  locationIds?: DbLocation[];
+  /**
+   * This is an array of MongoId strings
+   */
+  locationIds?: string[];
   activeLocationId?: string;
   isLoggedIn?: boolean;
   status?: BizUserStatus;
