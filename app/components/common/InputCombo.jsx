@@ -6,7 +6,6 @@ const Toggle = require('material-ui/Toggle').default;
 const inputComboText = require('./InputComboText');
 
 /**
- *
  * @param {InputComboProps} props
  */
 function inputCombo(props) {
@@ -26,6 +25,20 @@ function inputCombo(props) {
     marginLeft: 20,
   }, style);
 
+  /**
+   * @param {React.MouseEvent<{}>} e
+   * @param {boolean} isInputChecked
+   * @returns {void}
+   */
+  const booleanHandler = (e, isInputChecked) => {
+    // TODO: Once typing is done on this repo we need to revisit this InputCombo
+    // and package up a single object that is passed to the changeHandler that has
+    // everything that the caller needs to make the changeHandler param identical
+    // for all calls.
+    // @ts-ignore - come back and fix this per TODO above.
+    changeHandler(e, isInputChecked);
+  };
+
   const boolean = () => {
     if (typeof value !== 'boolean') {
       return null;
@@ -34,10 +47,25 @@ function inputCombo(props) {
     return (
       <Toggle
         name={namo}
-        onToggle={changeHandler}
+        onToggle={booleanHandler}
         toggled={value}
       />
     );
+  };
+
+  /**
+   * @param {React.SyntheticEvent<{}>} e
+   * @param {number} index
+   * @param {any} menuItemValue
+   * @returns {void}
+   */
+  const selectHandler = (e, index, menuItemValue) => {
+    // TODO: Once typing is done on this repo we need to revisit this InputCombo
+    // and package up a single object that is passed to the changeHandler that has
+    // everything that the caller needs to make the changeHandler param identical
+    // for all calls.
+    // @ts-ignore - come back and fix this per TODO above.
+    changeHandler(e, index, menuItemValue);
   };
 
   const select = () => {
@@ -52,7 +80,7 @@ function inputCombo(props) {
         floatingLabelText={label}
         id={id}
         value={value}
-        onChange={changeHandler}
+        onChange={selectHandler}
         style={styler}
       >
         {
@@ -71,6 +99,7 @@ function inputCombo(props) {
   switch (type) {
     case 'text':
     case 'number':
+      // @ts-ignore - FIX - Remove this ignore comment when fixing the InputCombo handler types
       return inputComboText(props);
     case 'boolean':
       return boolean();

@@ -56,6 +56,7 @@ class GridCell extends React.Component {
     if (editId === rowId) {
       return (
         <InputCombo
+          // @ts-ignore - FIX - Remove this ignore comment when fixing the InputCombo handler types
           changeHandler={this.onChange}
           error={error}
           id={htmlId}
