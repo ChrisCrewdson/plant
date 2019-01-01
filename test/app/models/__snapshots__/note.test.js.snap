@@ -6,7 +6,38 @@ Object {
   "date": 20160101,
   "note": "some text",
   "plantIds": Array [
-    StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+    "5c2aefa687358b2af50246d6",
+  ],
+}
+`;
+
+exports[`/app/models/note basic validation should strip out props not in the schema 1`] = `
+Object {
+  "_id": "5c2aefa2da47a52adc1c4651",
+  "date": 20160101,
+  "note": "some text",
+  "plantIds": Array [
+    "5c2aefa687358b2af50246d6",
+  ],
+}
+`;
+
+exports[`/app/models/note note.model/images validation should convert image size if it is a string number 1`] = `
+Object {
+  "_id": "5c2af2b712d4132fa1e69d39",
+  "date": 20160101,
+  "images": Array [
+    Object {
+      "ext": "jpg",
+      "id": "5c2af2b712d4132fa1e69d3a",
+      "originalname": "apple tree",
+      "size": 123,
+      "sizes": Array [],
+    },
+  ],
+  "note": "some text",
+  "plantIds": Array [
+    "5c2af2b712d4132fa1e69d38",
   ],
 }
 `;

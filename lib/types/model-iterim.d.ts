@@ -32,7 +32,7 @@ interface UiInterimUploadProgress {
 
 interface UiInterimNote {
   _id?: string;
-  note: string;
+  note?: string;
   plant?: UiPlantsValue;
   isNew?: boolean;
   uploadProgress?: UiInterimUploadProgress;

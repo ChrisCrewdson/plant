@@ -60,11 +60,11 @@ describe('/app/models/note', () => {
     test('should strip out props not in the schema', () => {
       /** @type {UiInterimNote} */
       const note = {
-        _id: makeMongoId(),
+        _id: '5c2aefa2da47a52adc1c4651',
         date: 20160101,
-        plantIds: [makeMongoId()],
+        plantIds: ['5c2aefa687358b2af50246d6'],
         note: 'some text',
-        // @ts-ignore - intentionally mistyping for testing
+        // @ts-ignore - intentionally mistyped for testing
         fakeName1: 'Common Name',
         fakeName2: 'Description',
         plantId: 'fake plant id',
@@ -72,23 +72,17 @@ describe('/app/models/note', () => {
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBe(note._id);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBeUndefined();
-      // @ts-ignore - intentionally mistyping for testing
-      expect(transformed.fakeName1).toBeUndefined();
-      // @ts-ignore - intentionally mistyping for testing
-      expect(transformed.fakeName2).toBeUndefined();
-      // @ts-ignore - intentionally mistyping for testing
-      expect(transformed.plantId).toBeUndefined();
+
       expect(noteCopy).toEqual(note); // no mutation of original note
+
+      expect(transformed).toMatchSnapshot();
     });
 
     test('should add _id if it is a new record', () => {
+      /** @type {UiInterimNote} */
       const note = {
         date: 20160101,
-        plantIds: [makeMongoId()],
+        plantIds: ['5c2aefa687358b2af50246d6'],
         note: 'some text',
       };
       const noteCopy = _.cloneDeep(note);
@@ -97,18 +91,17 @@ describe('/app/models/note', () => {
 
       expect(noteCopy).toEqual(note);
 
-      expect(transformed.note).toBe(note.note);
       expect(transformed.plantIds).toEqual(note.plantIds);
 
       expect(transformed).toMatchSnapshot({
         _id: expect.stringMatching(constants.mongoIdRE),
-        plantIds: [expect.stringMatching(constants.mongoIdRE)],
       });
     });
 
     test('should fail if plantIds is empty', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
-        _id: makeMongoId(),
+        _id: '5c2aefa687358b2af50246d6',
         date: 20160101,
         plantIds: [],
         note: 'some text',
@@ -126,6 +119,8 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is missing', (done) => {
+      /** @type {UiInterimNote} */
+      // @ts-ignore - intentionally mistyped for testing
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -144,10 +139,12 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is not an array', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
+        // @ts-ignore - intentionally mistyped for testing
         plantIds: makeMongoId(),
       };
       const noteCopy = _.cloneDeep(note);
@@ -168,14 +165,17 @@ describe('/app/models/note', () => {
   });
 
   describe('note.model/images validation', () => {
+    /** @type {NoteImage} */
     const image = {
       ext: 'jpg',
-      id: makeMongoId(),
+      id: '5c2af2b712d4132fa1e69d3a',
       originalname: 'apple tree',
       size: 123456,
+      sizes: [],
     };
 
     test('should pass with an empty images array', () => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -195,6 +195,7 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images', () => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -213,6 +214,7 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images and an empty note', () => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -231,6 +233,7 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images and a missing note', () => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -247,9 +250,11 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images is not an array', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
+        // @ts-ignore - intentionally mistyped for testing
         images: makeMongoId(),
         note: 'some text',
         plantIds: [makeMongoId()],
@@ -267,6 +272,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images id is not a mongoId', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -287,6 +293,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images ext is not a string', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -307,6 +314,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images originalname is not a string', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -327,26 +335,24 @@ describe('/app/models/note', () => {
     });
 
     test('should convert image size if it is a string number', () => {
+      /** @type {UiInterimNote} */
       const note = {
-        _id: makeMongoId(),
+        _id: '5c2af2b712d4132fa1e69d39',
         date: 20160101,
-        images: [Object.assign({}, image, { size: 123 })],
+        images: [Object.assign({}, image, { size: '123' })],
         note: 'some text',
-        plantIds: [makeMongoId()],
+        plantIds: ['5c2af2b712d4132fa1e69d38'],
       };
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
 
-      expect(Object.keys(transformed)).toHaveLength(5);
-      expect(transformed._id).toBe(note._id);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBeUndefined();
-      expect(transformed.images[0].size).toBe(123);
+      expect(transformed).toMatchSnapshot();
       expect(noteCopy).toEqual(note);
     });
 
     test('should fail if images ext is longer than 20', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -367,6 +373,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images has extra props', (done) => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
