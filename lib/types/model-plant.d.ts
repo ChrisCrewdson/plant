@@ -46,6 +46,7 @@ interface UiPlantsValue extends BasePlant {
    * from the server.
    */
   notesRequested?: boolean;
+  userId?: string;
 }
 
 interface BizPlantMap {
@@ -81,4 +82,16 @@ interface PlantReadProps {
   locations: UiLocations;
   plant: UiPlantsValue;
   plants: UiPlants;
+}
+
+interface UiPlantLocation {
+  _id: string;
+  title: string;
+  x: number;
+  y: number;
+}
+
+interface UiPlantLocationCanvas {
+  plants: Dictionary<UiPlantLocation>;
+  canvasHeight: number;
 }

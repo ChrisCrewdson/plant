@@ -27,6 +27,7 @@ class LayoutMap extends React.Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.renderPlantLocation = this.renderPlantLocation.bind(this);
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
@@ -87,6 +88,11 @@ class LayoutMap extends React.Component {
     );
   }
 
+  /**
+   * @param {UiPlantLocation} plant
+   * @returns
+   * @memberof LayoutMap
+   */
   renderPlantLocation(plant) {
     /*
     var circle = new Konva.Circle({
@@ -152,7 +158,8 @@ class LayoutMap extends React.Component {
       return null;
     }
     const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
-    const { store } = this.context;
+    // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
+    const store = /** @type {import('redux').Store} */ (this.context.store);
     const params = match && match.params;
     if (params && params.id) {
       const { id: userId } = params;
@@ -161,16 +168,27 @@ class LayoutMap extends React.Component {
         return null;
       }
 
-      const plants = store.getState().plants || [];
-      const userPlants = plants.filter(plant => plant.userId === userId && plant.loc);
-      if (!userPlants.length) {
+      const plants = storeHelper.getPlants(store);
+      const userPlants = Object.keys(plants).reduce((acc, plantId) => {
+        const plant = plants[plantId];
+        if (plant.userId === userId && plant.loc) {
+          acc[plantId] = plant;
+        }
+        return acc;
+      }, /** @type {UiPlants} */ ({}));
+
+      if (!Object.keys(userPlants).length) {
         return null;
       }
 
       const scaledPlants = gis.scaleToCanvas(userPlants, width);
+      const renderedPlants = Object
+        .keys(scaledPlants.plants)
+        .map(scaledPlant => this.renderPlantLocation(scaledPlants.plants[scaledPlant]));
+
       return {
         canvasHeight: scaledPlants.canvasHeight,
-        plants: scaledPlants.plants.map(this.renderPlantLocation.bind(this)),
+        plants: renderedPlants,
       };
     }
     return null;

@@ -7,17 +7,18 @@ const { gisMultiplier } = constants;
 
 /**
  * Convert Geo long/lat values to canvas x/y pixels
- * @param {object} immutablePlants - keyed off plantId
+ * @param {UiPlants} immutablePlants - keyed off plantId
  * @param {number} width - the width of the canvas in pixels?
+ * @returns {UiPlantLocationCanvas}
  */
 function scaleToCanvas(immutablePlants, width) {
   const plantIds = Object.keys(immutablePlants);
 
   if (!plantIds.length) {
-    return {
-      plants: immutablePlants,
+    return seamless.from({
+      plants: {},
       canvasHeight: 0,
-    };
+    });
   }
 
   const minMax = plantIds.reduce((acc, plantId) => {
@@ -78,7 +79,7 @@ function scaleToCanvas(immutablePlants, width) {
       _id, title, x, y,
     };
     return acc;
-  }, {});
+  }, /** @type {Dictionary<UiPlantLocation>} */ ({}));
   return seamless.from({
     plants,
     canvasHeight,
