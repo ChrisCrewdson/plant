@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/app/models/note basic validation should add _id if it is a new record 1`] = `
+Object {
+  "_id": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  "date": 20160101,
+  "note": "some text",
+  "plantIds": Array [
+    StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  ],
+}
+`;

@@ -9,6 +9,7 @@ const { note: noteValidator } = validators;
 describe('/app/models/note', () => {
   describe('basic validation', () => {
     test('should pass minimum validation', () => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
@@ -25,10 +26,13 @@ describe('/app/models/note', () => {
 
     test('should fail validation', () => {
     // All items in note should be invalid
+      /** @type {UiInterimNote} */
       const note = {
         _id: '0e55d91cb33d42', // Not a MongoId
+        // @ts-ignore - intentionally mistyping for testing
         date: 'Not a Number',
         plantIds: ['9ec5c8ffcf885bf'], // Not a MongoId in array
+        // @ts-ignore - intentionally mistyping for testing
         note: {}, // not a string
       };
 
@@ -54,11 +58,13 @@ describe('/app/models/note', () => {
     });
 
     test('should strip out props not in the schema', () => {
+      /** @type {UiInterimNote} */
       const note = {
         _id: makeMongoId(),
         date: 20160101,
         plantIds: [makeMongoId()],
         note: 'some text',
+        // @ts-ignore - intentionally mistyping for testing
         fakeName1: 'Common Name',
         fakeName2: 'Description',
         plantId: 'fake plant id',
@@ -70,9 +76,12 @@ describe('/app/models/note', () => {
       expect(transformed._id).toBe(note._id);
       expect(transformed.note).toBe(note.note);
       expect(transformed.userId).toBeUndefined();
-      expect(transformed.fakeName1).toBeFalsy();
-      expect(transformed.fakeName2).toBeFalsy();
-      expect(transformed.plantId).toBeFalsy();
+      // @ts-ignore - intentionally mistyping for testing
+      expect(transformed.fakeName1).toBeUndefined();
+      // @ts-ignore - intentionally mistyping for testing
+      expect(transformed.fakeName2).toBeUndefined();
+      // @ts-ignore - intentionally mistyping for testing
+      expect(transformed.plantId).toBeUndefined();
       expect(noteCopy).toEqual(note); // no mutation of original note
     });
 
@@ -86,13 +95,15 @@ describe('/app/models/note', () => {
 
       const transformed = noteValidator(note);
 
-      expect(Object.keys(transformed)).toHaveLength(4);
-      expect(transformed._id).toBeTruthy();
-      expect(constants.mongoIdRE.test(transformed._id)).toBe(true);
-      expect(transformed.note).toBe(note.note);
-      expect(transformed.userId).toBeUndefined();
-      expect(transformed.plantIds).toEqual(note.plantIds);
       expect(noteCopy).toEqual(note);
+
+      expect(transformed.note).toBe(note.note);
+      expect(transformed.plantIds).toEqual(note.plantIds);
+
+      expect(transformed).toMatchSnapshot({
+        _id: expect.stringMatching(constants.mongoIdRE),
+        plantIds: [expect.stringMatching(constants.mongoIdRE)],
+      });
     });
 
     test('should fail if plantIds is empty', (done) => {
