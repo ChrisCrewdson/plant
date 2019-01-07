@@ -6,10 +6,10 @@
 const React = require('react');
 const { withRouter } = require('react-router-dom');
 const PropTypes = require('prop-types');
-const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 const AddLocationButton = require('./AddLocationButton');
 const LocationTile = require('./LocationTile');
+const storeHelper = require('../../libs/store-helper');
 
 class Locations extends React.Component {
   static contextTypes = {
@@ -25,7 +25,6 @@ class Locations extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    this.onLinkClick = this.onLinkClick.bind(this);
     this.renderLocation = this.renderLocation.bind(this);
   }
 
@@ -41,11 +40,6 @@ class Locations extends React.Component {
     this.unsubscribe();
   }
 
-  onLinkClick(_id) {
-    const { store } = this.context || this.contextTypes;
-    store.dispatch(actionFunc.changeActiveLocationId({ _id }));
-  }
-
   onChange() {
     this.updateState();
   }
@@ -56,16 +50,27 @@ class Locations extends React.Component {
     this.setState({ locations, users });
   }
 
+  /**
+   * @param {UiUsersValue|undefined} user
+   * @returns
+   * @memberof Locations
+   */
   isOwner(user) {
     const { store } = this.context;
     const { user: authUser = {} } = store.getState();
     return !!(user && authUser._id === user._id);
   }
 
+  /**
+   * @static
+   * @param {string|undefined} title
+   * @returns
+   * @memberof Locations
+   */
   static renderTitle(title) {
     return (
       <h2 style={{ textAlign: 'center' }}>
-        {`${title}`}
+        {`${title || 'Location Does Not Have a Name'}`}
       </h2>
     );
   }
@@ -80,7 +85,7 @@ class Locations extends React.Component {
       return null;
     }
 
-    const { plantIds = [], _id, title } = location;
+    const { plantIds = /** @type string[] */ ([]), _id, title } = location;
     const { length: numPlants } = plantIds;
     const { store: { dispatch } } = this.context;
 
@@ -120,12 +125,8 @@ No locations added yet...
   renderLocations() {
     // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
     const store = /** @type {import('redux').Store} */ (this.context.store);
-    const {
-      /** @type {UiUsers|undefined} */
-      users,
-      /** @type {UiLocations|undefined} */
-      locations,
-    } = store.getState();
+    const users = storeHelper.getUsers(store);
+    const locations = storeHelper.getLocations(store);
 
     const locationsCount = Object.keys(locations || {}).length;
 
