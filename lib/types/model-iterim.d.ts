@@ -48,9 +48,18 @@ interface UiInterimNote {
   userId?: string;
 }
 
+interface UiInterimNoteContainer {
+  note: UiInterimNote;
+  plant: UiPlantsValue;
+}
+
+interface UiInterimPlantContainer {
+  plant: UiPlantsValue;
+}
+
 interface UiInterim {
-  note?: UiInterimNote;
-  plant?: UiPlantsValue;
+  note?: UiInterimNoteContainer;
+  plant?: UiInterimPlantContainer;
   loadPlantRequest?: boolean;
 }
 
