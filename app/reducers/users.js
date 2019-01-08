@@ -11,20 +11,13 @@ const { actionEnum } = require('../actions');
  * @returns {UiUsers}
  */
 function loadUsersSuccess(state, action) {
-  const { payload: users = [] } = action;
-  const usersSet = users.reduce(
-    /**
-     * @param {UiUsers} acc
-     * @param {object} user
-     * @param {string} user._id
-     * @param {UiUsersLocation[]} user.locationIds
-     */
-    (acc, user) => {
-      acc[user._id] = Object.assign({}, user, {
-        locationIds: user.locationIds || [],
-      });
-      return acc;
-    }, {});
+  const users = /** @type {UiUsersValue[]} */ (action.payload || []);
+  const usersSet = users.reduce((acc, user) => {
+    acc[user._id] = Object.assign({}, user, {
+      locationIds: user.locationIds || [],
+    });
+    return acc;
+  }, /** @type {UiUsers} */ ({}));
 
   if (!Object.keys(usersSet).length) {
     return state;
@@ -43,6 +36,7 @@ function loadUsersSuccess(state, action) {
 function loadUserSuccess(state, action) {
   return loadUsersSuccess(state, {
     payload: [action.payload],
+    type: action.type,
   });
 }
 
@@ -146,7 +140,4 @@ module.exports.reducers = reducers;
 // _id
 // createdAt
 // name
-// locationIds: [{
-//   id: <a location _id>,
-//   role: 'owner/manager'
-// }, ...]
+// locationIds: [<a location _id>, <another location _id>, ...]

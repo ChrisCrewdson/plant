@@ -1,14 +1,9 @@
 
-interface UiUsersLocation {
-  id: string; // a location _id
-  role: Role;
-}
-
 interface UiUsersValue {
   _id: string;
   createdAt: string;
   name: string;
-  locationIds: UiUsersLocation[];
+  locationIds: string[];
 }
 
 interface UiUsers {
