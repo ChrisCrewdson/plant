@@ -33,7 +33,7 @@ class NoteEditMetrics extends React.PureComponent {
   /**
    * Change handler for materialui Toggle control - placeholder - currently unused
    * @param {React.MouseEvent<{}>} e
-   * @param {boolean} isInputChecked
+   * param {boolean} isInputChecked
    */
   onChangeToggle(e /* , isInputChecked */) {
     const { name, checked, value } = e.target;

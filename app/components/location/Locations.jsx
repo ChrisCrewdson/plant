@@ -150,16 +150,16 @@ No locations added yet...
       return this.renderNoLocations(user);
     }
 
-    // locations is an object
-    return Object.keys(locations)
-      .map(locationId => locations[locationId])
+    // Show only locations with plants (that's the filter()) and then sort
+    // by the location with the most plants (that's the sort())
+    return Object.values(locations)
       .filter((location) => {
-        const { plantIds = [] } = location;
-        return !!plantIds.length;
+        const { plantIds } = location;
+        return plantIds && plantIds.length;
       })
       .sort((a, b) => {
-        const sizeA = (a.plantIds || []).length;
-        const sizeB = (b.plantIds || []).length;
+        const sizeA = a.plantIds.length;
+        const sizeB = b.plantIds.length;
         return sizeB - sizeA;
       })
       .map(this.renderLocation);
