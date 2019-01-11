@@ -1,3 +1,4 @@
+
 declare type TerminatedReason =
 'culled' |
 'died' |
@@ -94,4 +95,25 @@ interface UiPlantLocation {
 interface UiPlantLocationCanvas {
   plants: Dictionary<UiPlantLocation>;
   canvasHeight: number;
+}
+
+interface PlantPropsParams {
+  id?: string;
+}
+
+interface PlantPropsSearchParams {
+  get: Function;
+}
+
+/**
+ * The params and searchParams are available when Plant is created during SSR.
+ * The match and location are available when this is created via React Router.
+ * I've no idea why I did this. Seems to be a terrible design.
+ * TODO: Fix this so that the SSR provides shapes that replicate the React Router interfaces.
+ */
+interface PlantProps {
+  params?: PlantPropsParams;
+  searchParams?: PlantPropsSearchParams;
+  match?: import('react-router').match<any>;
+  location?: import('history').Location;
 }

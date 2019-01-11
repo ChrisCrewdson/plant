@@ -15,6 +15,7 @@ const Base = require('../base/Base');
 const PlantEdit = require('./PlantEdit');
 const PlantRead = require('./PlantRead');
 const NoteCreate = require('../note/NoteCreate');
+const storeHelper = require('../../libs/store-helper');
 
 class Plant extends React.Component {
   static contextTypes = {
@@ -22,6 +23,9 @@ class Plant extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
+  /**
+   * @param {PlantProps} props
+   */
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -42,6 +46,9 @@ class Plant extends React.Component {
 - parameter to this function is nextProps
 - can call this.setState() here (will not trigger additional render)
 */
+  /**
+   * @param {PlantProps} nextProps
+   */
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.initState(true, nextProps);
@@ -56,19 +63,28 @@ class Plant extends React.Component {
     // this.initState(false);
   }
 
-  initState(first, props = this.props || {}) {
+  /**
+   * @param {boolean} first
+   * @param {PlantProps=} initProps
+   * @memberof Plant
+   */
+  initState(first, initProps) {
+    const props = /** @type {PlantProps} */ (initProps
+      || this.props || {});
     const { store } = this.context;
-    const { plants, user, users = {} } = store.getState();
+    const user = storeHelper.getUser(store);
+    const users = storeHelper.getUsers(store);
+    const plants = storeHelper.getPlants(store);
 
     const {
-      match = {}, params = {}, location = {}, searchParams,
+      match, params = {}, location, searchParams,
     } = props;
-    const _id = params.id || (match.params && match.params.id);
+    const _id = params.id || (match && match.params && match.params.id);
 
     // console.log('Plant.initState match', match);
     // console.log('Plant.initState location', location);
 
-    const { search = '' } = location;
+    const search = (location && location.search) || '';
     // TODO: This is not available on server:
     const paramsMap = searchParams || new URLSearchParams(search);
     const noteId = paramsMap.get('noteid');
@@ -92,7 +108,8 @@ class Plant extends React.Component {
       }
     } else {
       const { _id: userId = '', activeLocationId } = user;
-      const { locationIds = [] } = users[userId] || {};
+
+      const locationIds = (users[userId] && users[userId].locationIds) || [];
 
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
