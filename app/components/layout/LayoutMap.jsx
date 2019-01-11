@@ -9,7 +9,6 @@ const {
 } = require('react-konva');
 const PropTypes = require('prop-types');
 
-const storeHelper = require('../../libs/store-helper');
 const gis = require('../../libs/gis');
 const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
@@ -32,11 +31,11 @@ class LayoutMap extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.setState({
       color: 'green',
       plants: store.getState().plants,
-      users: storeHelper.getUsers(store),
+      users: store.getState().users,
     });
 
     const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
@@ -158,17 +157,16 @@ class LayoutMap extends React.Component {
       return null;
     }
     const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
-    // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
-    const store = /** @type {import('redux').Store} */ (this.context.store);
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const params = match && match.params;
     if (params && params.id) {
       const { id: userId } = params;
-      const user = store.getState().users[userId];
+      const { plants, users } = store.getState();
+      const user = users[userId];
       if (!user) {
         return null;
       }
 
-      const plants = storeHelper.getPlants(store);
       const userPlants = Object.keys(plants).reduce((acc, plantId) => {
         const plant = plants[plantId];
         if (plant.userId === userId && plant.loc) {
