@@ -27,7 +27,7 @@
     "file-loader": "1.1.11",
     "graphql": "14.0.2",
     "html-webpack-plugin": "2.30.1",
-    "immer": "1.9.3",
+    "immer": "1.10.2",
     "jquery": "2.x",
     "konva": "2.6.0",
     "lalog": "0.6.0",
