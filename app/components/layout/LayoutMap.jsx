@@ -43,6 +43,9 @@ class LayoutMap extends React.Component {
       const { id: userId } = match.params;
       const user = store.getState().users[userId] || {};
       // This is the user id for this page.
+      // @ts-ignore - plantIds does not exist on user. Because this component is not currently
+      // functioning will wait to fix this. The plantIds should be based on location and not
+      // user.
       if (!user.plantIds) {
         store.dispatch(actionFunc.loadPlantsRequest(userId));
       }
@@ -56,6 +59,7 @@ class LayoutMap extends React.Component {
   }
 
   componentWillUnmount() {
+    // @ts-ignore - need to fix this component and will revist this error at that point.
     this.unsubscribe();
   }
 
