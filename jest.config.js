@@ -1,3 +1,5 @@
+
+/** @type {jest.InitialOptions} */
 module.exports = {
   verbose: false,
   collectCoverageFrom: [

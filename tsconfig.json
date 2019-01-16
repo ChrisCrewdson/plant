@@ -60,6 +60,7 @@
   "include": [
     "lib/**/*",
     "app/**/*",
-    "test/**/*"
+    "test/**/*",
+    "jest.config.js"
   ]
 }

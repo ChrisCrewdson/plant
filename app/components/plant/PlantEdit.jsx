@@ -29,6 +29,9 @@ class PlantEdit extends React.Component {
     router: PropTypes.object,
   };
 
+  /**
+   * @param {PlantEditProps} props
+   */
   constructor(props) {
     super(props);
     this.cancel = this.cancel.bind(this);
@@ -40,7 +43,7 @@ class PlantEdit extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { interimPlant } = this.props;
+    const { interimPlant } = /** @type {PlantEditProps} */ (this.props);
     const pageTitle = interimPlant.isNew
       ? 'Add New Plant'
       : `Edit ${interimPlant.title}`;
@@ -48,7 +51,7 @@ class PlantEdit extends React.Component {
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
     dispatch(actionFunc.editPlantClose());
   }
 
@@ -61,7 +64,7 @@ class PlantEdit extends React.Component {
    * @memberof PlantEdit
    */
   onChangeLocation(e, index, value) {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
     dispatch(actionFunc.editPlantChange({
       locationId: value,
     }));
@@ -69,14 +72,14 @@ class PlantEdit extends React.Component {
 
   onChange(e) {
     const { name, value } = e.target;
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
     dispatch(actionFunc.editPlantChange({
       [name]: value,
     }));
   }
 
   cancel() {
-    const { dispatch } = this.props;
+    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
     dispatch(actionFunc.editPlantClose());
   }
 
@@ -86,7 +89,7 @@ class PlantEdit extends React.Component {
         if (err) {
           // console.error(err);
         } else {
-          const { dispatch } = this.props;
+          const { dispatch } = /** @type {PlantEditProps} */ (this.props);
           dispatch(actionFunc.editPlantChange({
             loc: geoJson,
           }));
@@ -100,7 +103,7 @@ class PlantEdit extends React.Component {
   save(e) {
     const {
       interimPlant, user, dispatch, history,
-    } = this.props;
+    } = /** @type {PlantEditProps} */ (this.props);
     const plant = seamless.asMutable(interimPlant);
     const { isNew = false } = plant;
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
@@ -132,7 +135,7 @@ class PlantEdit extends React.Component {
   render() {
     const {
       interimPlant, user, users, locations,
-    } = this.props;
+    } = /** @type {PlantEditProps} */ (this.props);
     const {
       title = '',
       botanicalName = '',
@@ -171,6 +174,7 @@ class PlantEdit extends React.Component {
       pageTitle = '',
     } = this.state || {};
 
+    /** @type {React.CSSProperties} */
     const paperStyle = {
       padding: 20,
       width: '100%',
@@ -179,6 +183,7 @@ class PlantEdit extends React.Component {
       display: 'inline-block',
     };
 
+    /** @type {React.CSSProperties} */
     const textAreaStyle = {
       textAlign: 'left',
     };

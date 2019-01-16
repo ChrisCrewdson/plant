@@ -6,10 +6,12 @@ declare type TerminatedReason =
 
 interface BasePlant {
   botanicalName?: string;
+  commonName: string;
+  description: string;
   loc?: Geo;
   plantedDate?: number; // YYYYMMDD
   price?: number;
-  purchaseDate?: number; // YYYYMMDD
+  purchasedDate?: number; // YYYYMMDD
   terminatedReason?: TerminatedReason;
   title: string;
 }
@@ -38,6 +40,7 @@ interface BizPlant extends BasePlant {
 }
 
 interface UiPlantsValue extends BasePlant {
+  isNew?: boolean;
   _id: string;
   notes: UiPlantsNote[];
   locationId: string;
@@ -48,6 +51,7 @@ interface UiPlantsValue extends BasePlant {
    */
   notesRequested?: boolean;
   userId?: string;
+  errors: Dictionary<string>;
 }
 
 interface BizPlantMap {
@@ -116,4 +120,13 @@ interface PlantProps {
   searchParams?: PlantPropsSearchParams;
   match?: import('react-router').match<any>;
   location?: import('history').Location;
+}
+
+interface PlantEditProps {
+  dispatch: import('redux').Dispatch;
+  history: import('history').History;
+  interimPlant: UiPlantsValue;
+  user: UiUsersValue
+  users: UiUsers;
+  locations: UiLocations;
 }

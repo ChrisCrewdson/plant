@@ -1,6 +1,7 @@
 
 interface UiUsersValue {
   _id: string;
+  activeLocationId: string;
   createdAt: string;
   name: string;
   locationIds: string[];
