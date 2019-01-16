@@ -36,7 +36,7 @@
     "material-ui": "0.20.2",
     "method-override": "3.0.0",
     "moment": "2.23.0",
-    "mongodb": "3.1.11",
+    "mongodb": "3.2.0",
     "morgan": "1.9.1",
     "multer": "1.4.1",
     "prop-types": "15.6.2",
