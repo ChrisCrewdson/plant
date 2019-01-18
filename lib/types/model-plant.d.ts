@@ -6,8 +6,8 @@ declare type TerminatedReason =
 
 interface BasePlant {
   botanicalName?: string;
-  commonName: string;
-  description: string;
+  commonName?: string;
+  description?: string;
   loc?: Geo;
   plantedDate?: number; // YYYYMMDD
   price?: number;
