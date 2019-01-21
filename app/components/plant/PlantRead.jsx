@@ -293,4 +293,5 @@ PlantRead.propTypes = {
   }).isRequired,
 };
 
+// @ts-ignore - TODO: Solve withRouter() param and tsc
 module.exports = withRouter(PlantRead);

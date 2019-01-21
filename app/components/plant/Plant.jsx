@@ -236,4 +236,5 @@ Plant.defaultProps = {
   searchParams: null,
 };
 
+// @ts-ignore - TODO: Solve withRouter() param and tsc
 module.exports = withRouter(Plant);
