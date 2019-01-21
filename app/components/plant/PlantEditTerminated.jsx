@@ -14,6 +14,8 @@ class PlantEditTerminated extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.booleanHandler = this.booleanHandler.bind(this);
+    this.dispatchChange = this.dispatchChange.bind(this);
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
@@ -29,15 +31,36 @@ class PlantEditTerminated extends React.Component {
     }
   }
 
-  onChange(e) {
+  /**
+   * @param {string} name
+   * @param {string|boolean} value
+   * @returns {void}
+   * @memberof PlantEditTerminated
+   */
+  dispatchChange(name, value) {
     const { dispatch } = this.props;
-    const { name: inputName } = e.target;
-    const value = inputName === 'isTerminated' ? e.target.checked : e.target.value;
-
-    dispatch(actionFunc.editPlantChange({
-      [inputName]: value,
-    }));
+    dispatch(actionFunc.editPlantChange({ [name]: value }));
   }
+
+  /**
+   * Change Handler for InputCombo
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @returns {void}
+   */
+  onChange(e) {
+    const { name, value } = e.target;
+    this.dispatchChange(name, value);
+  }
+
+  /**
+   * @param {React.MouseEvent<HTMLInputElement>} e
+   * @param {boolean} isInputChecked
+   * @returns {void}
+   */
+  booleanHandler = (e, isInputChecked) => {
+    const { name } = e.currentTarget;
+    this.dispatchChange(name, isInputChecked);
+  };
 
   render() {
     const styles = {
@@ -68,7 +91,7 @@ class PlantEditTerminated extends React.Component {
           label="Terminated"
           labelPosition="left"
           name="isTerminated"
-          onToggle={this.onChange}
+          onToggle={this.booleanHandler}
           style={{ paddingLeft: '5px', maxWidth: '150px' }}
           toggled={isTerminated}
         />
