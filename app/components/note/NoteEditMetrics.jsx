@@ -14,12 +14,14 @@ class NoteEditMetrics extends React.PureComponent {
    */
   constructor(props) {
     super(props);
+    this.booleanHandler = this.booleanHandler.bind(this);
+    this.dispatchChange = this.dispatchChange.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.renderMetric = this.renderMetric.bind(this);
-    this.renderLength = this.renderLength.bind(this);
     this.renderCount = this.renderCount.bind(this);
-    this.renderWeight = this.renderWeight.bind(this);
+    this.renderLength = this.renderLength.bind(this);
+    this.renderMetric = this.renderMetric.bind(this);
     this.renderToggle = this.renderToggle.bind(this);
+    this.renderWeight = this.renderWeight.bind(this);
 
     /** @type {Dictionary<Function>} */
     this.metricTypes = Object.freeze({
@@ -31,56 +33,40 @@ class NoteEditMetrics extends React.PureComponent {
   }
 
   /**
-   * Change handler for materialui Toggle control - placeholder - currently unused
-   * @param {React.MouseEvent<{}>} e
-   * param {boolean} isInputChecked
+   * Change Handler for InputCombo
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @returns {void}
    */
-  onChangeToggle(e /* , isInputChecked */) {
-    const { name, checked, value } = e.target;
-    const { interimNote, dispatch } = /** @type {NoteEditMetricProps} */ (this.props);
-    const interimMetrics = interimNote.metrics || {};
-    const metaMetric = utils.metaMetricsGetByKey(name);
-    if (!metaMetric) {
-      return;
-    }
-    const { type } = metaMetric;
-    // based on name (e.g. blossom or height) we need to lookup
-    // the type to determine where to pull the value. Types of toggle
-    // have their values in "checked" otherwise in "value"
-    // The change will be something like:
-    // {metrics: { height: 23.4, blossom: true }}
-
-    const controlValue = type === 'toggle' ? checked : value;
-
-    const metrics = seamless.set(interimMetrics, name, controlValue);
-
-    dispatch(actionFunc.editNoteChange({ metrics }));
+  onChange(e) {
+    const { name, value } = e.target;
+    this.dispatchChange(name, value);
   }
 
   /**
-   * Change Handler for InputCombo
-   * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @param {React.MouseEvent<HTMLInputElement>} e
+   * @param {boolean} isInputChecked
+   * @returns {void}
    */
-  onChange(e) {
-    // console.log('onChange:', e.target.name);
-    const { name, checked, value } = e.target;
+  booleanHandler = (e, isInputChecked) => {
+    const { name } = e.currentTarget;
+    this.dispatchChange(name, isInputChecked);
+  };
+
+  /**
+   * Handle multiple change value types
+   * @param {string} name
+   * @param {string|boolean} value
+   * @returns {void}
+   * @memberof NoteEditMetrics
+   */
+  dispatchChange(name, value) {
     const { interimNote, dispatch } = /** @type {NoteEditMetricProps} */ (this.props);
     const interimMetrics = interimNote.metrics || {};
-    const metaMetric = utils.metaMetricsGetByKey(name);
-    if (!metaMetric) {
-      return;
-    }
-    const { type } = metaMetric;
-    // based on name (e.g. blossom or height) we need to lookup
-    // the type to determine where to pull the value. Types of toggle
-    // have their values in "checked" otherwise in "value"
+
+    const metrics = seamless.set(interimMetrics, name, value);
+
     // The change will be something like:
     // {metrics: { height: 23.4, blossom: true }}
-
-    const controlValue = type === 'toggle' ? checked : value;
-
-    const metrics = seamless.set(interimMetrics, name, controlValue);
-
     dispatch(actionFunc.editNoteChange({ metrics }));
   }
 
@@ -132,7 +118,7 @@ class NoteEditMetrics extends React.PureComponent {
         label={metaMetric.label}
         labelPosition="left"
         name={metaMetric.key}
-        onToggle={this.onChange}
+        onToggle={this.booleanHandler}
         style={{ paddingLeft: '5px', maxWidth: '200px' }}
         toggled={isToggled}
       />
