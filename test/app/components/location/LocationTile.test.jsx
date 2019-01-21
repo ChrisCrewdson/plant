@@ -11,6 +11,9 @@ const LocationTile = require('../../../../app/components/location/LocationTile')
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
+/** @type {import('redux').Dispatch} */
+const mockDispatch = () => {};
+
 describe('LocationTile', () => {
   test('LocationTile should be rendered', () => {
     const component = renderer.create(
@@ -19,7 +22,7 @@ describe('LocationTile', () => {
           <LocationTile
             _id="mongo-id"
             numPlants={5}
-            dispatch={() => {}}
+            dispatch={mockDispatch}
             title="I am a title"
           />
         </MemoryRouter>

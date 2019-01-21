@@ -574,7 +574,7 @@ function showFeature(user) {
 
 /**
  * Compares two strings in constant time to prevent a timing attack.
- * @param {string} userSuppliedValue - the value supplied by the user
+ * @param {string=} userSuppliedValue - the value supplied by the user
  * @param {string} internalValue - internal value we compare against
  */
 function constantEquals(userSuppliedValue, internalValue) {

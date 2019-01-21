@@ -127,6 +127,41 @@ interface UiNotes {
   [id: string]: UiNotesValue;
 }
 
+interface ImageCompleteQuery {
+  token?: string;
+}
+
+interface ImageCompleteMetadata {
+  userid: string;
+  /**
+   * ImageId
+   */
+  id: string;
+  noteid: string;
+  originalname: string;
+}
+
+interface ImageCompleteBody {
+  sizes: NoteImageSize[];
+  metadata: ImageCompleteMetadata;
+}
+
+interface ImageCompleteRequest {
+  logger: Logger;
+  body?: ImageCompleteBody;
+  query?: ImageCompleteQuery;
+}
+
+interface NoteImageUpdateData {
+  /**
+   * NoteId
+   */
+  _id: string;
+  userId: string;
+  imageId: string;
+  sizes: NoteImageSize[];
+}
+
 /*
 Object of notes:
 {
