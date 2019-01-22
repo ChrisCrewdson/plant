@@ -161,13 +161,13 @@ class PlantEdit extends React.Component {
       activeLocationId = '',
     } = user;
     const {
-      locationIds = [],
+      locationIds = /** @type {string[]} */ ([]),
     } = users[_id] || {};
 
     const locationIdTitleMap = locationIds.reduce((acc, locationId) => {
       acc[locationId] = (locations[locationId] || {}).title;
       return acc;
-    }, {});
+    }, /** @type {Dictionary<string>} */ ({}));
     // activeLocationId is the one that you last viewed which might not be
     // one that you own/manage. Only set locationId to this if it's one that
     // is in the locationIds list.
@@ -242,7 +242,6 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.botanicalName}
-          extraClasses="col-sm-6"
           id="botanical-name"
           label="Botanical Name"
           name="botanicalName"
@@ -254,7 +253,6 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.commonName}
-          extraClasses="col-sm-6"
           id="common-name"
           label="Common Name"
           name="commonName"
@@ -279,7 +277,6 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.purchasedDate}
-          extraClasses="col-sm-4"
           id="acquire-date"
           label="Acquire Date"
           name="purchasedDate"
@@ -291,7 +288,6 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.plantedDate}
-          extraClasses="col-sm-4"
           id="planted-date"
           label="Planted Date"
           name="plantedDate"
@@ -303,7 +299,6 @@ class PlantEdit extends React.Component {
         <InputCombo
           changeHandler={this.onChange}
           error={errors.price}
-          extraClasses="col-sm-4"
           id="price"
           label="Price"
           name="price"
@@ -330,7 +325,6 @@ class PlantEdit extends React.Component {
               changeHandler={this.onChange}
               disabled
               error={errors.geoPosition}
-              extraClasses="col-sm-4"
               id="geo-position"
               label="Geo Position"
               name="geoPosition"

@@ -58,8 +58,8 @@ class Locations extends React.Component {
    */
   isOwner(user) {
     const { store } = /** @type {{store: PlantStore}} */ (this.context);
-    const { user: authUser = {} } = store.getState();
-    return !!(user && authUser._id === user._id);
+    const { user: authUser } = store.getState();
+    return !!(user && authUser && authUser._id === user._id);
   }
 
   /**
