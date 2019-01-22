@@ -41,15 +41,9 @@ interface NoteImage {
 }
 
 /**
- * an object with key/value pairs. Values are numbers or boolean.
- * See the app/libs/utils.js file for possible keys in this object and the data types
+ * An object with key/value pairs. Values are numbers or boolean.
  */
-interface NoteMetric {
-  /**
-   * The height of the plant or tree
-   */
-  height: number;
-}
+type NoteMetric = { [key in MetaMetricKey]: number|boolean }
 
 interface MetricNote {
   noteId: string;

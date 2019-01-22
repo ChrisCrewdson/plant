@@ -145,8 +145,21 @@ declare type MetaMetricType =
   'toggle' |
   'weight';
 
+declare type MetaMetricKey =
+  'height' |
+  'girth' |
+  'harvestCount' |
+  'harvestWeight' |
+  'firstBlossom' |
+  'lastBlossom' |
+  'firstBud' |
+  'harvestStart' |
+  'harvestEnd' |
+  'leafShedStart' |
+  'leafShedEnd';
+
 interface MetaMetric {
-  key: string;
+  key: MetaMetricKey;
   label: string;
   placeholder: string;
   type: MetaMetricType;
