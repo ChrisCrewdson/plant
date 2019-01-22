@@ -70,8 +70,15 @@ class PlantEdit extends React.Component {
     }));
   }
 
-  onChange(e) {
-    const { name, value } = e.target;
+  /**
+   *e: React.ChangeEvent<HTMLInputElement>, newValue: string
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @param {string} value
+   * @memberof PlantEdit
+   */
+  onChange(e, value) {
+    const { name } = e.target;
     const { dispatch } = /** @type {PlantEditProps} */ (this.props);
     dispatch(actionFunc.editPlantChange({
       [name]: value,
