@@ -65,8 +65,9 @@ class LayoutMap extends React.Component {
   }
 
   componentWillUnmount() {
-    // @ts-ignore - need to fix this component and will revist this error at that point.
-    this.unsubscribe();
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
 
   onChange() {
