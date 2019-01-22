@@ -326,12 +326,12 @@ function hasGeo() {
 /**
  * Gets the current geo location
  * @param {PositionOptions} optionsParam
- * @param {Function} cb
- * @returns
+ * @param {GeoCallback} cb
+ * @returns {void}
  */
 function getGeo(optionsParam, cb) {
   if (!hasGeo()) {
-    return cb('This device does not have geolocation available');
+    return cb(new Error('This device does not have geolocation available'));
   }
 
   /** @type {PositionOptions} */
@@ -344,6 +344,7 @@ function getGeo(optionsParam, cb) {
     (position) => {
     // { type: "Point", coordinates: [ 40, 5 ] }
     // position: {coords: {latitude: 11.1, longitude: 22.2}}
+      /** @type {Geo} */
       const geoJson = {
         type: 'Point',
         coordinates: [

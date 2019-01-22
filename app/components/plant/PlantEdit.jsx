@@ -92,14 +92,12 @@ class PlantEdit extends React.Component {
 
   addGeo() {
     if (utils.hasGeo()) {
-      utils.getGeo({}, (err, geoJson) => {
+      utils.getGeo({}, (err, loc) => {
         if (err) {
           // console.error(err);
         } else {
           const { dispatch } = /** @type {PlantEditProps} */ (this.props);
-          dispatch(actionFunc.editPlantChange({
-            loc: geoJson,
-          }));
+          dispatch(actionFunc.editPlantChange({ loc }));
         }
       });
     } else {
@@ -107,6 +105,10 @@ class PlantEdit extends React.Component {
     }
   }
 
+  /**
+   * @param {React.MouseEvent<{}, MouseEvent>} e
+   * @memberof PlantEdit
+   */
   save(e) {
     const {
       interimPlant, user, dispatch, history,

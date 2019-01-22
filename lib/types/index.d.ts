@@ -43,6 +43,8 @@ interface Geo {
   coordinates: GeoCoords;
 }
 
+type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
+
 /**
  * An interface mapping string indexes to T values in an object
  */

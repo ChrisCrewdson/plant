@@ -449,11 +449,10 @@ describe('/app/libs/utils', () => {
   describe('getGeo', () => {
     test('that getGeo returns an error if not supported', (done) => {
       utils.getGeo({},
-        /**
-         * @param {Error} err
-         */
         (err) => {
-          expect(err).toBe('This device does not have geolocation available');
+          expect(err).toBeInstanceOf(Error);
+          const error = /** @type {Error} */ (err);
+          expect(error.message).toBe('This device does not have geolocation available');
           done();
         });
     });
@@ -492,10 +491,6 @@ describe('/app/libs/utils', () => {
       };
 
       utils.getGeo({},
-        /**
-         * @param {Error} err
-         * @param {Geo} geo
-         */
         (err, geo) => {
           expect(err).toBeFalsy();
           expect(geo).toEqual(expected);
@@ -525,9 +520,6 @@ describe('/app/libs/utils', () => {
       };
 
       utils.getGeo({},
-        /**
-         * @param {Error} err
-         */
         (err) => {
           expect(err).toBe(positionError);
           done();
