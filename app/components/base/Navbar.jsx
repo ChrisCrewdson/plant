@@ -25,7 +25,7 @@ class Navbar extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.unsubscribe = store.subscribe(this.onChange);
     const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
@@ -36,13 +36,13 @@ class Navbar extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
   }
 
   logout() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     store.dispatch(actionFunc.logoutRequest());
   }
 
@@ -77,7 +77,7 @@ class Navbar extends React.Component {
       // console.warn('Navbar.makeMyPlantsMenu: No default locationId found for user:', user);
       return null;
     }
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { locations = {} } = store.getState();
     const location = locations[locationId];
     if (!location) {
@@ -119,7 +119,7 @@ class Navbar extends React.Component {
       interimMap = {},
     } = this.state || {};
     const displayName = user.name || '';
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
 
     const loggedIn = isLoggedIn(store);
     const notEditing = !Object.keys(interimMap).length;

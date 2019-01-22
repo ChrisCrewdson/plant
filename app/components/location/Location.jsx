@@ -47,7 +47,7 @@ class Location extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { locations = {} } = store.getState();
     const { match: { params } } = this.props;
     const { id: locationId } = params;
@@ -65,7 +65,7 @@ class Location extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const {
       interim,
       locations,
@@ -84,7 +84,7 @@ class Location extends React.Component {
   }
 
   postSaveSuccessCreateNote() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     store.dispatch(actionFunc.editNoteClose());
   }
 
@@ -148,7 +148,7 @@ No plants added yet...
   }
 
   render() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const {
       filter = '',
       locations,

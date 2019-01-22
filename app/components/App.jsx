@@ -10,7 +10,7 @@ class App extends React.Component {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { users = {}, locations = {} } = store.getState();
 
     // TODO: This will cause a problem for a non-initialized site

@@ -22,7 +22,7 @@ class Users extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.onChange();
@@ -33,7 +33,7 @@ class Users extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const state = store.getState();
     const { users, locations } = state;
     this.setState({ users, locations });
@@ -48,7 +48,7 @@ class Users extends React.Component {
     let link = `/locations/${makeSlug(userName)}/${_id}`;
 
     if (locationIds.length === 1) {
-      const { store } = this.context;
+      const { store } = /** @type {{store: PlantStore}} */ (this.context);
       const state = store.getState();
       const { locations } = state;
       if (locations) {
@@ -75,7 +75,7 @@ class Users extends React.Component {
   }
 
   renderUsers() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { users } = store.getState();
     if (users && users.length) {
       return users.map(user => this.renderUser(user));

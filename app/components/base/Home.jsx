@@ -21,7 +21,7 @@ class Home extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.updateState();
@@ -36,7 +36,7 @@ class Home extends React.Component {
   }
 
   updateState() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
@@ -49,7 +49,7 @@ class Home extends React.Component {
    * @memberof Home
    */
   anonHome(existingUsers, existingLocations) {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     return (
       <div id="hero">
         <section>
@@ -100,7 +100,7 @@ Login to get started
   }
 
   renderUsers() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { users = {}, locations = {} } = store.getState();
     const usersCount = Object.keys(users).length;
     const locationsCount = Object.keys(locations).length;

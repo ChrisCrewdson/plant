@@ -1,9 +1,10 @@
-// Used to show a list of plants for a user.
-// Url: /plants/<optional-user-id>
+// Used to show the physical layout (a map) of plants at a Location
+// Currently under development - was used at one point but no longer functional.
+// Needs to be reworked.
+// Url: ?
 
 const React = require('react');
-const getIn = require('lodash/get');
-// const {Layer, Rect, Stage, Group} = require('react-konva');
+
 const {
   Layer, Text: KonvaText, Circle, Stage, Group,
 } = require('react-konva');
@@ -32,16 +33,21 @@ class LayoutMap extends React.Component {
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
     const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const {
+      plants,
+      users,
+    } = store.getState();
+
     this.setState({
       color: 'green',
-      plants: store.getState().plants,
-      users: store.getState().users,
+      plants,
+      users,
     });
 
     const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
     if (match.params && match.params.id) {
       const { id: userId } = match.params;
-      const user = store.getState().users[userId] || {};
+      const user = users[userId] || {};
       // This is the user id for this page.
       // @ts-ignore - plantIds does not exist on user. Because this component is not currently
       // functioning will wait to fix this. The plantIds should be based on location and not
@@ -51,8 +57,8 @@ class LayoutMap extends React.Component {
       }
     }
     const state = {
-      plants: store.getState().plants,
-      users: store.getState().users,
+      plants,
+      users,
     };
     this.setState(state);
     this.unsubscribe = store.subscribe(this.onChange);
@@ -64,11 +70,18 @@ class LayoutMap extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+
+    const {
+      plants,
+      users,
+    } = store.getState();
+
     const state = {
-      plants: store.getState().plants,
-      users: store.getState().users,
+      plants,
+      users,
     };
+
     this.setState(state);
   }
 
@@ -79,11 +92,14 @@ class LayoutMap extends React.Component {
   }
 
   renderTitle() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
     const { params = {} } = match || {};
     const { id: userId } = params;
-    const userName = getIn(store.getState(), ['users', userId, 'name'], '');
+
+    const { users } = store.getState();
+
+    const userName = (users && users[userId] && users[userId].name) || '';
     return (
       <h2 style={{ textAlign: 'center' }}>
         {`${userName} Layout Map`}

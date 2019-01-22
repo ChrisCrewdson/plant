@@ -2,7 +2,7 @@ const CircularProgress = require('material-ui/CircularProgress').default;
 const Paper = require('material-ui/Paper').default;
 const PropTypes = require('prop-types');
 const React = require('react');
-const getIn = require('lodash/get');
+
 const NoteEdit = require('./NoteEdit');
 const NoteRead = require('./NoteRead');
 const metrics = require('../../libs/metrics');
@@ -55,9 +55,10 @@ class NotesRead extends React.PureComponent {
       plant,
       plants,
       userCanEdit,
-    } = this.props;
+    } = /** @type {NotesReadProps} */ (this.props);
 
-    const interimNote = getIn(interim, ['note', 'note'], {});
+    const interimNote = /** @type {UiInterimNote} */ (interim && interim.note
+      && interim.note.note) || {};
     const { isNew, _id: interimNoteId } = interimNote;
 
     if (interimNoteId && userCanEdit && !isNew) {
@@ -77,6 +78,7 @@ class NotesRead extends React.PureComponent {
       return null;
     }
 
+    /** @type {React.CSSProperties} */
     const paperStyle = {
       backgroundColor: '#ddd',
       display: 'inline-block',

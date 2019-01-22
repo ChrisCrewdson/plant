@@ -15,7 +15,6 @@ const Base = require('../base/Base');
 const PlantEdit = require('./PlantEdit');
 const PlantRead = require('./PlantRead');
 const NoteCreate = require('../note/NoteCreate');
-const storeHelper = require('../../libs/store-helper');
 
 class Plant extends React.Component {
   static contextTypes = {
@@ -33,7 +32,7 @@ class Plant extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.unsubscribe = store.subscribe(this.onChange);
     this.initState(true);
   }
@@ -71,10 +70,8 @@ class Plant extends React.Component {
   initState(first, initProps) {
     const props = /** @type {PlantProps} */ (initProps
       || this.props || {});
-    const { store } = this.context;
-    const user = storeHelper.getUser(store);
-    const users = storeHelper.getUsers(store);
-    const plants = storeHelper.getPlants(store);
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { user, users, plants } = store.getState();
 
     const {
       match, params = {}, location, searchParams,
@@ -128,7 +125,7 @@ class Plant extends React.Component {
   }
 
   render() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { match = {}, params = {} } = this.props;
     const {
       interim,

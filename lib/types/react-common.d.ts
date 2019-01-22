@@ -144,6 +144,14 @@ interface MarkdownProps {
   markdown: string;
 }
 
+type PlantStateTreeProps =
+  'interim' |
+  'locations' |
+  'notes' |
+  'plants' |
+  'user' |
+  'users';
+
 /**
  * A finite list of root properties in the Redux state tree for Plant
  */

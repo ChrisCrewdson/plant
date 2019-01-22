@@ -47,7 +47,7 @@ class Metrics extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { locations = {} } = store.getState();
     const { match } = this.props;
     const { id: locationId } = match.params;
@@ -65,7 +65,7 @@ class Metrics extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const {
       interim,
       locations,
@@ -84,7 +84,7 @@ class Metrics extends React.Component {
   }
 
   postSaveSuccessCreateNote() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     store.dispatch(actionFunc.editNoteClose());
   }
 
@@ -132,7 +132,7 @@ No plants added yet...
   }
 
   render() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const {
       // @ts-ignore - This file is a copy of the Location file and needs to be finished
       allLoadedPlants,

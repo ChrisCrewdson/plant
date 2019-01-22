@@ -9,7 +9,6 @@ const PropTypes = require('prop-types');
 const Base = require('../base/Base');
 const AddLocationButton = require('./AddLocationButton');
 const LocationTile = require('./LocationTile');
-const storeHelper = require('../../libs/store-helper');
 
 class Locations extends React.Component {
   static contextTypes = {
@@ -30,7 +29,7 @@ class Locations extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.updateState();
@@ -45,7 +44,7 @@ class Locations extends React.Component {
   }
 
   updateState() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { locations, users } = store.getState();
     this.setState({ locations, users });
   }
@@ -56,7 +55,7 @@ class Locations extends React.Component {
    * @memberof Locations
    */
   isOwner(user) {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { user: authUser = {} } = store.getState();
     return !!(user && authUser._id === user._id);
   }
@@ -124,9 +123,9 @@ No locations added yet...
 
   renderLocations() {
     // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
-    const store = /** @type {import('redux').Store} */ (this.context.store);
-    const users = storeHelper.getUsers(store);
-    const locations = storeHelper.getLocations(store);
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+
+    const { users, locations } = store.getState();
 
     const locationsCount = Object.keys(locations || {}).length;
 

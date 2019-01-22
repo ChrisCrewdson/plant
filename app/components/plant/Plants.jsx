@@ -25,7 +25,7 @@ class Plants extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     this.unsubscribe = store.subscribe(this.onChange);
     this.onChange();
     this.redirectIfReady();
@@ -41,13 +41,13 @@ class Plants extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
 
   redirectIfReady() {
-    const { store } = this.context;
+    const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { match, history } = this.props;
     const { params } = match;
     const userId = params && params.id;
