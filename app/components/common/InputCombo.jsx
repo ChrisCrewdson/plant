@@ -1,7 +1,5 @@
-const MenuItem = require('material-ui/MenuItem').default;
 const PropTypes = require('prop-types');
 const React = require('react');
-const SelectField = require('material-ui/SelectField').default;
 const Toggle = require('material-ui/Toggle').default;
 const inputComboText = require('./InputComboText');
 
@@ -11,19 +9,10 @@ const inputComboText = require('./InputComboText');
 function inputCombo(props) {
   const {
     changeHandler,
-    error,
-    id,
-    label,
     name: namo,
-    options,
-    style = {},
     type = 'text',
     value,
   } = props;
-
-  const styler = Object.assign({
-    marginLeft: 20,
-  }, style);
 
   /**
    * @param {React.MouseEvent<{}>} e
@@ -53,48 +42,6 @@ function inputCombo(props) {
     );
   };
 
-  /**
-   * @param {React.SyntheticEvent<{}>} e
-   * @param {number} index
-   * @param {any} menuItemValue
-   * @returns {void}
-   */
-  const selectHandler = (e, index, menuItemValue) => {
-    // TODO: Once typing is done on this repo we need to revisit this InputCombo
-    // and package up a single object that is passed to the changeHandler that has
-    // everything that the caller needs to make the changeHandler param identical
-    // for all calls.
-    // @ts-ignore - come back and fix this per TODO above.
-    changeHandler(e, index, menuItemValue);
-  };
-
-  const select = () => {
-    if (!options) {
-      // eslint-disable-next-line no-console
-      console.error(`No options were passed in for the select: ${options}`);
-      return null;
-    }
-    return (
-      <SelectField
-        errorText={error}
-        floatingLabelText={label}
-        id={id}
-        value={value}
-        onChange={selectHandler}
-        style={styler}
-      >
-        {
-        Object.keys(options).map(key => (
-          <MenuItem
-            key={key}
-            value={key}
-            primaryText={options[key]}
-          />
-        ))
-      }
-      </SelectField>
-    );
-  };
 
   switch (type) {
     case 'text':
@@ -103,8 +50,6 @@ function inputCombo(props) {
       return inputComboText(props);
     case 'boolean':
       return boolean();
-    case 'select':
-      return select();
     default:
       throw new Error(`Unknown input type ${type}`);
   }

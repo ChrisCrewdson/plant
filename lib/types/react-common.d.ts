@@ -33,11 +33,10 @@ interface InputComboTextProps {
   value: string | number;
 }
 
-declare type InputComboPropsType = 'text' | 'number' | 'boolean' | 'select';
+declare type InputComboPropsType = 'text' | 'number' | 'boolean';
 
 interface InputComboProps {
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
-  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
   disabled?: boolean;
   error: React.ReactNode;
   fullWidth?: boolean;
@@ -48,6 +47,21 @@ interface InputComboProps {
   placeholder?: string;
   style?: React.CSSProperties;
   type?: InputComboPropsType;
+  value: string | number | boolean;
+  options?: Dictionary<string>;
+}
+
+interface SelectComboProps {
+  changeHandler: (e: React.SyntheticEvent<{}>, index: number, menuItemValue: any) => void;
+  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
+  disabled?: boolean;
+  error: React.ReactNode;
+  fullWidth?: boolean;
+  id: string;
+  label: React.ReactNode;
+  multiLine?: boolean;
+  placeholder?: string;
+  style?: React.CSSProperties;
   value: string | number | boolean;
   options?: Dictionary<string>;
 }

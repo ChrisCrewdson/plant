@@ -17,6 +17,7 @@ const PlantEditTerminated = require('./PlantEditTerminated');
 const utils = require('../../libs/utils');
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const InputCombo = require('../common/InputCombo');
+const SelectCombo = require('../common/SelectCombo');
 const { actionFunc } = require('../../actions');
 const validators = require('../../models');
 const { makeSlug } = require('../../libs/utils');
@@ -58,9 +59,9 @@ class PlantEdit extends React.Component {
   /**
    * Called when the Location dropdown (a Select component) changes
    * its value
-   * @param {object} e - event - unused
+   * @param {React.SyntheticEvent<{}>} e - event - unused
    * @param {number} index - positional index of new value - unused
-   * @param {string} value - new value - MongoId of new value
+   * @param {any} value - new value - MongoId of new value
    * @memberof PlantEdit
    */
   onChangeLocation(e, index, value) {
@@ -225,16 +226,14 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <SelectCombo
           changeHandler={this.onChangeLocation}
           error={errors.locationId}
           id="location"
           label="Location"
-          name="locationId"
           options={locationIdTitleMap}
           placeholder="Which location is this at?"
           style={{ textAlign: 'left', width: '100%' }}
-          type="select"
           value={locationId}
         />
         <Divider />

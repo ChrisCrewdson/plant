@@ -9,12 +9,13 @@ const {
 } = require('react-router-dom');
 const { Provider } = require('react-redux');
 const InputCombo = require('../../../../app/components/common/InputCombo');
+const SelectCombo = require('../../../../app/components/common/SelectCombo');
 const store = require('../../../../app/store');
 const App = require('../../../../app/components/App');
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-describe('InputCombo', () => {
+describe('InputCombo and SelectCombo', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
@@ -58,12 +59,10 @@ describe('InputCombo', () => {
         <Provider store={store}>
           <App>
             <MemoryRouter>
-              <InputCombo
+              <SelectCombo
                 changeHandler={changeHandler}
                 id="test-id"
-                name="test-name"
                 options={options}
-                type="select"
                 value="test-value"
               />
             </MemoryRouter>

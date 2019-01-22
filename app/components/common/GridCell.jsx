@@ -5,6 +5,7 @@ const React = require('react');
 const CheckBox = require('material-ui/svg-icons/toggle/check-box').default;
 const CheckBoxOutlineBlank = require('material-ui/svg-icons/toggle/check-box-outline-blank').default;
 const InputCombo = require('./InputCombo');
+const SelectCombo = require('./SelectCombo');
 
 class GridCell extends React.Component {
   /**
@@ -13,36 +14,45 @@ class GridCell extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.onChangeSelect = this.onChangeSelect.bind(this);
   }
 
   /**
-   * Change Handler
-   * @param {React.ChangeEvent<HTMLInputElement>} e
-   * @param {string|boolean} index - index will be a number when the type is "select". We don't
-   * type it here as a number because it's not used when it's a number.
-   * @param {string} val - this is undefined unless the type is "select" and then it's the value.
+   * Change Handler for Select
+   * @param {React.SyntheticEvent<{}>} _e
+   * @param {number} _index
+   * @param {any} val
    */
-  onChange(e, index, val) {
+  onChangeSelect(_e, _index, val) {
     const {
-      type, editCell, rowId, index: idx,
+      editCell, rowId, index,
+    } = /** @type {GridCellProps} */ (this.props);
+    editCell(rowId, index, val);
+  }
+
+  /**
+   * @param {React.ChangeEvent<HTMLInputElement>} e
+   * @param {string|boolean} val
+   * @memberof GridCell
+   */
+  onChange(e, val) {
+    const {
+      type, editCell, rowId, index,
     } = /** @type {GridCellProps} */ (this.props);
     let value;
     switch (type) {
-      case 'select':
-        value = val;
-        break;
       case 'boolean':
-        value = index;
+        value = val;
         break;
       case 'text':
         ({ value } = e.target);
         break;
       default:
         // eslint-disable-next-line no-console
-        console.error(`unknown type ${type} with e.target ${e.target} index ${index} val ${val}`);
+        console.error(`unknown type ${type} with e.target ${e.target} val ${val}`);
         value = '';
     }
-    editCell(rowId, idx, value);
+    editCell(rowId, index, value);
   }
 
   render() {
@@ -54,9 +64,21 @@ class GridCell extends React.Component {
     // If we're in edit mode for this cell then return an edit component
     // Edit mode is defined as the condition below
     if (editId === rowId) {
+      if (type === 'select') {
+        return (
+          <SelectCombo
+            changeHandler={this.onChangeSelect}
+            error={error}
+            id={htmlId}
+            options={options}
+            placeholder={title}
+            style={{}}
+            value={value}
+          />
+        );
+      }
       return (
         <InputCombo
-          // @ts-ignore - FIX - Remove this ignore comment when fixing the InputCombo handler types
           changeHandler={this.onChange}
           error={error}
           id={htmlId}

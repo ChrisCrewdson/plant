@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputCombo should render Select Input 1`] = `
+exports[`InputCombo and SelectCombo should render Select Input 1`] = `
 <div
   className="react-root"
 >
@@ -257,7 +257,7 @@ exports[`InputCombo should render Select Input 1`] = `
 </div>
 `;
 
-exports[`InputCombo should render Text Input 1`] = `
+exports[`InputCombo and SelectCombo should render Text Input 1`] = `
 <div
   className="react-root"
 >
