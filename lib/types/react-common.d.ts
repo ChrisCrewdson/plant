@@ -179,3 +179,11 @@ interface PlantStateTree {
 }
 
 declare type PlantStore = import('redux').Store<PlantStateTree>;
+
+interface ProfilePropsUserSettings {
+  imperial: boolean;
+}
+
+interface ProfileProps {
+  userSettings: ProfilePropsUserSettings;
+}

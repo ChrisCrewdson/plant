@@ -61,8 +61,8 @@ class PlantRead extends React.PureComponent {
   }
 
   showImages() {
-    const { plant: { notes } = {}, dispatch } = /** @type {PlantReadProps} */ (this.props);
-    const noteIds = notes || [];
+    const { plant, dispatch } = /** @type {PlantReadProps} */ (this.props);
+    const noteIds = (plant && plant.notes) || [];
     dispatch(actionFunc.showNoteImages(noteIds));
   }
 
@@ -117,19 +117,27 @@ class PlantRead extends React.PureComponent {
       return null;
     }
 
-    const titles = [
-      { name: 'description', text: '' },
-      { name: 'commonName', text: 'Common Name' },
-      { name: 'botanicalName', text: 'Botanical Name' },
-    ];
-    const basicTitles = titles.map((title) => {
-      const value = plant[title.name];
+    const titles = [{
+      name: 'description',
+      text: '',
+      value: plant.description,
+    }, {
+      name: 'commonName',
+      text: 'Common Name',
+      value: plant.commonName,
+    }, {
+      name: 'botanicalName',
+      text: 'Botanical Name',
+      value: plant.botanicalName,
+    }];
+
+    const basicTitles = titles.map(({ name, text, value }) => {
       if (!value) {
         return null;
       }
-      const renderText = `${title.text ? `${title.text}: ` : ''}${value}`;
+      const renderText = `${text ? `${text}: ` : ''}${value}`;
       return (
-        <div key={title.name}>
+        <div key={name}>
           {renderText}
         </div>
       );
@@ -154,7 +162,7 @@ class PlantRead extends React.PureComponent {
       // eslint-disable-next-line function-paren-newline
       basicTitles.push(
         <div key="terminatedDate">
-          {`This plant was terminated${terminatedDate ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`}
+          {`This plant was terminated${dateTerminated ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`}
         </div>);
 
       const { plantedDate } = plant;

@@ -14,26 +14,31 @@ const Base = require('../base/Base');
 // 2. Other user: /profile/slug/<id>
 // Only implementing #1 for now.
 
+/**
+ * @param {ProfileProps} props
+ * @param {*} context
+ * @returns
+ */
 function profile(props, context) {
-  const styles = {
-    radioGroup: {
-      display: 'flex',
-    },
-    radioButton: {
-      marginBottom: 16,
-      width: 'inherit',
-    },
+  /** @type {React.CSSProperties} */
+  const radioGroup = {
+    display: 'flex',
+  };
+  /** @type {React.CSSProperties} */
+  const radioButton = {
+    marginBottom: 16,
+    width: 'inherit',
   };
 
   const { userSettings } = props;
   const { imperial } = userSettings;
-  const { store } = context;
+  const { store } = /** @type {{store: PlantStore}} */ (context);
   const { dispatch } = store;
   const state = store.getState();
   const users = getIn(state, 'users', {});
   const locations = getIn(state, 'locations', {});
-  const userId = getIn(state, ['user', '_id'], '');
-  const locationIds = getIn(users, [userId, 'locationIds'], []);
+  const userId = (state.user && state.user._id) || '';
+  const locationIds = (state.users && state.users[userId] && state.users[userId].locationIds) || [];
 
   const unitOfMeasurement = imperial ? 'imperial' : 'metric';
 
@@ -49,16 +54,16 @@ Unit of Measurement
         <RadioButtonGroup
           defaultSelected={unitOfMeasurement}
           name="unitOfMeasurement"
-          style={styles.radioGroup}
+          style={radioGroup}
         >
           <RadioButton
             label="Imperial"
-            style={styles.radioButton}
+            style={radioButton}
             value="imperial"
           />
           <RadioButton
             label="Metric"
-            style={styles.radioButton}
+            style={radioButton}
             value="metric"
           />
         </RadioButtonGroup>

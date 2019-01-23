@@ -13,6 +13,8 @@ interface BasePlant {
   price?: number;
   purchasedDate?: number; // YYYYMMDD
   terminatedReason?: TerminatedReason;
+  terminatedDate?: number;
+  terminatedDescription?: string;
   title: string;
 }
 
@@ -87,6 +89,11 @@ interface PlantReadProps {
   locations: UiLocations;
   plant: UiPlantsValue;
   plants: UiPlants;
+}
+
+interface PlantsProps {
+  match: import('react-router').match<any>;
+  history: import('history').History;
 }
 
 interface UiPlantLocation {

@@ -17,8 +17,12 @@ class Plants extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor() {
-    super();
+  /**
+   * @param {PlantsProps} props
+   * @memberof Plants
+   */
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
     this.redirectIfReady = this.redirectIfReady.bind(this);
   }
@@ -50,7 +54,7 @@ class Plants extends React.Component {
 
   redirectIfReady() {
     const { store } = /** @type {{store: PlantStore}} */ (this.context);
-    const { match, history } = this.props;
+    const { match, history } = /** @type {PlantsProps} */ (this.props);
     const { params } = match;
     const userId = params && params.id;
     let fwdUrl = '/';
