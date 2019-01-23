@@ -187,3 +187,7 @@ interface ProfilePropsUserSettings {
 interface ProfileProps {
   userSettings: ProfilePropsUserSettings;
 }
+
+interface UsersProps {
+
+}

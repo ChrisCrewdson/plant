@@ -15,8 +15,12 @@ class Users extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor() {
-    super();
+  /**
+   * @param {UsersProps} props
+   * @memberof Users
+   */
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
   }
 
@@ -43,7 +47,7 @@ class Users extends React.Component {
 
   /**
    * Render the users
-   * @param {object} user - user is from the users collection and not the loggedIn user
+   * @param {UiUsersValue} user - user is from the users collection and not the loggedIn user
    */
   renderUser(user) {
     const { _id, name: userName, locationIds } = user;
@@ -79,8 +83,9 @@ class Users extends React.Component {
   renderUsers() {
     const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { users } = store.getState();
-    if (users && users.length) {
-      return users.map(user => this.renderUser(user));
+    const userIds = Object.keys(users);
+    if (userIds.length) {
+      return userIds.map(userId => this.renderUser(users[userId]));
     }
     return null;
   }
