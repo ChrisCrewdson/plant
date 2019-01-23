@@ -7,13 +7,22 @@ const { makeMongoId } = require('../libs/utils');
 const constants = require('../libs/constants');
 const utils = require('../libs/utils');
 
+/**
+ * This validation rule is used for validating the plantIds on a note. A note can
+ * have multiple plants associated with it which is represented by an array of
+ * plantIds. The UI allows the addition and removal of plants associated with a note.
+ * This rule ensures that there is always at least one plantId that meets the requirements.
+ * 1. is present
+ * 2. is array
+ * 3. min length 1
+ * 4. each item is uuid
+ * @param {number} value
+ * @param {object} options
+ * @param {object} options.length
+ * @param {number} options.length.minimum
+ * @returns {string|null}
+ */
 validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */) => {
-  // plantId array rules:
-  // 1. is present
-  // 2. is array
-  // 3. min length 1
-  // 4. each item is uuid
-
   if (!value) {
     return 'is required';
   }
@@ -38,11 +47,18 @@ validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */
   return null;
 };
 
+/**
+ * @param {object} attributes
+ * @returns
+ */
 function transform(attributes) {
   return attributes;
 }
 
-// Validate the parts of the images array
+/**
+ * Validate the parts of the images array
+ * @param {UploadedNoteFile[]} value
+ */
 validatejs.validators.imagesValidate = (value) => {
   if (!value) {
     // images is optional so return if not exist
@@ -68,7 +84,7 @@ validatejs.validators.imagesValidate = (value) => {
 
   const allowedProps = ['id', 'ext', 'originalname', 'size', 'sizes'];
 
-  let extraProps;
+  let extraProps = {};
   const validProps = every(value, (item) => {
     // Make sure no extra keys inserted
     extraProps = omit(item, allowedProps);
@@ -76,13 +92,15 @@ validatejs.validators.imagesValidate = (value) => {
   });
 
   if (!validProps) {
-    return `must only have the following allowed props: ${allowedProps.join()} and found these props as well: ${Object.keys(extraProps).join()}`;
+    return `must only have the following allowed props: \
+${allowedProps.join()} and in one of the items in the array it found these props as well: \
+${Object.keys(extraProps).join()}`;
   }
 
   // Check the sizes array if there is one
   const names = constants.imageSizeNames;
   const validSizes = every(value, (item) => {
-    if (item.sizes) {
+    if (item.sizes && item.sizes.length) {
       return every(item.sizes, size => names.indexOf(size.name) >= 0
           && typeof size.width === 'number');
     }
@@ -94,6 +112,16 @@ validatejs.validators.imagesValidate = (value) => {
   }
 
   return null;
+};
+
+/**
+ * @param {number|string} value
+ */
+const intParser = (value) => {
+  if (typeof value === 'number') {
+    return Math.round(value);
+  }
+  return parseInt(value, 10);
 };
 
 /**
@@ -120,9 +148,9 @@ module.exports = (atts) => {
     const images = attributes.images.map((image) => {
       const sizes = (image.sizes || []).map(({ name, width }) => ({
         name,
-        width: parseInt(width, 10),
+        width: intParser(width),
       }));
-      const img = Object.assign({}, image, { size: parseInt(image.size, 10) });
+      const img = Object.assign({}, image, { size: intParser(image.size) });
       if (sizes.length) {
         Object.assign(img, { sizes });
       }

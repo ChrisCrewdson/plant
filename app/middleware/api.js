@@ -74,6 +74,7 @@ function saveFilesRequest(store, action, opts, next) {
 
   const data = new FormData();
   /** @type {(string|Blob)[]} */
+  // @ts-ignore - TODO: Come back and fix this
   const files = payload && payload.files;
   const note = payload && payload.note;
   if (files && files.length) {

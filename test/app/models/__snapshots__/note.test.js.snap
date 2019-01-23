@@ -41,3 +41,9 @@ Object {
   ],
 }
 `;
+
+exports[`/app/models/note note.model/images validation should fail if images has extra props 1`] = `
+Object {
+  "images": "Images must only have the following allowed props: id,ext,originalname,size,sizes and in one of the items in the array it found these props as well: extra",
+}
+`;

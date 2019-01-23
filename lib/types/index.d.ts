@@ -72,6 +72,7 @@ interface UploadedNoteFile {
   ext: string;
   originalname: string;
   size: number;
+  sizes: NoteImageSize[];
 }
 
 interface DerivedMulterFile {

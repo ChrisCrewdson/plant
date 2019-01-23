@@ -386,8 +386,7 @@ describe('/app/models/note', () => {
       try {
         noteValidator(note);
       } catch (err) {
-        expect(err).toBeTruthy();
-        expect(err.images).toBe('Images must only have the following allowed props: id,ext,originalname,size,sizes and found these props as well: extra');
+        expect(err).toMatchSnapshot();
         expect(noteCopy).toEqual(note);
         done();
       }

@@ -17,9 +17,13 @@ const plant = require('./plant');
 // Make sure not to append the key name, this will be done automatically.
 
 
-// Validate an integer date. Should be in the range of
-// something like 17000101 to 20201231. Not sure why we'd
-// have dates beyond the current day...
+/**
+ * Validate an integer date. Should be in the range of
+ * something like 17000101 to 20201231. Not sure why we'd
+ * have dates beyond the current day...
+ * @param {number} value
+ * @param {object} options
+ */
 validatejs.validators.intDateValidate = (value, options) => {
   if (Number.isNaN(value)) {
     // console.warn(`Date validate expected ${value} to not be NaN`);
