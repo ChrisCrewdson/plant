@@ -93,3 +93,8 @@ interface NoteReadProps {
 interface NoteReadState {
   showDeleteConfirmation: boolean;
 }
+
+interface LoadNotesRequestPayload {
+  plantIds?: string[];
+  noteIds?: string[];
+}

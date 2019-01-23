@@ -187,13 +187,16 @@ function updatePlant(store, action, next) {
  * @param {Function} next
  */
 function deletePlantRequest(store, action, next) {
-  const options = {
-    type: 'DELETE',
-    url: `/api/plant/${action.payload && action.payload.plantId}`,
-    success: actionFunc.deletePlantSuccess,
-    failure: actionFunc.deletePlantFailure,
-  };
-  ajax(store, options);
+  const { plantId } = /** @type {{ plantId: string }} */ (action.payload || {});
+  if (plantId) {
+    const options = {
+      type: 'DELETE',
+      url: `/api/plant/${plantId}`,
+      success: actionFunc.deletePlantSuccess,
+      failure: actionFunc.deletePlantFailure,
+    };
+    ajax(store, options);
+  }
   next(action);
 }
 
@@ -219,12 +222,12 @@ function deleteNoteRequest(store, action, next) {
  * @param {ActionMethodResult} action
  */
 function loadPlantRequest(store, action) {
-  if (!(action.payload && action.payload._id)) {
-    // console.error('No _id in loadPlantRequest', (new Error()).stack);
-  } else {
+  const { _id } = /** @type {{ _id: string }} */ (action.payload || {});
+
+  if (_id) {
     /** @type {AjaxOptions} */
     const options = {
-      url: `/api/plant/${action.payload._id}`,
+      url: `/api/plant/${_id}`,
       success: actionFunc.loadPlantSuccess,
       failure: actionFunc.loadPlantFailure,
     };
@@ -305,12 +308,12 @@ function loadLocationsRequest(store) {
 // plantIds: an array of plantIds
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {ActionMethodResult<LoadNotesRequestPayload>} action
  * @param {Function} next
  */
 function loadNotesRequest(store, action, next) {
-  const noteIds = action.payload && action.payload.noteIds;
-  const plantIds = action.payload && action.payload.plantIds;
+  const { plantIds, noteIds } = /** @type {LoadNotesRequestPayload} */ (action.payload || {});
+
   if (!noteIds && !plantIds) {
     // eslint-disable-next-line no-console
     console.error('No noteIds or plantIds on payload, action:', action);

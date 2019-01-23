@@ -37,6 +37,7 @@ describe('/app/middleware/api', () => {
         payload: {
           _id: '123',
           plantIds: ['123'], // To make loadNotesRequest work
+          plantId: '123', // To make deletePlantRequest work
         },
       };
 

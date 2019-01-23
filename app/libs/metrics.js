@@ -132,7 +132,7 @@ function calculateMetrics(acc, note, noteId, metrics) {
 function notesToMetricNotes(sortedNoteIds, notes) {
   /** @type {import('moment').Moment} */
   let lastNoteDate;
-  /** @type { Dictionary<number|import('moment').Moment>[]} */
+  /** @type {MetricItem[]} */
   const metrics = [];
 
   /**
