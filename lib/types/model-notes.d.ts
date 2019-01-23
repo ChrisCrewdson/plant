@@ -43,14 +43,43 @@ interface NoteImage {
 /**
  * An object with key/value pairs. Values are numbers or boolean.
  */
-type NoteMetric = { [key in MetaMetricKey]: number|boolean }
+// type NoteMetric = { [key in MetaMetricKey]: number|boolean }
+
+interface NoteMetric {
+  height: number;
+  girth: number;
+  harvestCount: number;
+  harvestWeight: number;
+  firstBlossom: boolean;
+  lastBlossom: boolean;
+  firstBud: boolean;
+  harvestStart: boolean;
+  harvestEnd: boolean;
+  leafShedStart: boolean;
+  leafShedEnd: boolean;
+}
+
+type MetricNoteTypes = 'since' | 'unfound' | 'note' | 'metric';
 
 interface MetricNote {
   noteId: string;
-  note: string;
-  sinceLast: any;
-  change: any;
-  type: string;
+  note?: UiNotesValue;
+  sinceLast?: string;
+  change?: any;
+  type: MetricNoteTypes;
+}
+
+type MetricItemMetricTypes = 'height' | 'girth';
+
+interface MetricItem {
+  date: import('moment').Moment;
+  height?: number;
+  girth?: number;
+}
+
+interface MetricChangePair {
+  prev: MetricItem;
+  last: MetricItem;
 }
 
 interface DbNote {

@@ -5,19 +5,19 @@ const utils = require('./utils');
 /**
  * Create the object that represents the component that goes between notes describing
  * what has happened between the notes.
- * @param {object[]} acc - An array of render information for the list of notes
+ * @param {MetricNote[]} acc - An array of render information for the list of notes
  * @param {UiNotesValue} note - the note being processed
  * @param {string} noteId - current note's id
  * @param {import('moment').Moment|undefined} lastNoteDate - the date of the previous note
  * @returns {import('moment').Moment} - The date from the note object as a Moment object
  */
 function since(acc, note, noteId, lastNoteDate) {
-  const { date } = note || {};
+  const { date } = note;
   const currentNoteDate = utils.intToMoment(date);
   const sinceLast = lastNoteDate
     ? `...and then after ${lastNoteDate.from(currentNoteDate, true)}`
     : '';
-  if (sinceLast && !lastNoteDate.isSame(currentNoteDate)) {
+  if (lastNoteDate && !lastNoteDate.isSame(currentNoteDate)) {
     acc.push({ noteId, sinceLast, type: 'since' });
   }
   return currentNoteDate;
@@ -26,9 +26,10 @@ function since(acc, note, noteId, lastNoteDate) {
 /**
  * Get the change or null if the prop isn't found in the last and at least
  *   one previous item in the collection.
- * @param {Object[]} metrics - An array of the metrics to this point in time
- * @param {string} prop - the metric being checked: 'height' or 'girth'
- * @returns {object} - with props prev and last which each have a date and a
+ * @param {MetricItem[]} metrics - An array
+ * of the metrics to this point in time
+ * @param {MetricItemMetricTypes} prop - the metric being checked: 'height' or 'girth'
+ * @returns {MetricChangePair|null} - with props prev and last which each have a date and a
  *   'height' or 'girth' prop. Or if there wasn't a previous object with this
  *   prop then null.
  */
@@ -68,9 +69,20 @@ function round(number, places) {
   return Math.round(number * pow) / pow;
 }
 
+/**
+ * @param {MetricChangePair} metric
+ * @param {MetricItemMetricTypes} prop
+ * @returns
+ */
 function crunchChangeNumbers(metric, prop) {
-  const valueDelta = round(metric.last[prop] - metric.prev[prop], 2);
-  const dateDelta = metric.last.date.diff(metric.prev.date, 'days');
+  const { last, prev } = metric;
+  const lastValue = last[prop];
+  const prevValue = prev[prop];
+  if (typeof lastValue !== 'number' || typeof prevValue !== 'number') {
+    throw new Error(`Unexpected type for lastValue ${lastValue} or prevValue ${prevValue}`);
+  }
+  const valueDelta = round(lastValue - prevValue, 2);
+  const dateDelta = last.date.diff(prev.date, 'days');
   return `The ${prop} has changed by ${valueDelta} inches over the last ${dateDelta} days.`;
 }
 
@@ -78,32 +90,36 @@ function crunchChangeNumbers(metric, prop) {
  * @param {MetricNote[]} acc
  * @param {UiNotesValue} note
  * @param {string} noteId
- * @param {*} metrics
+ * @param {MetricItem[]} metrics
  */
 function calculateMetrics(acc, note, noteId, metrics) {
-  const { height, girth } = note.metrics || {};
-  if (height || girth) {
-    const date = utils.intToMoment(note.date);
-    const metric = { date };
-    if (height) {
-      metric.height = height;
+  const { metrics: noteMetrics } = note;
+  if (noteMetrics) {
+    const { height, girth } = noteMetrics;
+    if (height || girth) {
+      const date = utils.intToMoment(note.date);
+      /** @type {MetricItem} */
+      const metric = { date };
+      if (height) {
+        metric.height = height;
+      }
+      if (girth) {
+        metric.girth = girth;
+      }
+      metrics.push(metric);
+      const heightChange = getChange(metrics, 'height');
+      const girthChange = getChange(metrics, 'girth');
+      const changes = [];
+      if (heightChange) {
+        const change = crunchChangeNumbers(heightChange, 'height');
+        changes.push(change);
+      }
+      if (girthChange) {
+        const change = crunchChangeNumbers(girthChange, 'girth');
+        changes.push(change);
+      }
+      acc.push({ noteId, change: changes.join(' '), type: 'metric' });
     }
-    if (girth) {
-      metric.girth = girth;
-    }
-    metrics.push(metric);
-    const heightChange = getChange(metrics, 'height');
-    const girthChange = getChange(metrics, 'girth');
-    const changes = [];
-    if (heightChange) {
-      const change = crunchChangeNumbers(heightChange, 'height');
-      changes.push(change);
-    }
-    if (girthChange) {
-      const change = crunchChangeNumbers(girthChange, 'girth');
-      changes.push(change);
-    }
-    acc.push({ noteId, change: changes.join(' '), type: 'metric' });
   }
 }
 
@@ -116,6 +132,7 @@ function calculateMetrics(acc, note, noteId, metrics) {
 function notesToMetricNotes(sortedNoteIds, notes) {
   /** @type {import('moment').Moment} */
   let lastNoteDate;
+  /** @type { Dictionary<number|import('moment').Moment>[]} */
   const metrics = [];
 
   /**
