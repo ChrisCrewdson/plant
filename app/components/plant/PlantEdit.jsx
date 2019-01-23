@@ -114,8 +114,9 @@ class PlantEdit extends React.Component {
     const {
       interimPlant, user, dispatch, history,
     } = /** @type {PlantEditProps} */ (this.props);
-    const plant = seamless.asMutable(interimPlant);
+    const plant = /** @type {UiPlantsValue} */ (seamless.asMutable(interimPlant));
     const { isNew = false } = plant;
+    /** @type {PlantDateFieldNames[]} */
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
       if (plant[dateField]) {

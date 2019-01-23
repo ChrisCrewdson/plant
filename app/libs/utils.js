@@ -297,8 +297,8 @@ function plantStats(plantIds, plants) {
 
 /**
  * The values of the errors object are arrays. Take the first item out of each array.
- * @param {Dictionary<string[]>} errors - values are arrays
- * @returns {object} - first element of value for each key
+ * @param {*} errors - values are arrays
+ * @returns {*} - first element of value for each key
  */
 function transformErrors(errors) {
   if (!errors) {
@@ -313,7 +313,7 @@ function transformErrors(errors) {
       // Assign first element of errors[key] (which is an arry) to acc[key]
       [acc[key]] = errors[key];
       return acc;
-    }, {});
+    }, /** @type {Dictionary<string>} */ ({}));
 }
 
 /**

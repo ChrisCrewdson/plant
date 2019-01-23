@@ -19,6 +19,10 @@ const utils = require('../libs/utils');
 // If the validator passes simply return null or undefined. Otherwise return a string or an array
 // of strings containing the error message(s).
 // Make sure not to append the key name, this will be done automatically.
+
+/**
+ * @param {string[]} value
+ */
 validatejs.validators.tagValidate = (value /* , options, key, attributes */) => {
   // tags array rules:
   // 1. lowercase alpha and -
@@ -57,10 +61,25 @@ validatejs.validators.tagValidate = (value /* , options, key, attributes */) => 
   return null;
 };
 
-// Intentionally mutates object
-// Transform:
-// 1. Lowercase elements of array
-// 2. Apply unique to array which might reduce length of array
+/**
+ * @param {string|number} value
+ * @returns {number}
+ */
+const floatParser = (value) => {
+  if (typeof value === 'number') {
+    return value;
+  }
+  return parseFloat(value);
+};
+
+/**
+ * Intentionally mutates object
+ * Transform:
+ * 1. Lowercase elements of array
+ * 2. Apply unique to array which might reduce length of array
+ * @param {UiPlantsValue} attributes
+ * @returns {UiPlantsValue}
+ */
 function transform(attributes) {
   if (attributes.tags && isArray(attributes.tags)) {
     // eslint-disable-next-line no-param-reassign
@@ -80,17 +99,23 @@ function transform(attributes) {
 
   if (attributes.loc) {
     // eslint-disable-next-line no-param-reassign
-    attributes.loc.coordinates[0] = parseFloat(attributes.loc.coordinates[0]);
+    attributes.loc.coordinates[0] = floatParser(attributes.loc.coordinates[0]);
     // eslint-disable-next-line no-param-reassign
-    attributes.loc.coordinates[1] = parseFloat(attributes.loc.coordinates[1]);
+    attributes.loc.coordinates[1] = floatParser(attributes.loc.coordinates[1]);
   }
 
   return attributes;
 }
 
-// Don't need an _id if we're creating a document, db will do this.
-// Don't need a userId if we're in the client, this will get added on the server
-// to prevent tampering with the logged in user.
+/**
+ * Don't need an _id if we're creating a document, db will do this.
+ * Don't need a userId if we're in the client, this will get added on the server
+ * to prevent tampering with the logged in user.
+ * @param {UiPlantsValue} attributes
+ * @param {object} options
+ * @param {boolean} options.isNew
+ * @returns {UiPlantsValue}
+ */
 module.exports = (attributes, { isNew }) => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
@@ -122,13 +147,10 @@ module.exports = (attributes, { isNew }) => {
     attributes = Object.assign({}, attributes, { _id: makeMongoId() });
   }
 
-  // console.log('attributes:', attributes);
+  /** @type {UiPlantsValue} */
   const cleaned = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
-  // console.log('cleaned:', cleaned);
   const transformed = transform(cleaned);
-  // console.log('transformed:', transformed);
   const errors = validatejs.validate(transformed, constraints);
-  // console.log('errors:', errors);
   const flatErrors = utils.transformErrors(errors);
   if (flatErrors) {
     throw flatErrors;

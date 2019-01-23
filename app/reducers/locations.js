@@ -106,7 +106,7 @@ function loadPlantsSuccess(state, action) {
  * @returns {UiLocations}
  */
 function deletePlantRequest(state, { payload: { locationId, plantId } }) {
-  const plantIds = seamless.getIn(state, [locationId, 'plantIds'], []);
+  const plantIds = (state[locationId] && state[locationId].plantIds) || [];
   if (plantIds.includes(plantId)) {
     const pIds = plantIds.filter(pId => pId !== plantId);
     return seamless.setIn(state, [locationId, 'plantIds'], pIds);

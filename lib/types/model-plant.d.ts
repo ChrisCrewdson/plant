@@ -4,18 +4,31 @@ declare type TerminatedReason =
 'died' |
 'transferred';
 
+declare type PlantDateFieldNames =
+  'plantedDate' |
+  'purchasedDate' |
+  'terminatedDate';
+
 interface BasePlant {
   botanicalName?: string;
   commonName?: string;
   description?: string;
   loc?: Geo;
   plantedDate?: number; // YYYYMMDD
-  price?: number;
+  /**
+   * TODO: In the UI this will be a string while editing but in DB will be a value or be missing.
+   *       So DbPlant cannot inherit this without changing this type to a number
+   */
+  price?: number|string;
   purchasedDate?: number; // YYYYMMDD
   terminatedReason?: TerminatedReason;
   terminatedDate?: number;
   terminatedDescription?: string;
   title: string;
+  /**
+   * tags is currently not used but is in the validation code so adding it here.
+   */
+  tags: string[];
 }
 
 // There are 3 data models for each collection:
