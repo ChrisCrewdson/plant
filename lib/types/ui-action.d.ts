@@ -1,10 +1,4 @@
 
-interface UiActions {
-  // TODO: Should we split out the action object into two objects. One with string values
-  // and the other with functions. It will make typing more specific and be cleaner in the
-  // code.
-  [action: string]: Function | string;
-}
 
 declare type UiActionType =
   'CHANGE_ACTIVE_LOCATION_ID' |
@@ -62,17 +56,13 @@ declare type UiActionType =
   'UPSERT_NOTE_REQUEST' |
   'UPSERT_NOTE_SUCCESS';
 
-interface UiActionsNextEnum {
-  // TODO: Work out how to get the commented line below to work
-  // [key in UiActionType]: string;
-  [key:string]: string;
-}
+declare type UiActionsEnum = { [key in UiActionType]: string; }
 
-interface UiActionsNextFunction {
+interface UiActionsFunction {
   [key:string]: ActionMethod;
 }
 
 interface UiActionsAcc {
-  enum: UiActionsNextEnum;
-  func: UiActionsNextFunction;
+  enum: UiActionsEnum;
+  func: UiActionsFunction;
 }
