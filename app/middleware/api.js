@@ -64,7 +64,7 @@ function createPlant(store, action, next) {
  * type: "image/jpeg"
  * webkitRelativePath:""
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  * @param {object} opts
  * @param {Function} next
  */
@@ -106,7 +106,7 @@ function saveFilesRequest(store, action, opts, next) {
 // note: The note being created
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  * @param {Function} next
  */
 function upsertNoteRequest(store, action, next) {
@@ -149,7 +149,7 @@ function upsertNoteRequest(store, action, next) {
 
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  * @param {Function} next
  */
 function updatePlant(store, action, next) {
@@ -184,7 +184,7 @@ function updatePlant(store, action, next) {
 
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  * @param {Function} next
  */
 function deletePlantRequest(store, action, next) {
@@ -203,7 +203,7 @@ function deletePlantRequest(store, action, next) {
 
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  * @param {Function} next
  */
 function deleteNoteRequest(store, action, next) {
@@ -220,7 +220,7 @@ function deleteNoteRequest(store, action, next) {
 
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  */
 function loadPlantRequest(store, action) {
   const { _id } = /** @type {{ _id: string }} */ (action.payload || {});
@@ -240,7 +240,7 @@ function loadPlantRequest(store, action) {
 // action.payload is a locationId
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  * @param {Function} next
  */
 function loadPlantsRequest(store, action, next) {
@@ -258,7 +258,7 @@ function loadPlantsRequest(store, action, next) {
 // Get a specific user
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  */
 function loadUserRequest(store, action) {
   const userId = action.payload;
@@ -309,7 +309,7 @@ function loadLocationsRequest(store) {
 // plantIds: an array of plantIds
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult<LoadNotesRequestPayload>} action
+ * @param {PlantRedux.PlantAction<LoadNotesRequestPayload>} action
  * @param {Function} next
  */
 function loadNotesRequest(store, action, next) {
@@ -338,7 +338,7 @@ function loadNotesRequest(store, action, next) {
 // action.payload is an array of plantIds
 /**
  * @param {import('redux').Store} store
- * @param {ActionMethodResult} action
+ * @param {PlantRedux.PlantAction} action
  */
 function loadUnloadedPlantsRequest(store, action) {
   if (!action.payload || !action.payload.length) {

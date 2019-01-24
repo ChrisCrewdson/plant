@@ -45,7 +45,7 @@ function logoutFailure(state, action) {
 /**
  * Load Location Success is called after a response from server.
  * @param {UiUser} state
- * @param {PlantActions.LoadLocationsSuccessAction} action
+ * @param {PlantRedux.LoadLocationsSuccessAction} action
  * @returns {UiUser}
  */
 function loadLocationsSuccess(state, action) {
@@ -92,7 +92,7 @@ const reducers = {
 /**
  * The user reducer
  * @param {UiUser} state
- * @param {PlantActions.PlantAction} action
+ * @param {PlantRedux.PlantAction} action
  * @returns {UiUser}
  */
 module.exports = (state, action) => {

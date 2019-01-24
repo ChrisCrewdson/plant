@@ -6,7 +6,7 @@ const plants = require('./plants');
 const user = require('./user');
 const users = require('./users');
 
-/** @type {import('redux').ReducersMapObject} */
+/** @type {import('redux').ReducersMapObject<any, PlantRedux.PlantAction>} */
 const reducersMap = {
   interim,
   locations,

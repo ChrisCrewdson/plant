@@ -1,8 +1,11 @@
+// PlantRedux
+// This file holds the specialized typings that apply to this project for Redux operations.
+
 import * as redux from 'redux';
 
-declare namespace PlantActions {
+declare namespace PlantRedux {
   /**
-   * The Actions in Plant only have 2 props:
+   * The Actions in Plant have 2 props:
    * type and payload
    * type is always a string so we can extend redux.Action for this.
    * payload can be anything
@@ -14,5 +17,5 @@ declare namespace PlantActions {
   interface LoadLocationsSuccessAction extends PlantAction<UiLocationsValue[]> {}
 }
 
-export = PlantActions
-export as namespace PlantActions
+export = PlantRedux
+export as namespace PlantRedux

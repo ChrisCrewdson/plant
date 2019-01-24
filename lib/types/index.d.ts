@@ -115,12 +115,13 @@ interface AjaxOptions {
   note?: any;
 }
 
-interface ActionMethodResult<T = Dictionary<any>|string> {
-  type: string;
-  payload?: T;
-}
-
-declare type ActionMethod = (payload?: Dictionary<any> | string) => ActionMethodResult;
+/**
+ * An ActionMethod has the "type" baked into it.
+ * Its single argument is the payload.
+ * It returns an object that has the "type" and "payload" props.
+ * This is the PlantAction<T> object
+ */
+declare type ActionMethod = (payload?: Dictionary<any> | string) => PlantRedux.PlantAction;
 
 /**
  * Also using this for AddLocationButtonProps
