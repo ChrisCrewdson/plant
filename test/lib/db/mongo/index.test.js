@@ -54,15 +54,16 @@ describe('/lib/db/mongo/', () => {
         },
       };
       const body = await mongo.findOrCreateUser(user, mockLogger);
-      expect(body).toBeTruthy();
+      expect(body).toBeInstanceOf(Object);
       expect(body._id).toBeTruthy();
-      expect(constants.mongoIdRE.test(body._id)).toBeTruthy();
+      expect(constants.mongoIdRE.test(body._id)).toBe(true);
       expect(body.locationIds).toBeTruthy();
-      const bodyLocationId = _.get(body, 'locationIds.0._id');
-      expect(constants.mongoIdRE.test(bodyLocationId)).toBeTruthy();
-      delete body._id;
-      delete body.locationIds;
+      const [bodyLocationId] = /** @type {string[]} */ (body.locationIds);
+      expect(constants.mongoIdRE.test(bodyLocationId)).toBe(true);
+
       expect(body).toMatchSnapshot({
+        locationIds: expect.any(Array),
+        _id: expect.any(String),
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
       });

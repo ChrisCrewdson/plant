@@ -2,6 +2,7 @@
 
 exports[`/lib/db/mongo/ user should fetch the user created in the before setup 1`] = `
 Object {
+  "_id": Any<String>,
   "createdAt": Any<Date>,
   "email": "johnsmith@gmail.com",
   "google": Object {
@@ -47,6 +48,7 @@ Object {
     "urls": Array [],
     "verified": false,
   },
+  "locationIds": Any<Array>,
   "name": "John Smith",
   "updatedAt": Any<Date>,
 }
