@@ -19,6 +19,9 @@ interface UiLocationsValue {
   plantIds: string[];
 }
 
+/**
+ * The key is the MongoId and the value is the document
+ */
 interface UiLocations {
   [id: string]: UiLocationsValue;
 }

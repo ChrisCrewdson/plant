@@ -45,16 +45,17 @@ function logoutFailure(state, action) {
 /**
  * Load Location Success is called after a response from server.
  * @param {UiUser} state
- * @param {import('redux').AnyAction} action
+ * @param {PlantActions.LoadLocationsSuccessAction} action
  * @returns {UiUser}
  */
 function loadLocationsSuccess(state, action) {
-  const { payload: locations = [] } = action;
+  // const { payload: locations = [] } = action;
+  const { payload: locations } = action;
   if (state.isLoggedIn && !state.activeLocationId) {
     const { _id } = state;
 
     // Find the first location that this user is a member of
-    const location = locations.find(l => l.members[_id]);
+    const location = locations.find(l => !!l.members[_id]);
 
     if (location) {
       // console.log('found location');
@@ -91,7 +92,7 @@ const reducers = {
 /**
  * The user reducer
  * @param {UiUser} state
- * @param {import('redux').AnyAction} action
+ * @param {PlantActions.PlantAction} action
  * @returns {UiUser}
  */
 module.exports = (state, action) => {

@@ -83,10 +83,10 @@ const actions = actionList.reduce(
     const funcName = action.split('_').map((part, index) => (index === 0 ? part.toLowerCase() : properCase(part))).join('');
     acc.func[funcName] = createMethod(action);
     return acc;
-  }, {
+  }, /** @type {UiActionsAcc} */ ({
     enum: {},
     func: {},
-  });
+  }));
 
 module.exports = {
   actionEnum: actions.enum,
