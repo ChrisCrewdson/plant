@@ -3,16 +3,16 @@ interface NavbarProps {
 }
 
 interface OpenGraphMeta {
-  property: String;
-  content: String;
+  property: string;
+  content: string;
 }
 
 interface ServerSideRenderData {
-  html?: String;
-  initialState?: Object;
+  html?: string;
+  initialState?: PlantStateTree;
   og?: OpenGraphMeta[]; // Facebook Open Graph
-  req?: import('express').Request | Object;
-  title?: String;
+  req?: import('express').Request | object;
+  title?: string;
 }
 
 declare type InputComboTextPropsType = 'text' | 'number';
