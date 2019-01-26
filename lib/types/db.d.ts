@@ -22,13 +22,13 @@ interface DbLocation {
   title: string;
 }
 
-interface BizLocation {
-  _id?: string; // Only ? before creating. Do we need another interface to express the created one?
+interface BizLocation extends Omit<DbLocation, '_id' | 'createdBy'> {
+  /**
+   * TODO: Check if this is optional.
+   */
+  _id?: string;
   createdBy: string;
-  loc?: Geo;
-  members: Dictionary<Role>;
-  stations?: Dictionary<DbLocationStationObj>;
-  title: string;
+  plantIds?: string[];
 }
 
 interface DbUserFacebook {

@@ -52,6 +52,10 @@ interface BizPlant extends BasePlant {
    */
   notesRequested?: boolean;
   plantedOn?: number;
+  /**
+   * An array of MongoId strings representing notes
+   */
+  notes?: string[];
 }
 
 interface UiPlantsValue extends BasePlant {
