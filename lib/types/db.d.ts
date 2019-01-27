@@ -31,6 +31,44 @@ interface BizLocation extends Omit<DbLocation, '_id' | 'createdBy'> {
   plantIds?: string[];
 }
 
+// UpsertLocation structures Start
+
+interface UpsertLocationBodyBase {
+  action: string;
+  locationId: string;
+}
+
+interface UpsertLocationMemberBody extends UpsertLocationBodyBase {
+  role: Role;
+  userId: string;
+}
+interface UpsertLocationWeatherBody extends UpsertLocationBodyBase {
+  stationId: string;
+  name: string;
+  enabled: string;
+}
+interface UpsertLocationUser {
+  _id: string;
+}
+
+interface UpsertLocationMember {
+  user: UpsertLocationUser;
+  body: UpsertLocationMemberBody;
+}
+
+interface UpsertLocationWeather {
+  user: UpsertLocationUser;
+  body: UpsertLocationWeatherBody;
+}
+
+type UpsertLocationMemberFn = (action: string, data: UpsertLocationMember, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
+type UpsertLocationMemberFnBound = (data: UpsertLocationMember, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
+
+type UpsertLocationWeatherFn = (action: string, data: UpsertLocationWeather, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
+type UpsertLocationWeatherFnBound = (data: UpsertLocationWeather, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
+
+// UpsertLocation structures End
+
 interface DbUserFacebook {
   first_name: string;
   gender: string;
