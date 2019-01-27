@@ -72,14 +72,14 @@ function round(number, places) {
 /**
  * @param {MetricChangePair} metric
  * @param {MetricItemMetricTypes} prop
- * @returns
+ * @returns {string}
  */
 function crunchChangeNumbers(metric, prop) {
   const { last, prev } = metric;
   const lastValue = last[prop];
   const prevValue = prev[prop];
   if (typeof lastValue !== 'number' || typeof prevValue !== 'number') {
-    throw new Error(`Unexpected type for lastValue ${lastValue} or prevValue ${prevValue}`);
+    return '';
   }
   const valueDelta = round(lastValue - prevValue, 2);
   const dateDelta = last.date.diff(prev.date, 'days');
@@ -112,11 +112,15 @@ function calculateMetrics(acc, note, noteId, metrics) {
       const changes = [];
       if (heightChange) {
         const change = crunchChangeNumbers(heightChange, 'height');
-        changes.push(change);
+        if (change) {
+          changes.push(change);
+        }
       }
       if (girthChange) {
         const change = crunchChangeNumbers(girthChange, 'girth');
-        changes.push(change);
+        if (change) {
+          changes.push(change);
+        }
       }
       acc.push({ noteId, change: changes.join(' '), type: 'metric' });
     }
