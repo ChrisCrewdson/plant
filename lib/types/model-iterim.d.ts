@@ -30,24 +30,6 @@ interface UiInterimUploadProgress {
   note?: UiNotesValue;
 }
 
-interface UiInterimNote {
-  _id?: string;
-  note?: string;
-  plant?: UiPlantsValue;
-  isNew?: boolean;
-  uploadProgress?: UiInterimUploadProgress;
-  /**
-   * At the time of writing this I think that date is sometimes a string. In the note.test.js
-   * file there are validation tests that confirms that it's not a string.
-   */
-  date?: number;
-  errors?: Dictionary<string>;
-  plantIds: string[];
-  metrics?: any; // TODO: Fix typing of metrics in UiInterimNote.
-  images?: NoteImage[];
-  userId?: string;
-}
-
 interface UiInterimNoteContainer {
   note: UiInterimNote;
   plant: UiPlantsValue;

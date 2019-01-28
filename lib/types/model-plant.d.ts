@@ -21,9 +21,9 @@ interface BasePlant {
    */
   price?: number|string;
   purchasedDate?: number; // YYYYMMDD
-  terminatedReason?: TerminatedReason;
   terminatedDate?: number;
   terminatedDescription?: string;
+  terminatedReason?: TerminatedReason;
   title: string;
   /**
    * tags is currently not used but is in the validation code so adding it here.
@@ -45,7 +45,6 @@ interface DbPlant extends BasePlant {
 interface BizPlant extends BasePlant {
   _id: string;
   locationId: string;
-  userId: string;
   /**
    * Used by UI to signal if the notes for the plant have been requested
    * from the server.
@@ -56,21 +55,22 @@ interface BizPlant extends BasePlant {
    * An array of MongoId strings representing notes
    */
   notes?: string[];
+  userId: string;
 }
 
 interface UiPlantsValue extends BasePlant {
-  isNew?: boolean;
   _id: string;
-  notes: UiPlantsNote[];
-  locationId: string;
+  errors: Dictionary<string>;
+  isNew?: boolean;
   isTerminated?: boolean;
+  locationId: string;
+  notes: UiPlantsNote[];
   /**
    * Used by UI to signal if the notes for the plant have been requested
    * from the server.
    */
   notesRequested?: boolean;
   userId?: string;
-  errors: Dictionary<string>;
 }
 
 interface BizPlantMap {
@@ -88,8 +88,8 @@ interface UiPlants {
 
 interface PlantItemProps {
   dispatch: import('redux').Dispatch;
-  userCanEdit: boolean;
   plant: UiPlantsValue;
+  userCanEdit: boolean;
 }
 
 interface PlantEditTerminatedProps {
@@ -101,16 +101,16 @@ interface PlantReadProps {
   dispatch: import('redux').Dispatch;
   history: import('history').History;
   interim: UiInterim;
-  userCanEdit: boolean;
-  notes: UiNotes;
   locations: UiLocations;
+  notes: UiNotes;
   plant: UiPlantsValue;
   plants: UiPlants;
+  userCanEdit: boolean;
 }
 
 interface PlantsProps {
-  match: import('react-router').match<any>;
   history: import('history').History;
+  match: import('react-router').match<any>;
 }
 
 interface UiPlantLocation {
@@ -121,8 +121,8 @@ interface UiPlantLocation {
 }
 
 interface UiPlantLocationCanvas {
-  plants: Dictionary<UiPlantLocation>;
   canvasHeight: number;
+  plants: Dictionary<UiPlantLocation>;
 }
 
 interface PlantPropsParams {
@@ -140,17 +140,17 @@ interface PlantPropsSearchParams {
  * TODO: Fix this so that the SSR provides shapes that replicate the React Router interfaces.
  */
 interface PlantProps {
+  location?: import('history').Location;
+  match?: import('react-router').match<any>;
   params?: PlantPropsParams;
   searchParams?: PlantPropsSearchParams;
-  match?: import('react-router').match<any>;
-  location?: import('history').Location;
 }
 
 interface PlantEditProps {
   dispatch: import('redux').Dispatch;
   history: import('history').History;
   interimPlant: UiPlantsValue;
+  locations: UiLocations;
   user: UiUsersValue
   users: UiUsers;
-  locations: UiLocations;
 }

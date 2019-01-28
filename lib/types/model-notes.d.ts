@@ -84,24 +84,42 @@ interface MetricChangePair {
 
 interface DbNote {
   _id: import('mongodb').ObjectID;
-  plantIds: import('mongodb').ObjectID[];
-  userId: import('mongodb').ObjectID;
   date: number;
   images?: NoteImage[];
   metrics?: NoteMetric;
   note?: string;
+  plantIds: import('mongodb').ObjectID[];
+  userId: import('mongodb').ObjectID;
 }
 
 interface BizNote extends Omit<DbNote, '_id' | 'plantIds' | 'userId'> {
   _id: string;
   plantIds: string[];
-  userId: string;
   /**
    * Although showImages is used in the UI layer it might need to be set in the server/biz
    * layer based on the type of request. E.g. if the noteId is in the URL then we show the
    * images for that note.
    */
   showImages?: boolean;
+  userId: string;
+}
+
+interface UiInterimNote {
+  _id?: string;
+  /**
+   * At the time of writing this I think that date is sometimes a string. In the note.test.js
+   * file there are validation tests that confirms that it's not a string.
+   */
+  date?: number;
+  errors?: Dictionary<string>;
+  images?: NoteImage[];
+  isNew?: boolean;
+  metrics?: any; // TODO: Fix typing of metrics in UiInterimNote.
+  note?: string;
+  plant?: UiPlantsValue;
+  plantIds: string[];
+  uploadProgress?: UiInterimUploadProgress;
+  userId?: string;
 }
 
 interface BizNoteMap {

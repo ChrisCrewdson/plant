@@ -117,7 +117,9 @@ describe('/app/models/plant', () => {
     expect(transformed._id).toBe(plant._id);
     expect(transformed.title).toBe(plant.title);
     expect(transformed.userId).toBe(plant.userId);
+    // @ts-ignore - intentionally adding a non-existing property for testing
     expect(transformed.fakeName1).toBeFalsy();
+    // @ts-ignore - intentionally adding a non-existing property for testing
     expect(transformed.fakeName2).toBeFalsy();
     expect(plantCopy).toEqual(plant);
   });
@@ -160,6 +162,7 @@ describe('/app/models/plant', () => {
   });
 
   test('should fail if locationId is missing', (done) => {
+    /** @type {UiPlantsValue} */
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       userId: 'cf885bf372488977ae0d6475',
