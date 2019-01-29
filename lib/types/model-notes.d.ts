@@ -104,6 +104,10 @@ interface BizNote extends Omit<DbNote, '_id' | 'plantIds' | 'userId'> {
   userId: string;
 }
 
+interface BizNoteNew extends Omit<BizNote, '_id' | 'showImages'> {
+  _id?: string;
+}
+
 interface UiInterimNote {
   _id?: string;
   /**
