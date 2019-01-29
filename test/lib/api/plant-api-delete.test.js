@@ -20,10 +20,10 @@ describe('plant-api-delete', () => {
   describe('simple plant deletion', () => {
     test('should delete a plant without notes', async () => {
       const plants = await helper.createPlants(1, userId, locationId);
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
-        json: true,
         url: `/api/plant/${plants[0]._id}`,
       };
 
@@ -33,10 +33,10 @@ describe('plant-api-delete', () => {
     });
 
     test('should return a 404 if plant id does not exist', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
-        json: true,
         url: `/api/plant/${utils.makeMongoId()}`,
       };
 
@@ -92,10 +92,10 @@ describe('plant-api-delete', () => {
       notes.push(note3);
 
       // 3. Delete plant #1
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
-        json: true,
         url: `/api/plant/${plants[0]._id}`,
       };
       const { httpMsg: response4 } = await helper.makeRequest(reqOptions);
@@ -106,10 +106,10 @@ describe('plant-api-delete', () => {
       expect(result2).toBeUndefined();
 
       // 5. Retrieve plant #2 and confirm that both notes are attached.
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions2 = {
         method: 'GET',
         authenticate: true,
-        json: true,
         url: `/api/plant/${plants[1]._id}`,
       };
 

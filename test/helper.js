@@ -186,11 +186,11 @@ async function createPlants(numPlants, userId, locationId) {
    * @returns {Promise<BizPlant>}
    */
   async function createPlant(count) {
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'POST',
       authenticate: true,
       body: Object.assign({}, plantTemplate, { title: `${plantTemplate.title} ${count}` }),
-      json: true,
       url: '/api/plant',
     };
 

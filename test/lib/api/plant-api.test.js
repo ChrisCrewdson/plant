@@ -25,11 +25,11 @@ describe('plant-api', () => {
   test(
     'should fail to create a plant record if user is not authenticated',
     async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'POST',
         authenticate: false,
         body: initialPlant,
-        json: true,
         url: '/api/plant',
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -40,11 +40,11 @@ describe('plant-api', () => {
   );
 
   test('should fail server validation if title is missing', async () => {
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'POST',
       authenticate: true,
       body: Object.assign({}, initialPlant, { title: '' }),
-      json: true,
       url: '/api/plant',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -57,11 +57,11 @@ describe('plant-api', () => {
   });
 
   test('should create a plant', async () => {
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'POST',
       authenticate: true,
       body: initialPlant,
-      json: true,
       url: '/api/plant',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -79,10 +79,10 @@ describe('plant-api', () => {
   });
 
   test('should retrieve the just created plant', async () => {
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'GET',
       authenticate: false,
-      json: true,
       url: `/api/plant/${plantId}`,
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -101,10 +101,10 @@ describe('plant-api', () => {
   });
 
   test('should fail to retrieve a plant if the id does not exist', async () => {
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'GET',
       authenticate: false,
-      json: true,
       url: '/api/plant/does-not-exist',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -124,11 +124,11 @@ describe('plant-api', () => {
       },
     );
 
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'PUT',
       authenticate: true,
       body: updatedPlant,
-      json: true,
       url: '/api/plant',
     };
 
@@ -140,10 +140,10 @@ describe('plant-api', () => {
   });
 
   test('should retrieve the just updated plant', async () => {
+    /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
       method: 'GET',
       authenticate: false,
-      json: true,
       url: `/api/plant/${plantId}`,
     };
 

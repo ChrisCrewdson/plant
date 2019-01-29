@@ -31,10 +31,10 @@ describe('plants-api', () => {
     // it('should return an empty list if locationId exists and has no plants');
 
     test('should retrieve the just created plants by locationId', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'GET',
         authenticate: false,
-        json: true,
         url: `/api/plants/${locationId}`,
       };
 
