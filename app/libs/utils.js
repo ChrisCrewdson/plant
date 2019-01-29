@@ -297,8 +297,8 @@ function plantStats(plantIds, plants) {
 
 /**
  * The values of the errors object are arrays. Take the first item out of each array.
- * @param {*} errors - values are arrays
- * @returns {*} - first element of value for each key
+ * @param {Dictionary<string[]>=} errors - values are arrays
+ * @returns {Dictionary<string>|undefined} - first element of value for each key
  */
 function transformErrors(errors) {
   if (!errors) {
@@ -310,7 +310,7 @@ function transformErrors(errors) {
      * @param {string} key
      */
     (acc, key) => {
-      // Assign first element of errors[key] (which is an arry) to acc[key]
+      // Assign first element of errors[key] (which is an array) to acc[key]
       [acc[key]] = errors[key];
       return acc;
     }, /** @type {Dictionary<string>} */ ({}));
@@ -318,6 +318,7 @@ function transformErrors(errors) {
 
 /**
  * Tests to see if JS runtime (window) supports Geo Location
+ * @returns {boolean}
  */
 function hasGeo() {
   return !!(window && window.navigator && window.navigator.geolocation);

@@ -46,11 +46,11 @@ describe('note-api', () => {
 
   describe('create failures', () => {
     test('should fail to create a note if user is not authenticated', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'POST',
         authenticate: false,
         body: initialNote,
-        json: true,
         url: '/api/note',
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -60,29 +60,30 @@ describe('note-api', () => {
     });
 
     test('should fail server validation if plantIds are missing', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'POST',
         authenticate: true,
         body: Object.assign({}, initialNote, { plantIds: [] }),
-        json: true,
         url: '/api/note',
+        text: true,
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
       // response should look like:
       // { plantIds: [ 'Plant ids must be an array' ], note: [ 'Note can\'t be blank' ] }
       expect(response.status).toBe(400);
       expect(httpMsg).toBeTruthy();
-      expect(httpMsg.plantIds).toBe('You must select at least 1 plant for this note.');
+      expect(httpMsg).toBe('Error validating note during upsert. Check logs.');
     });
   });
 
   describe('note-api create/retrieve notes', () => {
     test('should create a note', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'POST',
         authenticate: true,
         body: initialNote,
-        json: true,
         url: '/api/note',
       };
       // logger.trace('options for note create', {reqOptions});
@@ -99,10 +100,10 @@ describe('note-api', () => {
     });
 
     test('should retrieve the just created noteId plant', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'GET',
         authenticate: false,
-        json: true,
         url: `/api/plant/${plantId}`,
       };
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -143,11 +144,11 @@ describe('note-api', () => {
         },
       );
 
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'POST',
         authenticate: true,
         body: updatedNote,
-        json: true,
         url: '/api/note',
       };
 
@@ -176,10 +177,10 @@ describe('note-api', () => {
     test(
       'should retrieve the just updated noteId as part of a plant request',
       async () => {
+        /** @type {HelperMakeRequestOptions} */
         const reqOptions = {
           method: 'GET',
           authenticate: false,
-          json: true,
           url: `/api/plant/${plantId}`,
         };
 
@@ -210,11 +211,11 @@ describe('note-api', () => {
     test(
       'should retrieve the noteId as part of a multiple note request',
       async () => {
+        /** @type {HelperMakeRequestOptions} */
         const reqOptions = {
           method: 'POST',
           authenticate: true,
           body: { noteIds: [noteId] },
-          json: true,
           url: '/api/notes',
         };
 
@@ -234,11 +235,11 @@ describe('note-api', () => {
     test(
       'should retrieve the noteId as part of a plantId note request',
       async () => {
+        /** @type {HelperMakeRequestOptions} */
         const reqOptions = {
           method: 'POST',
           authenticate: true,
           body: { plantIds: [plantId] },
-          json: true,
           url: '/api/notes',
         };
 
@@ -256,10 +257,10 @@ describe('note-api', () => {
     );
 
     test('should delete the note', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'DELETE',
         authenticate: true,
-        json: true,
         url: `/api/note/${noteId}`,
       };
 
@@ -280,10 +281,10 @@ describe('note-api', () => {
     });
 
     test('should confirm that the note has been deleted', async () => {
+      /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
         method: 'GET',
         authenticate: false,
-        json: true,
         url: `/api/plant/${plantId}`,
       };
 
@@ -353,11 +354,11 @@ describe('note-api', () => {
           sizes,
         };
 
+        /** @type {HelperMakeRequestOptions} */
         const reqOptions = {
           method: 'PUT',
           authenticate: false,
           body: putData,
-          json: true,
           url: '/api/image-complete?token=fake-image-token',
         };
 

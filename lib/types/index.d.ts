@@ -15,12 +15,13 @@ interface Logger {
 
 declare namespace Express {
   export interface Request {
-    logger: Logger;
-    user?: BizUser;
+    body?: any;
     files?: Multer.File[];
-    logout: Function;
-    logIn: Function;
     isAuthenticated?: Function;
+    logger: Logger;
+    logIn: Function;
+    logout: Function;
+    user?: BizUser;
   }
 }
 
@@ -90,6 +91,10 @@ interface HelperMakeRequestOptions {
   url: string;
   method?: string;
   body?: object;
+  /**
+   * If this is true then the server request expects text back. If not then it
+   * expects a JSON object back and will (behind the scenes) to JSON.parse()
+   */
   text?: boolean;
 }
 
