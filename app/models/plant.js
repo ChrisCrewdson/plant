@@ -121,7 +121,7 @@ module.exports = (attributes, { isNew }) => {
     _id: { format: constants.mongoIdRE, presence: true },
     botanicalName: { length: { maximum: 100 } },
     commonName: { length: { maximum: 100 } },
-    description: { length: { maximum: 500 } },
+    description: { length: { maximum: 2500 } },
     // { type: "Point", coordinates: [ 40, 5 ] }
     loc: { presence: false },
     'loc.type': { presence: false }, // if loc is present then this must be present and be "Point"
