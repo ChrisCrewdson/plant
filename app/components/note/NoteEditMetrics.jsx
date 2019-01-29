@@ -126,8 +126,8 @@ class NoteEditMetrics extends React.PureComponent {
   }
 
   /**
-   * @param {object} metaMetric - All the metrics available
-   * @param {string} value - the value if one has been set or an empty string.
+   * @param {MetaMetric} metaMetric - All the metrics available
+   * @param {number|boolean} value - the value if one has been set or an empty string.
    * @returns {object} - a rendered React component to edit this type of metric
    */
   renderMetric(metaMetric, value) {
@@ -136,13 +136,16 @@ class NoteEditMetrics extends React.PureComponent {
 
   render() {
     const { interimNote, error } = /** @type {NoteEditMetricProps} */ (this.props);
-    const { metrics = {} } = interimNote || {};
+    const {
+      metrics = /** @type {NoteMetric} */ ({}),
+    } = /** @type {UiInterimNote} */ (interimNote || {});
     const { metaMetrics } = utils;
 
     const renderedMetrics = metaMetrics.map((metaMetric) => {
-      const value = metrics[metaMetric.key];
-      const renderValue = (value || value === 0) ? value : '';
-      return this.renderMetric(metaMetric, renderValue);
+      const { key } = metaMetric;
+      const value = metrics[key];
+      // const renderValue = (value || value === 0) ? value : '';
+      return this.renderMetric(metaMetric, value);
     });
 
     return (

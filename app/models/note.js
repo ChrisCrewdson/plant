@@ -58,6 +58,7 @@ function transform(attributes) {
 /**
  * Validate the parts of the images array
  * @param {UploadedNoteFile[]} value
+ * @returns {string|null}
  */
 validatejs.validators.imagesValidate = (value) => {
   if (!value) {
@@ -116,6 +117,7 @@ ${Object.keys(extraProps).join()}`;
 
 /**
  * @param {number|string} value
+ * @returns {number}
  */
 const intParser = (value) => {
   if (typeof value === 'number') {

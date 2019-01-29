@@ -108,20 +108,15 @@ interface BizNoteNew extends Omit<BizNote, '_id' | 'showImages'> {
   _id?: string;
 }
 
-interface UiInterimNote {
-  _id?: string;
+interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
   /**
    * At the time of writing this I think that date is sometimes a string. In the note.test.js
    * file there are validation tests that confirms that it's not a string.
    */
   date?: number;
   errors?: Dictionary<string>;
-  images?: NoteImage[];
   isNew?: boolean;
-  metrics?: any; // TODO: Fix typing of metrics in UiInterimNote.
-  note?: string;
   plant?: UiPlantsValue;
-  plantIds: string[];
   uploadProgress?: UiInterimUploadProgress;
   userId?: string;
 }
