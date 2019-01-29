@@ -10,6 +10,7 @@ const utils = require('../../libs/utils');
 const NotesRead = require('../note/NotesRead');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
 const { actionFunc } = require('../../actions');
+const Markdown = require('../common/Markdown');
 
 const dateFormat = 'DD-MMM-YYYY';
 
@@ -131,25 +132,17 @@ class PlantRead extends React.PureComponent {
       value: plant.botanicalName,
     }];
 
-    const basicTitles = titles.map(({ name, text, value }) => {
+    const basicTitles = titles.map(({ text, value }) => {
       if (!value) {
         return null;
       }
-      const renderText = `${text ? `${text}: ` : ''}${value}`;
-      return (
-        <div key={name}>
-          {renderText}
-        </div>
-      );
+      return `${text ? `${text}: ` : ''}${value}`;
     });
 
     const plantedDateTitle = this.plantedDateTitle();
     if (plantedDateTitle) {
       // eslint-disable-next-line function-paren-newline
-      basicTitles.push(
-        <div key="plantedDate">
-          {plantedDateTitle}
-        </div>);
+      basicTitles.push(plantedDateTitle);
     }
 
     const { isTerminated } = plant;
@@ -161,42 +154,31 @@ class PlantRead extends React.PureComponent {
 
       // eslint-disable-next-line function-paren-newline
       basicTitles.push(
-        <div key="terminatedDate">
-          {`This plant was terminated${dateTerminated ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`}
-        </div>);
+        `This plant was terminated${dateTerminated ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`);
 
       const { plantedDate } = plant;
       if (plantedDate && dateTerminated) {
         const datePlanted = utils.intToMoment(plantedDate);
         if (datePlanted.isBefore(dateTerminated)) {
           // eslint-disable-next-line function-paren-newline
-          basicTitles.push(
-            <div key="terminatedDaysAfterPlanting">
-              {`${datePlanted.from(dateTerminated, true)} after it was planted.`}
-            </div>);
+          basicTitles.push(`${datePlanted.from(dateTerminated, true)} after it was planted.`);
         }
       }
 
       const { terminatedReason } = plant;
       if (terminatedReason) {
         // eslint-disable-next-line function-paren-newline
-        basicTitles.push(
-          <div key="terminatedReason">
-            {`Reason: ${terminatedReason}`}
-          </div>);
+        basicTitles.push(`Reason: ${terminatedReason}`);
       }
 
       const { terminatedDescription } = plant;
       if (terminatedDescription) {
       // eslint-disable-next-line function-paren-newline
-        basicTitles.push(
-          <div key="terminatedDescription">
-            {`(${terminatedDescription})`}
-          </div>);
+        basicTitles.push(`(${terminatedDescription})`);
       }
     }
 
-    return basicTitles;
+    return <Markdown markdown={basicTitles.join('\n\n') || ''} />;
   }
 
   render() {
