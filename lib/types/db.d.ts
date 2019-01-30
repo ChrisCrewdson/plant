@@ -136,3 +136,9 @@ interface BizUser {
 interface LocationLocCache {
   [key: string]: Geo;
 }
+
+/**
+ * The DbShape can be used when a generic Create or Update driver method is called to
+ * make sure that only DbShapes are being passed.
+ */
+declare type DbShape = DbLocation | DbNote | DbPlant;

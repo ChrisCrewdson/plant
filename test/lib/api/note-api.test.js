@@ -160,6 +160,8 @@ describe('note-api', () => {
       expect(response.status).toBe(200);
 
       // Remove the volatile elements from httpMsg
+      // TODO: Try and fix this snapshot test by expecting types in those places
+      /** @type {Readonly<object>} */
       const httpMsgSnap = produce(httpMsg, (draft) => {
         helper.expectMongoId([
           draft.note._id,
@@ -190,7 +192,9 @@ describe('note-api', () => {
         expect(httpMsg._id).toBe(plantId);
         expect(httpMsg.notes[0]).toBe(noteId);
 
+        // TODO: Try and fix this snapshot test by expecting types in those places
         // Remove the volatile elements from httpMsg
+        /** @type {Readonly<object>} */
         const httpMsgSnap = produce(httpMsg, (draft) => {
           helper.expectMongoId([
             draft._id,
