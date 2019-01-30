@@ -142,3 +142,5 @@ interface LocationLocCache {
  * make sure that only DbShapes are being passed.
  */
 declare type DbShape = DbLocation | DbNote | DbPlant;
+
+declare type DbCollectionName = 'user' | 'plant' | 'note' | 'location';
