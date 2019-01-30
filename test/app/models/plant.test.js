@@ -5,6 +5,7 @@ const { plant: plantValidator } = validators;
 
 describe('/app/models/plant', () => {
   test('should pass minimum validation', () => {
+    /** @type {UiPlantsValue} */
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       locationId: 'cf885bf372488977ae0d6475',
@@ -23,12 +24,13 @@ describe('/app/models/plant', () => {
   });
 
   test('should pass full validation', () => {
+    /** @type {UiPlantsValue} */
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
       commonName: 'Common Name',
       description: 'Description',
-      loc: { type: 'Plant', coordinates: [1.11, 2.22] },
+      loc: { type: 'Point', coordinates: [1.11, 2.22] },
       locationId: 'cf885bf372488977ae0d6475',
       plantedDate: 20121215,
       price: 25.99,
@@ -55,17 +57,23 @@ describe('/app/models/plant', () => {
 
   test('should fail validation', () => {
     // All items in plant should be invalid
+    /** @type {UiPlantsValue} */
     const plant = {
       _id: '0e55d91cb33d42', // Not a MongoId
       botanicalName: _.repeat('Botanical Name is too long', 50),
+      // @ts-ignore - intentionally mistyping for testing
       commonName: true, // Not a string
+      // @ts-ignore - intentionally mistyping for testing
       description: 500, // Not a string
       plantedDate: 121212, // Year is not 4 digits
       price: 'Not a number',
       purchasedDate: 20161313, // Invalid month
       tags: ['citrus', 'north-east', 'north', 'west', 'south', 'east'], // Tags not unique
+      // @ts-ignore - intentionally mistyping for testing
       title: {}, // Not a string
+      // @ts-ignore - intentionally mistyping for testing
       userId: 123, // Not a MongoId
+      // @ts-ignore - intentionally mistyping for testing
       locationId: 789, // Not a MongoId
     };
     const plantCopy = _.cloneDeep(plant);
@@ -125,6 +133,7 @@ describe('/app/models/plant', () => {
   });
 
   test('should add _id if it is a new record', () => {
+    /** @type {UiPlantsValue} */
     const plant = {
       locationId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
@@ -163,6 +172,7 @@ describe('/app/models/plant', () => {
 
   test('should fail if locationId is missing', (done) => {
     /** @type {UiPlantsValue} */
+    // @ts-ignore - intentionally missing locationId for this test
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       userId: 'cf885bf372488977ae0d6475',
@@ -211,6 +221,7 @@ describe('/app/models/plant', () => {
   });
 
   test('should fail if a tags is not an array', (done) => {
+    /** @type {UiPlantsValue} */
     const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
@@ -220,6 +231,7 @@ describe('/app/models/plant', () => {
       plantedDate: 20121215,
       price: 25.99,
       purchasedDate: 20121215,
+      // @ts-ignore - intentional assigned a string instead of array for this test
       tags: 'citrus',
       title: 'Title',
       userId: 'cf885bf372488977ae0d6476',

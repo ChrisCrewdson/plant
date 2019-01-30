@@ -132,7 +132,8 @@ describe('/app/actions', () => {
     originalExports.forEach((exp) => {
       const firstLetter = exp[0];
       if (isUpper(firstLetter)) {
-        expect(typeof actionEnum[exp]).toBe('string');
+        const typedExp = /** @type {UiActionType} */ (exp);
+        expect(typeof actionEnum[typedExp]).toBe('string');
       } else {
         expect(typeof actionFunc[exp]).toBe('function');
       }

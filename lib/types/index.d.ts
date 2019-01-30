@@ -16,7 +16,14 @@ interface Logger {
 declare namespace Express {
   export interface Request {
     body?: any;
-    files?: Multer.File[];
+    /**
+     * I'm sure that this is not always available on the req object unless the Multer middleware
+     * always adds it?
+     * TODO: Need to test this. If it's not always available then work out how to type this.
+     */
+    files: {
+      [fieldname: string]: Multer.File[];
+    } | Multer.File[];
     isAuthenticated?: Function;
     logger: Logger;
     logIn: Function;
@@ -73,7 +80,7 @@ interface UploadedNoteFile {
   ext: string;
   originalname: string;
   size: number;
-  sizes: NoteImageSize[];
+  sizes?: NoteImageSize[];
 }
 
 interface DerivedMulterFile {

@@ -28,7 +28,7 @@ interface BasePlant {
   /**
    * tags is currently not used but is in the validation code so adding it here.
    */
-  tags: string[];
+  tags?: string[];
 }
 
 // There are 3 data models for each collection:
@@ -59,12 +59,12 @@ interface BizPlant extends BasePlant {
 }
 
 interface UiPlantsValue extends BasePlant {
-  _id: string;
-  errors: Dictionary<string>;
+  _id?: string;
+  errors?: Dictionary<string>;
   isNew?: boolean;
   isTerminated?: boolean;
   locationId: string;
-  notes: UiPlantsNote[];
+  notes?: UiPlantsNote[];
   /**
    * Used by UI to signal if the notes for the plant have been requested
    * from the server.
