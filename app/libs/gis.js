@@ -75,9 +75,11 @@ function scaleToCanvas(immutablePlants, width) {
     const y = ((heightWidthRatio * (canvasWidth * ratioFromMinLat)) + canvasMin);
 
     const { title, _id } = plant;
-    acc[plantId] = {
-      _id, title, x, y,
-    };
+    if (_id) {
+      acc[plantId] = {
+        _id, title, x, y,
+      };
+    }
     return acc;
   }, /** @type {Dictionary<UiPlantLocation>} */ ({}));
   return seamless.from({

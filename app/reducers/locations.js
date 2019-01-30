@@ -87,7 +87,7 @@ function loadPlantsSuccess(state, action) {
         if (state[locationId]) {
           acc[locationId] = acc[locationId]
             || seamless.asMutable(state[locationId], { deep: true });
-          if (!acc[locationId].plantIds.includes(plantId)) {
+          if (plantId && !acc[locationId].plantIds.includes(plantId)) {
             acc[locationId].plantIds.push(plantId);
           }
         }

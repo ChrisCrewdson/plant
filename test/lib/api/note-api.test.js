@@ -304,12 +304,12 @@ describe('note-api', () => {
 
   describe('note-api /api/image-complete', () => {
     test('should confirm a complete image', async () => {
-      /** @type {DbNote} */
+      /** @type {BizNote} */
       const note = {
-        _id: utils.makeMongoIdObject(),
+        _id: utils.makeMongoIdObject().toString(),
         date: 20180101,
         plantIds: [],
-        userId: utils.makeMongoIdObject(),
+        userId: utils.makeMongoIdObject().toString(),
         images: [{
           ext: 'jpg',
           id: utils.makeMongoId(),

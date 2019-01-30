@@ -75,7 +75,7 @@ function deleteNoteRequest(state, { payload: noteId }) {
   return seamless.from(Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
     if ((plant.notes || []).includes(noteId)) {
-      acc[plantId] = seamless.set(plant, 'notes', plant.notes.filter(nId => nId !== noteId));
+      acc[plantId] = seamless.set(plant, 'notes', (plant.notes || []).filter(nId => nId !== noteId));
     } else {
       acc[plantId] = plant;
     }
@@ -118,7 +118,9 @@ function loadPlantsSuccess(state, { payload: plants }) {
        * @param {UiPlantsValue} plant
        */
       (acc, plant) => {
-        acc[plant._id] = plant;
+        if (plant._id) {
+          acc[plant._id] = plant;
+        }
         return acc;
       }, {}));
   }

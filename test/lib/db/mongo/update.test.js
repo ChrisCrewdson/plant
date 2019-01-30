@@ -5,12 +5,12 @@ const { mockLogger } = require('../../../mock-logger');
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {
     test('should update the image sizes in a note', async () => {
-      /** @type {DbNote} */
+      /** @type {BizNote} */
       const note = {
-        _id: utils.makeMongoIdObject(),
+        _id: utils.makeMongoIdObject().toString(),
         date: 20180101,
         plantIds: [],
-        userId: utils.makeMongoIdObject(),
+        userId: utils.makeMongoIdObject().toString(),
         images: [{
           ext: 'jpg',
           id: utils.makeMongoId(),
@@ -25,6 +25,8 @@ describe('/lib/db/mongo/update', () => {
           sizes: [],
         }],
       };
+
+      /** @type {NoteImageSize[]} */
       const sizes = [
         { width: 100, name: 'thumb' },
         { width: 500, name: 'sm' },
@@ -36,10 +38,11 @@ describe('/lib/db/mongo/update', () => {
       const createdNote = await mongo.upsertNote(note, mockLogger);
       expect(createdNote).toBeTruthy();
 
+      /** @type {NoteImageUpdateData} */
       const noteUpdate = {
         _id: createdNote._id,
         userId: note.userId,
-        imageId: note.images && note.images[0].id,
+        imageId: (note.images && note.images[0].id) || '',
         sizes,
       };
 
