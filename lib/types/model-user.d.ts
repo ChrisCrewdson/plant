@@ -63,3 +63,39 @@ interface BizUser {
   isLoggedIn?: boolean;
   status?: BizUserStatus;
 }
+
+declare type UiUserStatus =
+  'success' |
+  'logout' |
+  'failed';
+
+interface UiUser {
+  activeLocationId?: string; // "5851d7d52967xxxxxxxxx"
+  isLoggedIn: boolean;
+  locationIds: string[]; // ["5851d7d52967xxxxxxxxx"...
+  name: string; // "John Smith"
+  status: UiUserStatus;
+  _id: string; // "57b4e90xxxxxxxxxxxx"
+}
+
+
+interface UiUsersValue {
+  _id: string;
+  activeLocationId: string;
+  createdAt: string;
+  name: string;
+  locationIds: string[];
+}
+
+interface UiUsers {
+  [id: string]: UiUsersValue;
+}
+
+interface UiReduxState {
+  interim?: UiInterim;
+  locations?: UiLocations;
+  notes?: UiNotes;
+  plants?: UiPlants;
+  user?: UiUser;
+  users?: UiUsers;
+}
