@@ -3,6 +3,11 @@ interface DbLocationStationObj {
   enabled: boolean;
 }
 
+declare type Role = 
+  'owner' |
+  'manager' |
+  'member';
+
 interface DbLocation {
   _id: import('mongodb').ObjectID;
   createdBy: import('mongodb').ObjectID;

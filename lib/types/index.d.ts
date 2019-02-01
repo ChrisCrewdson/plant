@@ -32,11 +32,6 @@ declare namespace Express {
   }
 }
 
-declare type Role = 
-  'owner' |
-  'manager' |
-  'member';
-
 declare type GeoType = 'Point';
 
 interface GeoCoords {
@@ -100,7 +95,7 @@ interface HelperMakeRequestOptions {
   body?: object;
   /**
    * If this is true then the server request expects text back. If not then it
-   * expects a JSON object back and will (behind the scenes) to JSON.parse()
+   * expects a JSON object back and will (behind the scenes) do a JSON.parse()
    */
   text?: boolean;
 }
