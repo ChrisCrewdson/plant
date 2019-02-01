@@ -50,7 +50,7 @@ interface BizUser {
   facebook?: DbUserFacebook;
   google?: DbUserGoogle;
   name?: string;
-  updatedAt: Date;
+  // updatedAt: Date;
   /**
    * This is an array of MongoId strings
    */
