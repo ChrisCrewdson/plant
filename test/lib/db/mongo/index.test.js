@@ -132,8 +132,10 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should update an existing plant with "Set"', async () => {
+      /** @type {BizPlant} */
       const plantUpdate = {
         title: 'New Name',
+        // @ts-ignore - intentionally mistyping for testing
         other: 'Other Text',
         _id: plantId,
         userId,
