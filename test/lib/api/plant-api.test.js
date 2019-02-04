@@ -135,7 +135,7 @@ describe('plant-api', () => {
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
     const { locationId } = httpMsg;
     expect(response.status).toBe(200);
-    const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId });
+    const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId, notes: [] });
     expect(httpMsg).toEqual(expected);
   });
 
