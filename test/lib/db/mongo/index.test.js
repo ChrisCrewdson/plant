@@ -121,7 +121,9 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get existing plants', async () => {
-      const results = await mongo.getPlantsByIds([plantId], userId, mockLogger);
+      const results = /** @type {BizPlant[]} */ (
+        await mongo.getPlantsByIds([plantId], userId, mockLogger)
+      );
       expect(_.isArray(results)).toBeTruthy();
       expect(results).toHaveLength(1);
       const result = results[0];
