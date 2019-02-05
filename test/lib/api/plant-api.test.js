@@ -6,7 +6,7 @@ describe('plant-api', () => {
   let user;
   /** @type {string} */
   let plantId;
-  /** @type {BasePlant} */
+  /** @type {Partial<DbPlant>} */
   let initialPlant;
 
   beforeAll(async () => {
@@ -113,7 +113,7 @@ describe('plant-api', () => {
     expect(httpMsg.error).toBe('missing');
   });
 
-  /** @type {BasePlant} */
+  /** @type {Partial<DbPlant>} */
   let updatedPlant;
   test('should update the just created plant', async () => {
     updatedPlant = Object.assign(

@@ -1,3 +1,7 @@
+// There are 3 data models for each collection:
+// 1. Db<Collection> - Represents what is in the database
+// 2. Biz<Collection> - What is passed around on the server
+// 3. Ui<Collection> - What is passed around on the client
 
 declare type TerminatedReason =
 'culled' |
@@ -9,15 +13,19 @@ declare type PlantDateFieldNames =
   'purchasedDate' |
   'terminatedDate';
 
-interface BasePlant {
+interface DbPlant {
+  _id: import('mongodb').ObjectID;
+  locationId: import('mongodb').ObjectID;
+  userId: import('mongodb').ObjectID;
   botanicalName?: string;
   commonName?: string;
   description?: string;
   loc?: Geo;
   plantedDate?: number; // YYYYMMDD
   /**
-   * TODO: In the UI this will be a string while editing but in DB will be a value or be missing.
+   * TODO: In the UI this will be a string while editing but in DB will be a number value or be missing.
    *       So DbPlant cannot inherit this without changing this type to a number
+   * Now that typing is done we should be able to make this a number for the DB and then fix in one of the extending interfaces.
    */
   price?: number|string;
   purchasedDate?: number; // YYYYMMDD
@@ -31,18 +39,7 @@ interface BasePlant {
   tags?: string[];
 }
 
-// There are 3 data models for each collection:
-// 1. Db<Collection> - Represents what is in the database
-// 2. Biz<Collection> - What is passed around on the server
-// 3. Ui<Collection> - What is passed around on the client
-
-interface DbPlant extends BasePlant {
-  _id: import('mongodb').ObjectID;
-  locationId: import('mongodb').ObjectID;
-  userId: import('mongodb').ObjectID;
-}
-
-interface BizPlant extends BasePlant {
+interface BizPlant extends Omit<DbPlant, '_id' | 'locationId' | 'userId'> {
   _id: string;
   locationId: string;
   /**
@@ -50,7 +47,7 @@ interface BizPlant extends BasePlant {
    * from the server.
    */
   notesRequested?: boolean;
-  plantedOn?: number;
+  plantedOn?: number; // TODO: plantedOn seems to be a bug - should this be plantedDate?
   /**
    * An array of MongoId strings representing notes
    */
@@ -58,12 +55,12 @@ interface BizPlant extends BasePlant {
   userId: string;
 }
 
-interface UiPlantsValue extends BasePlant {
+interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId'> {
   _id?: string;
   errors?: Dictionary<string>;
   isNew?: boolean;
   isTerminated?: boolean;
-  locationId: string;
+
   notes?: UiPlantsNote[];
   /**
    * Used by UI to signal if the notes for the plant have been requested
