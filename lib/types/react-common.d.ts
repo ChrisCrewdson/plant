@@ -11,7 +11,7 @@ interface ServerSideRenderData {
   html?: string;
   initialState?: PlantStateTree;
   og?: OpenGraphMeta[]; // Facebook Open Graph
-  req?: import('express').Request | object;
+  req: import('express').Request;
   title?: string;
 }
 
