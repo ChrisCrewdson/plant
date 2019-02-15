@@ -144,7 +144,7 @@
     "dependency-update": "node_modules/.bin/npm-update-outdated",
     "lint": "eslint --ext .js --ext .jsx . --max-warnings 0",
     "lintfix": "eslint --ext .js --ext .jsx . --fix",
-    "precom": "concurrently --kill-others-on-fail \"tsc\" \"npm:cnv\" \"npm:lint\" \"npm:csslint\" \"npm:build\" \"./devops/run-test.sh\"",
+    "precom": "concurrently --kill-others-on-fail \"tsc\" \"npm:cnv\" \"npm:lint\" \"npm:csslint\" \"npm:build\" \"./devops/run-test-local.sh\"",
     "prodrestart": "npm run build && pm2 stop plant && pm2 start ../site-ops/pm2/plant.config.js --env production",
     "prodstart": "npm run build && pm2 start ../site-ops/pm2/plant.config.js --env production",
     "prodstop": "pm2 stop plant",
