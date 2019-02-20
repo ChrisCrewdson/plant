@@ -1,21 +1,28 @@
 env:
   - CXX=g++-4.8
-language: node_js
+language:
+  - node_js
 node_js:
   - "10"
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
+      - mongodb-upstart
+      - mongodb-4.0-xenial
     packages:
-    - gcc-4.8
-    - g++-4.8
-services:
-  - mongodb
-install: npm install
+      - gcc-4.8
+      - g++-4.8
+      - mongodb-org-server
+      - mongodb-org-shell
+install:
+  - npm install
 before_install:
 # Don't need to install latest npm because Node >= 9
 # - npm install -g npm
-- npm install -g greenkeeper-lockfile@1
-before_script: greenkeeper-lockfile-update
-after_script: greenkeeper-lockfile-upload
+  - npm install -g greenkeeper-lockfile@1
+before_script:
+  - sleep 15
+  - greenkeeper-lockfile-update
+after_script:
+  - greenkeeper-lockfile-upload
