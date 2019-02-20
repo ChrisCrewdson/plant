@@ -8,6 +8,7 @@ jest.setTimeout(60000); // 60 second timeout
 // eslint-disable-next-line import/no-extraneous-dependencies
 const oauth2 = require('oauth');
 
+const createOptions = require('../lib/db/mongo/schema');
 const googleOAuth = require('./fixtures/google-oauth');
 const { mockLogger } = require('./mock-logger');
 
@@ -45,6 +46,14 @@ const mongo = require('../lib/db/mongo');
 const dbName = `plant-test-${uuid.v4()}`;
 const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${dbName}`;
 const mongoDb = mongo(mongoConnection);
+
+beforeAll(async () => {
+  const db = await mongoDb.GetDb(mockLogger);
+  // Add jsonSchema validation to collections in DB.
+  // At the time of writing this Feb 2019 the schema validation was
+  // only being added here and is experimental and not added to the prod DB.
+  await db.createCollection('plant', createOptions.plant);
+});
 
 /**
  * React will print a warning to the console if it cannot find requestAnimationFrame()
