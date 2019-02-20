@@ -1,3 +1,7 @@
+dist:
+  # Use Ubuntu 16.04 as the OS. This is the latest available on Travis
+  # at the time of writing this Feb 2019.
+  - xenial
 env:
   - CXX=g++-4.8
 language:
