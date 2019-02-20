@@ -5,8 +5,7 @@
 # If you have Docker installed then this will setup MongoDB for you.
 # If you don't have Docker and already have MongoDB installed then comment out these lines
 # If the container is already running then this will print a message that can be ignored.
-# docker pull mongo:latest
-# docker run -d -p 27017:27017 --name mongodb mongo
+docker run -it -p 27017:27017 --name mongo4 -d mongo:latest
 docker start mongo4
 # docker ps
 
