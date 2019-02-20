@@ -33,10 +33,6 @@ interface DbPlant {
   terminatedDescription?: string;
   terminatedReason?: TerminatedReason;
   title: string;
-  /**
-   * tags is currently not used but is in the validation code so adding it here.
-   */
-  tags?: string[];
 }
 
 interface BizPlant extends Omit<DbPlant, '_id' | 'locationId' | 'userId'> {

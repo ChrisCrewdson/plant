@@ -16,7 +16,6 @@ describe('plant-api', () => {
     initialPlant = Object.freeze({
       title: 'Plant Title',
       price: 19.99,
-      tags: ['north-east', 'citrus'],
       locationId: data.user.locationIds[0],
     });
   });

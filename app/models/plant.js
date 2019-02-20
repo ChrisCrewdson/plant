@@ -1,8 +1,5 @@
 const cloneDeep = require('lodash/cloneDeep');
 const trim = require('lodash/trim');
-const isArray = require('lodash/isArray');
-const uniq = require('lodash/uniq');
-const every = require('lodash/every');
 const validatejs = require('validate.js');
 const { makeMongoId } = require('../libs/utils');
 const constants = require('../libs/constants');
@@ -19,47 +16,6 @@ const utils = require('../libs/utils');
 // If the validator passes simply return null or undefined. Otherwise return a string or an array
 // of strings containing the error message(s).
 // Make sure not to append the key name, this will be done automatically.
-
-/**
- * @param {string[]} value
- */
-validatejs.validators.tagValidate = (value /* , options, key, attributes */) => {
-  // tags array rules:
-  // 1. lowercase alpha and -
-  const validRegex = /^[a-z-]*$/;
-  // 2. unique array of strings
-  // 3. max length of array: 5
-  const maxTags = 5;
-  // 4. max length of each string: 20
-  const maxTagLength = 20;
-  // 5. optional
-
-  if (!value) {
-    return null;
-  }
-
-  if (!isArray(value)) {
-    return 'must be an array';
-  }
-
-  if (maxTags && value.length > maxTags) {
-    return `can have a maximum of ${maxTags} tags`;
-  }
-
-  if (maxTagLength && value.length > 0) {
-    const maxlen = value.reduce((prev, item) => Math.max(prev, item.length), 0);
-    if (maxlen > maxTagLength) {
-      return `cannot be more than ${maxTagLength} characters`;
-    }
-  }
-
-  // Only a to z and '-'
-  if (!every(value, item => validRegex.test(item))) {
-    return 'can only have alphabetic characters and a dash';
-  }
-
-  return null;
-};
 
 /**
  * @param {string|number} value
@@ -81,11 +37,6 @@ const floatParser = (value) => {
  * @returns {UiPlantsValue}
  */
 function transform(attributes) {
-  if (attributes.tags && isArray(attributes.tags)) {
-    // eslint-disable-next-line no-param-reassign
-    attributes.tags = uniq(attributes.tags.map(tag => tag.toLowerCase()));
-  }
-
   if (attributes.price === '') {
     // eslint-disable-next-line no-param-reassign
     delete attributes.price;
@@ -132,7 +83,6 @@ module.exports = (attributes, { isNew }) => {
     plantedDate: { intDateValidate: { presence: false, name: 'Planted date' } },
     price: { numericality: { noStrings: true } },
     purchasedDate: { intDateValidate: { presence: false, name: 'Acquire date' } },
-    tags: { tagValidate: {} },
     isTerminated: { presence: false },
     terminatedDate: { intDateValidate: { presence: false, name: 'Terminated date' } },
     terminatedReason: { presence: false },
