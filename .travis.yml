@@ -1,6 +1,7 @@
 dist:
   # Use Ubuntu 16.04 as the OS. This is the latest available on Travis
   # at the time of writing this Feb 2019.
+  # https://docs.travis-ci.com/user/reference/xenial/
   - xenial
 env:
   - CXX=g++-4.8
@@ -12,13 +13,13 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - mongodb-upstart
-      - mongodb-4.0-xenial
     packages:
       - gcc-4.8
       - g++-4.8
-      - mongodb-org-server
-      - mongodb-org-shell
+services:
+  # When running on Xenial (Ubuntu 16.04) then the default version of MongoDB
+  # should be 4.0
+  - mongodb
 install:
   - npm install
 before_install:
@@ -26,7 +27,6 @@ before_install:
 # - npm install -g npm
   - npm install -g greenkeeper-lockfile@1
 before_script:
-  - sleep 15
   - greenkeeper-lockfile-update
 after_script:
   - greenkeeper-lockfile-upload
