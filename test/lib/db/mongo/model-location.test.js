@@ -20,13 +20,13 @@ describe('/lib/db/mongo/model-location', () => {
   afterAll(() => helper.stopServer());
 
   describe('Create', () => {
-    test('should fail to create a location if members and createdBy are missing', async () => {
+    test('should fail to create a location if members, title and createdBy are missing', async () => {
       expect.hasAssertions();
       try {
         const loc = {};
         await mongo.createLocation(loc, mockLogger);
       } catch (e) {
-        expect(e.message).toEqual('members and createdBy must be specified as part of location when creating a location');
+        expect(e).toMatchSnapshot();
       }
     });
 
@@ -38,12 +38,13 @@ describe('/lib/db/mongo/model-location', () => {
         };
         await mongo.createLocation(loc, mockLogger);
       } catch (e) {
-        expect(e.message).toEqual('members and createdBy must be specified as part of location when creating a location');
+        expect(e).toMatchSnapshot();
       }
     });
 
-    test('should create a location if members and createdBy are present', async () => {
+    test('should create a location if members, title and createdBy are present', async () => {
       const loc = {
+        title: 'fake location title',
         createdBy: userId,
         members: {
           [userId]: 'owner',
@@ -52,6 +53,7 @@ describe('/lib/db/mongo/model-location', () => {
       const actual = await mongo.createLocation(loc, mockLogger);
       const expected = {
         _id: actual._id,
+        title: 'fake location title',
         createdBy: userId,
         members: {
           [userId]: 'owner',

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/lib/db/mongo/model-location Create should fail to create a location if members is missing 1`] = `[Error: members, title and createdBy must be specified when creating a location]`;
+
+exports[`/lib/db/mongo/model-location Create should fail to create a location if members, title and createdBy are missing 1`] = `[Error: members, title and createdBy must be specified when creating a location]`;

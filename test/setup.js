@@ -52,7 +52,9 @@ beforeAll(async () => {
   // Add jsonSchema validation to collections in DB.
   // At the time of writing this Feb 2019 the schema validation was
   // only being added here and is experimental and not added to the prod DB.
-  await db.createCollection('plant', createOptions.plant);
+  const { plant, location } = createOptions;
+  await db.createCollection('plant', plant);
+  await db.createCollection('location', location);
 });
 
 /**
