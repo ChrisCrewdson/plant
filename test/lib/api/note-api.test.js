@@ -1,10 +1,11 @@
-const { produce } = require('immer');
 
 const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 const mongo = require('../../../lib/db/mongo')();
 const { mockLogger } = require('../../mock-logger');
+
+const { mongoIdRE: mongoIdRegEx } = constants;
 
 /* eslint-disable no-param-reassign */
 
@@ -159,21 +160,13 @@ describe('note-api', () => {
       // logger.trace('*********** httpMsg:', {updatedNote, reqOptions, httpMsg});
       expect(response.status).toBe(200);
 
-      // Remove the volatile elements from httpMsg
-      // TODO: Try and fix this snapshot test by expecting types in those places
-      /** @type {Readonly<object>} */
-      const httpMsgSnap = produce(httpMsg, (draft) => {
-        helper.expectMongoId([
-          draft.note._id,
-          draft.note.userId,
-          draft.note.plantIds[0],
-        ]);
-        delete draft.note._id;
-        delete draft.note.userId;
-        draft.note.plantIds.pop();
+      expect(httpMsg).toMatchSnapshot({
+        note: {
+          _id: expect.stringMatching(mongoIdRegEx),
+          userId: expect.stringMatching(mongoIdRegEx),
+          plantIds: [expect.stringMatching(mongoIdRegEx)],
+        },
       });
-
-      expect(httpMsgSnap).toMatchSnapshot();
     });
 
     test(
@@ -192,23 +185,12 @@ describe('note-api', () => {
         expect(httpMsg._id).toBe(plantId);
         expect(httpMsg.notes[0]).toBe(noteId);
 
-        // TODO: Try and fix this snapshot test by expecting types in those places
-        // Remove the volatile elements from httpMsg
-        /** @type {Readonly<object>} */
-        const httpMsgSnap = produce(httpMsg, (draft) => {
-          helper.expectMongoId([
-            draft._id,
-            draft.userId,
-            draft.locationId,
-            draft.notes[0],
-          ]);
-          delete draft._id;
-          delete draft.userId;
-          delete draft.locationId;
-          draft.notes.pop();
+        expect(httpMsg).toMatchSnapshot({
+          _id: expect.stringMatching(mongoIdRegEx),
+          userId: expect.stringMatching(mongoIdRegEx),
+          locationId: expect.stringMatching(mongoIdRegEx),
+          notes: [expect.stringMatching(mongoIdRegEx)],
         });
-
-        expect(httpMsgSnap).toMatchSnapshot();
       },
     );
 

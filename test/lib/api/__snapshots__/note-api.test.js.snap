@@ -2,14 +2,20 @@
 
 exports[`note-api note-api create/retrieve notes should retrieve the just updated noteId as part of a plant request 1`] = `
 Object {
-  "notes": Array [],
+  "_id": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  "locationId": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  "notes": Array [
+    StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  ],
   "title": "Plant Title 0",
+  "userId": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
 }
 `;
 
 exports[`note-api note-api create/retrieve notes should update the just created note 1`] = `
 Object {
   "note": Object {
+    "_id": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
     "date": 20160101,
     "metrics": Object {
       "firstBlossom": true,
@@ -25,7 +31,10 @@ Object {
       "leafShedStart": true,
     },
     "note": "A New Note",
-    "plantIds": Array [],
+    "plantIds": Array [
+      StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+    ],
+    "userId": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
   },
   "success": true,
 }
