@@ -281,13 +281,13 @@ describe('note-api', () => {
       expect(response.status).toBe(200);
       expect(httpMsg).toBeTruthy();
 
-      expect(httpMsg.userId).toBeTruthy();
       expect(httpMsg._id).toBe(plantId);
-      expect(httpMsg.title).toBe(initialPlant.title);
 
-
-      // Check that there are no notes
-      expect(httpMsg.notes).toHaveLength(0);
+      expect(httpMsg).toMatchSnapshot({
+        _id: expect.stringMatching(mongoIdRegEx),
+        userId: expect.stringMatching(mongoIdRegEx),
+        locationId: expect.stringMatching(mongoIdRegEx),
+      });
     });
   });
 

@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`note-api note-api create/retrieve notes should confirm that the note has been deleted 1`] = `
+Object {
+  "_id": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  "locationId": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+  "notes": Array [],
+  "title": "Plant Title 0",
+  "userId": StringMatching /\\^\\[0-9a-f\\]\\{24\\}\\$/i,
+}
+`;
+
 exports[`note-api note-api create/retrieve notes should delete the note 1`] = `
 Object {
   "success": true,
