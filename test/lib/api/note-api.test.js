@@ -208,13 +208,15 @@ describe('note-api', () => {
         const { httpMsg: notes, response } = await helper.makeRequest(reqOptions);
         expect(response.status).toBe(200);
 
-        expect(notes).toBeTruthy();
         expect(notes).toHaveLength(1);
-        const note = notes[0];
-        expect(note._id).toBe(noteId);
-        expect(constants.mongoIdRE.test(note._id)).toBeTruthy();
-        expect(note.date).toBe(20160101);
-        expect(note.note).toBe('A New Note');
+        const [firstNote] = notes;
+        expect(firstNote._id).toBe(noteId);
+
+        expect(firstNote).toMatchSnapshot({
+          _id: expect.stringMatching(mongoIdRegEx),
+          userId: expect.stringMatching(mongoIdRegEx),
+          plantIds: [expect.stringMatching(mongoIdRegEx)],
+        });
       },
     );
 
@@ -232,13 +234,15 @@ describe('note-api', () => {
         const { httpMsg: notes, response } = await helper.makeRequest(reqOptions);
         expect(response.status).toBe(200);
 
-        expect(notes).toBeTruthy();
         expect(notes).toHaveLength(1);
-        const note = notes[0];
-        expect(note._id).toBe(noteId);
-        expect(constants.mongoIdRE.test(note._id)).toBeTruthy();
-        expect(note.date).toBe(20160101);
-        expect(note.note).toBe('A New Note');
+        const [firstNote] = notes;
+        expect(firstNote._id).toBe(noteId);
+
+        expect(firstNote).toMatchSnapshot({
+          _id: expect.stringMatching(mongoIdRegEx),
+          userId: expect.stringMatching(mongoIdRegEx),
+          plantIds: [expect.stringMatching(mongoIdRegEx)],
+        });
       },
     );
 
@@ -262,8 +266,7 @@ describe('note-api', () => {
       // ok: 1 }
 
       expect(response.status).toBe(200);
-      expect(httpMsg).toBeTruthy();
-      expect(httpMsg.success).toBe(true);
+      expect(httpMsg).toMatchSnapshot();
     });
 
     test('should confirm that the note has been deleted', async () => {
