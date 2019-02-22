@@ -42,7 +42,7 @@
     "react": "16.8.3",
     "react-bootstrap": "0.32.4",
     "react-dom": "16.8.3",
-    "react-dropzone": "8.2.0",
+    "react-dropzone": "9.0.0",
     "react-konva": "16.8.3",
     "react-redux": "5.1.1",
     "react-router-dom": "4.3.1",
