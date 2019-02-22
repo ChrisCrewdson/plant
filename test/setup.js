@@ -54,6 +54,7 @@ beforeAll(async () => {
   // only being added here and is experimental and not added to the prod DB.
   const { plant, location } = createOptions;
   await db.createCollection('plant', plant);
+  // await db.createCollection('note', note);
   await db.createCollection('location', location);
 });
 
