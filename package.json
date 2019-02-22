@@ -79,7 +79,7 @@
     "@types/react-dom": "16.8.2",
     "@types/react-redux": "7.0.1",
     "@types/react-router-dom": "4.3.1",
-    "@types/react-test-renderer": "16.8.0",
+    "@types/react-test-renderer": "16.8.1",
     "@types/seamless-immutable": "7.1.6",
     "@types/uuid": "3.4.4",
     "babel-eslint": "10.0.1",
