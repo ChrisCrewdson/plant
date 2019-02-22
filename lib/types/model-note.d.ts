@@ -88,6 +88,9 @@ interface DbNote {
   images?: NoteImage[];
   metrics?: NoteMetric;
   note?: string;
+  /**
+   * TODO: Change this to a NonEmptyList<import('mongodb').ObjectID>
+   */
   plantIds: import('mongodb').ObjectID[];
   userId: import('mongodb').ObjectID;
 }

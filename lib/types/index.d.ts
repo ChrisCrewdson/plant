@@ -1,5 +1,7 @@
 // Definitions file for Plant Project
 
+type NonEmptyList<T> = T[] & { 0: T };
+
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 interface Logger {
