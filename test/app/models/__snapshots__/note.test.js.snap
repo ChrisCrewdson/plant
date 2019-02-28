@@ -11,6 +11,26 @@ Object {
 }
 `;
 
+exports[`/app/models/note basic validation should fail validation 1`] = `
+Object {
+  "_id": " id is invalid",
+  "date": "Date must be a number",
+  "note": "Note has an incorrect length",
+  "plantIds": "Plant ids must be MongoIds",
+}
+`;
+
+exports[`/app/models/note basic validation should pass minimum validation 1`] = `
+Object {
+  "_id": "5c77545608a6cd11fdb0ca86",
+  "date": 20160101,
+  "note": "some text",
+  "plantIds": Array [
+    "5c77545608a6cd11fdb0ca87",
+  ],
+}
+`;
+
 exports[`/app/models/note basic validation should strip out props not in the schema 1`] = `
 Object {
   "_id": "5c2aefa2da47a52adc1c4651",

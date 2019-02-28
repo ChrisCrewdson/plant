@@ -11,16 +11,16 @@ describe('/app/models/note', () => {
     test('should pass minimum validation', () => {
       /** @type {UiInterimNote} */
       const note = {
-        _id: makeMongoId(),
+        _id: '5c77545608a6cd11fdb0ca86',
         date: 20160101,
-        plantIds: [makeMongoId()],
+        plantIds: ['5c77545608a6cd11fdb0ca87'],
         note: 'some text',
         userId: makeMongoId(),
       };
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
-      expect(transformed.note).toBe(note.note);
+      expect(transformed).toMatchSnapshot();
       expect(noteCopy).toEqual(note);
     });
 
@@ -43,18 +43,14 @@ describe('/app/models/note', () => {
       try {
         noteValidator(note);
       } catch (err) {
-        expect(err).toBeTruthy();
-
-        expect(err._id).toBe(' id is invalid');
-        expect(err.date).toBe('Date must be a number');
-        expect(err.plantIds).toBe('Plant ids must be MongoIds');
+        expect(err).toMatchSnapshot();
         expect(noteCopy).toEqual(note);
         expect(console.error).toHaveBeenCalledTimes(1);
       }
       // @ts-ignore - mockReset does not existing on console.error
       console.error.mockReset();
       /* eslint-enable no-console */
-      expect.assertions(6);
+      expect.assertions(3);
     });
 
     test('should strip out props not in the schema', () => {
