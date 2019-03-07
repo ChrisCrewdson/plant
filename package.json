@@ -98,7 +98,7 @@
     "nodemon": "1.18.10",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
-    "react-hot-loader": "4.7.2",
+    "react-hot-loader": "4.8.0",
     "react-log-lifecycle": "1.1.0",
     "react-test-renderer": "16.8.4",
     "redux-devtools": "3.5.0",
