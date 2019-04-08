@@ -164,10 +164,11 @@ and we will promptly remove you from ALL correspondence.
 If there are any questions regarding this privacy policy you may contact us using the information \
 below.
 
-https://plaaant.com
-wildfiction@gmail.com
+[Plaaant](https://plaaant.com)
 
-Last Edited on 2017-06-14
+[Guy Ellis](wildfiction@gmail.com)
+
+Last Edited on 2019-04-07
 `;
 
 function privacy() {
