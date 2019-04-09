@@ -95,7 +95,7 @@
     "fetch-cookie": "0.7.2",
     "jest": "23.6.0",
     "node-fetch": "2.3.0",
-    "nodemon": "1.18.10",
+    "nodemon": "1.18.11",
     "npm-update-outdated": "0.1.6",
     "pre-commit": "1.2.2",
     "react-hot-loader": "4.8.3",
