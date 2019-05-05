@@ -106,7 +106,7 @@
     "stylelint-config-standard": "18.3.0",
     "stylelint-order": "3.0.0",
     "typescript": "3.4.1",
-    "webpack-dev-server": "2.x"
+    "webpack-dev-server": "2.11.5"
   },
   "engines": {
     "node": ">=10",
