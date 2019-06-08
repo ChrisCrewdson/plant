@@ -19,6 +19,13 @@ describe('NotesRead', () => {
 
   beforeAll(() => {
     store.dispatch = () => {};
+
+    // Date.parse('01 Jun 2019 00:00:00 GMT');
+    // 1559347200000
+    // Make the current Date.now a fixed known date so the result is consistent
+    // because the component uses Date.now() (via Moment) for the time elapsed.
+    const fakeCurrentDateTime = 1559347200000;
+    Date.now = jest.fn(() => fakeCurrentDateTime);
   });
 
   afterAll(() => {
@@ -32,7 +39,7 @@ describe('NotesRead', () => {
     const notes = {
       'n-1': {
         _id: 'n-1',
-        date: 1,
+        date: 20190101,
         note: 'This is note text',
         plantIds: ['p-1'],
         title: 'Note #1',
