@@ -78,8 +78,6 @@ describe('/app/models/plant', () => {
 
     const isNew = false;
 
-    /* eslint-disable no-console */
-    console.error = jest.fn();
     try {
       plantValidator(plant, { isNew });
     } catch (err) {
@@ -96,12 +94,8 @@ describe('/app/models/plant', () => {
       expect(err.userId).toBe('User id is invalid');
       expect(err.locationId).toBe('Location id is invalid');
       expect(plantCopy).toEqual(plant);
-      expect(console.error).toHaveBeenCalledTimes(3);
     }
-    // @ts-ignore - mockReset does not existing on console.error
-    console.error.mockReset();
-    /* eslint-enable no-console */
-    expect.assertions(13);
+    expect.assertions(12);
   });
 
   test('should strip out props not in the schema', () => {

@@ -38,19 +38,13 @@ describe('/app/models/note', () => {
 
       const noteCopy = _.cloneDeep(note);
 
-      /* eslint-disable no-console */
-      console.error = jest.fn();
       try {
         noteValidator(note);
       } catch (err) {
         expect(err).toMatchSnapshot();
         expect(noteCopy).toEqual(note);
-        expect(console.error).toHaveBeenCalledTimes(1);
       }
-      // @ts-ignore - mockReset does not existing on console.error
-      console.error.mockReset();
-      /* eslint-enable no-console */
-      expect.assertions(3);
+      expect.assertions(2);
     });
 
     test('should strip out props not in the schema', () => {
