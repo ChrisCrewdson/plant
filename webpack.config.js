@@ -1,4 +1,3 @@
-const merge = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -98,86 +97,77 @@ const common = {
   ],
 };
 
+// 'build' is Production
 if (TARGET === 'build') {
-  /**
-   * @type {import('webpack').Configuration}
-   */
-  const buildConfig = {
-    entry: ['./app/main'],
-    mode: 'production',
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify('production'),
-        },
-      }),
-    ],
-    optimization: {
-      minimize: true,
-    },
+  common.entry = ['./app/main'];
+  common.mode = 'production';
+  common.plugins = (common.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
+  ]);
+  common.optimization = {
+    minimize: true,
   };
-
-  module.exports = merge(common, buildConfig);
 }
 
-const proxy = [
-  '/',
-  '/api/*',
-  '/auth/*',
-  '/favicon.ico',
-  '/help',
-  '/img/*',
-  '/layout/*',
-  '/location/*',
-  '/locations/*',
-  '/login',
-  '/metrics/*',
-  '/plant/*',
-  '/plants/*',
-  '/privacy',
-  '/terms',
-];
-
-/**
- * @type {import('webpack-dev-server').ProxyConfigMap}
- */
-const passthrough = proxy.reduce(
-  /**
-   * @param {import('webpack-dev-server').ProxyConfigMap} acc - accumulator
-   * @param {string} url
-   */
-  (acc, url) => {
-  /**
-   * @type {import('http-proxy-middleware').Config}
-   */
-    const proxyConfig = {
-      target: 'http://localhost:3001/',
-      secure: false,
-      autoRewrite: true,
-    };
-    acc[url] = proxyConfig;
-    return acc;
-  }, {});
-
+// 'dev' is Development
 if (TARGET === 'dev') {
+  const proxy = [
+    '/',
+    '/api/*',
+    '/auth/*',
+    '/favicon.ico',
+    '/help',
+    '/img/*',
+    '/layout/*',
+    '/location/*',
+    '/locations/*',
+    '/login',
+    '/metrics/*',
+    '/plant/*',
+    '/plants/*',
+    '/privacy',
+    '/terms',
+  ];
+
   /**
-   * @type {import('webpack').Configuration}
+   * @type {import('webpack-dev-server').ProxyConfigMap}
    */
-  const devConfig = {
-    mode: 'development',
-    devServer: {
-      proxy: passthrough,
-      contentBase: path.resolve(ROOT_PATH, 'build'),
-    },
-    entry: [
-      'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:9090',
-      'webpack/hot/only-dev-server',
-      './app/main',
-    ],
-    devtool: 'cheap-module-source-map',
+  const passthrough = proxy.reduce(
+    /**
+     * @param {import('webpack-dev-server').ProxyConfigMap} acc - accumulator
+     * @param {string} url
+     */
+    (acc, url) => {
+    /**
+     * @type {import('http-proxy-middleware').Config}
+     */
+      const proxyConfig = {
+        target: 'http://localhost:3001/',
+        secure: false,
+        autoRewrite: true,
+      };
+      acc[url] = proxyConfig;
+      return acc;
+    }, {});
+
+  common.mode = 'development';
+  common.devServer = {
+    proxy: passthrough,
+    contentBase: path.resolve(ROOT_PATH, 'build'),
   };
-  module.exports = merge(common, devConfig);
+  common.entry = [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:9090',
+    'webpack/hot/only-dev-server',
+    './app/main',
+  ];
+  common.devtool = 'cheap-module-source-map';
 }
 
 /* eslint-enable security/detect-unsafe-regex */
+
+module.exports = common;
