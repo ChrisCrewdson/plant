@@ -2,7 +2,7 @@ require('jquery');
 require('bootstrap');
 // @ts-ignore - because this is a css file
 // eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
-require('bootstrap.css');
+require('bootstrap/dist/css/bootstrap.css');
 require('konva');
 // @ts-ignore - because this is a css file
 require('./stylesheets/main.css');

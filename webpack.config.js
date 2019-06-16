@@ -7,15 +7,16 @@ const ROOT_PATH = path.resolve(__dirname);
 
 /* eslint-disable security/detect-unsafe-regex */
 
+/**
+ * @type {import('webpack').Configuration}
+ */
 const common = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
-    // publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: {},
   },
   module: {
     rules: [{
@@ -35,19 +36,31 @@ const common = {
     {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
       use: {
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff',
+        },
       },
     },
     {
       test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
       use: {
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff',
+        },
       },
     },
     {
       test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
       use: {
-        loader: 'url-loader?limit=10000&mimetype=application/octet-stream',
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'application/octet-stream',
+        },
       },
     },
     {
@@ -59,7 +72,11 @@ const common = {
     {
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       use: {
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml',
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'image/svg+xml',
+        },
       },
     },
     {
@@ -81,31 +98,26 @@ const common = {
   ],
 };
 
-function addVendor(vendorName, moduleLocation) {
-  common.resolve.alias[vendorName] = path.join(__dirname, moduleLocation);
-}
-
-addVendor('jquery', 'node_modules/jquery/dist/jquery.js');
-addVendor('bootstrap', 'node_modules/bootstrap/dist/js/bootstrap.js');
-addVendor('konva', 'node_modules/konva/konva.js');
-addVendor('bootstrap.css', 'node_modules/bootstrap/dist/css/bootstrap.css');
-
 if (TARGET === 'build') {
-  module.exports = merge(common, {
+  /**
+   * @type {import('webpack').Configuration}
+   */
+  const buildConfig = {
     entry: ['./app/main'],
+    mode: 'production',
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
         },
       }),
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-        },
-      }),
     ],
-  });
+    optimization: {
+      minimize: true,
+    },
+  };
+
+  module.exports = merge(common, buildConfig);
 }
 
 const proxy = [
@@ -126,18 +138,33 @@ const proxy = [
   '/terms',
 ];
 
-const passthrough = proxy.reduce((acc, url) => {
-  acc[url] = {
-    target: 'http://localhost:3001/',
-    secure: false,
-    autoRewrite: true,
-  };
-
-  return acc;
-}, {});
+/**
+ * @type {import('webpack-dev-server').ProxyConfigMap}
+ */
+const passthrough = proxy.reduce(
+  /**
+   * @param {import('webpack-dev-server').ProxyConfigMap} acc - accumulator
+   * @param {string} url
+   */
+  (acc, url) => {
+  /**
+   * @type {import('http-proxy-middleware').Config}
+   */
+    const proxyConfig = {
+      target: 'http://localhost:3001/',
+      secure: false,
+      autoRewrite: true,
+    };
+    acc[url] = proxyConfig;
+    return acc;
+  }, {});
 
 if (TARGET === 'dev') {
-  module.exports = merge(common, {
+  /**
+   * @type {import('webpack').Configuration}
+   */
+  const devConfig = {
+    mode: 'development',
     devServer: {
       proxy: passthrough,
       contentBase: path.resolve(ROOT_PATH, 'build'),
@@ -149,7 +176,8 @@ if (TARGET === 'dev') {
       './app/main',
     ],
     devtool: 'cheap-module-source-map',
-  });
+  };
+  module.exports = merge(common, devConfig);
 }
 
 /* eslint-enable security/detect-unsafe-regex */
