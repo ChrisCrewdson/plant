@@ -21,6 +21,7 @@ const api = require('../../../app/middleware/api');
 
 describe('/app/middleware/api', () => {
   test('should check that functions/url exist', () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const store = helper.getFakeStore();
     const next = () => {};
     let callCounter = 0;
@@ -45,6 +46,8 @@ describe('/app/middleware/api', () => {
     });
 
     expect(callCounter).toBe(Object.keys(api.apis).length);
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+    consoleErrorSpy.mockRestore();
   });
 
   test(
