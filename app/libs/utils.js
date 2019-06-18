@@ -5,15 +5,6 @@ const moment = require('moment');
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
-// bson is currently not being explicitly installed in the project because
-// mongodb depends on mongodb-core which depends on bson. The Npm 3 installer
-// will therefore install bson as a top level dependency in node_modules. If
-// this pattern is changed then we would need to install bson independently.
-// Requiring only bson here achieves 2 things:
-// 1. Fixes a problem that Webpack has when bundling this module and chaining
-//    from mongodb down to bson and,
-// 2. Reduces the size of the bundle that gets generated for the browser.
-// eslint-disable-next-line import/no-extraneous-dependencies
 const bson = require('bson');
 const constants = require('./constants');
 
