@@ -38,3 +38,7 @@ typings/
 .vscode/chrome/
 
 .swp
+
+# github-issues/ is an offline list of issues from GitHub
+# Update this by running "npm run offline-issues"
+github-issues/
