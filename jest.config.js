@@ -13,6 +13,7 @@ module.exports = {
     '!**/server.js',
     '!**/test/**',
     '!**/webpack**',
+    '!.eslintrc.js',
     '**/*.{js,jsx}',
   ],
   coverageThreshold: {
