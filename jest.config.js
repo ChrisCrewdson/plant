@@ -13,6 +13,7 @@ module.exports = {
     '!**/server.js',
     '!**/test/**',
     '!**/webpack**',
+    '!**/github-issues/**',
     '!.eslintrc.js',
     '**/*.{js,jsx}',
   ],
