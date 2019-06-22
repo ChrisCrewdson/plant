@@ -129,7 +129,7 @@ interface BizNoteMap {
 }
 
 interface DbNoteWithPlants extends DbNote {
-  plants: Object[]; // TODO: Type this
+  plants: BizPlant[];
 }
 
 

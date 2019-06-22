@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rss renders xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<rss version=\\"2.0\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\">
+  <channel>
+    <title>Latest Notes</title>
+    <atom:link href=\\"fake protocol://fake host/rss\\" rel=\\"self\\" type=\\"application/rssxml\\" />
+    <language>en-us</language>
+    <link>fake protocol://fake host/rss</link>
+    <description>Plant progress.</description>
+    <item>
+        <title>Test Title</title>
+        <description><![CDATA[(no comment)]]></description>
+        <pubDate>Tue, 06 Jun 2017 00:00:00 -0700</pubDate>
+        <guid>fake protocol://fake host/plant/test-title/undefined?noteid=012345678901234567890123#012345678901234567890123</guid>
+        <link>fake protocol://fake host/plant/test-title/undefined?noteid=012345678901234567890123#012345678901234567890123</link>
+      </item>
+  </channel>
+</rss>"
+`;
