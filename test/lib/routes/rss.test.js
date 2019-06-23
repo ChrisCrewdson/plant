@@ -31,19 +31,23 @@ jest.mock('../../../lib/db/mongo', () => mockMongo);
 
 const rss = require('../../../lib/routes/rss.js');
 
+const req = {
+  protocol: 'fake protocol',
+  get: () => 'fake host',
+};
+
+const res = {
+  status: () => res,
+  /** @param {string} builtXml */
+  send: (builtXml) => {}, // eslint-disable-line no-unused-vars
+};
+
 describe('rss', () => {
   test('renders xml', (done) => {
-    const req = {
-      protocol: 'fake protocol',
-      get: () => 'fake host',
-    };
-    const res = {
-      status: () => res,
-      /** @param {string} builtXml */
-      send: (builtXml) => {
-        expect(builtXml).toMatchSnapshot();
-        done();
-      },
+    /** @param {string} builtXml */
+    res.send = (builtXml) => {
+      expect(builtXml).toMatchSnapshot();
+      done();
     };
     /** @type {import("express").Application} */
     const app = {
