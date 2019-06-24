@@ -10,21 +10,21 @@ const plants = [{
   title: 'Test Title',
 }];
 
-const _id = new ObjectID('012345678901234567890123');
-const userId = new ObjectID('012345678901234567890123');
+const testObjectId = new ObjectID('012345678901234567890123');
+const _id = testObjectId;
+const userId = testObjectId;
+const plantIds = [testObjectId];
+/** @type {DbNoteWithPlants[]} */
+const dbNoteWithPlants = [{
+  _id,
+  date: 20170606,
+  plants,
+  plantIds,
+  userId,
+}];
 
 const mockMongo = () => ({
-  getNotesLatest: async () => {
-    /** @type {DbNoteWithPlants[]} */
-    const dbNoteWithPlants = [{
-      _id,
-      date: 20170606,
-      plants,
-      plantIds: [],
-      userId,
-    }];
-    return Promise.resolve(dbNoteWithPlants);
-  },
+  getNotesLatest: async () => Promise.resolve(dbNoteWithPlants),
 });
 
 jest.mock('../../../lib/db/mongo', () => mockMongo);
@@ -44,6 +44,37 @@ const res = {
 
 describe('rss', () => {
   test('renders xml', (done) => {
+    /** @param {string} builtXml */
+    res.send = (builtXml) => {
+      expect(builtXml).toMatchSnapshot();
+      done();
+    };
+    /** @type {import("express").Application} */
+    const app = {
+      // @ts-ignore - ignore for testing
+      get: (_, routeAction) => {
+        routeAction(req, res);
+      },
+    };
+    rss(app);
+  });
+
+  // Use different input values to force target code down
+  // different paths and increase coverage.
+  test('renders xml on alternate paths', (done) => {
+    plants[0].title = '';
+    plants[1] = plants[0]; // eslint-disable-line prefer-destructuring
+    dbNoteWithPlants[0].images = [{
+      id: '',
+      ext: '.png',
+      originalname: 'orig-file-name',
+      size: 1234,
+      sizes: [{
+        name: 'orig',
+        width: 1000,
+      }],
+    }];
+    dbNoteWithPlants[0].note = 'Some text';
     /** @param {string} builtXml */
     res.send = (builtXml) => {
       expect(builtXml).toMatchSnapshot();

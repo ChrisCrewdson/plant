@@ -13,8 +13,29 @@ exports[`rss renders xml 1`] = `
         <title>Test Title</title>
         <description><![CDATA[(no comment)]]></description>
         <pubDate>Tue, 06 Jun 2017 00:00:00 PST</pubDate>
-        <guid>fake protocol://fake host/plant/test-title/undefined?noteid=012345678901234567890123#012345678901234567890123</guid>
-        <link>fake protocol://fake host/plant/test-title/undefined?noteid=012345678901234567890123#012345678901234567890123</link>
+        <guid>fake protocol://fake host/plant/test-title/012345678901234567890123?noteid=012345678901234567890123#012345678901234567890123</guid>
+        <link>fake protocol://fake host/plant/test-title/012345678901234567890123?noteid=012345678901234567890123#012345678901234567890123</link>
+      </item>
+  </channel>
+</rss>"
+`;
+
+exports[`rss renders xml on alternate paths 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<rss version=\\"2.0\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\">
+  <channel>
+    <title>Latest Notes</title>
+    <atom:link href=\\"fake protocol://fake host/rss\\" rel=\\"self\\" type=\\"application/rssxml\\" />
+    <language>en-us</language>
+    <link>fake protocol://fake host/rss</link>
+    <description>Plant progress.</description>
+    <item>
+        <title>(none) (+ 1 others)</title>
+        <description><![CDATA[<p>Some text</p>
+<img src=\\"https://i.plaaant.com/up/orig/..png\\" style=\\"max-width: 100%\\" />]]></description>
+        <pubDate>Tue, 06 Jun 2017 00:00:00 PST</pubDate>
+        <guid>fake protocol://fake host/plant/none/012345678901234567890123?noteid=012345678901234567890123#012345678901234567890123</guid>
+        <link>fake protocol://fake host/plant/none/012345678901234567890123?noteid=012345678901234567890123#012345678901234567890123</link>
       </item>
   </channel>
 </rss>"

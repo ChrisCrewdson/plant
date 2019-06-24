@@ -84,14 +84,31 @@ interface MetricChangePair {
 
 interface DbNote {
   _id: import('mongodb').ObjectID;
+  /**
+   * Appart from the _id the date is the only other field that's
+   * required for this record.
+   */
   date: number;
+  /**
+   * A list of NoteImage objects attached to this note.
+   */
   images?: NoteImage[];
+  /**
+   * The metrics associated with this note
+   */
   metrics?: NoteMetric;
+  /**
+   * The text for the note. Okay for it to be missing.
+   */
   note?: string;
   /**
-   * TODO: Change this to a NonEmptyList<import('mongodb').ObjectID>
+   * These are the IDs of the plants that this note refers to
+   * Change the type to a NonEmtpyList<> type if we ever switch to Typescript
    */
   plantIds: import('mongodb').ObjectID[];
+  /**
+   * The id of the user that created this note
+   */
   userId: import('mongodb').ObjectID;
 }
 
@@ -129,6 +146,14 @@ interface BizNoteMap {
 }
 
 interface DbNoteWithPlants extends DbNote {
+  /**
+   * An array of plant objects from the plant table that are associated
+   * with the note. Should be same number of elements in this array
+   * as in the plantIds array and the _id value in the objects in this
+   * array should match those in the plantIds array.
+   * TODO: I'm fairly sure that this should be refactored to just be
+   * an object keyed off plantIds.
+   */
   plants: BizPlant[];
 }
 
