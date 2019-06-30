@@ -60,7 +60,7 @@ class Plants extends React.Component {
     let fwdUrl = '/';
     if (userId) {
       const state = store.getState();
-      const user = getIn(state, ['users', userId], {});
+      const user = getIn(state, ['users', userId], /** @type {UiUsersValue} */ ({}));
       const locationIds = user.locationIds || [];
       if (locationIds.length) {
         const locationId = locationIds[0];
