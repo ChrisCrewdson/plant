@@ -54,7 +54,7 @@
     "url-loader": "2.0.1",
     "uuid": "3.3.2",
     "validate.js": "0.13.1",
-    "webpack": "4.35.1",
+    "webpack": "4.35.3",
     "webpack-cli": "3.3.5"
   },
   "description": "Plant Tracker",
