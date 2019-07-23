@@ -99,7 +99,7 @@
     "node-fetch": "2.6.0",
     "nodemon": "1.19.1",
     "pre-commit": "1.2.2",
-    "react-hot-loader": "4.12.7",
+    "react-hot-loader": "4.12.9",
     "react-log-lifecycle": "1.1.0",
     "react-test-renderer": "16.8.6",
     "redux-devtools": "3.5.0",
