@@ -17,6 +17,7 @@ const PlantRead = require('./PlantRead');
 const NoteCreate = require('../note/NoteCreate');
 
 class Plant extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -113,7 +114,8 @@ class Plant extends React.Component {
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
       // is in the locationIds list.
-      const locationId = (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
+      const locationId = (locationIds.some(
+        (locId) => locId === activeLocationId) && activeLocationId)
         || locationIds[0];
 
       store.dispatch(actionFunc.editPlantOpen({
@@ -197,8 +199,7 @@ class Plant extends React.Component {
               plants={plants}
               locationId={locationId}
             />
-            )
-          }
+            )}
           </div>
         </div>
       </Base>

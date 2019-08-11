@@ -15,7 +15,7 @@ const mockLogger = {
 /**
  * @param {object} obj
  */
-const isObject = obj => obj !== null && typeof obj === 'object';
+const isObject = (obj) => obj !== null && typeof obj === 'object';
 
 jest.mock('lalog', () => ({
   /**

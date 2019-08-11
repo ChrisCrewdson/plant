@@ -36,6 +36,7 @@ class Grid extends React.Component {
     // We need to keep a reference of these rows because this component is going
     // to manager the editing and state of the rows from here onwards.
     /** @type {GridState} */
+    // eslint-disable-next-line react/state-in-constructor
     this.state = {
       rows: props.rows,
     };
@@ -121,7 +122,7 @@ class Grid extends React.Component {
           }
           return currentValue;
         });
-        return Object.assign({ ...row }, { values });
+        return { ...row, values };
       }
       return row;
     });
@@ -140,14 +141,14 @@ class Grid extends React.Component {
     }
     let rows;
     if (newRow) {
-      rows = stateRows.filter(row => (row._id !== editId));
+      rows = stateRows.filter((row) => (row._id !== editId));
     } else {
       const { rows: propRows } = /** @type {GridProps} */ (this.props);
       if (!propRows) {
         return;
       }
-      const propRow = propRows.find(row => row._id === editId);
-      rows = stateRows.map(row => (propRow && row._id === propRow._id ? propRow : row));
+      const propRow = propRows.find((row) => row._id === editId);
+      rows = stateRows.map((row) => (propRow && row._id === propRow._id ? propRow : row));
     }
     this.setState({ editId: '', rows, newRow: false });
   }
@@ -160,9 +161,9 @@ class Grid extends React.Component {
     const {
       meta, validate, insert, update,
     } = /** @type {GridProps} */ (this.props);
-    const row = rows.find(r => r._id === editId);
+    const row = rows.find((r) => r._id === editId);
     const errors = validate({ row, meta, isNew });
-    if (errors.some(error => !!error)) {
+    if (errors.some((error) => !!error)) {
       this.setState({ errors });
     } else {
       if (isNew) {
@@ -237,7 +238,7 @@ class Grid extends React.Component {
           >
             <TableRow>
               {
-                columns.map(column => (
+                columns.map((column) => (
                   <TableHeaderColumn key={column.title}>
                     {column.title}
                   </TableHeaderColumn>
@@ -250,7 +251,7 @@ Action
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
             {rows
-              && rows.map(row => (
+              && rows.map((row) => (
                 <TableRow key={row._id}>
                   {
                     row.values.map((value, index) => (
@@ -292,12 +293,10 @@ Action
                           showButtons={userCanEdit}
                           showDeleteConfirmation={deleteId === row._id}
                         />
-                      )
-                    }
+                      )}
                   </TableRowColumn>
                 </TableRow>
-              ))
-            }
+              ))}
           </TableBody>
         </Table>
         <div style={{ textAlign: 'right' }}>

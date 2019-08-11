@@ -42,7 +42,7 @@ describe('/app/middleware/api', () => {
         },
       };
 
-      api(store)(next)(Object.assign({}, action, { type: key }));
+      api(store)(next)({ ...action, type: key });
     });
 
     expect(callCounter).toBe(Object.keys(api.apis).length);
@@ -91,7 +91,7 @@ describe('/app/middleware/api', () => {
       nextCalled = true;
     };
 
-    api(store)(next)(Object.assign({}, action, { type: 'Does not exist' }));
+    api(store)(next)({ ...action, type: 'Does not exist' });
 
     expect(nextCalled).toBe(true);
   });

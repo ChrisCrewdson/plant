@@ -10,6 +10,7 @@ const getIn = require('lodash/get');
 const utils = require('../../libs/utils');
 
 class Plants extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,

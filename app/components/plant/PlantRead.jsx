@@ -15,6 +15,7 @@ const Markdown = require('../common/Markdown');
 const dateFormat = 'DD-MMM-YYYY';
 
 class PlantRead extends React.PureComponent {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,
@@ -248,8 +249,7 @@ class PlantRead extends React.PureComponent {
             <div>
 Plant not found or still loading...
             </div>
-          )
-        }
+          )}
       </div>
     );
   }
@@ -269,6 +269,9 @@ PlantRead.propTypes = {
   }).isRequired,
   plant: PropTypes.shape({
     _id: PropTypes.string.isRequired,
+    botanicalName: PropTypes.string,
+    commonName: PropTypes.string,
+    description: PropTypes.string,
     isTerminated: PropTypes.bool,
     locationId: PropTypes.string.isRequired,
     notes: PropTypes.arrayOf(PropTypes.string),

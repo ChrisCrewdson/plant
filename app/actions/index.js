@@ -64,13 +64,13 @@ const actionList = [
  * @param {UiActionType} type - The type of the action - element from actionList array
  * @returns {ActionMethod}
  */
-const createMethod = type => payload => ({ type, payload });
+const createMethod = (type) => (payload) => ({ type, payload });
 
 /**
  * Change a string into proper case
  * @param {string} text - a string to turn into proper case.
  */
-const properCase = text => text[0].toUpperCase() + text.slice(1).toLowerCase();
+const properCase = (text) => text[0].toUpperCase() + text.slice(1).toLowerCase();
 
 /** @type {UiActionsAcc} */
 const actions = actionList.reduce(

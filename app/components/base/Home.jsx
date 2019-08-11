@@ -5,6 +5,7 @@ const Base = require('./Base');
 const { isLoggedIn } = require('../../libs/auth-helper');
 
 class Home extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -73,8 +74,7 @@ class Home extends React.Component {
               {'...explore Farmers and Gardeners...'}
             </Link>
           </section>
-          )
-        }
+          )}
         {existingLocations
           && (
           <section>
@@ -84,8 +84,7 @@ class Home extends React.Component {
               {'...explore Orchards, Gardens, Yards and Farms...'}
             </Link>
           </section>
-          )
-        }
+          )}
         {!isLoggedIn(store)
           && (
           <section>
@@ -95,8 +94,7 @@ Login to get started
               </Link>
             </div>
           </section>
-          )
-        }
+          )}
       </div>
     );
   }

@@ -54,7 +54,7 @@ class NoteRead extends React.PureComponent {
     const sizes = image.sizes || [];
     if (sizes && sizes.length) {
       // <img src="small.jpg" srcset="medium.jpg 1000w, large.jpg 2000w" alt="yah">
-      const items = sizes.map(size => `${NoteRead.buildImageUrl(size.name, image)} ${size.width}w `);
+      const items = sizes.map((size) => `${NoteRead.buildImageUrl(size.name, image)} ${size.width}w `);
       return items.join(',');
     }
     return '';
@@ -71,6 +71,7 @@ class NoteRead extends React.PureComponent {
     this.confirmDelete = this.confirmDelete.bind(this);
     this.editNote = this.editNote.bind(this);
     /** @type {NoteReadState} */
+    // eslint-disable-next-line react/state-in-constructor
     this.state = { showDeleteConfirmation: false };
   }
 
@@ -138,7 +139,7 @@ class NoteRead extends React.PureComponent {
   renderImages({ images, showImages, _id }) {
     if (images && images.length) {
       if (showImages) {
-        return images.map(image => NoteRead.renderImage(image));
+        return images.map((image) => NoteRead.renderImage(image));
       }
 
       const label = `Show ${images.length} image${images.length > 1 ? 's' : ''}`;

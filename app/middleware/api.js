@@ -409,7 +409,7 @@ const apis = {
  * @returns {Function}
  */
 // @ts-ignore - TODO: How does this get typed?
-module.exports = store => next => (action) => {
+module.exports = (store) => (next) => (action) => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);
   }

@@ -15,6 +15,7 @@ const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 
 class LayoutMap extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -203,7 +204,7 @@ class LayoutMap extends React.Component {
       const scaledPlants = gis.scaleToCanvas(userPlants, width);
       const renderedPlants = Object
         .keys(scaledPlants.plants)
-        .map(scaledPlant => this.renderPlantLocation(scaledPlants.plants[scaledPlant]));
+        .map((scaledPlant) => this.renderPlantLocation(scaledPlants.plants[scaledPlant]));
 
       return {
         canvasHeight: scaledPlants.canvasHeight,
@@ -235,8 +236,7 @@ class LayoutMap extends React.Component {
 No plants have been mapped yet...
                 </div>
               </h3>
-            )
-          }
+            )}
         </div>
       </Base>
     );

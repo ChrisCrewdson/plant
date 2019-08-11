@@ -22,6 +22,7 @@ class NoteAssocPlant extends React.Component {
   constructor(props) {
     super(props);
     /** @type {NoteAssocPlantState} */
+    // eslint-disable-next-line react/state-in-constructor
     this.state = {
       expanded: false,
       filter: '',
@@ -50,7 +51,7 @@ class NoteAssocPlant extends React.Component {
       dispatch,
     } = /** @type {NoteAssocPlantProps} */ (this.props);
     const plantIds = propPlantIds.indexOf(plantId) >= 0
-      ? propPlantIds.filter(pId => pId !== plantId)
+      ? propPlantIds.filter((pId) => pId !== plantId)
       : propPlantIds.concat(plantId);
 
     dispatch(actionFunc.editNoteChange({ plantIds }));
@@ -114,7 +115,8 @@ class NoteAssocPlant extends React.Component {
 
     let uncheckedPlants = null;
     if (expanded) {
-      const uncheckedIds = Object.keys(plants).filter(plantId => plantIds.indexOf(plantId) === -1);
+      const uncheckedIds = Object.keys(plants).filter(
+        (plantId) => plantIds.indexOf(plantId) === -1);
       const uncheckedPlantIds = utils.filterSortPlants(uncheckedIds, plants, filter);
 
       uncheckedPlants = this.renderPlantButtons(uncheckedPlantIds, plants, false);
@@ -130,8 +132,7 @@ class NoteAssocPlant extends React.Component {
       >
         {expanded
           ? <ArrowLeft />
-          : <ArrowRight />
-        }
+          : <ArrowRight />}
       </FloatingActionButton>
     );
 

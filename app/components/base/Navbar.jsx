@@ -8,6 +8,7 @@ const { isLoggedIn } = require('../../libs/auth-helper');
 const AddPlantButton = require('../common/AddPlantButton');
 
 class Navbar extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -187,8 +188,7 @@ Logout
                     </li>
                   </ul>
                 </li>
-                )
-              }
+                )}
               {!loggedIn
                 && (
                 <li>
@@ -196,8 +196,7 @@ Logout
 Login
                   </Link>
                 </li>
-                )
-              }
+                )}
               <li>
                 <Link to="/help" title="help">
 Help

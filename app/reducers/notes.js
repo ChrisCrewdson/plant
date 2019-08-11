@@ -1,5 +1,4 @@
 
-
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const { actionEnum } = require('../actions');
@@ -83,7 +82,7 @@ function showNoteImages(state, { payload: _id }) {
      * @param {UiNotesValue} note
      */
     (acc, note) => {
-      acc[note._id] = Object.assign({}, note, { showImages: true });
+      acc[note._id] = { ...note, showImages: true };
       return acc;
     }, {});
 

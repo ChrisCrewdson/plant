@@ -49,16 +49,16 @@ async function makeRequest(opts) {
   /** @type {import('node-fetch').default}} */
   const fetcher = opts.authenticate ? fetch : nodeFetch;
 
-  const headers = Object.assign(
-    {},
-    opts.headers || {},
-  );
+  const headers = {
+
+    ...opts.headers || {},
+  };
 
   /** @type {import('node-fetch').RequestRedirect}} */
   const redirect = opts.followRedirect ? 'follow' : 'manual';
 
   const url = getUrl(opts.url);
-  const options = Object.assign({}, opts, { headers, redirect });
+  const options = { ...opts, headers, redirect };
   let body = '';
   if (isPutOrPost(options.method || '')) {
     body = JSON.stringify(options.body);
@@ -127,42 +127,39 @@ async function startServerAuthenticated() {
     expect(location).toBe(expectedLocation);
   };
 
-  try {
-    await emptyDatabase();
-    data.port = port;
-    data.server = data.server || serverModule;
-    data.app = await startServer(data.app, data.server);
-    localServer = data.app;
 
-    await googleAuthCallback();
+  await emptyDatabase();
+  data.port = port;
+  data.server = data.server || serverModule;
+  data.app = await startServer(data.app, data.server);
+  localServer = data.app;
 
-    // Now, after the googleAuthCallback(), there should be a single document in the
-    // user collection in the DB. This is the test user.
-    const users = await mongo.getUserByQuery({
-      email: 'johnsmith@gmail.com',
-    }, mockLogger);
-    expect(users).toBeInstanceOf(Array);
-    expect(users).toHaveLength(1);
-    const [user] = users;
-    expect(user._id).toBeTruthy();
-    data.userId = user._id.toString();
+  await googleAuthCallback();
 
-    // Now get the user from the DB again but use the getUserById() method because
-    // this also adds the user's locations to the object. This is terrible and needs
-    // to be fixed!!
-    data.user = await mongo.getUserById(data.userId, mockLogger);
+  // Now, after the googleAuthCallback(), there should be a single document in the
+  // user collection in the DB. This is the test user.
+  const users = await mongo.getUserByQuery({
+    email: 'johnsmith@gmail.com',
+  }, mockLogger);
+  expect(users).toBeInstanceOf(Array);
+  expect(users).toHaveLength(1);
+  const [user] = users;
+  expect(user._id).toBeTruthy();
+  data.userId = user._id.toString();
 
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  // Now get the user from the DB again but use the getUserById() method because
+  // this also adds the user's locations to the object. This is terrible and needs
+  // to be fixed!!
+  data.user = await mongo.getUserById(data.userId, mockLogger);
+
+  return data;
 }
 
 const stopServer = async () => new Promise((resolve, reject) => {
   if (localServer) {
     localServer.close(
       /** @param {Error|undefined|null} err */
-      err => (err ? reject(err) : resolve()));
+      (err) => (err ? reject(err) : resolve()));
   }
 });
 
@@ -190,7 +187,7 @@ async function createPlants(numPlants, userId, locationId) {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
-      body: Object.assign({}, plantTemplate, { title: `${plantTemplate.title} ${count}` }),
+      body: { ...plantTemplate, title: `${plantTemplate.title} ${count}` },
       url: '/api/plant',
     };
 
@@ -208,7 +205,7 @@ async function createPlants(numPlants, userId, locationId) {
   /** @type {number[]} */
   // @ts-ignore - [ts] Type 'IterableIterator<number>' is not an array type.
   const numbers = [...Array(numPlants).keys()];
-  const promises = numbers.map(a => createPlant(a));
+  const promises = numbers.map((a) => createPlant(a));
   return Promise.all(promises);
 }
 
@@ -219,14 +216,12 @@ async function createPlants(numPlants, userId, locationId) {
  */
 async function createNote(plantIds, noteOverride = {}) {
   expect(_.isArray(plantIds)).toBeTruthy();
-  const noteTemplate = Object.assign(
-    {
-      note: 'This is a note',
-      date: 20160101,
-    },
-    { plantIds },
-    noteOverride,
-  );
+  const noteTemplate = {
+    note: 'This is a note',
+    date: 20160101,
+    plantIds,
+    ...noteOverride,
+  };
 
   /** @type {HelperMakeRequestOptions} */
   const reqOptions = {
@@ -260,7 +255,7 @@ const getFakeStore = () => ({
  * @param {string[]} values
  */
 const expectMongoId = (values) => {
-  values.forEach(value => expect(constants.mongoIdRE.test(value)).toBe(true));
+  values.forEach((value) => expect(constants.mongoIdRE.test(value)).toBe(true));
 };
 
 module.exports = {

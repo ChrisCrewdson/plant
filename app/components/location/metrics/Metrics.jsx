@@ -32,6 +32,7 @@ class Metrics extends React.Component {
     );
   }
 
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -42,6 +43,7 @@ class Metrics extends React.Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.postSaveSuccessCreateNote = this.postSaveSuccessCreateNote.bind(this);
+    // eslint-disable-next-line react/state-in-constructor
     this.state = { filter: '' };
   }
 

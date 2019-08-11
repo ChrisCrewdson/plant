@@ -181,8 +181,7 @@ class NoteEdit extends React.PureComponent {
               </h1>
               <LinearProgress style={linearProgressStyle} mode="determinate" value={value} max={max} />
             </div>
-            )
-          }
+            )}
           {value === max
             && (
             <div style={{ display: 'flex', fontSize: 'xx-large', justifyContent: 'space-between' }}>
@@ -191,8 +190,7 @@ Upload complete... Finishing up... Hang on...
               </h1>
               <CircularProgress />
             </div>
-            )
-          }
+            )}
         </Paper>
       );
     }
@@ -221,6 +219,7 @@ Upload complete... Finishing up... Hang on...
       />
     );
 
+    /* eslint-disable react/jsx-props-no-spreading */
     return (
       <Paper
         style={paperStyle}
@@ -257,8 +256,7 @@ Upload complete... Finishing up... Hang on...
 There were errors. Please check your input.
             </p>
           </div>
-          )
-        }
+          )}
 
         <CancelSaveButtons
           clickAddPhoto={this.onOpenClick}
@@ -294,19 +292,33 @@ There were errors. Please check your input.
 
       </Paper>
     );
+    /* eslint-enable react/jsx-props-no-spreading */
   }
 }
 
 NoteEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimNote: PropTypes.shape({
+    _id: PropTypes.string,
+    date: PropTypes.number,
+    errors: PropTypes.shape({
+      date: PropTypes.string,
+      length: PropTypes.number,
+      metrics: PropTypes.string,
+      note: PropTypes.string,
+      plantIds: PropTypes.string,
+    }),
     note: PropTypes.string,
     plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    uploadProgress: PropTypes.shape({
+      max: PropTypes.number,
+      value: PropTypes.number,
+    }),
   }).isRequired,
+  locationId: PropTypes.string.isRequired,
   plants: PropTypes.shape({
   }).isRequired,
   postSaveSuccess: PropTypes.func,
-  locationId: PropTypes.string.isRequired,
 };
 
 NoteEdit.defaultProps = {

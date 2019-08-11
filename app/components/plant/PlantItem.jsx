@@ -102,8 +102,7 @@ class PlantItem extends React.PureComponent {
               <AddIcon />
             </FloatingActionButton>
           </div>
-          )
-        }
+          )}
         {renderLink}
       </div>
     );

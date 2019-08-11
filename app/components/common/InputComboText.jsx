@@ -26,9 +26,7 @@ function inputComboText(props) {
     display: 'none',
   };
 
-  const styler = Object.assign({
-    marginLeft: 20,
-  }, style);
+  const styler = { marginLeft: 20, ...style };
 
   return (
     <TextField

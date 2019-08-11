@@ -25,6 +25,7 @@ const { makeSlug } = require('../../libs/utils');
 const { plant: plantValidator } = validators;
 
 class PlantEdit extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object,
@@ -145,7 +146,7 @@ class PlantEdit extends React.Component {
 
   render() {
     const {
-      interimPlant, user, users, locations,
+      interimPlant, user, users, locations, dispatch,
     } = /** @type {PlantEditProps} */ (this.props);
     const {
       title = '',
@@ -174,7 +175,7 @@ class PlantEdit extends React.Component {
     // one that you own/manage. Only set locationId to this if it's one that
     // is in the locationIds list.
     const locationId = interimPlant.locationId
-      || (locationIds.some(locId => locId === activeLocationId) && activeLocationId)
+      || (locationIds.some((locId) => locId === activeLocationId) && activeLocationId)
       || locationIds[0];
 
     const geoPosDisplay = interimPlant.loc
@@ -204,7 +205,7 @@ class PlantEdit extends React.Component {
 
     const errorDivs = isEmpty(errors)
       ? []
-      : Object.keys(errors).map(key => (
+      : Object.keys(errors).map((key) => (
         <div key={key}>
           {`${key} - ${errors[key]}`}
         </div>
@@ -309,7 +310,8 @@ class PlantEdit extends React.Component {
         <Divider />
 
         <PlantEditTerminated
-          {...this.props}
+          dispatch={dispatch}
+          interimPlant={interimPlant}
         />
 
         {hasGeo
@@ -333,8 +335,7 @@ class PlantEdit extends React.Component {
             />
             <Divider />
           </div>
-          )
-        }
+          )}
 
         {!isEmpty(errors)
           && (
@@ -345,8 +346,7 @@ There were errors. Please check your input.
             {errorDivs}
             <Divider />
           </div>
-          )
-        }
+          )}
 
         <CancelSaveButtons
           clickSave={this.save}
@@ -370,6 +370,10 @@ PlantEdit.propTypes = {
     description: PropTypes.string,
     errors: PropTypes.object,
     isNew: PropTypes.bool,
+    loc: PropTypes.shape({
+      coordindates: PropTypes.shape({}),
+    }),
+    locationId: PropTypes.string,
     plantedDate: PropTypes.string,
     price: PropTypes.string,
     purchasedDate: PropTypes.string,
@@ -377,6 +381,7 @@ PlantEdit.propTypes = {
   }).isRequired,
   user: PropTypes.shape({
     _id: PropTypes.string,
+    activeLocationId: PropTypes.string,
   }).isRequired,
   users: PropTypes.shape({}).isRequired,
   locations: PropTypes.shape({}).isRequired,

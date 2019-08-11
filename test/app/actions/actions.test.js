@@ -24,7 +24,7 @@ describe('/app/actions', () => {
     /**
      * @param {string} letter
      */
-    const isUpper = letter => letter >= 'A' && letter <= 'Z';
+    const isUpper = (letter) => letter >= 'A' && letter <= 'Z';
     const originalExports = [
       'CHANGE_ACTIVE_LOCATION_ID',
       'CREATE_PLANT_FAILURE',

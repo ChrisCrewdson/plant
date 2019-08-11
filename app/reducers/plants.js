@@ -75,7 +75,7 @@ function deleteNoteRequest(state, { payload: noteId }) {
   return seamless.from(Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
     if ((plant.notes || []).includes(noteId)) {
-      acc[plantId] = seamless.set(plant, 'notes', (plant.notes || []).filter(nId => nId !== noteId));
+      acc[plantId] = seamless.set(plant, 'notes', (plant.notes || []).filter((nId) => nId !== noteId));
     } else {
       acc[plantId] = plant;
     }
@@ -182,7 +182,7 @@ function upsertNoteSuccess(state, { payload: { note } }) {
 
       // If should not have and has, then remove it
       if (!shouldHaveNote && hasNote) {
-        acc[plantId] = seamless.set(plant, 'notes', plantNotes.filter(noteId => noteId !== _id));
+        acc[plantId] = seamless.set(plant, 'notes', plantNotes.filter((noteId) => noteId !== _id));
       }
 
       return acc;

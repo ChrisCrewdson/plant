@@ -25,9 +25,7 @@ function loadLocationsSuccess(state, { payload }) {
      */
     (acc, locationId) => {
       const location = payload[locationId];
-      acc[location._id] = Object.assign({}, location, {
-        plantIds: location.plantIds || [],
-      });
+      acc[location._id] = { ...location, plantIds: location.plantIds || [] };
       return acc;
     }, {});
   const newState = seamless.merge(state, locations, { deep: true });
@@ -55,7 +53,7 @@ function createPlantRequest(state, action) {
   if (location) {
     // Add the new plantId to the existing list of plantIds at this location
     const plantIds = (location.plantIds || []).concat(plant._id);
-    location = Object.assign({}, location, { plantIds });
+    location = { ...location, plantIds };
     // Update the location object with the new list of plantIds
     return seamless.set(state, plant.locationId, location);
   }
@@ -108,7 +106,7 @@ function loadPlantsSuccess(state, action) {
 function deletePlantRequest(state, { payload: { locationId, plantId } }) {
   const plantIds = (state[locationId] && state[locationId].plantIds) || [];
   if (plantIds.includes(plantId)) {
-    const pIds = plantIds.filter(pId => pId !== plantId);
+    const pIds = plantIds.filter((pId) => pId !== plantId);
     return seamless.setIn(state, [locationId, 'plantIds'], pIds);
   }
   return state;

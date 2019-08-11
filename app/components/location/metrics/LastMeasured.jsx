@@ -134,7 +134,7 @@ Metrics:
       </h5>
       <ul>
         {
-          sortedMetrics.map(metricPlant => (
+          sortedMetrics.map((metricPlant) => (
             <div key={metricPlant.plantId}>
               {metricPlant.title}
             </div>

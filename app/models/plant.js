@@ -94,7 +94,7 @@ module.exports = (attributes, { isNew }) => {
 
   if (isNew && !attributes._id) {
     // eslint-disable-next-line no-param-reassign
-    attributes = Object.assign({}, attributes, { _id: makeMongoId() });
+    attributes = { ...attributes, _id: makeMongoId() };
   }
 
   /** @type {UiPlantsValue} */

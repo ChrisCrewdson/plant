@@ -83,8 +83,7 @@ class NoteCreate extends React.PureComponent {
                 <AddIcon />
               </FloatingActionButton>
             </div>
-          )
-        }
+          )}
       </div>
     );
   }
@@ -95,6 +94,7 @@ NoteCreate.propTypes = {
   userCanEdit: PropTypes.bool.isRequired,
   interimNote: PropTypes.shape({
     note: PropTypes.string,
+    isNew: PropTypes.bool,
   }).isRequired,
   plant: PropTypes.shape({
     _id: PropTypes.string.isRequired,

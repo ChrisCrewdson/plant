@@ -32,17 +32,6 @@ class PlantEditTerminated extends React.Component {
   }
 
   /**
-   * @param {string} name
-   * @param {string|boolean} value
-   * @returns {void}
-   * @memberof PlantEditTerminated
-   */
-  dispatchChange(name, value) {
-    const { dispatch } = this.props;
-    dispatch(actionFunc.editPlantChange({ [name]: value }));
-  }
-
-  /**
    * Change Handler for InputCombo
    * @param {React.ChangeEvent<HTMLInputElement>} e
    * @returns {void}
@@ -61,6 +50,17 @@ class PlantEditTerminated extends React.Component {
     const { name } = e.currentTarget;
     this.dispatchChange(name, isInputChecked);
   };
+
+  /**
+   * @param {string} name
+   * @param {string|boolean} value
+   * @returns {void}
+   * @memberof PlantEditTerminated
+   */
+  dispatchChange(name, value) {
+    const { dispatch } = this.props;
+    dispatch(actionFunc.editPlantChange({ [name]: value }));
+  }
 
   render() {
     const styles = {
@@ -141,8 +141,7 @@ class PlantEditTerminated extends React.Component {
 
             <Divider />
           </div>
-          )
-        }
+          )}
       </div>
     );
   }

@@ -21,7 +21,7 @@ function errorHelper(props) {
   return (
     <div className="btn btn-danger" style={{ margin: 10 }}>
       {
-        errors.map(error => (
+        errors.map((error) => (
           <div key={error}>
             {error}
           </div>

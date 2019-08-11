@@ -327,10 +327,11 @@ function getGeo(optionsParam, cb) {
   }
 
   /** @type {PositionOptions} */
-  const options = Object.assign({}, {
+  const options = {
     enableHighAccuracy: true,
     timeout: 30000, // 30 seconds
-  }, optionsParam);
+    ...optionsParam,
+  };
 
   return window.navigator.geolocation.getCurrentPosition(
     (position) => {
@@ -398,20 +399,24 @@ function rebaseLocations(plants) {
   }, { long: 180, lat: 90 });
 
   return plants.map((plant) => {
-    const coordinates = getLongLat(plant);
-    if (Array.isArray(coordinates)) {
-      const type = plant.loc && plant.loc.type;
-      return Object.assign({}, plant, {
-        loc: {
-          type,
-          coordinates: {
-            0: subtractGis(coordinates[0], northWestPoints.long),
-            1: subtractGis(coordinates[1], northWestPoints.lat),
-          },
-        },
-      });
+    if (!plant.loc) {
+      return plant;
     }
-    return plant;
+    const {
+      coordinates: actualCoordinates,
+      type,
+    } = plant.loc;
+    const coordinates = {
+      0: subtractGis(actualCoordinates[0], northWestPoints.long),
+      1: subtractGis(actualCoordinates[1], northWestPoints.lat),
+    };
+    return {
+      ...plant,
+      loc: {
+        type,
+        coordinates,
+      },
+    };
   });
 }
 
@@ -487,7 +492,7 @@ function noteFromBody(body) {
 
   if (body.metrics) {
     Object.keys(body.metrics).forEach((key) => {
-      const metaMetric = metaMetrics.find(mm => mm.key === key);
+      const metaMetric = metaMetrics.find((mm) => mm.key === key);
       if (metaMetric) {
         switch (metaMetric.type) {
           case 'toggle':
@@ -549,7 +554,7 @@ function noteFromBody(body) {
  * @returns {MetaMetric|undefined} - the metaMetric for that key
  */
 function metaMetricsGetByKey(key) {
-  return metaMetrics.find(value => value.key === key);
+  return metaMetrics.find((value) => value.key === key);
 }
 
 /**

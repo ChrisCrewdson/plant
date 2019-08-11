@@ -11,6 +11,7 @@ const AddLocationButton = require('./AddLocationButton');
 const LocationTile = require('./LocationTile');
 
 class Locations extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,

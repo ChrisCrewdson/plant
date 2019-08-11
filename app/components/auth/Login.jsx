@@ -38,8 +38,7 @@ function login() {
               {'Developer Login'}
             </a>
           </div>
-          )
-        }
+          )}
       </div>
     </Base>
   );

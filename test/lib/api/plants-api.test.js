@@ -48,7 +48,7 @@ describe('plants-api', () => {
       expect(plants).toHaveLength(numPlants);
       // assert that all plants exist
       insertedPlants.forEach((plant) => {
-        const some = plants.some(r => r._id === plant._id);
+        const some = plants.some((r) => r._id === plant._id);
         expect(some).toBe(true);
       });
     });

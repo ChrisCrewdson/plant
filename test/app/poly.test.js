@@ -75,7 +75,7 @@ describe('/app/poly', () => {
       expect(error).toBeUndefined();
       // Remove those added "features" from the window object to return
       // it to its previous state
-      missing.forEach(m => delete window[m]);
+      missing.forEach((m) => delete window[m]);
       done();
     });
   });

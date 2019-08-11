@@ -17,9 +17,7 @@ function selectCombo(props) {
     value,
   } = props;
 
-  const styler = Object.assign({
-    marginLeft: 20,
-  }, style);
+  const styler = { marginLeft: 20, ...style };
 
   const select = () => {
     if (!options) {
@@ -37,7 +35,7 @@ function selectCombo(props) {
         style={styler}
       >
         {
-        Object.keys(options).map(key => (
+        Object.keys(options).map((key) => (
           <MenuItem
             key={key}
             value={key}

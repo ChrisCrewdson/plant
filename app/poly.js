@@ -10,12 +10,12 @@ const features = [
 
 function browserSupportsAllFeatures() {
   // @ts-ignore - because don't want to add an any index to Window
-  return features.every(f => window[f]);
+  return features.every((f) => window[f]);
 }
 
 function missingFeatures() {
   // @ts-ignore - because don't want to add an any index to Window
-  return features.filter(f => !window[f]);
+  return features.filter((f) => !window[f]);
 }
 
 /**

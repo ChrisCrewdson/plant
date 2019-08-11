@@ -29,6 +29,7 @@ class Location extends React.Component {
     );
   }
 
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -42,6 +43,7 @@ class Location extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.postSaveSuccessCreateNote = this.postSaveSuccessCreateNote.bind(this);
     /** @type {LocationState} */
+    // eslint-disable-next-line react/state-in-constructor
     this.state = { filter: '' };
   }
 
@@ -246,7 +248,7 @@ No plants added yet...
 
     const filterInput = (
       <InputComboText
-        changeHandler={e => this.setState({ filter: e.target.value.toLowerCase() })}
+        changeHandler={(e) => this.setState({ filter: e.target.value.toLowerCase() })}
         id="plant-title-filter"
         label="Filter"
         name="filter"

@@ -13,9 +13,7 @@ const { actionEnum } = require('../actions');
 function loadUsersSuccess(state, action) {
   const users = /** @type {UiUsersValue[]} */ (action.payload || []);
   const usersSet = users.reduce((acc, user) => {
-    acc[user._id] = Object.assign({}, user, {
-      locationIds: user.locationIds || [],
-    });
+    acc[user._id] = { ...user, locationIds: user.locationIds || [] };
     return acc;
   }, /** @type {UiUsers} */ ({}));
 

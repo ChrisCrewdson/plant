@@ -37,8 +37,7 @@ function cancelSaveButtons(props) {
           >
             <AddPhotoIcon />
           </FloatingActionButton>
-          )
-        }
+          )}
 
         <FloatingActionButton
           onClick={clickCancel}

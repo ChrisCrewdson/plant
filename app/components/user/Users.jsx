@@ -10,6 +10,7 @@ const Base = require('../base/Base');
 const { makeSlug } = utils;
 
 class Users extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -85,7 +86,7 @@ class Users extends React.Component {
     const { users } = store.getState();
     const userIds = Object.keys(users);
     if (userIds.length) {
-      return userIds.map(userId => this.renderUser(users[userId]));
+      return userIds.map((userId) => this.renderUser(users[userId]));
     }
     return null;
   }

@@ -17,6 +17,7 @@ class NotesRead extends React.PureComponent {
   constructor(props) {
     super(props);
     /** @type {NotesReadState} */
+    // eslint-disable-next-line react/state-in-constructor
     this.state = {};
   }
 

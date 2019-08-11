@@ -17,13 +17,11 @@ function logoutRequest() {
  * @returns {UiUser}
  */
 function logoutSuccess(state, action) {
-  return seamless.from(Object.assign(
-    {}, {
-      status: 'logout',
-      isLoggedIn: false,
-    },
-    action.payload,
-  ));
+  return seamless.from({
+    status: 'logout',
+    isLoggedIn: false,
+    ...action.payload,
+  });
 }
 
 /**
@@ -33,13 +31,11 @@ function logoutSuccess(state, action) {
  * @returns {UiUser}
  */
 function logoutFailure(state, action) {
-  return seamless.from(Object.assign(
-    {}, {
-      status: 'failed',
-      isLoggedIn: false,
-    },
-    action.payload,
-  ));
+  return seamless.from({
+    status: 'failed',
+    isLoggedIn: false,
+    ...action.payload,
+  });
 }
 
 /**
@@ -55,7 +51,7 @@ function loadLocationsSuccess(state, action) {
     const { _id } = state;
 
     // Find the first location that this user is a member of
-    const location = locations.find(l => !!l.members[_id]);
+    const location = locations.find((l) => !!l.members[_id]);
 
     if (location) {
       // console.log('found location');

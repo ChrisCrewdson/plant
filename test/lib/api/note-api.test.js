@@ -65,7 +65,7 @@ describe('note-api', () => {
       const reqOptions = {
         method: 'POST',
         authenticate: true,
-        body: Object.assign({}, initialNote, { plantIds: [] }),
+        body: { ...initialNote, plantIds: [] },
         url: '/api/note',
         text: true,
       };
@@ -124,26 +124,25 @@ describe('note-api', () => {
 
     let updatedNote;
     test('should update the just created note', async () => {
-      updatedNote = Object.assign(
-        {},
-        initialNote, {
-          note: 'A New Note',
-          _id: noteId,
-          metrics: {
-            height: '5 5', // 5' 5"
-            girth: '5',
-            harvestCount: '1',
-            harvestWeight: '3.6',
-            firstBlossom: 'true',
-            lastBlossom: 'true',
-            firstBud: 'true',
-            harvestStart: 'true',
-            harvestEnd: 'true',
-            leafShedStart: 'true',
-            leafShedEnd: 'true',
-          },
+      updatedNote = {
+
+        ...initialNote,
+        note: 'A New Note',
+        _id: noteId,
+        metrics: {
+          height: '5 5', // 5' 5"
+          girth: '5',
+          harvestCount: '1',
+          harvestWeight: '3.6',
+          firstBlossom: 'true',
+          lastBlossom: 'true',
+          firstBud: 'true',
+          harvestStart: 'true',
+          harvestEnd: 'true',
+          leafShedStart: 'true',
+          leafShedEnd: 'true',
         },
-      );
+      };
 
       /** @type {HelperMakeRequestOptions} */
       const reqOptions = {
@@ -326,7 +325,7 @@ describe('note-api', () => {
         expect(createdNote).toBeTruthy();
         // logger.trace('createdNote', {createdNote});
         // data.createdNote = body;
-        return Object.assign({}, { createdNote });
+        return { createdNote };
       }
 
       /**

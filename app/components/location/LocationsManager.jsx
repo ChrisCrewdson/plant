@@ -42,7 +42,7 @@ const weatherColumns = [{
  *
  * @param {Dictionary<Role>} members
  */
-const getMembers = members => Object.keys(members || {}).map((_id) => {
+const getMembers = (members) => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
   return {
     _id,
@@ -53,7 +53,7 @@ const getMembers = members => Object.keys(members || {}).map((_id) => {
 /**
  * @param {Dictionary<UiLocationsStation>} stations
  */
-const getStations = stations => Object.keys(stations || {}).map((_id) => {
+const getStations = (stations) => Object.keys(stations || {}).map((_id) => {
   const { name, enabled } = stations[_id];
   return {
     _id,
@@ -73,7 +73,7 @@ class LocationsManager extends React.Component {
 
     // Check that each of the Select components has a value selected
     /** @type {string[]} */
-    const errors = values.map(value => (value === '<select>' ? 'You must select a value' : ''));
+    const errors = values.map((value) => (value === '<select>' ? 'You must select a value' : ''));
 
     // For an insert, check that the user is not already listed at the location
     if (isNew) {
@@ -108,7 +108,7 @@ class LocationsManager extends React.Component {
       if (stations[stationId]) {
         errors[0] = 'This Station ID already belongs to this location';
       }
-      if (Object.keys(stations).some(id => stations[id].name === name)) {
+      if (Object.keys(stations).some((id) => stations[id].name === name)) {
         errors[1] = 'This Name already used';
       }
     }

@@ -26,7 +26,7 @@ describe('/app/reducers/plants', () => {
         _id: '2',
         name: 'two',
       };
-      const expected = Object.assign({}, state, { 2: payload });
+      const expected = { ...state, 2: payload };
 
       methods.forEach((method) => {
         const actual = plants(state, actionFunc[method](payload));
@@ -49,7 +49,7 @@ describe('/app/reducers/plants', () => {
         _id: '2',
         name: 'two',
       };
-      const expected = Object.assign({}, state, { 2: payload });
+      const expected = { ...state, 2: payload };
 
       methods.forEach((method) => {
         const actual = plants(state, actionFunc[method](payload));

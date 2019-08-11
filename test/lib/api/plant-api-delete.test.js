@@ -73,7 +73,7 @@ describe('plant-api-delete', () => {
 
       // 2. Create 3 notes, part 1.2:
       //    Update Note #1
-      const updatedNote = Object.assign({}, notes[0], { x: 'random' });
+      const updatedNote = { ...notes[0], x: 'random' };
       const upsertedNote = await mongo.upsertNote(updatedNote, mockLogger);
       expect(upsertedNote).toBeTruthy();
 

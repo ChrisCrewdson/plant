@@ -43,7 +43,7 @@ describe('plant-api', () => {
     const reqOptions = {
       method: 'POST',
       authenticate: true,
-      body: Object.assign({}, initialPlant, { title: '' }),
+      body: { ...initialPlant, title: '' },
       url: '/api/plant',
     };
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
@@ -115,13 +115,15 @@ describe('plant-api', () => {
   /** @type {Partial<DbPlant>} */
   let updatedPlant;
   test('should update the just created plant', async () => {
-    updatedPlant = Object.assign(
-      {},
-      initialPlant, {
-        title: 'A New Title',
-        _id: plantId,
-      },
-    );
+    updatedPlant = {
+
+      ...initialPlant,
+      title: 'A New Title',
+      // TODO: _id should be undefined or MongoId - research if okay to be a string here.
+      //       See disable message on next line
+      // @ts-ignore - disabled this warning during a dependency upgrade - may need to revisit
+      _id: plantId,
+    };
 
     /** @type {HelperMakeRequestOptions} */
     const reqOptions = {
@@ -134,7 +136,9 @@ describe('plant-api', () => {
     const { httpMsg, response } = await helper.makeRequest(reqOptions);
     const { locationId } = httpMsg;
     expect(response.status).toBe(200);
-    const expected = Object.assign({}, updatedPlant, { userId: user._id, locationId, notes: [] });
+    const expected = {
+      ...updatedPlant, userId: user._id, locationId, notes: [],
+    };
     expect(httpMsg).toEqual(expected);
   });
 

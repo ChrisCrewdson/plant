@@ -38,7 +38,7 @@ validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */
   }
 
   // Only mongoId values of x length
-  const validInner = every(value, item => constants.mongoIdRE.test(item));
+  const validInner = every(value, (item) => constants.mongoIdRE.test(item));
 
   if (!validInner) {
     return 'must be MongoIds';
@@ -71,7 +71,7 @@ validatejs.validators.imagesValidate = (value) => {
   }
 
   // Only uuid values of x length
-  const validImageObject = every(value, item => item
+  const validImageObject = every(value, (item) => item
       && constants.mongoIdRE.test(item.id)
       && typeof item.ext === 'string'
       && typeof item.originalname === 'string'
@@ -102,7 +102,7 @@ ${Object.keys(extraProps).join()}`;
   const names = constants.imageSizeNames;
   const validSizes = every(value, (item) => {
     if (item.sizes && item.sizes.length) {
-      return every(item.sizes, size => names.indexOf(size.name) >= 0
+      return every(item.sizes, (size) => names.indexOf(size.name) >= 0
           && typeof size.width === 'number');
     }
     return true;
@@ -152,13 +152,13 @@ module.exports = (atts) => {
         name,
         width: intParser(width),
       }));
-      const img = Object.assign({}, image, { size: intParser(image.size) });
+      const img = { ...image, size: intParser(image.size) };
       if (sizes.length) {
         Object.assign(img, { sizes });
       }
       return img;
     });
-    attributes = Object.assign({}, attributes, { images });
+    attributes = { ...attributes, images };
   }
 
   const cleaned = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
