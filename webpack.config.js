@@ -15,18 +15,20 @@ const common = {
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [{
-      test: /\.jsx?$/,
+      test: /\.(t|j)sx?$/,
       exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        query: {
-          presets: ['env', 'react', 'stage-0'],
-        },
+      loader: 'awesome-typescript-loader?module=es6',
+      options: {
+        configFileName: 'tsconfig-fe.json',
       },
+    }, {
+      enforce: 'pre',
+      loader: 'source-map-loader',
+      test: /\.js$/,
     },
     {
       test: /\.json$/,
