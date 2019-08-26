@@ -1,10 +1,8 @@
 const helper = require('../../helper');
 
 describe('plants-api', () => {
-  /** @type {string} */
-  let userId;
-  /** @type {string} */
-  let locationId;
+  let userId: string;
+  let locationId: string;
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -18,8 +16,7 @@ describe('plants-api', () => {
   });
   afterAll(() => helper.stopServer());
 
-  /** @type {BizPlant[]} */
-  let insertedPlants;
+  let insertedPlants: BizPlant[];
   const numPlants = 2;
 
   beforeAll(async () => {
@@ -31,16 +28,14 @@ describe('plants-api', () => {
     // it('should return an empty list if locationId exists and has no plants');
 
     test('should retrieve the just created plants by locationId', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'GET',
         authenticate: false,
         url: `/api/plants/${locationId}`,
       };
 
       const { httpMsg, response } = await helper.makeRequest(reqOptions);
-      /** @type {BizPlant[]} */
-      const plants = httpMsg;
+      const plants: BizPlant[] = httpMsg;
 
       expect(response.status).toBe(200);
       expect(plants).toBeTruthy();
