@@ -96,7 +96,7 @@
     "eslint-plugin-security": "1.4.0",
     "fetch-cookie": "0.7.3",
     "hoist-non-react-statics": "3.3.0",
-    "jest": "23.6.0",
+    "jest": "24.9.0",
     "jest-circus": "24.9.0",
     "node-fetch": "2.6.0",
     "nodemon": "1.19.1",
