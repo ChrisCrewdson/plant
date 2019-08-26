@@ -32,7 +32,7 @@ interface DbUserGoogle {
 interface DbUser {
   _id: import('mongodb').ObjectID;
   createdAt: Date;
-  email?: string
+  email?: string;
   facebook?: DbUserFacebook;
   google?: DbUserGoogle;
   name?: string;
@@ -46,7 +46,7 @@ declare type BizUserStatus = 'success';
 interface BizUser {
   _id: string;
   createdAt: Date;
-  email?: string
+  email?: string;
   facebook?: DbUserFacebook;
   google?: DbUserGoogle;
   name?: string;

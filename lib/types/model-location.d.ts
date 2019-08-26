@@ -3,7 +3,7 @@ interface DbLocationStationObj {
   enabled: boolean;
 }
 
-declare type Role = 
+declare type Role =
   'owner' |
   'manager' |
   'member';
@@ -84,7 +84,7 @@ interface UiLocationsValue {
   loc: UiLocationsLoc;
   createdBy: string;
   members: Dictionary<Role>;
-  stations: Dictionary<UiLocationsStation>
+  stations: Dictionary<UiLocationsStation>;
   title: string;
   plantIds: string[];
 }

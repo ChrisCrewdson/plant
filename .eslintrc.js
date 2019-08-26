@@ -8,9 +8,14 @@ module.exports = {
   },
   'extends': [
     'airbnb',
-    'plugin:security/recommended'
+    'plugin:security/recommended',
+    'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
   ],
-  'parser': 'babel-eslint',
+  parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+  parserOptions:  {
+    ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
+    sourceType:  'module',  // Allows for the use of imports
+  },
   'plugins': [
     'security',
     'jest'
@@ -29,6 +34,16 @@ module.exports = {
     'security/detect-object-injection': 0,
     'no-param-reassign': [2, {
       'ignorePropertyModificationsFor': ['draft']
-    }]
+    }],
+    // These carried over from the plant-image-lambda project to accelerate
+    // the linting
+    // TODO: Remove these one day
+    "@typescript-eslint/explicit-function-return-type": [0],
+    "@typescript-eslint/no-var-requires": [0],
+    '@typescript-eslint/no-empty-interface': [0],
+    '@typescript-eslint/no-explicit-any': [0],
+    '@typescript-eslint/class-name-casing': [0],
+    '@typescript-eslint/ban-ts-ignore': [0],
+    '@typescript-eslint/camelcase': [0],
   }
 }

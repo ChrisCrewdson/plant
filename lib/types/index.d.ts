@@ -43,7 +43,7 @@ interface GeoCoords {
   /** Latitude */
   1: number;
 }
-  
+
 interface Geo {
   type: GeoType; // "Point" - is this the only value I know of that's valid
   coordinates: GeoCoords;
@@ -143,7 +143,7 @@ interface AddPlantButtonProps {
 }
 
 interface Window {
-  [key:string]: any;
+  [key: string]: any;
   // FormData: Function;
 }
 

@@ -5,7 +5,7 @@ const helper = require('../../helper');
  * @param {import("redux").Store} store
  * @param {AjaxOptions} options
  */
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 let ajax = (store, options) => {};
 /**
  * @param {import("redux").Store} store

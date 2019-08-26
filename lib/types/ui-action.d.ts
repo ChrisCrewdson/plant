@@ -1,5 +1,4 @@
 
-
 declare type UiActionType =
   'CHANGE_ACTIVE_LOCATION_ID' |
   'CREATE_PLANT_FAILURE' |
@@ -59,7 +58,7 @@ declare type UiActionType =
 declare type UiActionsEnum = { [key in UiActionType]: string; }
 
 interface UiActionsFunction {
-  [key:string]: ActionMethod;
+  [key: string]: ActionMethod;
 }
 
 interface UiActionsAcc {

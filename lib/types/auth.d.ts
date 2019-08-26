@@ -3,7 +3,7 @@ interface FacebookOAuthJson {
   emails: string[]|string;
   id: string;
 }
-  
+
 interface FacebookOAuthName {
   givenName: string;
   familyName: string;

@@ -39,7 +39,7 @@ const req = {
 const res = {
   status: () => res,
   /** @param {string} builtXml */
-  send: (_: string) => {}, // eslint-disable-line no-unused-vars
+  send: (_: string) => {}, // eslint-disable-line no-unused-vars,@typescript-eslint/no-unused-vars
 };
 
 describe('rss', () => {

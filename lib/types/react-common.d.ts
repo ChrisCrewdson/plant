@@ -70,9 +70,9 @@ declare type GridCellInputType = 'select' | 'boolean' | 'text';
 
 interface GridCellProps {
   editCell: (rowId: string, colIndex: number, value: string|boolean) => void;
-  editId?: string,
+  editId?: string;
   error: string;
-  index: number,
+  index: number;
   options?: Dictionary<string>;
   rowId: string;
   title: string;

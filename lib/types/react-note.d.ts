@@ -11,6 +11,7 @@ interface NoteAssocPlantState {
   filter: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface INoteAssocPlant extends React.Component<NoteAssocPlantProps, NoteAssocPlantState> {
 }
 
@@ -85,7 +86,7 @@ interface NoteReadMetricsProps {
 
 interface NoteReadProps {
   dispatch: import('redux').Dispatch;
-  userCanEdit: boolean,
+  userCanEdit: boolean;
   note: UiNotesValue;
   plant: UiPlantsValue;
 }

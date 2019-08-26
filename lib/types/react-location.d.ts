@@ -24,9 +24,9 @@ interface LocationsManagerRowUpdate {
 
 interface LocationsManagerProps {
   dispatch: import('redux').Dispatch;
-  locationIds: string[],
-  locations: UiLocations,
-  users: UiUsers,
+  locationIds: string[];
+  locations: UiLocations;
+  users: UiUsers;
 }
 
 interface LocationTileProps {

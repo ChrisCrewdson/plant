@@ -23,9 +23,11 @@ interface DbPlant {
   loc?: Geo;
   plantedDate?: number; // YYYYMMDD
   /**
-   * TODO: In the UI this will be a string while editing but in DB will be a number value or be missing.
+   * TODO: In the UI this will be a string while editing but in DB will be a number
+   *  value or be missing.
    *       So DbPlant cannot inherit this without changing this type to a number
-   * Now that typing is done we should be able to make this a number for the DB and then fix in one of the extending interfaces.
+   * Now that typing is done we should be able to make this a number for the DB and
+   *  then fix in one of the extending interfaces.
    */
   price?: number|string;
   purchasedDate?: number; // YYYYMMDD
@@ -68,12 +70,12 @@ interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId'> {
 
 interface BizPlantMap {
   [mongoId: string]: BizPlant;
-}  
+}
 
 interface UiPlantsNote {
   date: number; // Is this right?
   metrics?: LastMetricDates;
-}  
+}
 
 interface UiPlants {
   [mongoId: string]: UiPlantsValue;
@@ -144,6 +146,6 @@ interface PlantEditProps {
   history: import('history').History;
   interimPlant: UiPlantsValue;
   locations: UiLocations;
-  user: UiUsersValue
+  user: UiUsersValue;
   users: UiUsers;
 }
