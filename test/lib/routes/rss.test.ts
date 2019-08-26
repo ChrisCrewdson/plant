@@ -39,7 +39,7 @@ const req = {
 const res = {
   status: () => res,
   /** @param {string} builtXml */
-  send: (builtXml) => {}, // eslint-disable-line no-unused-vars
+  send: (_: string) => {}, // eslint-disable-line no-unused-vars
 };
 
 describe('rss', () => {
@@ -64,6 +64,7 @@ describe('rss', () => {
   test('renders xml on alternate paths', (done) => {
     plants[0].title = '';
     plants[1] = plants[0]; // eslint-disable-line prefer-destructuring
+    // @ts-ignore - can be removed once this is correctly typed
     dbNoteWithPlants[0].images = [{
       id: '',
       ext: '.png',
@@ -74,6 +75,7 @@ describe('rss', () => {
         width: 1000,
       }],
     }];
+    // @ts-ignore - can be removed once this is correctly typed
     dbNoteWithPlants[0].note = 'Some text';
     /** @param {string} builtXml */
     res.send = (builtXml) => {
