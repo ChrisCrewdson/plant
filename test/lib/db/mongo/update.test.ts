@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const utils = require('../../../../app/libs/utils');
 const mongo = require('../../../../lib/db/mongo')();
 const { mockLogger } = require('../../../mock-logger');
@@ -5,8 +7,7 @@ const { mockLogger } = require('../../../mock-logger');
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {
     test('should update the image sizes in a note', async () => {
-      /** @type {BizNote} */
-      const note = {
+      const note: BizNote = {
         _id: utils.makeMongoIdObject().toString(),
         date: 20180101,
         plantIds: [],
@@ -27,7 +28,7 @@ describe('/lib/db/mongo/update', () => {
       };
 
       /** @type {NoteImageSize[]} */
-      const sizes = [
+      const sizes: NoteImageSize[] = [
         { width: 100, name: 'thumb' },
         { width: 500, name: 'sm' },
         { width: 1000, name: 'md' },

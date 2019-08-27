@@ -1,10 +1,11 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const helper = require('../../../helper');
 const mongo = require('../../../../lib/db/mongo')();
 const { mockLogger } = require('../../../mock-logger');
 
 describe('/lib/db/mongo/model-location', () => {
-  /** @type {string} */
-  let userId;
+  let userId: string;
   let fbUser;
   // let locationId;
 

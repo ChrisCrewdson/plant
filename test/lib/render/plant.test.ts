@@ -1,8 +1,9 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const helper = require('../../helper');
 
 describe('lib/render/plant', () => {
-  /** @type {Dictionary<any>} */
-  let data;
+  let data: Dictionary<any>;
   beforeAll(async () => {
     data = await helper.startServerAuthenticated();
     expect(data.userId).toBeTruthy();

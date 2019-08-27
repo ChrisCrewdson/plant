@@ -1,4 +1,5 @@
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 const Helper = require('../../../../lib/db/mongo/helper');
 

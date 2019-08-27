@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 
 const constants = require('../../../../app/libs/constants');
@@ -9,11 +11,9 @@ const { mockLogger } = require('../../../mock-logger');
 const { id: googleId } = googleOAuth['www.googleapis.com'].result;
 
 describe('/lib/db/mongo/', () => {
-  /** @type {string} */
-  let userId;
+  let userId: string;
   let fbUser;
-  /** @type {string} */
-  let locationId;
+  let locationId: string;
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -87,8 +87,7 @@ describe('/lib/db/mongo/', () => {
       plantedOn: 20150701,
       userId,
     };
-    /** @type {string} */
-    let plantId;
+    let plantId: string;
 
     beforeAll(() => {
       plant.locationId = locationId;
