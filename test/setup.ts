@@ -1,3 +1,6 @@
+import { RequestOptions } from 'http';
+import { dataCallback } from 'oauth';
+
 const uuid = require('uuid');
 
 /** @type {Global} */
@@ -14,26 +17,19 @@ const { mockLogger } = require('./mock-logger');
 
 // @ts-ignore - _executeRequest is protected - we're deliberately doing this for testing
 // eslint-disable-next-line operator-linebreak
-oauth2.OAuth2.prototype._executeRequest =
-  /**
-   *
-   * @param {string} _httpLibrary
-   * @param {import('http').RequestOptions} options
-   * @param {any} postBody
-   * @param {import('oauth').dataCallback} callback
-   */
-  function _executeRequest(_httpLibrary, options, postBody, callback) {
-    const { host } = options;
-    if (!host) {
-      throw new Error('Expecting host to be truthy');
-    }
-    const request = googleOAuth[host];
-    if (!request) {
-      throw new Error(`Expecting request to be truthy ${host}`);
-    }
-    // @ts-ignore - in the oauth code this callback can be called with null
-    callback(null, JSON.stringify(request.result));
-  };
+oauth2.OAuth2.prototype._executeRequest = function _executeRequest(_httpLibrary: string,
+  options: RequestOptions, postBody: any, callback: dataCallback) {
+  const { host } = options;
+  if (!host) {
+    throw new Error('Expecting host to be truthy');
+  }
+  const request = googleOAuth[host];
+  if (!request) {
+    throw new Error(`Expecting request to be truthy ${host}`);
+  }
+  // @ts-ignore - in the oauth code this callback can be called with null
+  callback(null, JSON.stringify(request.result));
+};
 
 process.env.TESTING = 'true';
 
@@ -62,9 +58,9 @@ beforeAll(async () => {
  * React will print a warning to the console if it cannot find requestAnimationFrame()
  * warning(false, 'React depends on requestAnimationFrame. Make sure that you load a ' +
  * 'polyfill in older browsers. http://fb.me/react-polyfills');
- * @param {Function} callback
  */
-globalAny.requestAnimationFrame = (callback) => {
+// @ts-ignore - requestAnimationFrame no on global
+globalAny.requestAnimationFrame = (callback: Function) => {
   setTimeout(callback, 0);
 };
 
@@ -81,9 +77,11 @@ process.env.PLANT_IMAGE_COMPLETE = 'fake-image-token';
 /**
  * @param {object} win
  */
-function propagateToGlobal(win) {
+function propagateToGlobal(win: { [x: string]: any }) {
   Object.keys(win).forEach((key) => {
+    // @ts-ignore No index signature with a parameter of type 'string' was found on type 'Global'.
     if (!globalAny[key]) {
+      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'Global'.
       globalAny[key] = win[key];
     }
   });
@@ -96,8 +94,10 @@ document.body.innerHTML = '<!doctype html><html><body></body></html>';
 
 // global.window = document.parentWindow;
 /** @type {Window} */
-globalAny.window = document.defaultView;
+// @ts-ignore - window not on global
+globalAny.window = document.defaultView as Window;
 
+// @ts-ignore - window not on global
 globalAny.window.FormData = function appender() {
   this.append = () => {};
 };
@@ -107,7 +107,9 @@ globalAny.window.FormData = function appender() {
 //     'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
 //      Chrome/49.0.2454.85 Safari/537.36'
 // };
+// @ts-ignore - not on global
 globalAny.navigator = globalAny.window.navigator;
+// @ts-ignore - window not on global
 propagateToGlobal(globalAny.window);
 
 afterAll(async () => {
