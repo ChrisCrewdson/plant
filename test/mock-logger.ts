@@ -1,7 +1,8 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 
-/** @type {Logger} */
-const mockLogger = {
+const mockLogger: Logger = {
   trace: jest.fn(),
   info: jest.fn(),
   warn: jest.fn(),
@@ -12,18 +13,16 @@ const mockLogger = {
   time: jest.fn(),
 };
 
-/**
- * @param {object} obj
- */
-const isObject = (obj) => obj !== null && typeof obj === 'object';
+const isObject = (obj: object) => obj !== null && typeof obj === 'object';
+
+interface LoggerCreateOptions {
+  serviceName: string;
+  moduleName: string;
+}
 
 jest.mock('lalog', () => ({
-  /**
-   * @param {object} options
-   * @param {string} options.serviceName
-   * @param {string} options.moduleName
-   */
-  create: ({ serviceName, moduleName }) => {
+  create: (options: LoggerCreateOptions) => {
+    const { serviceName, moduleName } = options;
     expect(serviceName).toBeTruthy();
     expect(moduleName).toBeTruthy();
     expect(typeof serviceName).toBe('string');
@@ -37,12 +36,12 @@ jest.mock('lalog', () => ({
  * @param {object|undefined} errObj
  * @param {object=} extra
  */
-const loggerMockFunction = (errObj, extra) => {
+const loggerMockFunction = (errObj: object | undefined, extra?: object | undefined) => {
   if (!_.isObject(errObj)) {
     throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
   }
   if (extra) {
-    const { res, code } = extra;
+    const { res, code } = extra as { res: any; code: string };
     res.status(code).send({ one: 1 });
   }
 };
@@ -51,7 +50,7 @@ const loggerMockFunction = (errObj, extra) => {
  * @param {string} label
  * @param {object|undefined} extraLogData
  */
-const loggerTimeEndMockFunction = (label, extraLogData) => {
+const loggerTimeEndMockFunction = (label: string, extraLogData: object | undefined) => {
   if (typeof label !== 'string') {
     throw new Error(`First param to lalog timeEnd method is not an string: ${typeof label}`);
   }
