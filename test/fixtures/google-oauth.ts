@@ -1,5 +1,5 @@
-/** @type {Dictionary<object>} */
-const requests = {
+
+const requests: Dictionary<object> = {
   'accounts.google.com': {
     options: {
       host: 'accounts.google.com',
