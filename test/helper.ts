@@ -1,3 +1,9 @@
+import { RequestInit, Response } from 'node-fetch';
+import { Server } from 'net';
+import { Store } from 'redux';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 const nodeFetch = require('node-fetch');
 // fetch-cookie wraps nodeFetch and preserves cookies.
@@ -10,20 +16,14 @@ const mongo = require('../lib/db/mongo')();
 
 const serverModule = require('../lib/server');
 
-/** @type {HFelperData} */
-const data = {};
+const data = {} as HelperData;
 
-/**
- *
- * @param {string} url
- * @returns
- */
-function getUrl(url) {
+function getUrl(url: string) {
   if ((url || '').startsWith('http')) {
     return url;
   }
 
-  const { port } = data;
+  const { port } = data as { port: number };
   if (!port) {
     throw new Error(`Jest Worker Id is ${process.env.JEST_WORKER_ID} and port is not defined in data object: ${JSON.stringify(data, null, 2)}`);
   }
@@ -33,20 +33,15 @@ function getUrl(url) {
 
 /**
  * Is the method a PUT or a POST?
- * @param {string} method
  */
-const isPutOrPost = (method) => {
+const isPutOrPost = (method: string) => {
   const methodLower = method.toLowerCase();
   return methodLower === 'put' || methodLower === 'post';
 };
 
-/**
- * @param {HelperMakeRequestOptions} opts
- */
-async function makeRequest(opts) {
+async function makeRequest(opts: HelperMakeRequestOptions) {
   // fetch is fetch-cookie which will manage the authenticated session cookie.
   // nodeFetch is plain fetch that will not have a cookie.
-  /** @type {import('node-fetch').default}} */
   const fetcher = opts.authenticate ? fetch : nodeFetch;
 
   const headers = {
@@ -54,8 +49,7 @@ async function makeRequest(opts) {
     ...opts.headers || {},
   };
 
-  /** @type {import('node-fetch').RequestRedirect}} */
-  const redirect = opts.followRedirect ? 'follow' : 'manual';
+  const redirect: RequestRedirect = opts.followRedirect ? 'follow' : 'manual';
 
   const url = getUrl(opts.url);
   const options = { ...opts, headers, redirect };
@@ -66,8 +60,7 @@ async function makeRequest(opts) {
     options.headers['Content-Type'] = 'application/json';
   }
 
-  /** @type {import('node-fetch').RequestInit}} */
-  const nodeFetchOptions = {
+  const nodeFetchOptions: RequestInit = {
     headers: options.headers,
     method: options.method,
     redirect,
@@ -76,20 +69,18 @@ async function makeRequest(opts) {
     nodeFetchOptions.body = body;
   }
 
-  /** @type {import('node-fetch').Response}} */
-  const response = await fetcher(url, nodeFetchOptions);
+  const response: Response = await fetcher(url, nodeFetchOptions);
   const httpMsg = await (opts.text ? response.text() : response.json());
   return { response, httpMsg };
 }
 
-/** @type {import('net').Server|undefined} */
-let localServer;
+let localServer: Server|undefined;
 
 /**
  * Starts an authenticated server
  * @returns {Promise<HelperData>}
  */
-async function startServerAuthenticated() {
+async function startServerAuthenticated(): Promise<HelperData> {
   const port = 3000 + parseInt(process.env.JEST_WORKER_ID || '1', 10);
   async function emptyDatabase() {
     const db = await mongo.GetDb(mockLogger);
@@ -100,20 +91,13 @@ async function startServerAuthenticated() {
     return Promise.all(promises);
   }
 
-  /**
-   *
-   *
-   * @param {import('net').Server|undefined} app
-   * @param {*} server
-   * @returns {Promise<import('net').Server>}
-   */
-  function startServer(app, server) {
+  function startServer(app: Server|undefined, server: ServerFunc | undefined): Promise<Server> {
     if (app) {
       // @ts-ignore - [ts] Type 'Server' is missing the following properties from type
       // 'Promise<Server>': then, catch, [Symbol.toStringTag], finally [2739]
       return app;
     }
-    return server(port); // returns a Promise
+    return server!(port); // eslint-disable-line @typescript-eslint/no-non-null-assertion
   }
 
   const googleAuthCallback = async () => {
@@ -158,8 +142,7 @@ async function startServerAuthenticated() {
 const stopServer = async () => new Promise((resolve, reject) => {
   if (localServer) {
     localServer.close(
-      /** @param {Error|undefined|null} err */
-      (err) => (err ? reject(err) : resolve()));
+      (err: Error|undefined|null) => (err ? reject(err) : resolve()));
   }
 });
 
@@ -170,7 +153,8 @@ const stopServer = async () => new Promise((resolve, reject) => {
  * @param {string} locationId - Location Id at which to create the plants
  * @returns {Promise<BizPlant[]>}
  */
-async function createPlants(numPlants, userId, locationId) {
+async function createPlants(numPlants: number, userId: string, locationId: string):
+  Promise<BizPlant[]> {
   const plantTemplate = {
     title: 'Plant Title',
     userId,
@@ -182,9 +166,8 @@ async function createPlants(numPlants, userId, locationId) {
    * @param {number} count - the plant number/id being created not the number of plants to create
    * @returns {Promise<BizPlant>}
    */
-  async function createPlant(count) {
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+  async function createPlant(count: number): Promise<BizPlant> {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'POST',
       authenticate: true,
       body: { ...plantTemplate, title: `${plantTemplate.title} ${count}` },
@@ -192,8 +175,7 @@ async function createPlants(numPlants, userId, locationId) {
     };
 
     const { httpMsg, response } = await makeRequest(reqOptions);
-    /** @type {BizPlant} */
-    const plant = httpMsg;
+    const plant: BizPlant = httpMsg;
 
     expect(response.status).toBe(200);
     expect(plant.title).toBeTruthy();
@@ -202,19 +184,12 @@ async function createPlants(numPlants, userId, locationId) {
   }
 
   // generate some plants
-  /** @type {number[]} */
-  // @ts-ignore - [ts] Type 'IterableIterator<number>' is not an array type.
-  const numbers = [...Array(numPlants).keys()];
+  const numbers: number[] = [...Array(numPlants).keys()];
   const promises = numbers.map((a) => createPlant(a));
   return Promise.all(promises);
 }
 
-/**
- *
- * @param {string[]} plantIds
- * @param {object} noteOverride
- */
-async function createNote(plantIds, noteOverride = {}) {
+async function createNote(plantIds: string[], noteOverride = {}) {
   expect(_.isArray(plantIds)).toBeTruthy();
   const noteTemplate = {
     note: 'This is a note',
@@ -223,8 +198,7 @@ async function createNote(plantIds, noteOverride = {}) {
     ...noteOverride,
   };
 
-  /** @type {HelperMakeRequestOptions} */
-  const reqOptions = {
+  const reqOptions: HelperMakeRequestOptions = {
     method: 'POST',
     authenticate: true,
     body: noteTemplate,
@@ -241,20 +215,14 @@ async function createNote(plantIds, noteOverride = {}) {
   return httpMsg;
 }
 
-/**
- * @returns {import('redux').Store}
- */
-const getFakeStore = () => ({
+const getFakeStore = (): Store => ({
   dispatch: jest.fn(),
   getState: jest.fn(),
   replaceReducer: jest.fn(),
   subscribe: jest.fn(),
 });
 
-/**
- * @param {string[]} values
- */
-const expectMongoId = (values) => {
+const expectMongoId = (values: string[]) => {
   values.forEach((value) => expect(constants.mongoIdRE.test(value)).toBe(true));
 };
 

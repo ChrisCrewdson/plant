@@ -45,5 +45,15 @@ module.exports = {
     '@typescript-eslint/class-name-casing': [0],
     '@typescript-eslint/ban-ts-ignore': [0],
     '@typescript-eslint/camelcase': [0],
-  }
+    'import/no-unresolved': [0],
+  },
+  // settings: {
+  //   "import/parsers": {
+  //     "@typescript-eslint/parser": [".ts", ".tsx", ".js", ".jsx"]
+  //   },
+  //   "import/resolver": {
+  //     // use <root>/tsconfig.json
+  //     typescript: {}
+  //   }
+  // }
 }
