@@ -1,3 +1,4 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
@@ -10,10 +11,8 @@ const { mongoIdRE: mongoIdRegEx } = constants;
 /* eslint-disable no-param-reassign */
 
 describe('note-api', () => {
-  /** @type {string} */
-  let userId;
-  /** @type {string} */
-  let locationId;
+  let userId: string;
+  let locationId: string;
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -23,19 +22,19 @@ describe('note-api', () => {
   });
   afterAll(() => helper.stopServer());
 
-  /** @type {BizPlant} */
-  let initialPlant;
-  /** @type {string} */
-  let plantId;
+  let initialPlant: BizPlant;
+  let plantId: string;
 
   const initialNote = {
     note: 'This is a note',
     date: 20160101,
-    /** @type {string[]} */
     plantIds: [],
+  } as {
+    note: string;
+    date: number;
+    plantIds: string[];
   };
-  /** @type {string} */
-  let noteId;
+  let noteId: string;
 
   beforeAll(async () => {
     const howMany = 1;
@@ -47,8 +46,7 @@ describe('note-api', () => {
 
   describe('create failures', () => {
     test('should fail to create a note if user is not authenticated', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: false,
         body: initialNote,
@@ -61,8 +59,7 @@ describe('note-api', () => {
     });
 
     test('should fail server validation if plantIds are missing', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: true,
         body: { ...initialNote, plantIds: [] },
@@ -80,8 +77,7 @@ describe('note-api', () => {
 
   describe('note-api create/retrieve notes', () => {
     test('should create a note', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: true,
         body: initialNote,
@@ -101,8 +97,7 @@ describe('note-api', () => {
     });
 
     test('should retrieve the just created noteId plant', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'GET',
         authenticate: false,
         url: `/api/plant/${plantId}`,
@@ -144,8 +139,7 @@ describe('note-api', () => {
         },
       };
 
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: true,
         body: updatedNote,
@@ -171,8 +165,7 @@ describe('note-api', () => {
     test(
       'should retrieve the just updated noteId as part of a plant request',
       async () => {
-        /** @type {HelperMakeRequestOptions} */
-        const reqOptions = {
+        const reqOptions: HelperMakeRequestOptions = {
           method: 'GET',
           authenticate: false,
           url: `/api/plant/${plantId}`,
@@ -196,8 +189,7 @@ describe('note-api', () => {
     test(
       'should retrieve the noteId as part of a multiple note request',
       async () => {
-        /** @type {HelperMakeRequestOptions} */
-        const reqOptions = {
+        const reqOptions: HelperMakeRequestOptions = {
           method: 'POST',
           authenticate: true,
           body: { noteIds: [noteId] },
@@ -222,8 +214,7 @@ describe('note-api', () => {
     test(
       'should retrieve the noteId as part of a plantId note request',
       async () => {
-        /** @type {HelperMakeRequestOptions} */
-        const reqOptions = {
+        const reqOptions: HelperMakeRequestOptions = {
           method: 'POST',
           authenticate: true,
           body: { plantIds: [plantId] },
@@ -246,8 +237,7 @@ describe('note-api', () => {
     );
 
     test('should delete the note', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'DELETE',
         authenticate: true,
         url: `/api/note/${noteId}`,
@@ -269,8 +259,7 @@ describe('note-api', () => {
     });
 
     test('should confirm that the note has been deleted', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'GET',
         authenticate: false,
         url: `/api/plant/${plantId}`,
@@ -292,8 +281,7 @@ describe('note-api', () => {
 
   describe('note-api /api/image-complete', () => {
     test('should confirm a complete image', async () => {
-      /** @type {BizNote} */
-      const note = {
+      const note: BizNote = {
         _id: utils.makeMongoIdObject().toString(),
         date: 20180101,
         plantIds: [],
@@ -323,16 +311,10 @@ describe('note-api', () => {
       async function createNote() {
         const createdNote = await mongo.upsertNote(note, mockLogger);
         expect(createdNote).toBeTruthy();
-        // logger.trace('createdNote', {createdNote});
-        // data.createdNote = body;
         return { createdNote };
       }
 
-      /**
-       * @param {BizNote} createdNote
-       * @returns
-       */
-      async function makePutRequest(createdNote) {
+      async function makePutRequest(createdNote: BizNote) {
         const putData = {
           metadata: {
             noteid: createdNote._id,
@@ -342,8 +324,7 @@ describe('note-api', () => {
           sizes,
         };
 
-        /** @type {HelperMakeRequestOptions} */
-        const reqOptions = {
+        const reqOptions: HelperMakeRequestOptions = {
           method: 'PUT',
           authenticate: false,
           body: putData,
@@ -367,7 +348,7 @@ describe('note-api', () => {
       expect(putResponse.success).toBe(true);
 
       const fetchedNote = await mongo.getNoteById(createdNote._id, mockLogger);
-      // This makes tsc happy.
+
       if (!fetchedNote || !fetchedNote.images) {
         throw new Error(`fetchedNote or fetchedNote.images is falsy ${fetchedNote}`);
       }

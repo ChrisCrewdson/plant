@@ -1,13 +1,13 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const helper = require('../../helper');
 const mongo = require('../../../lib/db/mongo')();
 const utils = require('../../../app/libs/utils');
 const { mockLogger } = require('../../mock-logger');
 
 describe('plant-api-delete', () => {
-  /** @type {string} */
-  let userId;
-  /** @type {string} */
-  let locationId;
+  let userId: string;
+  let locationId: string;
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -20,8 +20,7 @@ describe('plant-api-delete', () => {
   describe('simple plant deletion', () => {
     test('should delete a plant without notes', async () => {
       const plants = await helper.createPlants(1, userId, locationId);
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'DELETE',
         authenticate: true,
         url: `/api/plant/${plants[0]._id}`,
@@ -33,8 +32,7 @@ describe('plant-api-delete', () => {
     });
 
     test('should return a 404 if plant id does not exist', async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'DELETE',
         authenticate: true,
         url: `/api/plant/${utils.makeMongoId()}`,
@@ -92,8 +90,7 @@ describe('plant-api-delete', () => {
       notes.push(note3);
 
       // 3. Delete plant #1
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'DELETE',
         authenticate: true,
         url: `/api/plant/${plants[0]._id}`,
@@ -106,8 +103,7 @@ describe('plant-api-delete', () => {
       expect(result2).toBeUndefined();
 
       // 5. Retrieve plant #2 and confirm that both notes are attached.
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions2 = {
+      const reqOptions2: HelperMakeRequestOptions = {
         method: 'GET',
         authenticate: true,
         url: `/api/plant/${plants[1]._id}`,

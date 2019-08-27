@@ -10,7 +10,7 @@ const mongo = require('../lib/db/mongo')();
 
 const serverModule = require('../lib/server');
 
-/** @type {HelperData} */
+/** @type {HFelperData} */
 const data = {};
 
 /**

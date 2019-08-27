@@ -1,13 +1,12 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const helper = require('../../helper');
 const constants = require('../../../app/libs/constants');
 
 describe('plant-api', () => {
-  /** @type {BizUser} */
-  let user;
-  /** @type {string} */
-  let plantId;
-  /** @type {Partial<DbPlant>} */
-  let initialPlant;
+  let user: BizUser;
+  let plantId: string;
+  let initialPlant: Partial<DbPlant>;
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -24,8 +23,7 @@ describe('plant-api', () => {
   test(
     'should fail to create a plant record if user is not authenticated',
     async () => {
-      /** @type {HelperMakeRequestOptions} */
-      const reqOptions = {
+      const reqOptions: HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: false,
         body: initialPlant,
@@ -39,8 +37,7 @@ describe('plant-api', () => {
   );
 
   test('should fail server validation if title is missing', async () => {
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'POST',
       authenticate: true,
       body: { ...initialPlant, title: '' },
@@ -56,8 +53,7 @@ describe('plant-api', () => {
   });
 
   test('should create a plant', async () => {
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'POST',
       authenticate: true,
       body: initialPlant,
@@ -78,8 +74,7 @@ describe('plant-api', () => {
   });
 
   test('should retrieve the just created plant', async () => {
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'GET',
       authenticate: false,
       url: `/api/plant/${plantId}`,
@@ -100,8 +95,7 @@ describe('plant-api', () => {
   });
 
   test('should fail to retrieve a plant if the id does not exist', async () => {
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'GET',
       authenticate: false,
       url: '/api/plant/does-not-exist',
@@ -112,8 +106,7 @@ describe('plant-api', () => {
     expect(httpMsg.error).toBe('missing');
   });
 
-  /** @type {Partial<DbPlant>} */
-  let updatedPlant;
+  let updatedPlant: Partial<DbPlant>;
   test('should update the just created plant', async () => {
     updatedPlant = {
 
@@ -125,8 +118,7 @@ describe('plant-api', () => {
       _id: plantId,
     };
 
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'PUT',
       authenticate: true,
       body: updatedPlant,
@@ -143,8 +135,7 @@ describe('plant-api', () => {
   });
 
   test('should retrieve the just updated plant', async () => {
-    /** @type {HelperMakeRequestOptions} */
-    const reqOptions = {
+    const reqOptions: HelperMakeRequestOptions = {
       method: 'GET',
       authenticate: false,
       url: `/api/plant/${plantId}`,
