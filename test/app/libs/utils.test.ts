@@ -1,5 +1,6 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const moment = require('moment');
-// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
@@ -95,11 +96,7 @@ describe('/app/libs/utils', () => {
 
   describe('intToDate()', () => {
     test('should create a Date from an Integer', () => {
-      /**
-       * @param {Date} act
-       * @param {Date} exp
-       */
-      function compareDates(act, exp) {
+      function compareDates(act: Date, exp: Date) {
         expect(act.toString()).toBe(exp.toString());
       }
 
@@ -192,7 +189,7 @@ describe('/app/libs/utils', () => {
 
     test('should return plants if plants is an empty array', () => {
       /** @type {BizPlant[]} */
-      const plants = [];
+      const plants: BizPlant[] = [];
       const actual = utils.rebaseLocations(plants);
       expect(actual).toBe(plants);
     });
@@ -449,9 +446,9 @@ describe('/app/libs/utils', () => {
   describe('getGeo', () => {
     test('that getGeo returns an error if not supported', (done) => {
       utils.getGeo({},
-        (err) => {
+        (err: Error) => {
           expect(err).toBeInstanceOf(Error);
-          const error = /** @type {Error} */ (err);
+          const error: Error = /** @type {Error} */ (err);
           expect(error.message).toBe('This device does not have geolocation available');
           done();
         });
@@ -463,8 +460,7 @@ describe('/app/libs/utils', () => {
         coordinates: [1, 2],
       };
 
-      /** @type {Position} */
-      const fakePosition = {
+      const fakePosition: Position = {
         coords: {
           longitude: 1,
           latitude: 2,
@@ -485,13 +481,13 @@ describe('/app/libs/utils', () => {
         /**
          * @param {PositionCallback} cb
          */
-        (cb) => {
+        (cb: PositionCallback) => {
           cb(fakePosition);
         },
       };
 
       utils.getGeo({},
-        (err, geo) => {
+        (err: any, geo: any) => {
           expect(err).toBeFalsy();
           expect(geo).toEqual(expected);
           done();
@@ -499,8 +495,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should return a fake timeout error', (done) => {
-      /** @type {PositionError} */
-      const positionError = {
+      const positionError: PositionError = {
         code: 3, // TIMEOUT
         message: 'Timeout',
         PERMISSION_DENIED: 1,
@@ -510,17 +505,13 @@ describe('/app/libs/utils', () => {
 
       // @ts-ignore - intentional assignment to readonly for testing
       window.navigator.geolocation = {
-        /**
-         * @param {PositionCallback} cb
-         * @param {PositionErrorCallback} errCb
-         */
-        getCurrentPosition: (cb, errCb) => {
+        getCurrentPosition: (cb: PositionCallback, errCb: PositionErrorCallback) => {
           errCb(positionError);
         },
       };
 
       utils.getGeo({},
-        (err) => {
+        (err: PositionError) => {
           expect(err).toBe(positionError);
           done();
         });
