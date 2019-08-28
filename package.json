@@ -142,7 +142,7 @@
     "url": "https://github.com/guyellis/plant.git"
   },
   "scripts": {
-    "build": "TARGET=build webpack --bail",
+    "build": "TARGET=build webpack --bail && tsc --incremental",
     "cover": "jest --coverage && google-chrome coverage/lcov-report/index.html",
     "coverage": "jest --coverage",
     "coverage-fast": "jest --coverage --onlyChanged",
@@ -152,12 +152,12 @@
     "lintfix": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx . --fix",
     "offline-issues": "rm -rf github-issues && mkdir github-issues && cd github-issues && npx offline-issues guyellis/plant && cd ..",
     "precom": "concurrently --kill-others-on-fail \"tsc\" \"npm:lint\" \"npm:csslint\" \"npm:build\" \"./devops/run-test-local.sh\"",
-    "prodrestart": "npm run build && pm2 stop plant && pm2 start ../site-ops/pm2/plant.config.js --env production",
-    "prodstart": "npm run build && pm2 start ../site-ops/pm2/plant.config.js --env production",
+    "prodrestart": "npm run build && pm2 stop plant && cd dist/ && pm2 start ../../site-ops/pm2/plant.config.js --env production",
+    "prodstart": "npm run build && cd dist/ && pm2 start ../../site-ops/pm2/plant.config.js --env production",
     "prodstop": "pm2 stop plant",
     "server": ". ./devops/run-server.sh",
     "start": "TARGET=dev webpack-dev-server --port 9090 --progress --colors --hot --inline --history-api-fallback --bail",
-    "test": "tsc --incremental && npm run lint && npm run build && ./devops/run-test.sh",
+    "test": "npm run lint && npm run build && ./devops/run-test.sh",
     "test-only": "jest",
     "test-fast": "jest --onlyChanged"
   },

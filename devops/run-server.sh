@@ -30,5 +30,8 @@ export NODE_ENV=development
 # You can comment out the DEBUG line below if you want fewer terminal messages
 export DEBUG=plant:*
 
+tsc
+cd dist/
+pwd
 nodemon server.js
 # nodemon server.js --exec babel-node --presets es2015,stage-1
