@@ -1,3 +1,4 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const React = require('react');
 const renderer = require('react-test-renderer');
