@@ -1,13 +1,12 @@
-const marked = require('marked');
+import marked from 'marked';
+
 const mongo = require('../db/mongo');
 const { makeSlug, intToMoment } = require('../../app/libs/utils');
 
 /**
  * Build the XML for RSS
- * @param {DbNoteWithPlants[]} notes
- * @param {string} httpHost
  */
-function buildXml(notes, httpHost) {
+function buildXml(notes: DbNoteWithPlants[], httpHost: string) {
   const notesXml = notes.map((currNote) => {
     // If multiple plants, just list the name of the first one
     const title = (currNote.plants[0] && currNote.plants[0].title) || '(none)';
@@ -40,9 +39,8 @@ function buildXml(notes, httpHost) {
 
     /**
      * Create an image tag for RSS items
-     * @param {NoteImage} img
      */
-    const makeImageTag = (img) => `<img src="https://i.plaaant.com/up/orig/${img.id}.${img.ext}" \
+    const makeImageTag = (img: NoteImage) => `<img src="https://i.plaaant.com/up/orig/${img.id}.${img.ext}" \
 style="max-width: 100%" />`;
     const images = noteImages.map(makeImageTag).join('');
 
@@ -74,9 +72,8 @@ style="max-width: 100%" />`;
 
 /**
  * Short Url alias for location - start off with hard coding a single one
- * @param {import("express").Application} app - Express application
  */
-module.exports = (app) => {
+module.exports = (app: import('express').Application) => {
   // Set up the RSS route
   app.get('/rss', async (req, res) => {
     const { logger } = req;

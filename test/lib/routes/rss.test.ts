@@ -29,7 +29,7 @@ const mockMongo = () => ({
 
 jest.mock('../../../lib/db/mongo', () => mockMongo);
 
-const rss = require('../../../lib/routes/rss.js');
+const rss = require('../../../lib/routes/rss');
 
 const req = {
   protocol: 'fake protocol',
