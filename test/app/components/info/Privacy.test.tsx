@@ -1,3 +1,4 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const React = require('react');
 const renderer = require('react-test-renderer');
@@ -8,13 +9,13 @@ const {
   MemoryRouter,
 } = require('react-router-dom');
 const { Provider } = require('react-redux');
-const Terms = require('../../../../app/components/info/Terms');
+const Privacy = require('../../../../app/components/info/Privacy');
 const store = require('../../../../app/store');
 const App = require('../../../../app/components/App');
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-describe('Terms', () => {
+describe('Privacy', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
@@ -25,13 +26,13 @@ describe('Terms', () => {
     store.dispatch = storeDispatch;
   });
 
-  test('Terms should be rendered', () => {
+  test('Privacy should be rendered', () => {
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>
-              <Terms />
+              <Privacy />
             </MemoryRouter>
           </App>
         </Provider>
