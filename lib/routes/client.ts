@@ -1,4 +1,10 @@
 // These are routes that the client will handle
+// To get around: Cannot redeclare block-scoped variable .ts(2451)
+// To get around: Cannot redeclare block-scoped variable .ts(2451)
+
+import { Application, Request, Response } from 'express';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const indexHtml = require('../render');
 const plant = require('../render/plant');
@@ -8,19 +14,15 @@ const article = require('../render/article');
 // and it will do the rest of the routing on the client.
 /**
  * static index
- * @param {string} title - ?
- * @param {import("express").Request} req - Express request object
- * @param {import("express").Response} res - Express response object
  */
-function staticIndex(title, req, res) {
+function staticIndex(title: string, req: Request, res: Response) {
   res.send(indexHtml({ title, req }));
 }
 
 /**
  * api note routes
- * @param {import("express").Application} app - Express application
  */
-function client(app) {
+function client(app: Application) {
   const clientRoutes = [
     { route: '/', title: 'Plaaant' },
     { route: '/help', title: 'Plaaant Help' },
@@ -42,18 +44,16 @@ function client(app) {
 
 /**
  * api note routes
- * @param {import("express").Application} app - Express application
  */
-function server(app) {
+function server(app: Application) {
   app.get('/plant/:slug/:id', plant);
   app.get('/article/:slug/:id', article);
 }
 
 /**
  * api note routes
- * @param {import("express").Application} app - Express application
  */
-module.exports = (app) => {
+module.exports = (app: Application) => {
   client(app);
   server(app);
 };

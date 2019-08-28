@@ -1,3 +1,7 @@
+import { Application, Request, Response } from 'express';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 const aws = require('aws-sdk');
 const multer = require('multer');
@@ -5,7 +9,6 @@ const { requireToken } = require('../auth/token-check');
 const constants = require('../../app/libs/constants');
 const mongo = require('../db/mongo')();
 const serverValidateNote = require('../validation/ssv-note');
-// const validators = require('../../app/models');
 const utils = require('../../app/libs/utils');
 
 const moduleName = 'routes/api-note';
@@ -14,9 +17,8 @@ const moduleName = 'routes/api-note';
 
 /**
  * api note routes
- * @param {import("express").Application} app - Express application
  */
-module.exports = (app) => {
+module.exports = (app: Application) => {
   // Note CRUD operations
   // Note Upsert
   app.post('/api/note', requireToken, async (req, res) => {
@@ -29,7 +31,7 @@ module.exports = (app) => {
     });
 
     /** @type {BizNoteNew} */
-    let transformed;
+    let transformed: BizNoteNew;
     try {
       transformed = serverValidateNote(req);
     } catch (validateNoteError) {
@@ -69,9 +71,8 @@ module.exports = (app) => {
 
     /**
      * Send the notes to the client
-     * @param {BizNote[]|undefined} notes - collection of notes
      */
-    const okay = (notes) => {
+    const okay = (notes: BizNote[] | undefined) => {
       logger.trace({ moduleName, msg: 'responding with notes:', notes });
       return res.send(notes);
     };
@@ -97,27 +98,19 @@ module.exports = (app) => {
 
   /**
    * The image is the object stored in the images array in the note.
-   * @param {UploadedNoteFile} image - an image object
-   * @param {ImageSizeName} size - the size of the image
    */
-  function makeS3KeyFromImage(image, size = 'orig') {
+  function makeS3KeyFromImage(image: UploadedNoteFile, size: ImageSizeName = 'orig') {
     return `${firstDirectory}/${size}/${image.id}${image.ext && '.'}${image.ext}`;
   }
 
   /**
    * Make S3 Keys from Image objects
-   * @param {NoteImage[]} images - collection of images
-   * @returns {AwsKey[]}
    */
-  function makeS3KeysFromImages(images) {
+  function makeS3KeysFromImages(images: NoteImage[]): AwsKey[] {
     return constants.imageSizeNames.reduce(
-      /**
-       * @param {AwsKey[]} acc
-       * @param {ImageSizeName} size
-       */
-      (acc, size) => acc.concat(images.map((image) => {
+      (acc: AwsKey[], size: ImageSizeName) => acc.concat(images.map((image) => {
         /** @type {AwsKey} */
-        const key = {
+        const key: AwsKey = {
           Key: makeS3KeyFromImage(image, size),
         };
         return key;
@@ -190,11 +183,8 @@ module.exports = (app) => {
   // #1
   /**
    * Not sure what this does...
-   * @param {Express.Request} req
-   * @param {Express.Multer.File} file
-   * @param {Function} cb
    */
-  function fileFilter(req, file, cb) {
+  function fileFilter(req: Express.Request, file: Express.Multer.File, cb: Function) {
     const { logger } = req;
     const acceptFile = (file.mimetype || '').toLowerCase().startsWith('image/');
     if (!acceptFile) {
@@ -214,7 +204,7 @@ module.exports = (app) => {
    * @param {Express.Multer.File} file
    * @returns {DerivedMulterFile}
    */
-  function createFileFromMulterObject(file) {
+  function createFileFromMulterObject(file: Express.Multer.File): DerivedMulterFile {
     const { originalname: original = '', size } = file;
     const parts = original.toLowerCase().split('.');
     const ext = parts.length > 1 ? parts[parts.length - 1] : '';
@@ -231,12 +221,9 @@ module.exports = (app) => {
 
   /**
    * Upload images
-   * @param {object} options
-   * @param {UploadFileData} options.data
-   * @param {Logger} options.logger
-   * @returns {Promise}
    */
-  async function uploadImages({ data, logger }) {
+  async function uploadImages({ data, logger }:
+    {data: UploadFileData; logger: Logger}): Promise<any> {
     // export AWS_ACCESS_KEY_ID='AKID'
     // export AWS_SECRET_ACCESS_KEY='SECRET'
     // Request<S3.Types.PutObjectOutput, AWSError>
@@ -246,7 +233,7 @@ module.exports = (app) => {
      * @param {DerivedMulterFile} file
      * @returns {Promise}
      */
-    const fileMapper = async (file) => {
+    const fileMapper = async (file: DerivedMulterFile): Promise<any> => {
       const Metadata = {
         userid: data.userid,
         noteid: data.noteid,
@@ -275,11 +262,8 @@ module.exports = (app) => {
 
   /**
    * Image Note
-   * @param {import("express").Request} req - Express request object
-   * @param {import("express").Response} res - Express response object
-   * @returns {Promise<import("express").Response>}
    */
-  async function imageNote(req, res) {
+  async function imageNote(req: Request, res: Response): Promise<Response> {
     const { logger, user } = req;
     try {
     // req.body: {
@@ -301,7 +285,8 @@ module.exports = (app) => {
         msg: 'imageNote',
         user,
         req_body: req.body,
-        req_files: multerFiles.map((file) => _.omit(file, ['buffer'])),
+        // @ts-ignore
+        req_files: multerFiles.map((file: any) => _.omit(file, ['buffer'])),
       });
       const userId = user && user._id;
       if (!userId) {
@@ -323,17 +308,16 @@ module.exports = (app) => {
       note.userId = userId;
       const noteid = note._id.toString();
 
-
+      // @ts-ignore
       const files = multerFiles.map(createFileFromMulterObject);
-      note.images = (note.images || []).concat(files.map((file) => file.noteFile));
+      note.images = (note.images || []).concat(files.map((file: any) => file.noteFile));
 
       logger.trace({ moduleName, msg: 'note with images', note });
 
       const updateNote = await mongo.upsertNote(note, logger);
       logger.trace({ moduleName, msg: 'upsertNote result', updateNote });
 
-      /** @type {UploadFileData} */
-      const data = {
+      const data: UploadFileData = {
         files,
         userid: userId,
         noteid,
@@ -360,11 +344,8 @@ module.exports = (app) => {
    * This is the route/endpoint called by the plant-image-lambda function once
    * it has completed processing an image. It shares a secret with the web
    * server to prevent malicious PUTs against this endpoint.
-   * @param {import("express").Request} req - Express request object
-   * @param {import("express").Response} res - Express response object
-   * @returns {Promise<import("express").Response>}
    */
-  const imageCompleteRoute = async (req, res) => {
+  const imageCompleteRoute = async (req: Request, res: Response): Promise<Response> => {
     const { logger, body, query } = /** @type {ImageCompleteRequest} */ (req);
     logger.info({ moduleName, msg: 'PUT /api/image-complete', body });
 
@@ -412,7 +393,7 @@ module.exports = (app) => {
     // ]}
 
     /** @type {NoteImageUpdateData} */
-    const noteUpdate = {
+    const noteUpdate: NoteImageUpdateData = {
       _id,
       userId,
       imageId,

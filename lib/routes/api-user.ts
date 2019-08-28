@@ -1,3 +1,7 @@
+import { Application } from 'express';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const mongo = require('../db/mongo')();
 const { sessionKey } = require('../constants');
 
@@ -5,9 +9,8 @@ const moduleName = 'routes/api-user';
 
 /**
  * api note routes
- * @param {import("express").Application} app - Express application
  */
-module.exports = (app) => {
+module.exports = (app: Application) => {
   app.get('/api/logout', (req, res) => {
     const { logger } = req;
     logger.trace({ moduleName, method: 'GET /api/logout' });

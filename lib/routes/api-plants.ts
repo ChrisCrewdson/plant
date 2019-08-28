@@ -1,12 +1,15 @@
+import { Application } from 'express';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const mongo = require('../db/mongo')();
 
 const moduleName = 'routes/api-plants';
 
 /**
  * api note routes
- * @param {import("express").Application} app - Express application
  */
-module.exports = (app) => {
+module.exports = (app: Application) => {
   /**
    * An anonymous request for all plants at a given location.
    */

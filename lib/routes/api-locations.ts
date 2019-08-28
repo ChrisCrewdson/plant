@@ -1,3 +1,7 @@
+import { Application, Response, Request } from 'express';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 const mongo = require('../db/mongo')();
 const actions = require('../../app/actions');
@@ -9,35 +13,25 @@ const { requireToken } = tokenCheck;
 const moduleName = 'routes/api-locations';
 
 const {
-  /** @type {UiActionType} */
   UPSERT_LOCATION_MEMBER,
-  /** @type {UiActionType} */
   UPSERT_LOCATION_WEATHER,
-  /** @type {UiActionType} */
   DELETE_LOCATION_MEMBER,
-  /** @type {UiActionType} */
   DELETE_LOCATION_WEATHER,
-} = actions.actionEnum;
+} = actions.actionEnum as Dictionary<UiActionType>;
 
 /**
  * Return a 500 response to caller
- * @param {import("express").Response} res - Express response object
- * @returns {import("express").Response} - A 500 response
  */
-const server500 = (res) => res.status(500).send({ success: false, message: 'server error' });
+const server500 = (res: Response): Response => res.status(500).send({ success: false, message: 'server error' });
 
 /**
  * api locations routes
- * @param {import("express").Application} app - Express application
  */
-module.exports = (app) => {
+module.exports = (app: Application) => {
   /**
    * getLocationById
-   * @param {import("express").Request} req - Express request object
-   * @param {import("express").Response} res - Express response object
-   * @returns {Promise<import("express").Response>}
    */
-  const getLocationById = async (req, res) => {
+  const getLocationById = async (req: Request, res: Response): Promise<Response> => {
     const { logger } = req;
     const { locationId = '' } = req.params || {};
     if (!locationId) {
@@ -73,7 +67,7 @@ module.exports = (app) => {
    * @param {Role} role - A role such as "owner" or "manager"
    * @returns {boolean}
    */
-  function roleIsValid(role) {
+  function roleIsValid(role: Role): boolean {
     return constants.roles.includes(role);
   }
 
@@ -86,7 +80,8 @@ module.exports = (app) => {
    * @param {string} methodName - caller's method name - used for logging
    * @returns {boolean} - true if member is owner or throws
    */
-  function checkLocationOwner(members, loggedInUserId, locationId, methodName) {
+  function checkLocationOwner(members: Dictionary<Role>,
+    loggedInUserId: string, locationId: string, methodName: string): boolean {
     if (!members[loggedInUserId]) {
       throw new Error(`logged in user ${loggedInUserId} is not a member of location ${locationId} in ${methodName}`);
     }
@@ -103,7 +98,7 @@ module.exports = (app) => {
    * @param {Logger} logger
    * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
    */
-  async function upsertLocationMember(action, data, logger) {
+  async function upsertLocationMember(action: string, data: UpsertLocationMember, logger: Logger): Promise<import('mongodb').UpdateWriteOpResult> {
     const { body, user } = data;
     const { locationId, userId, role } = body;
     const { _id: loggedInUserId } = user;
@@ -128,7 +123,7 @@ module.exports = (app) => {
     }
     checkLocationOwner(location.members, loggedInUserId, locationId, 'upsertLocationMember');
     /** @type {BizLocation} */
-    let modifiedLocation;
+    let modifiedLocation: BizLocation;
     if (UPSERT_LOCATION_MEMBER === action) {
       const members = { ...location.members, [userId]: role };
       modifiedLocation = { ...location, members };
@@ -146,7 +141,7 @@ module.exports = (app) => {
    * @param {Logger} logger
    * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
    */
-  async function upsertLocationWeather(action, data, logger) {
+  async function upsertLocationWeather(action: string, data: UpsertLocationWeather, logger: Logger): Promise<import('mongodb').UpdateWriteOpResult> {
     const { body, user } = data;
     const { locationId, stationId, name } = body;
     const enabled = body.enabled === 'true';
@@ -158,7 +153,7 @@ module.exports = (app) => {
     }
     checkLocationOwner(location.members, loggedInUserId, locationId, 'upsertLocationWeather');
     /** @type {BizLocation} */
-    let modifiedLocation;
+    let modifiedLocation: BizLocation;
     if (UPSERT_LOCATION_WEATHER === action) { // create or update
       const stations = { ...location.stations, [stationId]: { name, enabled } };
       modifiedLocation = { ...location, stations };
@@ -171,13 +166,13 @@ module.exports = (app) => {
   }
 
   /** @type {Dictionary<UpsertLocationMemberFnBound>} */
-  const modifyMemberActions = {
+  const modifyMemberActions: Dictionary<UpsertLocationMemberFnBound> = {
     [UPSERT_LOCATION_MEMBER]: upsertLocationMember.bind(null, UPSERT_LOCATION_MEMBER),
     [DELETE_LOCATION_MEMBER]: upsertLocationMember.bind(null, DELETE_LOCATION_MEMBER),
   };
 
   /** @type {Dictionary<UpsertLocationWeatherFnBound>} */
-  const modifyWeatherActions = {
+  const modifyWeatherActions: Dictionary<UpsertLocationWeatherFnBound> = {
     [UPSERT_LOCATION_WEATHER]: upsertLocationWeather.bind(null, UPSERT_LOCATION_WEATHER),
     [DELETE_LOCATION_WEATHER]: upsertLocationWeather.bind(null, DELETE_LOCATION_WEATHER),
   };
@@ -189,8 +184,8 @@ module.exports = (app) => {
       logger,
     } = req;
     try {
-      const user = /** @type {UpsertLocationUser} */ (userOriginal);
-      const body = /** @type {UpsertLocationBodyBase} */ (bodyOriginal || {});
+      const user = (userOriginal) as UpsertLocationUser;
+      const body = (bodyOriginal || {}) as UpsertLocationBodyBase;
       const { action } = body;
       logger.trace({ moduleName, msg: 'POST /api/location:', body });
 
@@ -200,17 +195,17 @@ module.exports = (app) => {
         throw err;
       }
 
-      /** @type {UpsertLocationMember|UpsertLocationWeather} */
-      let data;
+
+      let data: UpsertLocationMember | UpsertLocationWeather;
       switch (action) {
         case UPSERT_LOCATION_MEMBER:
         case DELETE_LOCATION_MEMBER:
-          data = /** @type {UpsertLocationMember} */ ({ body, user });
+          data = ({ body, user }) as UpsertLocationMember;
           await modifyMemberActions[action](data, logger);
           break;
         case UPSERT_LOCATION_WEATHER:
         case DELETE_LOCATION_WEATHER:
-          data = /** @type {UpsertLocationWeather} */ ({ body, user });
+          data = ({ body, user }) as UpsertLocationWeather;
           await modifyWeatherActions[action](data, logger);
           break;
         default:
