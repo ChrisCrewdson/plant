@@ -1,21 +1,25 @@
+import { Request } from 'express';
 // SSV = Server Side Validation
 const validators = require('../../app/models');
 const utils = require('../../app/libs/utils');
 
 const { note: noteValidator } = validators;
 
+interface NoteUpsertRequest extends Request {
+  body: UiInterimNote;
+  user?: BizUser;
+}
+
 /**
  * When receiving an upsert request from a client for a Note we
  * need to validate the note properties and convert it from a
  * UiInterimNote to a BizNoteNew or BizNote.
- * @param {Express.Request} req
- * @returns {BizNoteNew}
  */
-module.exports = (req) => {
+module.exports = (req: NoteUpsertRequest): BizNoteNew => {
   const {
     body,
     user,
-  } = /** @type {{body?: UiInterimNote, user?: BizUser}} */ (req);
+  } = (req);
   if (!body) {
     throw new Error('Missing body property from request in serverNoteValidator.');
   }
@@ -35,8 +39,7 @@ module.exports = (req) => {
     throw new Error(`Invalid date ${date} in serverNoteValidation`);
   }
 
-  /** @type {BizNoteNew} */
-  const bizNote = {
+  const bizNote: BizNoteNew = {
     ...transformed,
     userId,
     date,
