@@ -1,3 +1,4 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const React = require('react');
 const renderer = require('react-test-renderer');
@@ -8,13 +9,13 @@ const {
   MemoryRouter,
 } = require('react-router-dom');
 const { Provider } = require('react-redux');
-const NoteEditMetrics = require('../../../../app/components/note/NoteEditMetrics');
+const NoteAssocPlantToggleButton = require('../../../../app/components/note/NoteAssocPlantToggleButton');
 const store = require('../../../../app/store');
 const App = require('../../../../app/components/App');
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-describe('NoteEditMetrics', () => {
+describe('NoteAssocPlantToggleButton', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
@@ -25,24 +26,25 @@ describe('NoteEditMetrics', () => {
     store.dispatch = storeDispatch;
   });
 
-  test('should render NoteEditMetrics', () => {
-    const interimNote = {
-    };
-
+  test('NoteAssocPlantToggleButton should be rendered', () => {
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>
-              <NoteEditMetrics
-                dispatch={storeDispatch}
-                interimNote={interimNote}
+              <NoteAssocPlantToggleButton
+                _id="buttonId"
+                label="Button Label"
+                primary
+                secondary={false}
+                style={{ color: 'blue' }}
+                toggleFunc={() => {}}
               />
             </MemoryRouter>
           </App>
         </Provider>
       </MuiThemeProvider>);
-    const noteEditMetrics = component.toJSON();
-    expect(noteEditMetrics).toMatchSnapshot();
+    const badgeTotals = component.toJSON();
+    expect(badgeTotals).toMatchSnapshot();
   });
 });

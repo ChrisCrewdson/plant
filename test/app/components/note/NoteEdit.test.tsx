@@ -1,3 +1,4 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const React = require('react');
 const renderer = require('react-test-renderer');
@@ -8,71 +9,58 @@ const {
   MemoryRouter,
 } = require('react-router-dom');
 const { Provider } = require('react-redux');
-const NotesRead = require('../../../../app/components/note/NotesRead');
+const NoteEdit = require('../../../../app/components/note/NoteEdit');
 const store = require('../../../../app/store');
 const App = require('../../../../app/components/App');
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-describe('NotesRead', () => {
+describe('NoteEdit', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
     store.dispatch = () => {};
-
-    // Date.parse('01 Jun 2019 00:00:00 GMT');
-    // 1559347200000
-    // Make the current Date.now a fixed known date so the result is consistent
-    // because the component uses Date.now() (via Moment) for the time elapsed.
-    const fakeCurrentDateTime = 1559347200000;
-    Date.now = jest.fn(() => fakeCurrentDateTime);
   });
 
   afterAll(() => {
     store.dispatch = storeDispatch;
   });
 
-  test('should render a NotesRead', () => {
-    const interim = {
+  // TODO: Complete this test.
+  // Added to repo in a disabled state because it's in my stash and I don't want to lose it.
+  // Issue #7
+
+  // eslint-disable-next-line jest/no-disabled-tests
+  test.skip('should render NoteEdit', () => {
+    const interimNote = {
+      note: 'test note text',
+      plantIds: ['p-1'],
     };
-    const locationId = 'l-1';
-    const notes = {
-      'n-1': {
-        _id: 'n-1',
-        date: 20190101,
-        note: 'This is note text',
-        plantIds: ['p-1'],
-        title: 'Note #1',
+    const plants = {
+      'p-1': {
+        locationId: 'l-1',
+        title: 'p-1 title',
+        _id: 'p-1',
       },
     };
-    const plant = {
-      _id: 'p-1',
-      notes: ['n-1'],
-    };
-
-    const plants = {
-      'p-1': plant,
-    };
+    const locationId = 'l-1';
 
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>
-              <NotesRead
+              <NoteEdit
                 dispatch={storeDispatch}
-                interim={interim}
-                locationId={locationId}
-                notes={notes}
-                plant={plant}
+                interimNote={interimNote}
                 plants={plants}
-                userCanEdit
+                locationId={locationId}
               />
             </MemoryRouter>
           </App>
         </Provider>
       </MuiThemeProvider>);
-    const badgeTotals = component.toJSON();
-    expect(badgeTotals).toMatchSnapshot();
+    const noteEdit = component.toJSON();
+    expect(noteEdit).toMatchSnapshot();
   });
 });

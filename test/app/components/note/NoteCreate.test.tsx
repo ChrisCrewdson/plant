@@ -1,3 +1,4 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const React = require('react');
 const renderer = require('react-test-renderer');
@@ -8,13 +9,13 @@ const {
   MemoryRouter,
 } = require('react-router-dom');
 const { Provider } = require('react-redux');
-const NoteAssocPlantToggleButton = require('../../../../app/components/note/NoteAssocPlantToggleButton');
+const NoteCreate = require('../../../../app/components/note/NoteCreate');
 const store = require('../../../../app/store');
 const App = require('../../../../app/components/App');
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-describe('NoteAssocPlantToggleButton', () => {
+describe('NoteCreate', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
@@ -25,19 +26,33 @@ describe('NoteAssocPlantToggleButton', () => {
     store.dispatch = storeDispatch;
   });
 
-  test('NoteAssocPlantToggleButton should be rendered', () => {
+  test('should render a NoteCreate', () => {
+    const interimNote = {
+      note: 'test note text',
+    };
+
+    const plant = {
+      _id: 'p-1',
+    };
+
+    const plants = {
+      'p-1': {
+        _id: 'p-1',
+      },
+    };
+
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>
-              <NoteAssocPlantToggleButton
-                _id="buttonId"
-                label="Button Label"
-                primary
-                secondary={false}
-                style={{ color: 'blue' }}
-                toggleFunc={() => {}}
+              <NoteCreate
+                dispatch={storeDispatch}
+                userCanEdit
+                interimNote={interimNote}
+                plant={plant}
+                plants={plants}
+                locationId="l-1"
               />
             </MemoryRouter>
           </App>
