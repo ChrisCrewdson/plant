@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 const validators = require('../../../app/models');
 const constants = require('../../../app/libs/constants');
@@ -9,8 +11,7 @@ const { note: noteValidator } = validators;
 describe('/app/models/note', () => {
   describe('basic validation', () => {
     test('should pass minimum validation', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: '5c77545608a6cd11fdb0ca86',
         date: 20160101,
         plantIds: ['5c77545608a6cd11fdb0ca87'],
@@ -26,8 +27,7 @@ describe('/app/models/note', () => {
 
     test('should fail validation', () => {
     // All items in note should be invalid
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: '0e55d91cb33d42', // Not a MongoId
         // @ts-ignore - intentionally mistyping for testing
         date: 'Not a Number',
@@ -48,8 +48,7 @@ describe('/app/models/note', () => {
     });
 
     test('should strip out props not in the schema', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: '5c2aefa2da47a52adc1c4651',
         date: 20160101,
         plantIds: ['5c2aefa687358b2af50246d6'],
@@ -69,8 +68,7 @@ describe('/app/models/note', () => {
     });
 
     test('should add _id if it is a new record', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         date: 20160101,
         plantIds: ['5c2aefa687358b2af50246d6'],
         note: 'some text',
@@ -89,8 +87,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is empty', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: '5c2aefa687358b2af50246d6',
         date: 20160101,
         plantIds: [],
@@ -109,9 +106,8 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is missing', (done) => {
-      /** @type {UiInterimNote} */
       // @ts-ignore - intentionally mistyped for testing
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
@@ -129,8 +125,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is not an array', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
@@ -155,8 +150,7 @@ describe('/app/models/note', () => {
   });
 
   describe('note.model/images validation', () => {
-    /** @type {NoteImage} */
-    const image = {
+    const image: NoteImage = {
       ext: 'jpg',
       id: '5c2af2b712d4132fa1e69d3a',
       originalname: 'apple tree',
@@ -165,8 +159,7 @@ describe('/app/models/note', () => {
     };
 
     test('should pass with an empty images array', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [],
@@ -185,8 +178,7 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [image],
@@ -204,8 +196,7 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images and an empty note', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [image],
@@ -223,8 +214,7 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images and a missing note', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [image],
@@ -240,8 +230,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images is not an array', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         // @ts-ignore - intentionally mistyped for testing
@@ -262,8 +251,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images id is not a mongoId', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         // @ts-ignore - intentionally setting id as number instead of string for testing
@@ -284,8 +272,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images ext is not a string', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [{ ...image, id: '123' }],
@@ -305,8 +292,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images originalname is not a string', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         // @ts-ignore - intentionally setting originalName as number instead of string for testing
@@ -327,8 +313,7 @@ describe('/app/models/note', () => {
     });
 
     test('should convert image size if it is a string number', () => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: '5c2af2b712d4132fa1e69d39',
         date: 20160101,
         // @ts-ignore - intentionally setting size as string instead of number for testing
@@ -345,8 +330,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images ext is longer than 20', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [{ ...image, ext: '123456789012345678901' }],
@@ -366,8 +350,7 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images has extra props', (done) => {
-      /** @type {UiInterimNote} */
-      const note = {
+      const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
         // @ts-ignore - intentionally setting an unknown prop "extra" for testing

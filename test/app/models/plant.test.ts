@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 const validators = require('../../../app/models');
 
@@ -5,8 +7,7 @@ const { plant: plantValidator } = validators;
 
 describe('/app/models/plant', () => {
   test('should pass minimum validation', () => {
-    /** @type {UiPlantsValue} */
-    const plant = {
+    const plant: UiPlantsValue = {
       _id: 'b33d420024432d67a3c7fb36',
       locationId: 'cf885bf372488977ae0d6475',
       price: '$19.99', // should convert this to numeric 19.99
@@ -24,8 +25,7 @@ describe('/app/models/plant', () => {
   });
 
   test('should pass full validation', () => {
-    /** @type {UiPlantsValue} */
-    const plant = {
+    const plant: UiPlantsValue = {
       _id: 'b33d420024432d67a3c7fb36',
       botanicalName: 'Botanical Name',
       commonName: 'Common Name',
@@ -56,8 +56,7 @@ describe('/app/models/plant', () => {
 
   test('should fail validation', () => {
     // All items in plant should be invalid
-    /** @type {UiPlantsValue} */
-    const plant = {
+    const plant: UiPlantsValue = {
       _id: '0e55d91cb33d42', // Not a MongoId
       botanicalName: _.repeat('Botanical Name is too long', 50),
       // @ts-ignore - intentionally mistyping for testing
@@ -124,8 +123,7 @@ describe('/app/models/plant', () => {
   });
 
   test('should add _id if it is a new record', () => {
-    /** @type {UiPlantsValue} */
-    const plant = {
+    const plant: UiPlantsValue = {
       locationId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
       userId: 'cf885bf372488977ae0d6476',
@@ -162,9 +160,8 @@ describe('/app/models/plant', () => {
   });
 
   test('should fail if locationId is missing', (done) => {
-    /** @type {UiPlantsValue} */
     // @ts-ignore - intentionally missing locationId for this test
-    const plant = {
+    const plant: UiPlantsValue = {
       _id: 'b33d420024432d67a3c7fb36',
       userId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
