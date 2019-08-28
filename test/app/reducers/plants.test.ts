@@ -1,5 +1,6 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
-// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const plants = require('../../../app/reducers/plants');
 const { actionFunc } = require('../../../app/actions');
@@ -109,8 +110,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load a plant', () => {
-    /** @type {Dictionary<object>} */
-    const expected = {
+    const expected: Dictionary<object> = {
       1: {
         _id: '1',
         name: 'one',
@@ -129,6 +129,7 @@ describe('/app/reducers/plants', () => {
     };
     const current = seamless.from(expected);
     Object.assign(expected, { 3: _.cloneDeep(payload) });
+    // @ts-ignore
     expected['3'].notes = ['n1', 'n2'];
 
     const actual = plants(current, actionFunc.loadPlantSuccess(payload));
@@ -137,8 +138,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load multiple plants', () => {
-    /** @type {Dictionary<object>} */
-    const expected = {
+    const expected: Dictionary<object> = {
       1: {
         _id: '1',
         name: 'one',
@@ -157,6 +157,7 @@ describe('/app/reducers/plants', () => {
     }];
     const current = seamless.from(expected);
     Object.assign(expected, { 3: _.cloneDeep(payload[0]) });
+    // @ts-ignore
     expected['3'].notes = ['n1', 'n2'];
 
     const actual = plants(current, actionFunc.loadPlantsSuccess(payload));
@@ -176,8 +177,7 @@ describe('/app/reducers/plants', () => {
         notes: ['n1', 'n2', 'n3'],
       },
     };
-    /** @type {any} */
-    const payload = [];
+    const payload: any = [];
     const current = seamless.from(expected);
 
     const actual = plants(current, actionFunc.loadPlantsSuccess(payload));
@@ -319,14 +319,14 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should flag that notes have been requested for a plant', () => {
-      /** @type {Dictionary<object>} */
-      const expected = {
+      const expected: Dictionary<object> = {
         1: { },
       };
       const payload = {
         plantIds: ['1'],
       };
       const current = seamless.from(expected);
+      // @ts-ignore
       expected['1'].notesRequested = true;
 
       const actual = plants(current, actionFunc.loadNotesRequest(payload));
@@ -338,8 +338,7 @@ describe('/app/reducers/plants', () => {
   describe('loadNotesSuccess', () => {
     test('should return original state if notes is empty', () => {
       const expected = {};
-      /** @type {any} */
-      const payload = [];
+      const payload: any = [];
       const current = seamless.from(expected);
 
       const actual = plants(current, actionFunc.loadNotesSuccess(payload));
@@ -356,8 +355,7 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should return original state if notes do not have plantIds', () => {
-      /** @type {Dictionary<object>} */
-      const expected = {
+      const expected: Dictionary<object> = {
         'p-1': {
           notes: ['n-7', 'n-8'],
         },
@@ -377,8 +375,11 @@ describe('/app/reducers/plants', () => {
         plantIds: ['p-2', 'p-3'],
       }];
       const current = seamless.from(expected);
+      // @ts-ignore
       expected['p-1'].notes.push('n-1');
+      // @ts-ignore
       expected['p-2'].notes.push('n-1');
+      // @ts-ignore
       expected['p-3'].notes = ['n-2'];
 
       const actual = plants(current, actionFunc.loadNotesSuccess(payload));

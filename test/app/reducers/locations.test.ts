@@ -1,4 +1,5 @@
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 const locations = require('../../../app/reducers/locations');
 const { actionFunc } = require('../../../app/actions');
@@ -103,8 +104,7 @@ describe('/app/reducers/locations', () => {
   });
 
   test('should handle a loadPlantsSuccess for an empty array of plants', () => {
-    /** @type {UiPlantsValue[]} */
-    const plants = [];
+    const plants: UiPlantsValue[] = [];
     const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);

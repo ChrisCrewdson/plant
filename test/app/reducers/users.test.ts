@@ -1,15 +1,10 @@
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 const users = require('../../../app/reducers/users');
 const { actionFunc } = require('../../../app/actions');
 
-/**
- *
- * @param {string} actionName
- * @param {*} state
- * @param {object|undefined} payload
- */
-function checkReducer(actionName, state, payload) {
+function checkReducer(actionName: string, state: any, payload: object | undefined) {
   const action = actionFunc[actionName](payload);
   const actual = users(state, action);
 
@@ -33,7 +28,6 @@ describe('/app/reducers/users', () => {
 
   test('should reduce loadUsersSuccess with undefined payload', () => {
     const state = seamless.from({});
-    /** @type {undefined} */
     const payload = undefined;
 
     checkReducer('loadUsersSuccess', state, payload);

@@ -1,16 +1,11 @@
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 const notes = require('../../../app/reducers/notes');
 const { actionFunc } = require('../../../app/actions');
 
-/**
- *
- * @param {string} actionName
- * @param {*} state
- * @param {object|undefined|any[]} payload
- * @param {*} expected
- */
-function checkReducer(actionName, state, payload, expected) {
+function checkReducer(
+  actionName: string, state: any, payload: string | object | undefined | any[], expected: any) {
   const action = actionFunc[actionName](payload);
   const actual = notes(state, action);
   expect(actual).toEqual(expected);
@@ -65,8 +60,7 @@ describe('/app/reducers/notes', () => {
 
     test('should loadNotesSuccess with empty payload', () => {
       const state = seamless.from({ id1: { _id: 'id1', date: 20160101 } });
-      /** @type {any[]} */
-      const payload = [];
+      const payload: any[] = [];
       const expected = state;
       checkReducer('loadNotesSuccess', state, payload, expected);
     });

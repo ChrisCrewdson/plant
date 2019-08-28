@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const poly = require('../../app/poly');
 
 describe('/app/poly', () => {
@@ -18,7 +20,7 @@ describe('/app/poly', () => {
     };
 
     // Run test
-    poly((error) => {
+    poly((error: any) => {
       expect(error).toBeUndefined();
 
       // Restore the document objects
@@ -46,7 +48,7 @@ describe('/app/poly', () => {
     };
 
     // Run test
-    poly((error) => {
+    poly((error: any) => {
       expect(error).toBeInstanceOf(Error);
 
       // Restore the document objects
@@ -60,9 +62,8 @@ describe('/app/poly', () => {
   test('should have all features', (done) => {
     // Discover the features that are missing from the window object
     // and set each one to true to force a different code path.
-    const { features } = poly;
-    /** @type {string[]} */
-    const missing = [];
+    const { features } = poly as { features: string[]};
+    const missing: string[] = [];
     features.forEach((feature) => {
       if (!window[feature]) {
         window[feature] = true;
@@ -71,7 +72,7 @@ describe('/app/poly', () => {
     });
 
     // Run the test
-    poly((error) => {
+    poly((error: any) => {
       expect(error).toBeUndefined();
       // Remove those added "features" from the window object to return
       // it to its previous state
