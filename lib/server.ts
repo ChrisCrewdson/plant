@@ -1,7 +1,8 @@
+import express, { Request, Response, NextFunction } from 'express';
+
 const bodyParser = require('body-parser');
 const compression = require('compression');
 // const cookieParser = require('cookie-parser');
-const express = require('express');
 const http = require('http');
 // @ts-ignore
 const Logger = require('lalog');
@@ -23,9 +24,8 @@ const localLogger = Logger.create({
 
 /**
  * Handle Error
- * @param {Error} err
  */
-const handleError = (err) => {
+const handleError = (err: Error) => {
   localLogger.fatal({ err });
   process.exit(1);
 };
@@ -35,11 +35,8 @@ process.on('uncaughtException', handleError);
 
 /**
  * Server
- * @param {number=} portParam
- * @param {string=} mongoConnection
- * @returns {Promise<import('net').Server>}
  */
-module.exports = async (portParam, mongoConnection) => {
+module.exports = async (portParam: number | undefined, mongoConnection: string | undefined): Promise<import('net').Server> => {
   const port = portParam || parseInt(process.env.PLANT_PORT || '3001', 10);
   try {
     const app = express();
@@ -85,12 +82,8 @@ module.exports = async (portParam, mongoConnection) => {
 
     /**
      * Error handler
-     * @param {Error} err
-     * @param {import("express").Request} req - Express request object
-     * @param {import("express").Response} res - Express response object
-     * @param {import("express").NextFunction} next
      */
-    const errorHandler = (err, req, res, next) => {
+    const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
       const { logger = localLogger } = req;
       logger.error({
         msg: 'Uncaught App Error', err, req, res,
@@ -105,9 +98,8 @@ module.exports = async (portParam, mongoConnection) => {
     return new Promise((resolve, reject) => {
       /**
        * Server callback
-       * @param {Error} err
        */
-      const serverCallback = (err) => {
+      const serverCallback = (err: Error) => {
         if (err) {
           localLogger.fatal({ msg: 'Error in server.listen', err });
           return reject(err);

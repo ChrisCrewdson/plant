@@ -19,6 +19,6 @@
     "test/**/*",
     "jest.config.js",
     "webpack.config.js",
-    "server.js"
+    "server.ts"
   ]
 }
