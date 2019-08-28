@@ -28,13 +28,14 @@ module.exports = {
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
     'jsx-a11y/anchor-is-valid': 0,
-    'no-shadow': [2, {'allow': ['Location']}],
-    'no-underscore-dangle': 0,
-    'react/no-unused-state': 0,
-    'security/detect-object-injection': 0,
     'no-param-reassign': [2, {
       'ignorePropertyModificationsFor': ['draft']
     }],
+    'no-shadow': [2, {'allow': ['Location']}],
+    'no-underscore-dangle': 0,
+    'react/jsx-filename-extension': 0,
+    'react/no-unused-state': 0,
+    'security/detect-object-injection': 0,
     // These carried over from the plant-image-lambda project to accelerate
     // the linting
     // TODO: Remove these one day
