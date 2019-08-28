@@ -1,4 +1,5 @@
-// const _ = require('lodash');
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const { actionFunc, actionEnum } = require('../../../app/actions');
 
 describe('/app/actions', () => {
@@ -21,10 +22,7 @@ describe('/app/actions', () => {
   });
 
   test('should ensure that simplified actions has all of previous exports', () => {
-    /**
-     * @param {string} letter
-     */
-    const isUpper = (letter) => letter >= 'A' && letter <= 'Z';
+    const isUpper = (letter: string) => letter >= 'A' && letter <= 'Z';
     const originalExports = [
       'CHANGE_ACTIVE_LOCATION_ID',
       'CREATE_PLANT_FAILURE',
@@ -132,7 +130,7 @@ describe('/app/actions', () => {
     originalExports.forEach((exp) => {
       const firstLetter = exp[0];
       if (isUpper(firstLetter)) {
-        const typedExp = /** @type {UiActionType} */ (exp);
+        const typedExp: UiActionType = exp as UiActionType;
         expect(typeof actionEnum[typedExp]).toBe('string');
       } else {
         expect(typeof actionFunc[exp]).toBe('function');
