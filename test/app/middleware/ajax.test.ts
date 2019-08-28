@@ -1,15 +1,12 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const helper = require('../../helper');
 
-/** @type {number} */
-let ajaxCallCounter;
-/** @type {JQueryAjaxSettings} */
-let opts;
+let ajaxCallCounter: number;
+let opts: JQueryAjaxSettings;
 jest.mock('jquery', () => ({
   count: 0,
-  /**
-   * @param {JQueryAjaxSettings} options
-   */
-  ajax: (options) => {
+  ajax: (options: JQueryAjaxSettings) => {
     ajaxCallCounter += 1;
     opts = options;
   },
@@ -19,8 +16,7 @@ const ajax = require('../../../app/middleware/ajax');
 
 describe('/app/middleware/ajax', () => {
   test('should return an object if data is object', (done) => {
-    /** @type {import("redux").Store} */
-    const store = helper.getFakeStore();
+    const store: import('redux').Store = helper.getFakeStore();
     const options = {
       url: '/something',
       success: () => {},
@@ -41,8 +37,7 @@ describe('/app/middleware/ajax', () => {
   });
 
   test('should not change a native data type', (done) => {
-    /** @type {import("redux").Store} */
-    const store = helper.getFakeStore();
+    const store: import('redux').Store = helper.getFakeStore();
     const data = 'do not change me';
     const options = {
       url: '/something',

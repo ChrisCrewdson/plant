@@ -1,17 +1,12 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const { actionEnum } = require('../../../app/actions');
 const helper = require('../../helper');
 
-/**
- * @param {import("redux").Store} store
- * @param {AjaxOptions} options
- */
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-let ajax = (store, options) => {};
-/**
- * @param {import("redux").Store} store
- * @param {AjaxOptions} options
- */
-const mockAjax = (store, options) => {
+let ajax = (store: import('redux').Store, options: AjaxOptions) => {};
+
+const mockAjax = (store: import('redux').Store, options: AjaxOptions) => {
   ajax(store, options);
 };
 
