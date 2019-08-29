@@ -1,5 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 
+import UnhandledRejectionListener = NodeJS.UnhandledRejectionListener;
+import UncaughtExceptionListener = NodeJS.UncaughtExceptionListener;
+
 const bodyParser = require('body-parser');
 const compression = require('compression');
 // const cookieParser = require('cookie-parser');
@@ -22,16 +25,18 @@ const localLogger = Logger.create({
   addTrackId: true,
 });
 
-/**
- * Handle Error
- */
-const handleError = (err: Error) => {
+const handleRejection: UnhandledRejectionListener = (err: {} | null | undefined) => {
   localLogger.fatal({ err });
   process.exit(1);
 };
 
-process.on('unhandledRejection', handleError);
-process.on('uncaughtException', handleError);
+const handleException: UncaughtExceptionListener = (err: {} | null | undefined) => {
+  localLogger.fatal({ err });
+  process.exit(1);
+};
+
+process.on('unhandledRejection', handleRejection);
+process.on('uncaughtException', handleException);
 
 /**
  * Server
