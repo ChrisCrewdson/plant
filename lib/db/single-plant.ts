@@ -1,44 +1,33 @@
 // Get all the data from the DB for a single plant to be able
 // to render it on the server
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const db = require('./mongo')();
 
-/**
- * getNotes
- * @param {string} plantId
- * @param {Logger} logger
- * @returns {Promise<BizNoteMap>}
- */
-async function getNotes(plantId, logger) {
-  const retrievedNotes = await db.getNotesByPlantId(plantId, logger);
+async function getNotes(plantId: string, logger: Logger): Promise<BizNoteMap> {
+  const retrievedNotes: BizNote[]|undefined = await db.getNotesByPlantId(plantId, logger);
 
-  const bizNoteMap = /** @type {BizNoteMap} */ ({});
+  const bizNoteMap: BizNoteMap = /** @type {BizNoteMap} */ ({});
   if (!retrievedNotes || !retrievedNotes.length) {
     return bizNoteMap;
   }
 
   return retrievedNotes.reduce(
-    /**
-     * @param {BizNoteMap} acc
-     */
-    (acc, note) => {
+    (acc: BizNoteMap, note) => {
       acc[note._id] = note;
       return acc;
     }, bizNoteMap);
 }
 
 /**
- * getPlants
- * @param {BizUser=} loggedInUser
- * @param {string} plantId
- * @param {Logger} logger
  * @returns {Promise} - TODO: Work out how to return Promise<<BizPlantMap>
  */
-async function getPlants(loggedInUser, plantId, logger) {
+async function getPlants(loggedInUser: BizUser | undefined, plantId: string, logger: Logger):
+ Promise<any> {
   const loggedInUserId = loggedInUser && loggedInUser._id;
   const retrievedPlant = await db.getPlantById(plantId, loggedInUserId, logger);
 
-  const bizPlantMap = /** @type {BizPlantMap} */ ({});
+  const bizPlantMap: BizPlantMap = /** @type {BizPlantMap} */ ({});
   if (!retrievedPlant) {
     return bizPlantMap;
   }
@@ -51,15 +40,8 @@ async function getPlants(loggedInUser, plantId, logger) {
   });
 }
 
-/**
- * singlePlant
- * @param {BizUser=} loggedInUser
- * @param {string} plantId
- * @param {string} noteId
- * @param {Logger} logger
- * @returns {Promise}
- */
-const singlePlant = async (loggedInUser, plantId, noteId, logger) => {
+const singlePlant = async (loggedInUser: BizUser | undefined,
+  plantId: string, noteId: string, logger: Logger): Promise<any> => {
   const promises = [
     db.getAllLocations(logger),
     getNotes(plantId, logger),
@@ -69,14 +51,10 @@ const singlePlant = async (loggedInUser, plantId, noteId, logger) => {
 
   const results = await Promise.all(promises);
 
-  /** @type {ReadonlyArray<Readonly<BizLocation>>} */
-  const locations = results[0];
-  /** @type {BizNoteMap} */
-  const notes = results[1];
-  /** @type {BizPlantMap} */
-  const plants = results[2];
-  /** @type {ReadonlyArray<Readonly<BizLocation>>} */
-  const users = results[3];
+  const locations: ReadonlyArray<Readonly<BizLocation>> = results[0];
+  const notes: BizNoteMap = results[1];
+  const plants: BizPlantMap = results[2];
+  const users: ReadonlyArray<Readonly<BizLocation>> = results[3];
 
   // If there's a noteId (there should be) then we need to tag the images in that noteId
   // as visible.
