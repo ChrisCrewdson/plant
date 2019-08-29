@@ -47,6 +47,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': [0],
     '@typescript-eslint/camelcase': [0],
     'import/no-unresolved': [0],
+    'import/prefer-default-export': [0],
   },
   // settings: {
   //   "import/parsers": {

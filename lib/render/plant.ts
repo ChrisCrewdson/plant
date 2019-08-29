@@ -1,27 +1,18 @@
+import { ssrRenderPlant } from './plant-render';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
-const React = require('react');
 const { createStore } = require('redux');
-const { Provider } = require('react-redux');
-const { renderToString } = require('react-dom/server');
 const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
 const { deepOrange500 } = require('material-ui/styles/colors');
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
-const { StaticRouter } = require('react-router-dom');
 const singlePlant = require('../db/single-plant');
-const Plant = require('../../app/components/plant/Plant');
-const App = require('../../app/components/App');
 const appReducers = require('../../app/reducers');
 const indexHtml = require('.');
 
 const moduleName = 'lib/render/plant';
 
-/**
- * target
- * @param {import("express").Request} req - Express request object
- * @param {import("express").Response} res - Express response object
- * @returns {Promise<void>}
- */
-const target = async (req, res) => {
+const target = async (req: import('express').Request, res: import('express').Response): Promise<void> => {
   const { logger } = req;
   try {
     const {
@@ -82,25 +73,18 @@ const target = async (req, res) => {
     //   createHref: () => '',
     //   replace: () => {},
     // };
-    /** @type {import('react-router').StaticRouterContext} */
-    const context = {};
+
+    const context: import('react-router').StaticRouterContext = {};
 
     // Render the component to a string
-    /* eslint-disable react/jsx-filename-extension, function-paren-newline */
-    const html = renderToString(
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <Provider store={store}>
-          <App>
-            <StaticRouter
-              context={context}
-              location={req.url}
-            >
-              <Plant params={params} searchParams={searchParams} />
-            </StaticRouter>
-          </App>
-        </Provider>
-      </MuiThemeProvider>);
-      /* eslint-enable react/jsx-filename-extension, function-paren-newline */
+    const html = ssrRenderPlant({
+      muiTheme,
+      store,
+      context,
+      url: req.url,
+      params,
+      searchParams,
+    });
 
     // If context.url is truthy then there was a redirect in the StaticRouter above
     // If this happened then we need to redirect here.
