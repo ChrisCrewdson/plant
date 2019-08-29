@@ -1,12 +1,7 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-/**
- * Delete from collection
- * @param {import('mongodb').Db} db
- * @param {DbCollectionName} collection
- * @param {object} query
- * @returns {Promise<number|undefined>}
- */
-module.exports = async (db, collection, query) => {
+module.exports = async (db: import('mongodb').Db, collection: DbCollectionName, query: object):
+ Promise<number | undefined> => {
   const coll = db.collection(collection);
   const results = await coll.deleteMany(query);
   // results if query item was found:

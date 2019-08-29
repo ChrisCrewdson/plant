@@ -8,10 +8,12 @@ db.createCollection('plant', {
 });
 */
 
+import { CollectionCreateOptions } from 'mongodb';
+
 // bsonType's are here: https://docs.mongodb.com/manual/reference/bson-types/
 
 /** @type {object} */
-const loc = {
+const loc: object = {
   bsonType: 'object',
   required: ['type', 'coordinates'],
   properties: {
@@ -37,7 +39,7 @@ const loc = {
 };
 
 /** @type {object} */
-const plantSchema = {
+const plantSchema: object = {
   bsonType: 'object',
   required: ['title', 'userId', 'locationId', '_id'],
   // TODO: Work out how to add the following property
@@ -94,7 +96,7 @@ const plantSchema = {
 };
 
 /** @type {object} */
-const locationSchema = {
+const locationSchema: object = {
   bsonType: 'object',
   required: ['title', 'createdBy', 'members', '_id'],
   additionalProperties: false,
@@ -123,7 +125,7 @@ const locationSchema = {
 };
 
 /** @type {object} */
-const metrics = {
+const metrics: object = {
   bsonType: 'object',
   properties: {
     height: {
@@ -174,7 +176,7 @@ const metrics = {
 };
 
 /** @type {object} */
-const noteSchema = {
+const noteSchema: object = {
   bsonType: 'object',
   required: ['date', 'plantIds', 'userId', '_id'],
   // additionalProperties: false,
@@ -207,11 +209,7 @@ const noteSchema = {
   },
 };
 
-/**
- * @param {object} $jsonSchema
- * @returns {import('mongodb').CollectionCreateOptions}
- */
-const getCreateOptions = ($jsonSchema) => ({
+const getCreateOptions = ($jsonSchema: object): CollectionCreateOptions => ({
   validator: {
     $jsonSchema,
   },
