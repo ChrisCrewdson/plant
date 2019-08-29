@@ -1,18 +1,18 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 
 /**
  * Get user object
- * @param {import('express').Request} req
- * @returns {UiUser|undefined}
  */
-const getUser = (req) => {
+const getUser = (req: import('express').Request): UiUser | undefined => {
   const { user, logger } = req;
   if (!user) {
     logger.trace({
       msg: 'user is not defined in /render/index getUser()',
       user,
     });
-    return user;
+    return user as undefined;
   }
   const responseUser = _.pick(user, [
     '_id', 'name', 'locationIds', 'status', 'isLoggedIn', 'activeLocationId',
@@ -44,11 +44,8 @@ const getUser = (req) => {
 
 /**
  * Server Side Render SSR
- * @param {ServerSideRenderData} data
- * @param {boolean} ssr
- * @returns {string}
  */
-module.exports = (data, ssr = false) => {
+module.exports = (data: ServerSideRenderData, ssr: boolean): string => {
   const {
     html = '',
     initialState = /** @type {PlantStateTree} */ ({}),
@@ -59,7 +56,7 @@ module.exports = (data, ssr = false) => {
 
   const user = getUser(req);
   if (user) {
-    initialState.user = user;
+    (initialState as PlantStateTree).user = user;
   }
 
   const ogMeta = og.map((i) => `<meta property="og:${i.property}" content="${i.content}" />`);
@@ -84,7 +81,7 @@ module.exports = (data, ssr = false) => {
 ${html}\
 </div>\
 <script>\
-window.__SSR__ = ${ssr};
+window.__SSR__ = ${!!ssr};
 window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}\
 </script>\
 <script src="/bundle.js"></script>\
