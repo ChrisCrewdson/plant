@@ -28,11 +28,11 @@ const readUserTiny = async (db: Db, query: object): Promise<DbUserTiny[] | null>
   return read(db, 'user', query, options) as Promise<DbUserTiny[]|null>;
 };
 
-const readLocation = async (db: Db, query: object, options: object):
+export const readLocation = async (db: Db, query: object, options: object):
 Promise<DbLocation[] | null> => read(db, 'location', query, options) as Promise<DbLocation[]|null>;
 
 
-const readPlant = async (db: Db, query: object, options: object): Promise<DbPlant[] | null> => read(db, 'plant', query, options) as Promise<DbPlant[]|null>;
+export const readPlant = async (db: Db, query: object, options: object): Promise<DbPlant[] | null> => read(db, 'plant', query, options) as Promise<DbPlant[]|null>;
 
 const readNote = async (db: Db, query: object, options: object): Promise<DbNote[] | null> => read(db, 'note', query, options) as Promise<DbNote[]|null>;
 

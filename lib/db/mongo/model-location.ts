@@ -1,32 +1,43 @@
+import { Db } from 'mongodb';
+import {
+  readLocation, readPlant,
+} from './read';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 const mongodb = require('mongodb');
 const { produce } = require('immer');
 
 const Create = require('./create');
-const {
-  readLocation, readPlant,
-} = require('./read');
 const constants = require('../../../app/libs/constants');
 const Update = require('./update');
 const remove = require('./delete');
 
 const { ObjectID } = mongodb;
-
+interface CreateLocationOptions {
+  db: Db;
+  loc: BizLocation;
+  logger: Logger;
+}
+interface GetLocationByQueryOptions {
+  db: Db;
+  logger: Logger;
+  options: {
+    locationsOnly?: boolean;
+  };
+  query: object;
+}
 // CRUD operations for Location collection
 class LocationData {
   // Location C: createLocation
 
   /**
    * Change types for saving
-   * @param {BizLocation} location
-   * @returns {Readonly<DbLocation>}
    */
-  static convertLocationDataTypesForSaving(location) {
+  static convertLocationDataTypesForSaving(location: BizLocation): Readonly<DbLocation> {
     return produce(location,
-      /**
-       * @param {DbLocation} draft
-       */
-      (draft) => {
+      (draft: DbLocation) => {
         if (draft._id) {
           draft._id = new ObjectID(draft._id);
         }
@@ -39,10 +50,8 @@ class LocationData {
 
   /**
    * Change types for biz layer
-   * @param {DbLocation[]} locations
-   * @returns {ReadonlyArray<Readonly<BizLocation>>}
    */
-  static convertLocationDataForRead(locations) {
+  static convertLocationDataForRead(locations: DbLocation[]): ReadonlyArray<Readonly<BizLocation>> {
     if (!_.isArray(locations)) {
       throw new Error(`Expected loc to be an Array but it was ${typeof locations}`);
     }
@@ -51,40 +60,26 @@ class LocationData {
 
   /**
    * Change types for biz layer
-   * @param {DbLocation} location
-   * @returns {Readonly<BizLocation>}
    */
-  static convertLocationDatumForRead(location) {
-    if (!location) {
-      return location;
-    }
-
-    return produce(location,
-      /**
-       * @param {BizLocation} draft
-       */
-      (draft) => {
-        if (draft._id) {
-          draft._id = draft._id.toString();
-        }
-        if (draft.createdBy) {
-          draft.createdBy = draft.createdBy.toString();
-        }
-        return draft;
-      });
+  static convertLocationDatumForRead(location: DbLocation): Readonly<BizLocation> {
+    return produce(location, (draft: BizLocation) => {
+      if (draft._id) {
+        draft._id = draft._id.toString();
+      }
+      if (draft.createdBy) {
+        draft.createdBy = draft.createdBy.toString();
+      }
+      return draft;
+    });
   }
 
   /**
    * Create Location
    * @static
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {BizLocation} options.loc
-   * @param {Logger} options.logger
-   * @returns {Promise<Readonly<BizLocation>>}
    * @memberof LocationData
    */
-  static async createLocation({ db, loc, logger }) {
+  static async createLocation({ db, loc, logger }: CreateLocationOptions):
+   Promise<Readonly<BizLocation>> {
     try {
       if (!loc.members || !loc.createdBy || !loc.title) {
         throw new Error('members, title and createdBy must be specified when creating a location');
@@ -104,17 +99,11 @@ class LocationData {
   /**
    * Get Locations
    * @static
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {object} options.query
-   * @param {object} options.options
-   * @param {Logger} options.logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    * @memberof LocationData
    */
   static async getLocationsByQuery({
     db, query, options, logger,
-  }) {
+  }: GetLocationByQueryOptions): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     try {
       const { locationsOnly = false } = options;
       const locationOptions = {};
@@ -143,7 +132,7 @@ class LocationData {
         /**
          * @param {BizLocation} draft
          */
-        (draft) => {
+        (draft: BizLocation) => {
           draft._id = (draft._id || '').toString();
           const id = draft._id;
           draft.createdBy = (draft.createdBy || '').toString();
@@ -166,7 +155,8 @@ class LocationData {
    * @param {Logger} options.logger
    * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    */
-  static async getAllLocations({ db, logger }) {
+  static async getAllLocations({ db, logger }: {db: Db; logger: Logger},
+  ): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     return LocationData.getLocationsByQuery({
       db, query: {}, options: {}, logger,
     });
@@ -174,13 +164,9 @@ class LocationData {
 
   /**
    * Get a single location and augment it
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {string} options.id - the location's id
-   * @param {Logger} options.logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    */
-  static async getLocationById({ db, id, logger }) {
+  static async getLocationById({ db, id, logger }: {db: Db; id: string; logger: Logger},
+  ): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const _id = new ObjectID(id);
     return LocationData.getLocationsByQuery({
       db, query: { _id }, options: {}, logger,
@@ -189,13 +175,9 @@ class LocationData {
 
   /**
    * Get a single location and don't augment it
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {string} options.id - the location's id
-   * @param {Logger} options.logger
-   * @returns {Promise<BizLocation|undefined>}
    */
-  static async getLocationOnlyById({ db, id, logger }) {
+  static async getLocationOnlyById({ db, id, logger }: {db: Db; id: string; logger: Logger},
+  ): Promise<BizLocation | undefined> {
     const _id = new ObjectID(id);
     const location = await LocationData.getLocationsByQuery({
       db,
@@ -208,13 +190,9 @@ class LocationData {
 
   /**
    * Get a single location and don't augment it
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {string[]} options.ids - the locations ids
-   * @param {Logger} options.logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    */
-  static async getLocationsByIds({ db, ids, logger }) {
+  static async getLocationsByIds({ db, ids, logger }: {db: Db; ids: string[]; logger: Logger},
+  ): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const query = {
       _id: { $in: ids.map((id) => new ObjectID(id)) },
     };
@@ -226,16 +204,11 @@ class LocationData {
   /**
    * Gets all locations that the specified user manages or owns
    * Also gets all the users at each of those locations
-   * @param {object} options
-   * @param {object=} options.options
-   * @param {import('mongodb').Db} options.db
-   * @param {string} options.userId - the userId of the user
-   * @param {Logger} options.logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    */
   static async getLocationsByUserId({
     db, userId, options = {}, logger,
-  }) {
+  }: {db: Db; userId: string; logger: Logger; options: any},
+  ): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     // A location object looks like this:
     // { _id, createdBy, members: { id: role }, stations: {id: ...} title,
     //   loc: {type, coordinates: {}}}
@@ -248,17 +221,11 @@ class LocationData {
   // Location U: updateLocation
   /**
    * Checks if user has one of the roles listed in the roles property.
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {string} options.locationId - location id
-   * @param {string} options.userId - user id
-   * @param {Role[]} options.roles - roles that user needs to have one of
-   * @param {Logger} options.logger
-   * @returns {Promise<boolean>}
    */
   static async roleAtLocation({
     db, locationId, userId, roles, logger,
-  }) {
+  }: {db: Db; locationId: string; userId: string; roles: Role[]; logger: Logger},
+  ): Promise<boolean> {
     try {
       if (!constants.mongoIdRE.test(userId)) {
         throw new Error('roleAtLocation attempted with an invalid userId');
@@ -286,16 +253,11 @@ class LocationData {
 
   /**
    * Update location by Id
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {BizLocation} options.location
-   * @param {string} options.loggedInUserId
-   * @param {Logger} options.logger
-   * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
    */
   static async updateLocationById({
     db, location: loc, loggedInUserId, logger,
-  }) {
+  }: {db: Db; location: BizLocation; loggedInUserId: string; logger: Logger},
+  ): Promise<import('mongodb').UpdateWriteOpResult> {
     try {
       const location = LocationData.convertLocationDataTypesForSaving(loc);
       // By creating a query that restricts by the location's _id and also where
@@ -319,13 +281,10 @@ class LocationData {
 
   /**
    * Gets the user's role at the given location.
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {string} options._id - location id
-   * @param {string} options.loggedInUserId
-   * @returns {Promise<number|undefined>}
    */
-  static async deleteLocation({ db, _id, loggedInUserId }) {
+  static async deleteLocation({ db, _id, loggedInUserId }:
+    { db: Db; _id: string; loggedInUserId: string},
+  ): Promise<number | undefined> {
     // By creating a query that restricts by the location's _id and also where
     // the logged in user is the owner a non-owner can't delete a location they
     // don't own.
