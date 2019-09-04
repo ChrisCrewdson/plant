@@ -1,3 +1,7 @@
+import {
+  Request, Response, NextFunction, Application,
+} from 'express';
+
 // @ts-ignore - Types for @passport-next are not complete yet
 const passport = require('@passport-next/passport');
 
@@ -6,9 +10,8 @@ const { sessionKey } = require('../constants');
 
 /**
  * api locations routes
- * @param {import("express").Application} app - Express application
  */
-function auth(app) {
+function auth(app: Application) {
   app.get('/auth/facebook', passport.authenticate('facebook'));
   app.get('/auth/google', passport.authenticate('google', {
     scope: 'email',
@@ -16,22 +19,15 @@ function auth(app) {
 
   /**
    * route for logging out
-   * @param {import("express").Request} req - Express request object
-   * @param {import("express").Response} res - Express response object
-   * @param {import("express").NextFunction} next
-   * @param {string} strategy
-   * @returns {void}
    */
-  function authenticate(req, res, next, strategy) {
+  function authenticate(req: Request, res: Response, next: NextFunction, strategy: string): void {
     const { logger } = req;
     try {
       /**
        * Passport Auth Callback
-       * @param {Error} passportAuthenticateError
-       * @param {object} user
-       * @param {object} info
        */
-      const passportAuthCallback = (passportAuthenticateError, user, info) => {
+      const passportAuthCallback = (passportAuthenticateError: Error,
+        user: object, info: object) => {
         if (passportAuthenticateError) {
           logger.error({
             moduleName,
@@ -55,7 +51,7 @@ function auth(app) {
          * Login Callback
          * @param {Error} err2
          */
-        const loginCallback = (err2) => {
+        const loginCallback = (err2: Error) => {
           if (err2) {
             return logger.error({
               moduleName,
@@ -101,8 +97,8 @@ function auth(app) {
 
   /**
    * route for logging out
-   * @param {import("express").Request} req - Express request object
-   * @param {import("express").Response} res - Express response object
+   * @param {Request} req - Express request object
+   * @param {Response} res - Express response object
    */
   app.get('/logout', (req, res) => {
     req.logout();
