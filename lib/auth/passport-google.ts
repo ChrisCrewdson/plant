@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 // @ts-ignore - Types for @passport-next are not complete yet
 const passportGoogle = require('@passport-next/passport-google-oauth2');
@@ -18,10 +20,8 @@ const GoogleStrategy = passportGoogle.Strategy;
 
 /**
  * googlePassport
- * @param {object} passport
- * @param {Function} passport.use
  */
-function googlePassport(passport) {
+function googlePassport(passport: { use: Function }) {
   const { PLANT_GOOGLE_ID, PLANT_GOOGLE_SECRET } = process.env;
   if (!PLANT_GOOGLE_ID) {
     localLogger.error({
@@ -46,19 +46,14 @@ function googlePassport(passport) {
 
     /**
      * Google will send back the token and profile
-     * @param {any} token
-     * @param {any} refreshToken
-     * @param {GoogleOAuth} profile
-     * @param {Function} done
      */
-    (token, refreshToken, profile, done) => {
+    (token: any, refreshToken: any, profile: GoogleOAuth, done: Function) => {
       localLogger.trace({ msg: 'Google passport callback:', profile });
       // Setup for new user in case user is not in DB
       const createdDate = new Date();
       const email = _.get(profile, 'emails.0.value', '');
 
-      /** @type {UserDetails} */
-      const newUser = {
+      const newUser: UserDetails = {
         google: profile._json,
         name: profile.displayName,
         createdAt: createdDate,
@@ -71,13 +66,13 @@ function googlePassport(passport) {
 
       // find the user in the database based on their Google id
       mongoDb.findOrCreateUser(newUser, localLogger)
-        .then((user) => {
+        .then((user: any) => { // TODO: remove any
           if (!user) {
             throw new Error('No user returned');
           }
           return done(null, user);
         })
-        .catch((findOrCreateUserError) => {
+        .catch((findOrCreateUserError: Error) => {
           localLogger.error({ msg: 'findOrCreateUser()', err: findOrCreateUserError, newUser });
           return done(findOrCreateUserError);
         });
