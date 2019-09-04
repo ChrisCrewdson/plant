@@ -1,3 +1,8 @@
+import {
+  Application,
+} from 'express';
+import { Db } from 'mongodb';
+
 // @ts-ignore - Types for @passport-next are not complete yet
 const passport = require('@passport-next/passport');
 const connectMongo = require('connect-mongo');
@@ -12,11 +17,8 @@ const MongoStore = connectMongo(session);
 
 /**
  * Init
- * @param {import("mongodb").Db} db
- * @param {import("express").Application} app
- * @returns {void}
  */
-const setupSession = (db, app) => {
+const setupSession = (db: Db, app: Application): void => {
   // @ts-ignore - mongodb type library is referencing v3.x and the connect-mongo library has
   // a reference to v2.x of the mongodb library.
   const store = new MongoStore({ db });
@@ -40,12 +42,8 @@ const setupSession = (db, app) => {
 
 /**
  * Init
- * @param {import("express").Application} app
- * @param {import("mongodb").Db} db
- * @param {Logger} logger
- * @returns {void}
  */
-const init = (app, db, logger) => {
+const init = (app: Application, db: Db, logger: Logger): void => {
   setupSession(db, app);
 
   app.use(passport.initialize());
@@ -56,7 +54,7 @@ const init = (app, db, logger) => {
      * @param {BizUser} user
      * @param {Function} cb
      */
-    (user, cb) => {
+    (user: BizUser, cb: Function) => {
       cb(null, user && user._id);
     });
 
@@ -65,7 +63,7 @@ const init = (app, db, logger) => {
      * @param {string} id
      * @param {Function} cb
      */
-    async (id, cb) => {
+    async (id: string, cb: Function) => {
       try {
         const mongoDb = mongo();
         const user = await mongoDb.getUserById(id, logger);
