@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
 // @ts-ignore - Types for lalog are not complete yet
 const Logger = require('lalog');
@@ -31,10 +33,8 @@ const profileFields = [
 
 /**
  * fbPassport
- * @param {object} passport
- * @param {Function} passport.use
  */
-function fbPassport(passport) {
+function fbPassport(passport: { use: Function}) {
   const { PLANT_FB_ID, PLANT_FB_SECRET } = process.env;
 
   if (!PLANT_FB_ID) {
@@ -62,12 +62,8 @@ function fbPassport(passport) {
 
     /**
      * Facebook will send back the token and profile
-     * @param {any} token
-     * @param {any} refreshToken
-     * @param {FacebookOAuth} profile
-     * @param {Function} done
      */
-    (token, refreshToken, profile, done) => {
+    (token: any, refreshToken: any, profile: FacebookOAuth, done: Function) => {
       localLogger.trace({
         msg: 'Facebook passport callback:',
         profile,
@@ -76,7 +72,7 @@ function fbPassport(passport) {
       const createdDate = new Date();
       const email = _.get(profile, '_json.emails.0', '') || _.get(profile, '_json.email', '');
       /** @type {UserDetails} */
-      const newUser = {
+      const newUser: UserDetails = {
         facebook: profile._json,
         name: `${profile.name.givenName} ${profile.name.familyName}`,
         createdAt: createdDate,
@@ -89,13 +85,13 @@ function fbPassport(passport) {
 
       // find the user in the database based on their facebook id
       return mongoDb.findOrCreateUser(newUser, localLogger)
-        .then((user) => {
+        .then((user: any) => {
           if (!user) {
             throw new Error('No user returned');
           }
           return done(null, user);
         })
-        .catch((findOrCreateUserError) => {
+        .catch((findOrCreateUserError: Error) => {
           localLogger.error({ msg: 'findOrCreateUser()', err: findOrCreateUserError, newUser });
           return done(findOrCreateUserError);
         });
