@@ -1,3 +1,7 @@
+import { Store } from 'redux';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 // Purpose: Keep localStorage up-to-date with changes in the user object.
 
 // 1. Listen to state changes.
@@ -5,14 +9,12 @@
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
-/** @type {UiUser} */
-let user;
+let user: UiUser;
 
 /**
  * setup the subscription
- * @param {import('redux').Store} store
  */
-function setupSubscribe(store) {
+function setupSubscribe(store: Store) {
   let currentValue = user || seamless.from({});
 
   function handleChange() {

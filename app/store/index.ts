@@ -1,11 +1,12 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const { createStore, applyMiddleware } = require('redux');
-// @ts-ignore - static hasn't been defined on seamless types yet.
+
 const seamless = require('seamless-immutable').static;
 const reducers = require('../reducers'); // combineReducers already called on reducers in her)e
 const api = require('../middleware/api');
 const { setupSubscribe: userSubscribe } = require('./user');
 
-/** @type {any[]} */
 const middleware = [api];
 
 if (process.env.NODE_ENV !== 'production') {
