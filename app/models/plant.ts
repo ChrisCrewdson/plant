@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const cloneDeep = require('lodash/cloneDeep');
 const trim = require('lodash/trim');
 const validatejs = require('validate.js');
@@ -17,11 +19,7 @@ const utils = require('../libs/utils');
 // of strings containing the error message(s).
 // Make sure not to append the key name, this will be done automatically.
 
-/**
- * @param {string|number} value
- * @returns {number}
- */
-const floatParser = (value) => {
+const floatParser = (value: string | number): number => {
   if (typeof value === 'number') {
     return value;
   }
@@ -33,10 +31,8 @@ const floatParser = (value) => {
  * Transform:
  * 1. Lowercase elements of array
  * 2. Apply unique to array which might reduce length of array
- * @param {UiPlantsValue} attributes
- * @returns {UiPlantsValue}
  */
-function transform(attributes) {
+function transform(attributes: UiPlantsValue): UiPlantsValue {
   if (attributes.price === '') {
     // eslint-disable-next-line no-param-reassign
     delete attributes.price;
@@ -58,16 +54,16 @@ function transform(attributes) {
   return attributes;
 }
 
+interface ValidateOptions {
+  isNew: boolean;
+}
+
 /**
  * Don't need an _id if we're creating a document, db will do this.
  * Don't need a userId if we're in the client, this will get added on the server
  * to prevent tampering with the logged in user.
- * @param {UiPlantsValue} attributes
- * @param {object} options
- * @param {boolean} options.isNew
- * @returns {UiPlantsValue}
  */
-module.exports = (attributes, { isNew }) => {
+module.exports = (attributes: UiPlantsValue, { isNew }: ValidateOptions): UiPlantsValue => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     botanicalName: { length: { maximum: 100 } },
@@ -98,7 +94,7 @@ module.exports = (attributes, { isNew }) => {
   }
 
   /** @type {UiPlantsValue} */
-  const cleaned = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
+  const cleaned: UiPlantsValue = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
   const transformed = transform(cleaned);
   const errors = validatejs.validate(transformed, constraints);
   const flatErrors = utils.transformErrors(errors);

@@ -1,11 +1,18 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const cloneDeep = require('lodash/cloneDeep');
 const omit = require('lodash/omit');
 const isArray = require('lodash/isArray');
-const every = require('lodash/every');
 const validatejs = require('validate.js');
 const { makeMongoId } = require('../libs/utils');
 const constants = require('../libs/constants');
 const utils = require('../libs/utils');
+
+interface PlantIdsValidateOptions {
+  length: {
+    minimum: number;
+  };
+}
 
 /**
  * This validation rule is used for validating the plantIds on a note. A note can
@@ -16,13 +23,9 @@ const utils = require('../libs/utils');
  * 2. is array
  * 3. min length 1
  * 4. each item is uuid
- * @param {number} value
- * @param {object} options
- * @param {object} options.length
- * @param {number} options.length.minimum
- * @returns {string|null}
  */
-validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */) => {
+validatejs.validators.plantIdsValidate = (value: string[], options: PlantIdsValidateOptions):
+ string | null => {
   if (!value) {
     return 'is required';
   }
@@ -38,7 +41,7 @@ validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */
   }
 
   // Only mongoId values of x length
-  const validInner = every(value, (item) => constants.mongoIdRE.test(item));
+  const validInner = value.every((item) => constants.mongoIdRE.test(item));
 
   if (!validInner) {
     return 'must be MongoIds';
@@ -47,20 +50,14 @@ validatejs.validators.plantIdsValidate = (value, options /* , key, attributes */
   return null;
 };
 
-/**
- * @param {object} attributes
- * @returns
- */
-function transform(attributes) {
+function transform(attributes: object) {
   return attributes;
 }
 
 /**
  * Validate the parts of the images array
- * @param {UploadedNoteFile[]} value
- * @returns {string|null}
  */
-validatejs.validators.imagesValidate = (value) => {
+validatejs.validators.imagesValidate = (value: UploadedNoteFile[]): string | null => {
   if (!value) {
     // images is optional so return if not exist
     return null;
@@ -71,7 +68,7 @@ validatejs.validators.imagesValidate = (value) => {
   }
 
   // Only uuid values of x length
-  const validImageObject = every(value, (item) => item
+  const validImageObject = value.every((item) => item
       && constants.mongoIdRE.test(item.id)
       && typeof item.ext === 'string'
       && typeof item.originalname === 'string'
@@ -86,7 +83,7 @@ validatejs.validators.imagesValidate = (value) => {
   const allowedProps = ['id', 'ext', 'originalname', 'size', 'sizes'];
 
   let extraProps = {};
-  const validProps = every(value, (item) => {
+  const validProps = value.every((item) => {
     // Make sure no extra keys inserted
     extraProps = omit(item, allowedProps);
     return Object.keys(extraProps).length === 0;
@@ -100,9 +97,9 @@ ${Object.keys(extraProps).join()}`;
 
   // Check the sizes array if there is one
   const names = constants.imageSizeNames;
-  const validSizes = every(value, (item) => {
+  const validSizes = value.every((item) => {
     if (item.sizes && item.sizes.length) {
-      return every(item.sizes, (size) => names.indexOf(size.name) >= 0
+      return item.sizes.every((size) => names.indexOf(size.name) >= 0
           && typeof size.width === 'number');
     }
     return true;
@@ -115,11 +112,7 @@ ${Object.keys(extraProps).join()}`;
   return null;
 };
 
-/**
- * @param {number|string} value
- * @returns {number}
- */
-const intParser = (value) => {
+const intParser = (value: number | string): number => {
   if (typeof value === 'number') {
     return Math.round(value);
   }
@@ -130,10 +123,8 @@ const intParser = (value) => {
  * Don't need an _id if we're creating a document, db will do this.
  * Don't need a userId if we're in the client, this will get added on the server
  * to prevent tampering with the logged in user.
- * @param {UiInterimNote} atts
- * @returns {UiInterimNote}
  */
-module.exports = (atts) => {
+module.exports = (atts: UiInterimNote): UiInterimNote => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     date: { intDateValidate: { presence: true, name: 'Date' } },
@@ -143,11 +134,11 @@ module.exports = (atts) => {
     note: { length: { minimum: 0, maximum: 5000 }, presence: false },
   };
 
-  let attributes = cloneDeep(atts);
+  let attributes = cloneDeep(atts) as UiInterimNote;
   attributes._id = attributes._id || makeMongoId();
 
   if (isArray(attributes.images)) {
-    const images = attributes.images.map((image) => {
+    const images = (attributes.images || []).map((image) => {
       const sizes = (image.sizes || []).map(({ name, width }) => ({
         name,
         width: intParser(width),
@@ -168,5 +159,5 @@ module.exports = (atts) => {
   if (flatErrors) {
     throw flatErrors;
   }
-  return transformed;
+  return transformed as UiInterimNote; // TODO: Remove once conversion to TS complete
 };

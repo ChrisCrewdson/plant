@@ -8,6 +8,7 @@
     "cSpell.words": [
         "Dropzone",
         "Plaaant",
+        "YYYYMMDD",
         "camelcase",
         "gmail",
         "johnsmith",
@@ -17,6 +18,7 @@
         "polyfill",
         "sinensis",
         "upsert",
+        "validatejs",
         "validators"
     ],
     "typescript.tsdk": "node_modules/typescript/lib"
