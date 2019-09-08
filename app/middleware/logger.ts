@@ -1,10 +1,13 @@
+import {
+  Action,
+  Dispatch,
+  Store,
+} from 'redux';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 /* eslint-disable no-console */
-/**
- * @param {import('redux').Store} store
- * @returns {Function}
- */
-// @ts-ignore - TODO: How does this get typed?
-const logger = (store) => (next) => (action) => {
+const logger = (store: Store): Function => (next: Dispatch) => (action: Action) => {
   console.group(action.type);
   console.info('dispatching', action);
   const result = next(action);

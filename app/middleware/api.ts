@@ -1,15 +1,19 @@
 // This file is responsible for making the Ajax calls to
 // the server as part of the store's dispatch(action) call.
 
+import {
+  Action,
+  Dispatch,
+  Store,
+} from 'redux';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const { actionEnum, actionFunc } = require('../actions');
 const ajax = require('./ajax');
 
-/**
- * @param {import('redux').Store} store
- */
-function logoutRequest(store /* , action */) {
-  /** @type {AjaxOptions} */
-  const options = {
+function logoutRequest(store: Store /* , action */) {
+  const options: AjaxOptions = {
     url: '/api/logout',
     success: actionFunc.logoutSuccess,
     failure: actionFunc.logoutFailure,
@@ -18,21 +22,14 @@ function logoutRequest(store /* , action */) {
   ajax(store, options);
 }
 
-/**
- * @param {import('redux').Store} store
- * @param {any} action
- * @param {Function} next
- */
-function createPlant(store, action, next) {
-  /** @param {object} ajaxResult */
-  function success(ajaxResult) {
+function createPlant(store: Store, action: any, next: Function) {
+  function success(ajaxResult: object) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
     return actionFunc.createPlantSuccess(ajaxResult);
   }
 
-  /** @param {object} ajaxResult */
-  function failure(ajaxResult) {
+  function failure(ajaxResult: object) {
     store.dispatch(actionFunc.editPlantChange({
       errors: {
         general: ajaxResult.toString(),
@@ -41,8 +38,7 @@ function createPlant(store, action, next) {
     return actionFunc.createPlantFailure(ajaxResult);
   }
 
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     type: 'POST',
     url: '/api/plant',
     data: action.payload,
@@ -51,6 +47,11 @@ function createPlant(store, action, next) {
   };
   ajax(store, options);
   next(action);
+}
+
+interface SaveFilesRequestOptions {
+  failure: Function;
+  success: Function;
 }
 
 /**
@@ -63,19 +64,15 @@ function createPlant(store, action, next) {
  * size: 6674516
  * type: "image/jpeg"
  * webkitRelativePath:""
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- * @param {object} opts
- * @param {Function} next
  */
-function saveFilesRequest(store, action, opts, next) {
-  // eslint-disable-next-line prefer-destructuring
-  const payload = /** @type {UpsertNoteRequestPayload} */ (action.payload);
+function saveFilesRequest(store: Store, action: PlantRedux.PlantAction,
+  opts: SaveFilesRequestOptions, next: Function) {
+  const { payload } = action as { payload: UpsertNoteRequestPayload};
 
   const data = new FormData();
   /** @type {(string|Blob)[]} */
   // @ts-ignore - TODO: Come back and fix this
-  const files = payload && payload.files;
+  const files: (string | Blob)[] = payload && payload.files;
   const note = payload && payload.note;
   if (files && files.length) {
     files.forEach((file) => {
@@ -85,7 +82,7 @@ function saveFilesRequest(store, action, opts, next) {
   data.append('note', JSON.stringify(note));
 
   /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     contentType: 'multipart/form-data',
     data,
     failure: opts.failure,
@@ -104,24 +101,17 @@ function saveFilesRequest(store, action, opts, next) {
 // action.payload is an object with two properties
 // files: An optional array of files
 // note: The note being created
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- * @param {Function} next
- */
-function upsertNoteRequest(store, action, next) {
+function upsertNoteRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
   // eslint-disable-next-line prefer-destructuring
-  const payload = /** @type {UpsertNoteRequestPayload} */ (action.payload);
+  const payload: UpsertNoteRequestPayload = action.payload;
 
-  /** @param {object} ajaxResult */
-  function success(ajaxResult) {
+  function success(ajaxResult: object) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editNoteClose());
     return actionFunc.upsertNoteSuccess(ajaxResult);
   }
 
-  /** @param {object} ajaxResult */
-  function failure(ajaxResult) {
+  function failure(ajaxResult: object) {
     store.dispatch(actionFunc.editNoteChange({
       errors: {
         general: ajaxResult.toString(),
@@ -134,8 +124,7 @@ function upsertNoteRequest(store, action, next) {
   if (payload && payload.files && payload.files.length) {
     saveFilesRequest(store, action, opts, next);
   } else {
-    /** @type {AjaxOptions} */
-    const options = {
+    const options: AjaxOptions = {
       type: 'POST',
       url: '/api/note',
       data: payload && payload.note,
@@ -147,21 +136,14 @@ function upsertNoteRequest(store, action, next) {
   }
 }
 
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- * @param {Function} next
- */
-function updatePlant(store, action, next) {
-  /** @param {object} ajaxResult */
-  function success(ajaxResult) {
+function updatePlant(store: Store, action: PlantRedux.PlantAction, next: Function) {
+  function success(ajaxResult: object) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
     return actionFunc.updatePlantSuccess(ajaxResult);
   }
 
-  /** @param {object} ajaxResult */
-  function failure(ajaxResult) {
+  function failure(ajaxResult: object) {
     store.dispatch(actionFunc.editPlantChange({
       errors: {
         general: ajaxResult.toString(),
@@ -170,8 +152,7 @@ function updatePlant(store, action, next) {
     return actionFunc.updatePlantFailure(ajaxResult);
   }
 
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     type: 'PUT',
     url: '/api/plant',
     data: action.payload,
@@ -182,13 +163,8 @@ function updatePlant(store, action, next) {
   return next(action);
 }
 
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- * @param {Function} next
- */
-function deletePlantRequest(store, action, next) {
-  const { plantId } = /** @type {{ plantId: string }} */ (action.payload || {});
+function deletePlantRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
+  const { plantId } = action.payload || {};
   if (plantId) {
     const options = {
       type: 'DELETE',
@@ -201,14 +177,8 @@ function deletePlantRequest(store, action, next) {
   next(action);
 }
 
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- * @param {Function} next
- */
-function deleteNoteRequest(store, action, next) {
-  /** @type {AjaxOptions} */
-  const options = {
+function deleteNoteRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
+  const options: AjaxOptions = {
     type: 'DELETE',
     url: `/api/note/${action.payload}`,
     success: actionFunc.deleteNoteSuccess,
@@ -218,16 +188,11 @@ function deleteNoteRequest(store, action, next) {
   next(action);
 }
 
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- */
-function loadPlantRequest(store, action) {
+function loadPlantRequest(store: Store, action: PlantRedux.PlantAction) {
   const { _id } = /** @type {{ _id: string }} */ (action.payload || {});
 
   if (_id) {
-    /** @type {AjaxOptions} */
-    const options = {
+    const options: AjaxOptions = {
       url: `/api/plant/${_id}`,
       success: actionFunc.loadPlantSuccess,
       failure: actionFunc.loadPlantFailure,
@@ -238,15 +203,9 @@ function loadPlantRequest(store, action) {
 
 // Get all the plants a user has created
 // action.payload is a locationId
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- * @param {Function} next
- */
-function loadPlantsRequest(store, action, next) {
+function loadPlantsRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
   const locationId = action.payload;
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     url: `/api/plants/${locationId}`,
     success: actionFunc.loadPlantsSuccess,
     failure: actionFunc.loadPlantsFailure,
@@ -256,14 +215,9 @@ function loadPlantsRequest(store, action, next) {
 }
 
 // Get a specific user
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- */
-function loadUserRequest(store, action) {
+function loadUserRequest(store: Store, action: PlantRedux.PlantAction) {
   const userId = action.payload;
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     url: `/api/user/${userId}`,
     success: actionFunc.loadUserSuccess,
     failure: actionFunc.loadUserFailure,
@@ -274,12 +228,8 @@ function loadUserRequest(store, action) {
 // Load all the users.
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
-/**
- * @param {import('redux').Store} store
- */
-function loadUsersRequest(store) {
-  /** @type {AjaxOptions} */
-  const options = {
+function loadUsersRequest(store: Store) {
+  const options: AjaxOptions = {
     url: '/api/users',
     success: actionFunc.loadUsersSuccess,
     failure: actionFunc.loadUsersFailure,
@@ -290,12 +240,8 @@ function loadUsersRequest(store) {
 // Load all the locations.
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
-/**
- * @param {import('redux').Store} store
- */
-function loadLocationsRequest(store) {
-  /** @type {AjaxOptions} */
-  const options = {
+function loadLocationsRequest(store: Store) {
+  const options: AjaxOptions = {
     url: '/api/locations',
     success: actionFunc.loadLocationsSuccess,
     failure: actionFunc.loadLocationsFailure,
@@ -307,12 +253,8 @@ function loadLocationsRequest(store) {
 // action.payload is an object with one of 2 properties:
 // noteIds: an array of noteIds
 // plantIds: an array of plantIds
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction<LoadNotesRequestPayload>} action
- * @param {Function} next
- */
-function loadNotesRequest(store, action, next) {
+function loadNotesRequest(store: Store, action: PlantRedux.PlantAction<LoadNotesRequestPayload>,
+  next: Function) {
   const { plantIds, noteIds } = /** @type {LoadNotesRequestPayload} */ (action.payload || {});
 
   if (!noteIds && !plantIds) {
@@ -321,8 +263,7 @@ function loadNotesRequest(store, action, next) {
     return next(action);
   }
 
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     data: { noteIds, plantIds },
     failure: actionFunc.loadNotesFailure,
     success: actionFunc.loadNotesSuccess,
@@ -336,18 +277,13 @@ function loadNotesRequest(store, action, next) {
 
 // Get all the plants listed
 // action.payload is an array of plantIds
-/**
- * @param {import('redux').Store} store
- * @param {PlantRedux.PlantAction} action
- */
-function loadUnloadedPlantsRequest(store, action) {
+function loadUnloadedPlantsRequest(store: Store, action: PlantRedux.PlantAction) {
   if (!action.payload || !action.payload.length) {
     // eslint-disable-next-line no-console
     console.error('No plantIds on payload, action:', action);
   }
 
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     data: { plantIds: action.payload },
     failure: actionFunc.loadUnloadedPlantsFailure,
     success: actionFunc.loadUnloadedPlantsSuccess,
@@ -358,21 +294,22 @@ function loadUnloadedPlantsRequest(store, action) {
   ajax(store, options);
 }
 
+interface ModifyLocationRequestAction {
+  payload: {
+    locationId: string;
+    userId: string;
+    role: string;
+  };
+}
+
 /**
  * Entry point for inserting/updating/deleting a part of a location document.
- * @param {Object?} store
- * @param {object} action
- * @param {object} action.payload
- * @param {string} action.payload.locationId
- * @param {string} action.payload.userId
- * @param {string} action.payload.role
- * @param {Function} next
  */
-function modifyLocationRequest(store, action, next) {
+function modifyLocationRequest(store: object | null, action: ModifyLocationRequestAction,
+  next: Function) {
   const { payload: data } = action;
 
-  /** @type {AjaxOptions} */
-  const options = {
+  const options: AjaxOptions = {
     data,
     failure: actionFunc.modifyLocationFailure,
     success: actionFunc.modifyLocationSuccess,
@@ -384,10 +321,7 @@ function modifyLocationRequest(store, action, next) {
   return next(action);
 }
 
-/**
- * @type {Dictionary<Function>}
- */
-const apis = {
+const apis: Record<string, Function> = {
   [actionEnum.CREATE_PLANT_REQUEST]: createPlant,
   [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
   [actionEnum.DELETE_PLANT_REQUEST]: deletePlantRequest,
@@ -404,12 +338,7 @@ const apis = {
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
 };
 
-/**
- * @param {import('redux').Store} store
- * @returns {Function}
- */
-// @ts-ignore - TODO: How does this get typed?
-module.exports = (store) => (next) => (action) => {
+module.exports = (store: Store): Function => (next: Dispatch) => (action: Action) => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);
   }

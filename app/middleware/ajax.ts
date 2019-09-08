@@ -1,25 +1,24 @@
+import { Store } from 'redux';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const isFunction = require('lodash/isFunction');
 const $ = require('jquery');
 
 /**
  * Make the AJAX call to the server
- * @param {JQueryAjaxSettings} options
- * @returns
  */
-function jqueryAjax(options) {
+function jqueryAjax(options: JQueryAjaxSettings) {
   return $.ajax(options);
 }
 
-/** @type {Dictionary<boolean>} */
-const pending = {};
+const pending: Dictionary<boolean> = {};
 
 /**
  * Flags a URL as waiting on a response from the server to prevent an identical second
  * call being made to the server.
- * @param {JQueryAjaxSettings} options
- * @returns {boolean}
  */
-function callPending(options) {
+function callPending(options: JQueryAjaxSettings): boolean {
   if (!options.url) {
     return false;
   }
@@ -35,26 +34,19 @@ function callPending(options) {
 
 /**
  * Clears the pending flag once a response has been received back from the server.
- * @param {JQueryAjaxSettings} options
- * @returns {void}
  */
-function clearPending(options) {
+function clearPending(options: JQueryAjaxSettings): void {
   if (options.url) {
     pending[options.url] = false;
   }
 }
 
-/**
- * @param {import("redux").Store} store
- * @param {AjaxOptions} options
- */
-module.exports = (store, options) => {
+module.exports = (store: Store, options: AjaxOptions) => {
   if (!options.url || !isFunction(options.success) || !isFunction(options.failure)) {
     // console.error('Invalid options for ajax:', options);
   }
 
-  /** @type {JQueryAjaxSettings} */
-  const ajaxOptions = {
+  const ajaxOptions: JQueryAjaxSettings = {
     type: options.type || 'GET',
     beforeSend: options.beforeSend,
     url: options.url,
@@ -81,9 +73,8 @@ module.exports = (store, options) => {
 
   /**
    * Provides a way to show the user the progress on the upload
-   * @param {ProgressEvent} e
    */
-  function progressHandlingFunction(e) {
+  function progressHandlingFunction(e: ProgressEvent) {
     if (e.lengthComputable) {
       const uploadProgress = { value: e.loaded, max: e.total, note: options.note };
       if (options.progress) {
