@@ -20,9 +20,8 @@ function missingFeatures() {
 
 /**
  * Load polyfill scripts for missing features
- * @param {Function} done
  */
-function loadScript(done) {
+function loadScript(done: Function) {
   // eslint-disable-next-line prefer-template
   const cdn = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=' + missingFeatures().join();
   const js = document.createElement('script');
@@ -39,9 +38,8 @@ function loadScript(done) {
 
 /**
  * Load Polyfills for browser features that are missing
- * @param {(err?: Error) => void} done
  */
-module.exports = (done) => {
+module.exports = (done: (err?: Error) => void) => {
   if (browserSupportsAllFeatures()) {
     done();
   } else {
