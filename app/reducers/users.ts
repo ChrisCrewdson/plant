@@ -1,21 +1,20 @@
+import { AnyAction } from 'redux';
 
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 const { actionEnum } = require('../actions');
 
 /**
  * Called after users received back from server request
  * The action.payload are the users returned users from the server.
- * @param {UiUsers} state
- * @param {import('redux').AnyAction} action
- * @returns {UiUsers}
  */
-function loadUsersSuccess(state, action) {
-  const users = /** @type {UiUsersValue[]} */ (action.payload || []);
+function loadUsersSuccess(state: UiUsers, action: AnyAction): UiUsers {
+  const users: UiUsersValue[] = /** @type {UiUsersValue[]} */ (action.payload || []);
   const usersSet = users.reduce((acc, user) => {
     acc[user._id] = { ...user, locationIds: user.locationIds || [] };
     return acc;
-  }, /** @type {UiUsers} */ ({}));
+  }, {} as UiUsers);
 
   if (!Object.keys(usersSet).length) {
     return state;
@@ -27,11 +26,8 @@ function loadUsersSuccess(state, action) {
 
 /**
  * The action.payload is the returned user from the server.
- * @param {UiUsers} state
- * @param {import('redux').AnyAction} action
- * @returns {UiUsers}
  */
-function loadUserSuccess(state, action) {
+function loadUserSuccess(state: UiUsers, action: AnyAction): UiUsers {
   return loadUsersSuccess(state, {
     payload: [action.payload],
     type: action.type,
@@ -119,11 +115,8 @@ const reducers = {
 
 /**
  * The action.payload is the returned user from the server.
- * @param {UiUsers} state
- * @param {import('redux').AnyAction} action
- * @returns {UiUsers}
  */
-module.exports = (state = seamless.from({}), action) => {
+module.exports = (state: UiUsers = seamless.from({}), action: AnyAction): UiUsers => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

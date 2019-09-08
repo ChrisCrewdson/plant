@@ -1,7 +1,12 @@
-// @ts-ignore - static hasn't been defined on seamless types yet.
+import { AnyAction } from 'redux';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 const { initialState } = require('../store/user');
-const { actionEnum } = require('../actions');
+const { actionEnum: actionEnumIn } = require('../actions');
+
+const actionEnum = actionEnumIn as UiActionsEnum;
 
 function logoutRequest() {
   return seamless.from({
@@ -10,13 +15,7 @@ function logoutRequest() {
   });
 }
 
-/**
- * logoutSuccess
- * @param {UiUser} state
- * @param {import('redux').AnyAction} action
- * @returns {UiUser}
- */
-function logoutSuccess(state, action) {
+function logoutSuccess(state: UiUser, action: AnyAction): UiUser {
   return seamless.from({
     status: 'logout',
     isLoggedIn: false,
@@ -24,13 +23,7 @@ function logoutSuccess(state, action) {
   });
 }
 
-/**
- * logoutFailure
- * @param {UiUser} state
- * @param {import('redux').AnyAction} action
- * @returns {UiUser}
- */
-function logoutFailure(state, action) {
+function logoutFailure(state: UiUser, action: AnyAction): UiUser {
   return seamless.from({
     status: 'failed',
     isLoggedIn: false,
@@ -40,11 +33,9 @@ function logoutFailure(state, action) {
 
 /**
  * Load Location Success is called after a response from server.
- * @param {UiUser} state
- * @param {PlantRedux.LoadLocationsSuccessAction} action
- * @returns {UiUser}
  */
-function loadLocationsSuccess(state, action) {
+function loadLocationsSuccess(state: UiUser, action: PlantRedux.LoadLocationsSuccessAction):
+ UiUser {
   // const { payload: locations = [] } = action;
   const { payload: locations } = action;
   if (state.isLoggedIn && !state.activeLocationId) {
@@ -65,11 +56,8 @@ function loadLocationsSuccess(state, action) {
 
 /**
  * Change the active location id
- * @param {UiUser} state
- * @param {import('redux').AnyAction} action
- * @returns {UiUser}
  */
-function changeActiveLocationId(state, { payload }) {
+function changeActiveLocationId(state: UiUser, { payload }: AnyAction): UiUser {
   const { _id = '' } = payload || {};
   if (!_id) {
     return state; // should we remove activeLocationId?
@@ -87,11 +75,8 @@ const reducers = {
 
 /**
  * The user reducer
- * @param {UiUser} state
- * @param {PlantRedux.PlantAction} action
- * @returns {UiUser}
  */
-module.exports = (state, action) => {
+module.exports = (state: UiUser, action: PlantRedux.PlantAction): UiUser => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
