@@ -1,11 +1,4 @@
-require('jquery');
-require('bootstrap');
-// @ts-ignore - because this is a css file
-// eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
-require('bootstrap/dist/css/bootstrap.css');
-require('konva');
-// @ts-ignore - because this is a css file
-require('./stylesheets/main.css');
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const {
   BrowserRouter, Route, Redirect, Switch,
@@ -32,7 +25,6 @@ const Location = require('./components/location/Location');
 const Metrics = require('./components/location/metrics/Metrics');
 const Locations = require('./components/location/Locations');
 const Users = require('./components/user/Users');
-const poly = require('./poly');
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -46,7 +38,6 @@ const muiTheme = getMuiTheme({
 // /locations/**user-name**/_user_id - a list of locations managed or owned by user
 
 // TODO: Put a Not Found / No Match component in here.
-/* eslint-disable react/jsx-filename-extension */
 const routes = (
   <BrowserRouter>
     <Switch>
@@ -70,9 +61,8 @@ const routes = (
     </Switch>
   </BrowserRouter>
 );
-/* eslint-enable react/jsx-filename-extension */
 
-function render() {
+const renderMain = function render() {
   const content = document.getElementById('wrapper');
 
   // @ts-ignore - __SSR__ is something we add on the server
@@ -94,47 +84,8 @@ function render() {
       </MuiThemeProvider>
     ), content,
   );
-}
+};
 
-function main() {
-  render();
-}
-
-/**
- * Check if local storage needs updating or not based on version.
- * Previously there wasn't a version associated with localStorage so we default
- * a zero if the 'version' key is missing.
- */
-function updateLocalStorage() {
-  const VERSION_KEY = 'version';
-  const CURRENT_VERSION = '1';
-  const UNVERSIONED = '0';
-  const version = localStorage.getItem(VERSION_KEY) || UNVERSIONED;
-  switch (version) {
-    case UNVERSIONED:
-      // eslint-disable-next-line no-console
-      console.log(`Clearing localStorage version ${version}`);
-      localStorage.clear();
-      localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
-      break;
-    case CURRENT_VERSION:
-      // This is the current version - do nothing
-      break;
-    default:
-      // eslint-disable-next-line no-console
-      console.warn(`Unexpected version in localStorage ${version} - clearing storage`);
-      localStorage.clear();
-      localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
-      break;
-  }
-}
-
-// Polyfill any new browser features we need
-poly((err) => {
-  if (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-  }
-  updateLocalStorage();
-  main();
-});
+export {
+  renderMain,
+};
