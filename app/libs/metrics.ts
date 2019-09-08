@@ -1,4 +1,7 @@
 // A helper module for doing metric calculations
+import { Moment } from 'moment';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const utils = require('./utils');
 
@@ -8,10 +11,11 @@ const utils = require('./utils');
  * @param {MetricNote[]} acc - An array of render information for the list of notes
  * @param {UiNotesValue} note - the note being processed
  * @param {string} noteId - current note's id
- * @param {import('moment').Moment|undefined} lastNoteDate - the date of the previous note
- * @returns {import('moment').Moment} - The date from the note object as a Moment object
+ * @param {Moment|undefined} lastNoteDate - the date of the previous note
+ * @returns {Moment} - The date from the note object as a Moment object
  */
-function since(acc, note, noteId, lastNoteDate) {
+function since(acc: MetricNote[], note: UiNotesValue, noteId: string,
+  lastNoteDate: Moment | undefined): Moment {
   const { date } = note;
   const currentNoteDate = utils.intToMoment(date);
   const sinceLast = lastNoteDate
@@ -33,7 +37,7 @@ function since(acc, note, noteId, lastNoteDate) {
  *   'height' or 'girth' prop. Or if there wasn't a previous object with this
  *   prop then null.
  */
-function getChange(metrics, prop) {
+function getChange(metrics: MetricItem[], prop: MetricItemMetricTypes): MetricChangePair | null {
   let index = metrics.length - 1;
   if (index < 1) {
     return null;
@@ -63,7 +67,7 @@ function getChange(metrics, prop) {
  * @param {number} places - number of places to round it to
  * @returns {number} - a rounded number
  */
-function round(number, places) {
+function round(number: number, places: number): number {
   // eslint-disable-next-line no-restricted-properties
   const pow = Math.pow(10, places);
   return Math.round(number * pow) / pow;
@@ -74,7 +78,7 @@ function round(number, places) {
  * @param {MetricItemMetricTypes} prop
  * @returns {string}
  */
-function crunchChangeNumbers(metric, prop) {
+function crunchChangeNumbers(metric: MetricChangePair, prop: MetricItemMetricTypes): string {
   const { last, prev } = metric;
   const lastValue = last[prop];
   const prevValue = prev[prop];
@@ -86,20 +90,14 @@ function crunchChangeNumbers(metric, prop) {
   return `The ${prop} has changed by ${valueDelta} inches over the last ${dateDelta} days.`;
 }
 
-/**
- * @param {MetricNote[]} acc
- * @param {UiNotesValue} note
- * @param {string} noteId
- * @param {MetricItem[]} metrics
- */
-function calculateMetrics(acc, note, noteId, metrics) {
+function calculateMetrics(acc: MetricNote[], note: UiNotesValue, noteId: string,
+  metrics: MetricItem[]) {
   const { metrics: noteMetrics } = note;
   if (noteMetrics) {
     const { height, girth } = noteMetrics;
     if (height || girth) {
       const date = utils.intToMoment(note.date);
-      /** @type {MetricItem} */
-      const metric = { date };
+      const metric: MetricItem = { date };
       if (height) {
         metric.height = height;
       }
@@ -128,23 +126,15 @@ function calculateMetrics(acc, note, noteId, metrics) {
 }
 
 /**
- * @param {string[]} sortedNoteIds - an array of noteIds sorted by date
- * @param {UiNotes} notes - An Immutable map of notes
- * @returns {MetricNote[]} - A collection of objects that can be rendered on
- *   a Plant's page
+ * @param sortedNoteIds - an array of noteIds sorted by date
+ * @param notes - An Immutable map of notes
+ * @returns - A collection of objects that can be rendered on a Plant's page
  */
-function notesToMetricNotes(sortedNoteIds, notes) {
-  /** @type {import('moment').Moment} */
-  let lastNoteDate;
-  /** @type {MetricItem[]} */
-  const metrics = [];
+function notesToMetricNotes(sortedNoteIds: string[], notes: UiNotes): MetricNote[] {
+  let lastNoteDate: Moment;
+  const metrics: MetricItem[] = [];
 
-  /**
-   * @param {MetricNote[]} acc
-   * @param {string} noteId
-   * @returns {MetricNote[]}
-   */
-  const metricReducer = (acc, noteId) => {
+  const metricReducer = (acc: MetricNote[], noteId: string): MetricNote[] => {
     const note = notes[noteId];
     if (note) {
       lastNoteDate = since(acc, note, noteId, lastNoteDate);

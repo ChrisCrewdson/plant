@@ -1,13 +1,12 @@
 // A file for constants used on both the client and server
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-/** @type {ImageSizeName[]} */
-const imageSizeNames = ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'];
+const imageSizeNames: ImageSizeName[] = ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'];
 
 // Any user that is a member of a location should have one of these
 // roles for that location. The roles are, from left to right, most
 // permissive to least permissive.
-/** @type {Role[]} */
-const roles = ['owner', 'manager', 'member'];
+const roles: Role[] = ['owner', 'manager', 'member'];
 
 module.exports = {
   uuidRE: /^[0-9a-f]{32}$/i,

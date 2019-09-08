@@ -1,5 +1,6 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const getIn = require('lodash/get');
-// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const constants = require('./constants');
 
@@ -7,11 +8,10 @@ const { gisMultiplier } = constants;
 
 /**
  * Convert Geo long/lat values to canvas x/y pixels
- * @param {UiPlants} immutablePlants - keyed off plantId
- * @param {number} width - the width of the canvas in pixels?
- * @returns {UiPlantLocationCanvas}
+ * @param immutablePlants - keyed off plantId
+ * @param width - the width of the canvas in pixels?
  */
-function scaleToCanvas(immutablePlants, width) {
+function scaleToCanvas(immutablePlants: UiPlants, width: number): UiPlantLocationCanvas {
   const plantIds = Object.keys(immutablePlants);
 
   if (!plantIds.length) {
@@ -81,7 +81,7 @@ function scaleToCanvas(immutablePlants, width) {
       };
     }
     return acc;
-  }, /** @type {Dictionary<UiPlantLocation>} */ ({}));
+  }, {} as Dictionary<UiPlantLocation>);
   return seamless.from({
     plants,
     canvasHeight,
