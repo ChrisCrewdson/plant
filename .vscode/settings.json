@@ -9,6 +9,7 @@
         "Dropzone",
         "Plaaant",
         "YYYYMMDD",
+        "bson",
         "camelcase",
         "gmail",
         "johnsmith",
@@ -17,6 +18,7 @@
         "originalname",
         "polyfill",
         "sinensis",
+        "slugify",
         "upsert",
         "validatejs",
         "validators"

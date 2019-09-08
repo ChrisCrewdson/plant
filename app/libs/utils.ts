@@ -1,85 +1,73 @@
+import { ObjectID } from 'bson';
+import { Moment } from 'moment';
+import isDate from 'lodash/isDate';
+import isNumber from 'lodash/isNumber';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const slug = require('slugify');
-const isDate = require('lodash/isDate');
-const isNumber = require('lodash/isNumber');
 const moment = require('moment');
-// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 
-const bson = require('bson');
 const constants = require('./constants');
 
 const { gisMultiplier } = constants;
-const { ObjectID } = bson;
 
 function makeMongoId() {
   return new ObjectID().toString();
 }
 
-/**
- * @returns {import('mongodb').ObjectID}
- */
-function makeMongoIdObject() {
+function makeMongoIdObject(): ObjectID {
   return new ObjectID();
 }
 
 /**
  * Make a slug from text
- * @param {string} text
- * @returns {string}
  */
-function makeSlug(text) {
+function makeSlug(text: string): string {
   if (!text) {
     // console.warn('text is falsy in makeSlug:', text);
     return '';
   }
 
   const lower = text.toString().toLowerCase();
-  // @ts-ignore - looks like the type definition in this module is messed up
+
   return slug(lower.replace(/[/()]/g, ' '));
+}
+
+interface MakeUrlOptions {
+  title: string;
+  _id: string;
 }
 
 /**
  * Make a url with a trailing id
- * @param {string} first - first part of path
- * @param {object} options
- * @param {string} options.title
- * @param {string} options._id
- * @returns {string}
  */
-function makeUrl(first, { title, _id }) {
+function makeUrl(first: string, { title, _id }: MakeUrlOptions): string {
   return `/${first}/${makeSlug(title)}/${_id}`;
 }
 
 /**
  * Make a /location/location-name-slug/id url from location object
- * @param {object} location - an Object
- * @param {string} location.title
- * @param {string} location._id
- * @returns {string} - a url
  */
-function makeLocationUrl(location) {
+function makeLocationUrl(location: MakeUrlOptions): string {
   return makeUrl('location', location);
 }
 
 /**
- * Make a /location/location-name-slug/id url from location object
- * @param {object} location - an Object
- * @param {string} location.title
- * @param {string} location._id
- * @returns {string} - a url
+ * Make a /layout/layout-name-slug/id url from layout object
  */
-function makeLayoutUrl(location) {
-  return makeUrl('layout', location);
+function makeLayoutUrl(layout: MakeUrlOptions): string {
+  return makeUrl('layout', layout);
 }
 
 /**
  * Convert a date like object to an Integer
- * @param {import('moment').Moment|Date|string|number|undefined} date
- * @returns {number} - a date in the form YYYYMMDD
+ * @returns - a date in the form YYYYMMDD
  */
-function dateToInt(date) {
+function dateToInt(date: Moment | Date | string | number | undefined): number {
   if (moment.isMoment(date)) {
-    return dateToInt(date.toDate());
+    return dateToInt((date as Moment).toDate());
   } if (isDate(date)) {
     return (date.getFullYear() * 10000)
       + ((date.getMonth() + 1) * 100)
@@ -95,10 +83,8 @@ function dateToInt(date) {
 
 /**
  * Convert a number to a Date
- * @param {number} date
- * @returns {Date}
  */
-function intToDate(date) {
+function intToDate(date: number): Date {
   const year = Math.round(date / 10000);
   const month = Math.round((date - (year * 10000)) / 100);
   const day = Math.round((date - ((year * 10000) + (month * 100))));
@@ -107,20 +93,25 @@ function intToDate(date) {
 
 /**
  * Convert number to a Moment object
- * @param {number} date
- * @returns {import('moment').Moment}
  */
-function intToMoment(date) {
+function intToMoment(date: number): Moment {
   return moment(intToDate(date));
 }
 
 /**
  * Convert number date to string date
- * @param {number} date
- * @returns {string}
  */
-function intToString(date) {
+function intToString(date: number): string {
   return intToMoment(date).format('MM/DD/YYYY');
+}
+
+interface PlantFromBodyPayload extends
+  Omit<UiPlantsValue, 'plantedDate' | 'purchasedDate' | 'terminatedDate' | 'isTerminated'> {
+  plantedDate: string;
+  purchasedDate: string;
+  terminatedDate: string;
+  isTerminated: string;
+  [x: string]: any;
 }
 
 /**
@@ -128,32 +119,34 @@ function intToString(date) {
  * @param {object} body - POST/PUT body
  * @returns {object} - body with relevant fields converted to correct data type
  */
-function plantFromBody(body) {
+function plantFromBody(body: PlantFromBodyPayload): UiPlantsValue {
+  // TODO: Make UiPlantsValue Readonly<>
+  const returnBody = body as unknown as UiPlantsValue;
   const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
   dateFields.forEach((dateField) => {
     if (body[dateField]) {
-      // eslint-disable-next-line no-param-reassign
-      body[dateField] = parseInt(body[dateField], 10);
+      // @ts-ignore - TODO Fix this
+      returnBody[dateField] = parseInt(body[dateField], 10);
     }
   });
-  if (typeof body.isTerminated === 'string') {
-    // eslint-disable-next-line no-param-reassign
-    body.isTerminated = body.isTerminated === 'true';
+  if (typeof returnBody.isTerminated === 'string') {
+    returnBody.isTerminated = returnBody.isTerminated === 'true';
   }
-  return body;
+  return returnBody as UiPlantsValue;
 }
 
 /**
  * Filters the plantIds array based on filter
- * @param {string[]} plantIds - original plantIds to filter
- * @param {object} plants - all the plants available to sort
- * @param {string=} filter - optional text to filter title of plant
- * @returns {array} - an array of filtered plantIds
+ * @param plantIds - original plantIds to filter
+ * @param plants - all the plants available to sort
+ * @param filter - optional text to filter title of plant
+ * @returns - an array of filtered plantIds
  */
-function filterPlants(plantIds, plants, filter) {
+function filterPlants(plantIds: string[], plants: object, filter: string | undefined): Array<any> {
   const lowerFilter = (filter || '').toLowerCase();
   return lowerFilter
     ? plantIds.filter((plantId) => {
+      // @ts-ignore - TODO Fix this
       const plant = plants[plantId] || {};
       const { title = '', botanicalName = '' } = plant;
       const searchText = `${title.toLowerCase()} ${botanicalName.toLowerCase()}`;
@@ -165,12 +158,12 @@ function filterPlants(plantIds, plants, filter) {
 /**
  * Checks to see if an array of strings is already sorted by the
  * prop provided.
- * @param {string} prop - the property in the object to sort by
- * @param {string[]} itemIds - an array of Ids
- * @param {object} items - a object that has ids as props
- * @returns {boolean} - true if already sorted otherwise false
+ * @param prop - the property in the object to sort by
+ * @param itemIds - an array of Ids
+ * @param items - a object that has ids as props
+ * @returns - true if already sorted otherwise false
  */
-function alreadySorted(prop, itemIds, items) {
+function alreadySorted(prop: string, itemIds: string[], items: Dictionary<any>): boolean {
   return itemIds.every((itemId, index) => {
     if (index === 0) {
       return true;
@@ -192,12 +185,12 @@ function alreadySorted(prop, itemIds, items) {
 
 /**
  * Sort the itemIds based on the value of the prop parameter.
- * @param {string} prop - the name of the property from the items object that's being sorted
- * @param {string[]} itemIds - array of MongoId strings
- * @param {object} items - an object with MongoIds as keys. The values are objects.
- * @returns {array} - an immutable array of sorted itemIds
+ * @param prop - the name of the property from the items object that's being sorted
+ * @param itemIds - array of MongoId strings
+ * @param items - an object with MongoIds as keys. The values are objects.
+ * @returns - an immutable array of sorted itemIds
  */
-function sortItems(prop, itemIds, items) {
+function sortItems(prop: string, itemIds: string[], items: Dictionary<any>): Array<any> {
   // TODO: Memoize this method.
   if (!itemIds || !itemIds.length) {
     return itemIds || [];
@@ -207,12 +200,7 @@ function sortItems(prop, itemIds, items) {
     return itemIds;
   }
 
-  /**
-   * Sort method
-   * @param {string} a
-   * @param {string} b
-   */
-  const sorter = (a, b) => {
+  const sorter = (a: string, b: string) => {
     const itemA = items[a];
     const itemB = items[b];
     if (itemA && itemB) {
@@ -238,34 +226,34 @@ function sortItems(prop, itemIds, items) {
 
 /**
  * Sort the noteIds based on the date property.
- * @param {string[]} noteIds - array of MongoId strings
- * @param {object} notes - an object with MongoIds as keys. The values are note objects.
- * @returns {string[]} - an immutable array of sorted noteIds
+ * @param noteIds - array of MongoId strings
+ * @param notes - an object with MongoIds as keys. The values are note objects.
+ * @returns - an immutable array of sorted noteIds
  */
-function sortNotes(noteIds, notes) {
+function sortNotes(noteIds: string[], notes: Dictionary<any>): string[] {
   // TODO: Memoize this method
   return sortItems('date', noteIds, notes);
 }
 
 /**
  * Sorts the plantIds based on the plant's title
- * @param {string[]} plantIds - original plantIds to filter
- * @param {object} plants - all the plants available to sort
- * @returns {string[]} - an immutable array of sorted plantIds
+ * @param plantIds - original plantIds to filter
+ * @param plants - all the plants available to sort
+ * @returns - an immutable array of sorted plantIds
  */
-function sortPlants(plantIds, plants) {
+function sortPlants(plantIds: string[], plants: Dictionary<any>): string[] {
   // TODO: Memoize this method
   return sortItems('title', plantIds, plants);
 }
 
 /**
  * Filters the plantIds array and sorts based on the plant's title
- * @param {string[]} plantIds - original plantIds to filter
- * @param {object} plants - all the plants available to sort
- * @param {string} filter - optional text to filter title of plant
- * @returns {string[]} - an array of sorted and filtered plantIds
+ * @param plantIds - original plantIds to filter
+ * @param plants - all the plants available to sort
+ * @param filter - optional text to filter title of plant
+ * @returns - an array of sorted and filtered plantIds
  */
-function filterSortPlants(plantIds, plants, filter) {
+function filterSortPlants(plantIds: string[], plants: Dictionary<any>, filter: string): string[] {
   const filteredPlantIds = filterPlants(plantIds, plants, filter);
 
   return sortPlants(filteredPlantIds, plants);
@@ -273,10 +261,10 @@ function filterSortPlants(plantIds, plants, filter) {
 
 /**
  * Plant stats
- * @param {string[]} plantIds
- * @param {object} plants
+ * @param plantIds
+ * @param plants
  */
-function plantStats(plantIds, plants) {
+function plantStats(plantIds: string[], plants: Dictionary<any>) {
   return {
     total: plantIds.length,
     alive: plantIds.reduce((acc, plantId) => {
@@ -288,19 +276,15 @@ function plantStats(plantIds, plants) {
 
 /**
  * The values of the errors object are arrays. Take the first item out of each array.
- * @param {Dictionary<string[]>=} errors - values are arrays
- * @returns {Dictionary<string>|undefined} - first element of value for each key
+ * @param errors - values are arrays
+ * @returns - first element of value for each key
  */
-function transformErrors(errors) {
+function transformErrors(errors: Dictionary<string[]> | undefined): Dictionary<string> | undefined {
   if (!errors) {
-    return errors;
+    return errors as undefined;
   }
   return Object.keys(errors).reduce(
-    /**
-     * @param {Dictionary<string>} acc
-     * @param {string} key
-     */
-    (acc, key) => {
+    (acc: Dictionary<string>, key: string) => {
       // Assign first element of errors[key] (which is an array) to acc[key]
       [acc[key]] = errors[key];
       return acc;
@@ -309,25 +293,21 @@ function transformErrors(errors) {
 
 /**
  * Tests to see if JS runtime (window) supports Geo Location
- * @returns {boolean}
  */
-function hasGeo() {
+function hasGeo(): boolean {
   return !!(window && window.navigator && window.navigator.geolocation);
 }
 
 /**
  * Gets the current geo location
- * @param {PositionOptions} optionsParam
- * @param {GeoCallback} cb
- * @returns {void}
  */
-function getGeo(optionsParam, cb) {
+function getGeo(optionsParam: PositionOptions, cb: GeoCallback): void {
   if (!hasGeo()) {
     return cb(new Error('This device does not have geolocation available'));
   }
 
   /** @type {PositionOptions} */
-  const options = {
+  const options: PositionOptions = {
     enableHighAccuracy: true,
     timeout: 30000, // 30 seconds
     ...optionsParam,
@@ -338,7 +318,7 @@ function getGeo(optionsParam, cb) {
     // { type: "Point", coordinates: [ 40, 5 ] }
     // position: {coords: {latitude: 11.1, longitude: 22.2}}
       /** @type {Geo} */
-      const geoJson = {
+      const geoJson: Geo = {
         type: 'Point',
         coordinates: [
           position.coords.longitude,
@@ -355,21 +335,17 @@ function getGeo(optionsParam, cb) {
 /**
  * Because math in JS is not precise we need to use integers
  * to subtract 2 number for GIS rebasing
- * @param {number} left - the left number in the operation
- * @param {number} right - the right number in the operation
- * @returns {number} - left - right
+ * @param left - the left number in the operation
+ * @param right - the right number in the operation
+ * @returns - left - right
  */
-function subtractGis(left, right) {
+function subtractGis(left: number, right: number): number {
   // 7 decimal places in long/lat will get us down to 11mm which
   // is good for surveying which is what we're basically doing here
   return Math.round((left * gisMultiplier) - (right * gisMultiplier)) / gisMultiplier;
 }
 
-/**
- * @param {BizPlant} plant
- * @returns {number[]|boolean}
- */
-const getLongLat = (plant) => {
+const getLongLat = (plant: BizPlant): number[] | boolean => {
   const long = plant.loc && plant.loc.coordinates && plant.loc.coordinates[0];
   const lat = plant.loc && plant.loc.coordinates && plant.loc.coordinates[1];
   if (isNumber(long) && isNumber(lat)) {
@@ -380,10 +356,10 @@ const getLongLat = (plant) => {
 
 /**
  * Rebase the long and lat of the plant locations
- * @param {BizPlant[]} plants - an array of plants with just the _id and loc fields
- * @returns {BizPlant[]} - same array of plants with the locations rebased to 0,0
+ * @param plants - an array of plants with just the _id and loc fields
+ * @returns - same array of plants with the locations rebased to 0,0
  */
-function rebaseLocations(plants) {
+function rebaseLocations(plants: BizPlant[]): BizPlant[] {
   if (!plants || !plants.length) {
     return plants;
   }
@@ -420,8 +396,7 @@ function rebaseLocations(plants) {
   });
 }
 
-/** @type {MetaMetric[]} */
-const metaMetricsRaw = [{
+const metaMetricsRaw: MetaMetric[] = [{
   key: 'height',
   label: 'Height (inches only)', // For InputCombo
   placeholder: 'Enter height of plant', // Input hint
@@ -478,15 +453,12 @@ const metaMetricsRaw = [{
   type: 'toggle',
 }];
 
-/** @type {MetaMetric[]} */
-const metaMetrics = seamless.from(metaMetricsRaw);
+const metaMetrics: MetaMetric[] = seamless.from(metaMetricsRaw);
 
 /**
  * Converts the body from a POST (Upsert) operation from a client into a BizNote
- * @param {any} body
- * @returns {BizNote}
  */
-function noteFromBody(body) {
+function noteFromBody(body: any): BizNote {
   // eslint-disable-next-line no-param-reassign
   body.date = parseInt(body.date, 10);
 
@@ -550,32 +522,32 @@ function noteFromBody(body) {
 
 /**
  * Given a key returns the metaMetric
- * @param {string} key - the key (metric e.g. 'height' or 'blossomStart')
- * @returns {MetaMetric|undefined} - the metaMetric for that key
+ * @param key - the key (metric e.g. 'height' or 'blossomStart')
+ * @returns - the metaMetric for that key
  */
-function metaMetricsGetByKey(key) {
+function metaMetricsGetByKey(key: string): MetaMetric | undefined {
   return metaMetrics.find((value) => value.key === key);
 }
 
 /**
  * Determines if unfinished features should be shown. i.e. Feature Flag
- * @param {object} user - a user object - possibly falsy
- * @return {boolean} - true to show flag and false otherwise
+ * @param user - a user object - possibly falsy
+ * @return - true to show flag and false otherwise
  */
-function showFeature(user) {
+function showFeature(user: { _id: string }): boolean {
   const validUserIds = [
     '57b4e90d9f0e4e114b44bcf8', // Guy
   ];
 
-  return !!(user && user._id && validUserIds.indexOf(user._id) > -1);
+  return !!(user && user._id && validUserIds.includes(user._id));
 }
 
 /**
  * Compares two strings in constant time to prevent a timing attack.
- * @param {string=} userSuppliedValue - the value supplied by the user
- * @param {string} internalValue - internal value we compare against
+ * @param userSuppliedValue - the value supplied by the user
+ * @param internalValue - internal value we compare against
  */
-function constantEquals(userSuppliedValue, internalValue) {
+function constantEquals(userSuppliedValue: string | undefined, internalValue: string) {
   if (typeof userSuppliedValue !== 'string' || typeof internalValue !== 'string') {
     return false;
   }
