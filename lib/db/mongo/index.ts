@@ -1,5 +1,8 @@
+import { MongoClient, ObjectID, Db } from 'mongodb';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const _ = require('lodash');
-const mongodb = require('mongodb');
 const { produce } = require('immer');
 
 const constants = require('../../../app/libs/constants');
@@ -15,13 +18,11 @@ const dbHelper = require('./helper');
 
 const moduleName = 'lib/db/mongo/index';
 
-const { ObjectID, MongoClient } = mongodb;
-
 const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${process.env.PLANT_DB_NAME || 'plant'}`;
 
 // This stores a cache of the user's location
 /** @type {LocationLocCache} */
-const locationLocCache = {};
+const locationLocCache: LocationLocCache = {};
 
 /**
  * Given a collection of users and locations return a collection of users
@@ -32,20 +33,26 @@ const locationLocCache = {};
  * @returns {ReadonlyArray<Readonly<BizUser>>} an array of users,
  * each now with a locationIds array of strings
  */
-function getUsersWithLocations(users, locations) {
+function getUsersWithLocations(users: ReadonlyArray<Readonly<BizUser>>,
+  locations: ReadonlyArray<Readonly<BizLocation>>): ReadonlyArray<Readonly<BizUser>> {
   return (users || []).map((user) => {
     const locationIds = locations.reduce((acc, location) => {
       if (location.members[user._id]) {
         acc.push((location._id || '').toString());
       }
       return acc;
-    }, /** @type {string[]} */ ([]));
+    }, [] as string[]);
 
     return {
       ...user,
       locationIds,
     };
   });
+}
+
+interface NoteSplit {
+  singlePlantNotes: ObjectID[];
+  multiplePlantNotes: DbNote[];
 }
 
 /**
@@ -73,11 +80,21 @@ function getUsersWithLocations(users, locations) {
  *  _id, userId, plantIds[]
  */
 class MongoDb {
+  connection: string;
+
+  // @ts-ignore - Property has no initializer. Not definitely assigned in the constructor.ts(2564)
+  client: MongoClient;
+
+  // @ts-ignore - Property has no initializer. Not definitely assigned in the constructor.ts(2564)
+  db: Db;
+  // static async convertPlantDataForRead: (plant: DbPlant | Array<DbPlant>,
+  //   loggedInUserId: string | undefined | null, logger: Logger) =>
+  //   Promise<BizPlant | Array<BizPlant>>;
+
   /**
    * MongoDB Constructor
-   * @param {String=} connection
    */
-  constructor(connection) {
+  constructor(connection: string | undefined) {
     this.connection = connection || mongoConnection;
   }
 
@@ -85,15 +102,14 @@ class MongoDb {
    * Returns the string used to make the DB connection
    * @returns {string}
    */
-  getDbConnection() {
+  getDbConnection(): string {
     return this.connection;
   }
 
   /**
    * Returns the MongoDb client instance
-   * @returns {import('mongodb').MongoClient|undefined}
    */
-  getDbClient() {
+  getDbClient(): MongoClient | undefined {
     return this.client;
   }
 
@@ -101,9 +117,9 @@ class MongoDb {
    * Get the DB connection to use for a CRUD operation.
    * If it doesn't exist then create it.
    * @param {Logger} logger
-   * @return {Promise<import('mongodb').Db>}
+   * @return {Promise<Db>}
    */
-  async GetDb(logger) {
+  async GetDb(logger: Logger): Promise<Db> {
     try {
       if (!this.db) {
         const { connection } = this;
@@ -145,7 +161,7 @@ class MongoDb {
    * @param {Logger} logger
    * @returns {Promise<void>}
    */
-  async _close(logger) {
+  async _close(logger: Logger): Promise<void> {
     logger.trace({ moduleName, msg: 'Closing DB Connection.' });
     try {
       if (this.client) {
@@ -168,7 +184,7 @@ class MongoDb {
    * @param {Logger} logger - logger
    * @return {Promise<Readonly<BizUser>>}
    */
-  async findOrCreateUser(userDetails, logger) {
+  async findOrCreateUser(userDetails: UserDetails, logger: Logger): Promise<Readonly<BizUser>> {
     try {
       if (!_.get(userDetails, 'facebook.id') && !_.get(userDetails, 'google.id')) {
         throw new Error(`No facebook.id or google.id:\n${JSON.stringify(userDetails, null, 2)}`);
@@ -180,7 +196,7 @@ class MongoDb {
 
       // 2. Set the query to find the user
       /** @type {QueryBySocialMedia|undefined} */
-      let queryBySocialMedia;
+      let queryBySocialMedia: QueryBySocialMedia | undefined;
       if (facebook) {
         queryBySocialMedia = {
           'facebook.id': facebook.id,
@@ -206,7 +222,7 @@ class MongoDb {
         /**
          * @type {BizUser}
          */
-        const bizUser = user && user.length > 0 && dbHelper.convertIdToString(user[0]);
+        const bizUser: BizUser = user && user.length > 0 && dbHelper.convertIdToString(user[0]);
         return bizUser;
       };
 
@@ -259,10 +275,7 @@ class MongoDb {
       const dbUser = await Create.createUser(db, userDetails);
       const newUser = MongoDb.dbUserToBizUser(dbUser);
 
-      /**
-       * @type {BizLocation}
-       */
-      const location = {
+      const location: BizLocation = {
         createdBy: newUser._id,
         members: { [newUser._id]: 'owner' },
         stations: {},
@@ -271,7 +284,7 @@ class MongoDb {
       await this.createLocation(location, logger);
       const locations = await this.getLocationsByUserId(newUser._id, {}, logger);
 
-      const userWithLocations = produce(newUser, (draft) => {
+      const userWithLocations = produce(newUser, (draft: BizUser) => {
         draft.locationIds = locations.map((loc) => loc._id || '');
       });
 
@@ -283,16 +296,14 @@ class MongoDb {
   }
 
   /**
-   * @param {Readonly<Partial<DbUser>>} dbUser
-   * @returns {Readonly<BizUser>}
    * @memberof MongoDb
    */
-  static dbUserToBizUser(dbUser) {
+  static dbUserToBizUser(dbUser: Readonly<Partial<DbUser>>): Readonly<BizUser> {
     return produce(dbUser,
       /**
         * @param {BizUser} draft
         */
-      (draft) => {
+      (draft: BizUser) => {
         if (draft._id) {
           draft._id = draft._id.toString();
         }
@@ -301,16 +312,14 @@ class MongoDb {
   }
 
   /**
-   * @param {Readonly<DbUser>[]} dbUsers
-   * @returns {ReadonlyArray<Readonly<BizUser>>}
    * @memberof MongoDb
    */
-  static dbUsersToBizUsers(dbUsers) {
+  static dbUsersToBizUsers(dbUsers: Readonly<DbUser>[]): ReadonlyArray<Readonly<BizUser>> {
     return produce(dbUsers,
       /**
         * @param {BizUser[]} draft
         */
-      (draft) => {
+      (draft: BizUser[]) => {
         draft.forEach((bizUser) => {
           bizUser._id = bizUser._id.toString();
         });
@@ -320,11 +329,8 @@ class MongoDb {
 
   /**
    * User R: Read user
-   * @param {object} query
-   * @param {Logger} logger
-   * @returns {Promise<DbUserTiny[]>}
    */
-  async getUserByQuery(query, logger) {
+  async getUserByQuery(query: object, logger: Logger): Promise<DbUserTiny[]> {
     try {
       const db = await this.GetDb(logger);
 
@@ -341,11 +347,8 @@ class MongoDb {
 
   /**
    * Get user by id
-   * @param {string} userId
-   * @param {Logger} logger
-   * @returns {Promise<BizUser|undefined>}
    */
-  async getUserById(userId, logger) {
+  async getUserById(userId: string, logger: Logger): Promise<BizUser | undefined> {
     try {
       if (!constants.mongoIdRE.test(userId)) {
         return undefined; // for lint
@@ -397,14 +400,9 @@ class MongoDb {
 
   // Plant C: cratePlant
 
-  /**
-   * convertPlantDataTypesForSaving
-   * @param {BizPlant|UiPlantsValue} plantIn
-   * @returns {Readonly<DbPlant>}
-   */
   // eslint-disable-next-line class-methods-use-this
-  convertPlantDataTypesForSaving(plantIn) {
-    const plant = /** @type {DbPlant} */ (/** @type {unknown} */ (plantIn));
+  convertPlantDataTypesForSaving(plantIn: BizPlant | UiPlantsValue): Readonly<DbPlant> {
+    const plant: DbPlant = plantIn as unknown as DbPlant;
     if (plant._id) {
       plant._id = new ObjectID(plant._id);
     }
@@ -431,7 +429,7 @@ class MongoDb {
    * @returns {BizPlant} - the rebased plant object.
    */
   // eslint-disable-next-line class-methods-use-this
-  rebasePlant(plant, loc) {
+  rebasePlant(plant: BizPlant, loc: Geo): BizPlant {
     if (!plant.loc) {
       return plant;
     }
@@ -446,11 +444,10 @@ class MongoDb {
    * Rebase the plant's location by the location's "loc" location
    * If the location document does not have a loc property then assign
    * the loc property from the plant as the location's loc value.
-   * @param {BizPlant} plant - the plant which needs the loc rebased
-   * @param {Logger} logger
-   * @returns {Promise<Readonly<BizPlant>>}
+   * @param plant - the plant which needs the loc rebased
+   * @param logger
    */
-  async rebasePlantByLoc(plant, logger) {
+  async rebasePlantByLoc(plant: BizPlant, logger: Logger): Promise<Readonly<BizPlant>> {
     if (!plant.loc) {
       return plant;
     }
@@ -491,39 +488,23 @@ class MongoDb {
     }
   }
 
-  /**
-   * convertPlantDataForRead
-   * @param {DbPlant|Array<DbPlant>} plant
-   * @param {String|undefined|null} loggedInUserId
-   * @param {Logger} logger
-   * @returns {Promise<BizPlant|Array<BizPlant>>}
-   */
-  async convertPlantDataForRead(plant, loggedInUserId, logger) {
-    if (!plant) {
-      return plant;
-    }
+  async convertPlantDataForRead(plant: DbPlant | Array<DbPlant>,
+    loggedInUserId: string | undefined | null, logger: Logger):
+    Promise<BizPlant | Array<BizPlant>> {
     if (_.isArray(plant)) {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      const _this = this;
-      const promises = plant.map(
-        (p) => _this.convertPlantDataForReadOne(p, loggedInUserId, logger));
+      const _this = this; // eslint-disable-line @typescript-eslint/no-this-alias
+      const promises = (plant as DbPlant[]).map(
+        (p) => _this.convertPlantDataForReadOne(p, loggedInUserId, logger, null));
       return Promise.all(promises);
     }
 
-    return this.convertPlantDataForReadOne(plant, loggedInUserId, logger);
+    return this.convertPlantDataForReadOne(plant as DbPlant, loggedInUserId, logger, null);
   }
 
-  /**
-   * convertPlantDataForRead
-   * @param {Readonly<DbPlant>} plant
-   * @param {String|undefined|null} loggedInUserId
-   * @param {Logger} logger
-   * @param {DbNote[]|null=} notes
-   * @returns {Promise<Readonly<BizPlant>>}
-   */
-  async convertPlantDataForReadOne(plant, loggedInUserId, logger, notes) {
-    /** @type {BizPlant} */
-    const convertedPlant = (/** @type {unknown} */(plant));
+  async convertPlantDataForReadOne(plant: Readonly<DbPlant>,
+    loggedInUserId: string | undefined | null, logger: Logger,
+    notes: (DbNote[] | null) | undefined): Promise<Readonly<BizPlant>> {
+    const convertedPlant = plant as unknown as BizPlant;
 
     if (convertedPlant._id) {
       convertedPlant._id = convertedPlant._id.toString();
@@ -559,7 +540,8 @@ class MongoDb {
    * @returns {Promise<BizPlant>}
    * @memberof MongoDb
    */
-  async createPlant(plantIn, loggedInUserId, logger) {
+  async createPlant(plantIn: UiPlantsValue, loggedInUserId: string, logger: Logger):
+  Promise<BizPlant> {
     try {
       const db = await this.GetDb(logger);
       if (!plantIn.userId) {
@@ -570,9 +552,9 @@ class MongoDb {
       if (isAuthorized) {
         const plant = this.convertPlantDataTypesForSaving(plantIn);
         /** @type {DbPlant} */
-        const createdPlant = await Create.createPlant(db, plant);
+        const createdPlant: DbPlant = await Create.createPlant(db, plant);
         const convertedPlant = await this
-          .convertPlantDataForReadOne(createdPlant, loggedInUserId, logger);
+          .convertPlantDataForReadOne(createdPlant, loggedInUserId, logger, null);
         return convertedPlant;
       }
       throw new Error('Logged in user not authorized to create plant at this location');
@@ -599,7 +581,8 @@ class MongoDb {
    * @returns {Promise<Readonly<BizPlant>|undefined>}
    * @memberof MongoDb
    */
-  async getPlantById(plantId, loggedInUserId, logger) {
+  async getPlantById(plantId: string, loggedInUserId: string | undefined, logger: Logger):
+  Promise<Readonly<BizPlant> | undefined> {
     if (!constants.mongoIdRE.test(plantId)) {
       return undefined;
     }
@@ -651,7 +634,8 @@ class MongoDb {
    * @param {Logger} logger
    * @return {Promise<BizPlant|BizPlant[]|undefined>}
    */
-  async getPlantsByLocationId(locationId, loggedInUserId, logger) {
+  async getPlantsByLocationId(locationId: string, loggedInUserId: string | undefined,
+    logger: Logger): Promise<BizPlant | BizPlant[] | undefined> {
     if (!constants.mongoIdRE.test(locationId)) {
       return undefined;
     }
@@ -689,7 +673,8 @@ class MongoDb {
    * @returns {Promise<BizPlant|BizPlant[]>}
    * @memberof MongoDb
    */
-  async getPlantsByIds(ids, loggedInUserId, logger) {
+  async getPlantsByIds(ids: string[], loggedInUserId: string | undefined | null, logger: Logger):
+   Promise<BizPlant | BizPlant[]> {
     try {
       const plantQuery = {
         _id: { $in: ids.map((id) => new ObjectID(id)) },
@@ -715,7 +700,8 @@ class MongoDb {
    * @returns {Promise<BizPlant>}
    * @memberof MongoDb
    */
-  async updatePlant(plantIn, loggedInUserId, logger) {
+  async updatePlant(plantIn: BizPlant | UiPlantsValue, loggedInUserId: string, logger: Logger):
+   Promise<BizPlant> {
     try {
       if (!plantIn._id || !plantIn.userId) {
         throw new Error(`Must supply _id (${plantIn._id}) and userId (${plantIn.userId}) when updating a plant`);
@@ -725,7 +711,7 @@ class MongoDb {
       const query = _.pick(plant, ['_id', 'userId']);
       const set = _.omit(plant, ['_id']);
       await Update.updatePlant(db, query, set);
-      return this.convertPlantDataForReadOne(plant, loggedInUserId, logger);
+      return this.convertPlantDataForReadOne(plant, loggedInUserId, logger, null);
     } catch (error) {
       logger.error({
         moduleName,
@@ -750,7 +736,7 @@ class MongoDb {
    * @param {Logger} logger
    * @returns {Promise<number|undefined>}
    */
-  async deletePlant(id, userIdParam, logger) {
+  async deletePlant(id: string, userIdParam: string, logger: Logger): Promise<number | undefined> {
     // Steps to delete a plant
     // 1. Retrieve note documents associated with Plant
     // 2. Delete note documents that only reference this plant
@@ -765,21 +751,12 @@ class MongoDb {
       const noteQuery = { plantIds: _id, userId };
       const noteOptions = { sort: [['date', 'asc']] };
 
-      /**
-       * @typedef NoteSplit
-       * @property {import('mongodb').ObjectID[]} singlePlantNotes
-       * @property {DbNote[]} multiplePlantNotes
-       */
-
-      /**
-       * @type {NoteSplit}
-       */
-      const init = {
+      const init: NoteSplit = {
         singlePlantNotes: [],
         multiplePlantNotes: [],
       };
 
-      const notesForPlant = await readNote(db, noteQuery, noteOptions);
+      const notesForPlant = await readNote(db, noteQuery, noteOptions) as DbNote[] | null;
       // Split the notesForPlant array in 2:
       // 1. Those that only reference this plant - need to delete these
       // 2. Those that reference multiple plants - need to update these and
@@ -844,7 +821,7 @@ class MongoDb {
    * @returns {Promise<number|undefined>}
    * @memberof MongoDb
    */
-  async deleteAllPlantsByUserId(userIdParam, logger) {
+  async deleteAllPlantsByUserId(userIdParam: string, logger: Logger): Promise<number | undefined> {
     const db = await this.GetDb(logger);
     const userId = new ObjectID(userIdParam);
     return remove(db, 'plant', { userId });
@@ -863,8 +840,8 @@ class MongoDb {
    * @memberof MongoDb
    */
   // eslint-disable-next-line class-methods-use-this
-  convertNoteDataTypesForSaving(noteParam) {
-    const note = /** @type {DbNote} */ (/** @type {unknown} */ (noteParam));
+  convertNoteDataTypesForSaving(noteParam: BizNote | BizNoteNew): DbNote {
+    const note: DbNote = noteParam as unknown as DbNote;
     if (note._id) {
       // eslint-disable-next-line no-param-reassign
       note._id = new ObjectID(note._id);
@@ -882,23 +859,9 @@ class MongoDb {
     return note;
   }
 
-  /**
-   * Convert Note Data for Read
-   * @param {DbNote} note
-   * @param {Logger} logger
-   * @returns {Readonly<BizNote>}
-   * @memberof MongoDb
-   */
   // eslint-disable-next-line class-methods-use-this
-  convertNoteDataForRead(note, logger) {
-    if (!note) {
-      return note;
-    }
-
-    /**
-    * @type {BizNote}
-    */
-    const convertedNote = (/** @type {unknown} */ (note));
+  convertNoteDataForRead(note: DbNote, logger: Logger): Readonly<BizNote> {
+    const convertedNote = note as unknown as BizNote;
     if (convertedNote._id) {
       convertedNote._id = convertedNote._id.toString();
     }
@@ -915,28 +878,14 @@ class MongoDb {
     return convertedNote;
   }
 
-  /**
-   * Convert Note Data for Read
-   * @param {DbNote[]} note
-   * @param {Logger} logger
-   * @returns {BizNote[]}
-   * @memberof MongoDb
-   */
-  convertNotesDataForRead(note, logger) {
+  convertNotesDataForRead(note: DbNote[], logger: Logger): BizNote[] {
     if (!note || !note.length) {
       return [];
     }
     return note.map((n) => this.convertNoteDataForRead(n, logger));
   }
 
-  /**
-   * Create Note
-   * @param {BizNoteNew} note
-   * @param {Logger} logger
-   * @returns {Promise<BizNote>}
-   * @memberof MongoDb
-   */
-  async createNote(note, logger) {
+  async createNote(note: BizNoteNew, logger: Logger): Promise<BizNote> {
     try {
       const db = await this.GetDb(logger);
       if (!note.userId) {
@@ -966,7 +915,7 @@ class MongoDb {
    * @returns {Promise<BizNote[]|undefined>}
    * @memberof MongoDb
    */
-  async getNotesByQuery(query, logger) {
+  async getNotesByQuery(query: object, logger: Logger): Promise<BizNote[] | undefined> {
     try {
       const db = await this.GetDb(logger);
       const noteOptions = { sort: [['date', 'asc']] };
@@ -994,7 +943,7 @@ class MongoDb {
    * @returns {Promise<BizNote|undefined>}
    * @memberof MongoDb
    */
-  async getNoteByQuery(query, logger) {
+  async getNoteByQuery(query: object, logger: Logger): Promise<BizNote | undefined> {
     try {
       const notes = await this.getNotesByQuery(query, logger);
       if (!notes || !notes.length) {
@@ -1017,7 +966,7 @@ class MongoDb {
    * @returns {Promise<BizNote|undefined>}
    * @memberof MongoDb
    */
-  async getNoteById(id, logger) {
+  async getNoteById(id: string | undefined, logger: Logger): Promise<BizNote | undefined> {
     if (!id) {
       return undefined;
     }
@@ -1032,7 +981,7 @@ class MongoDb {
    * @returns {Promise<BizNote|undefined>}
    * @memberof MongoDb
    */
-  async getNoteByImageId(imageId, logger) {
+  async getNoteByImageId(imageId: string, logger: Logger): Promise<BizNote | undefined> {
     const query = {
       images: { $elemMatch: { id: imageId } },
     };
@@ -1046,7 +995,7 @@ class MongoDb {
    * @returns {Promise<BizNote[]|undefined>}
    * @memberof MongoDb
    */
-  async getNotesByIds(ids, logger) {
+  async getNotesByIds(ids: string[], logger: Logger): Promise<BizNote[] | undefined> {
     const query = {
       _id: { $in: ids.map((id) => new ObjectID(id)) },
     };
@@ -1060,7 +1009,7 @@ class MongoDb {
    * @returns {Promise<DbNoteWithPlants[]>}
    * @memberof MongoDb
    */
-  async getNotesLatest(qty, logger) {
+  async getNotesLatest(qty: number, logger: Logger): Promise<DbNoteWithPlants[]> {
     // This method doesn't work with getNoteByQuery since we need .limit()
     // Calling Mongo directly from here, for now
     try {
@@ -1096,28 +1045,19 @@ class MongoDb {
       }); */
   }
 
-  /**
-   * Get Notes With Plants
-   * @param {DbNote[]} notesCopy
-   * @param {Logger} logger
-   * @returns {Promise<DbNoteWithPlants[]>}
-   * @memberof MongoDb
-   */
-  async getNotesWithPlants(notesCopy, logger) {
+  async getNotesWithPlants(notesCopy: DbNote[], logger: Logger): Promise<DbNoteWithPlants[]> {
     try {
       /**
        * @type {string[]}
       */
-      const init = [];
+      const init: string[] = [];
 
       // Grab the plant ids off each note (can be more than 1 per note)
       const myPlantIds = notesCopy.reduce((acc,
         { plantIds }) => acc.concat(plantIds.map((plantId) => plantId.toString())), init,
       );
 
-      const plants = /** @type {BizPlant[]} */ (
-        await this.getPlantsByIds(_.uniq(myPlantIds), null, logger)
-      );
+      const plants = await this.getPlantsByIds(_.uniq(myPlantIds), null, logger) as BizPlant[];
 
       const notes = notesCopy.map((note) => {
         const plantIds = note.plantIds.map((pId) => pId.toString());
@@ -1136,26 +1076,12 @@ class MongoDb {
     }
   }
 
-  /**
-   * Get Notes by Plant Id
-   * @param {string} plantId
-   * @param {Logger} logger
-   * @returns {Promise<BizNote[]|undefined>}
-   * @memberof MongoDb
-   */
-  getNotesByPlantId(plantId, logger) {
+  getNotesByPlantId(plantId: string, logger: Logger): Promise<BizNote[] | undefined> {
     const query = { plantIds: new ObjectID(plantId) };
     return this.getNotesByQuery(query, logger);
   }
 
-  /**
-   * Get Notes by Plant Id
-   * @param {string[]} plantIds
-   * @param {Logger} logger
-   * @returns {Promise<BizNote[]|undefined>}
-   * @memberof MongoDb
-   */
-  getNotesByPlantIds(plantIds, logger) {
+  getNotesByPlantIds(plantIds: string[], logger: Logger): Promise<BizNote[] | undefined> {
     const query = {
       plantIds: {
         $in: plantIds.map((plantId) => new ObjectID(plantId)),
@@ -1166,14 +1092,7 @@ class MongoDb {
 
   // Note U: updateNote
 
-  /**
-   * Update Note
-   * @param {BizNote} note
-   * @param {Logger} logger
-   * @returns {Promise<BizNote>}
-   * @memberof MongoDb
-   */
-  async updateNote(note, logger) {
+  async updateNote(note: BizNote, logger: Logger): Promise<BizNote> {
     try {
       const db = await this.GetDb(logger);
       if (!note.userId) {
@@ -1184,8 +1103,8 @@ class MongoDb {
       const set = _.omit(convertedNote, ['_id']);
       await Update.updateNote(db, query, set);
       // results => {n:1, nModified:1, ok:1}
-      return this
-        .convertNoteDataForRead((/** @type {DbNote} */ (/** @type {unknown} */ (note))), logger);
+
+      return this.convertNoteDataForRead(note as unknown as DbNote, logger);
     } catch (error) {
       logger.error({
         moduleName, msg: 'updateNote', error, note,
@@ -1201,7 +1120,7 @@ class MongoDb {
    * @returns {Promise<void>}
    * @memberof MongoDb
    */
-  async addSizesToNoteImage(noteUpdate, logger) {
+  async addSizesToNoteImage(noteUpdate: NoteImageUpdateData, logger: Logger): Promise<void> {
     try {
       const db = await this.GetDb(logger);
       if (!noteUpdate.userId) {
@@ -1237,12 +1156,12 @@ class MongoDb {
    * @returns {Promise<BizNote>}
    * @memberof MongoDb
    */
-  async upsertNote(note, logger) {
+  async upsertNote(note: BizNote | BizNoteNew, logger: Logger): Promise<BizNote> {
     try {
       const { _id } = note;
       const foundNote = await this.getNoteById(_id && _id.toString(), logger);
       return foundNote
-        ? await this.updateNote(/** @type {BizNote} */ (note), logger)
+        ? await this.updateNote(note as BizNote, logger)
         : await this.createNote(note, logger);
     } catch (error) {
       logger.error({
@@ -1262,7 +1181,8 @@ class MongoDb {
    * @returns {Promise<number|undefined>}
    * @memberof MongoDb
    */
-  async deleteNote(_id, userId, logger) {
+  async deleteNote(_id: string, userId: string | undefined, logger: Logger):
+   Promise<number | undefined> {
     try {
       const db = await this.GetDb(logger);
       return remove(db, 'note', {
@@ -1294,7 +1214,7 @@ class MongoDb {
    * @returns {Promise<Readonly<BizLocation>>}
    * @memberof MongoDb
    */
-  async createLocation(loc, logger) {
+  async createLocation(loc: any, logger: Logger): Promise<Readonly<BizLocation>> {
     const db = await this.GetDb(logger);
     return modelLocation.createLocation({ db, loc, logger });
   }
@@ -1307,7 +1227,7 @@ class MongoDb {
    * @returns {Promise<ReadonlyArray<Readonly<BizUser>>>}
    * @memberof MongoDb
    */
-  async getAllUsers(logger) {
+  async getAllUsers(logger: Logger): Promise<ReadonlyArray<Readonly<BizUser>>> {
     try {
       const db = await this.GetDb(logger);
       const userQuery = {};
@@ -1347,7 +1267,8 @@ class MongoDb {
    * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    * @memberof MongoDb
    */
-  async getLocationsByQuery(query, options, logger) {
+  async getLocationsByQuery(query: object, options: object, logger: Logger):
+   Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationsByQuery({
       db, query, options, logger,
@@ -1360,7 +1281,7 @@ class MongoDb {
    * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    * @memberof MongoDb
    */
-  async getAllLocations(logger) {
+  async getAllLocations(logger: Logger): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getAllLocations({ db, logger });
   }
@@ -1372,7 +1293,7 @@ class MongoDb {
    * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    * @memberof MongoDb
    */
-  async getLocationById(id, logger) {
+  async getLocationById(id: string, logger: Logger): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationById({ db, id, logger });
   }
@@ -1384,7 +1305,7 @@ class MongoDb {
    * @returns {Promise<BizLocation|undefined>}
    * @memberof MongoDb
    */
-  async getLocationOnlyById(id, logger) {
+  async getLocationOnlyById(id: string, logger: Logger): Promise<BizLocation | undefined> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationOnlyById({ db, id, logger });
   }
@@ -1396,7 +1317,8 @@ class MongoDb {
    * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    * @memberof MongoDb
    */
-  async getLocationsByIds(ids, logger) {
+  async getLocationsByIds(ids: string[], logger: Logger):
+  Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationsByIds({ db, ids, logger });
   }
@@ -1409,7 +1331,8 @@ class MongoDb {
    * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
    * @memberof MongoDb
    */
-  async getLocationsByUserId(userId, options, logger) {
+  async getLocationsByUserId(userId: string, options: object, logger: Logger):
+  Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationsByUserId({
       db, userId, options, logger,
@@ -1425,7 +1348,8 @@ class MongoDb {
    * @returns {Promise<boolean>}
    * @memberof MongoDb
    */
-  async roleAtLocation(locationId, userId, roles, logger) {
+  async roleAtLocation(locationId: string, userId: string, roles: Role[], logger: Logger):
+  Promise<boolean> {
     const db = await this.GetDb(logger);
     return modelLocation.roleAtLocation({
       db, locationId, userId, roles, logger,
@@ -1442,7 +1366,8 @@ class MongoDb {
    * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
    * @memberof MongoDb
    */
-  async updateLocationById(location, loggedInUserId, logger) {
+  async updateLocationById(location: BizLocation, loggedInUserId: string, logger: Logger):
+  Promise<import('mongodb').UpdateWriteOpResult> {
     const db = await this.GetDb(logger);
     return modelLocation.updateLocationById({
       db, location, loggedInUserId, logger,
@@ -1459,7 +1384,8 @@ class MongoDb {
    * @returns {Promise<number|undefined>}
    * @memberof MongoDb
    */
-  async deleteLocation(_id, loggedInUserId, logger) {
+  async deleteLocation(_id: string, loggedInUserId: string, logger: Logger):
+  Promise<number | undefined> {
     const db = await this.GetDb(logger);
     return modelLocation.deleteLocation({
       db, _id, loggedInUserId,
@@ -1475,7 +1401,8 @@ class MongoDb {
    * @param {Logger} logger
    * @returns {Promise<DbShapes|null>}
    */
-  async queryByCollection(collection, query, logger) {
+  async queryByCollection(collection: DbCollectionName, query: object, logger: Logger):
+  Promise<DbShapes | null> {
     try {
       const db = await this.GetDb(logger);
       const options = {};
@@ -1518,14 +1445,14 @@ class MongoDb {
 /**
  * @type {MongoDb}
  */
-let dbInstance;
+let dbInstance: MongoDb;
 
 /**
  * gets the singleton instance of the DB class
  * @param {string=} connection
  * @returns {MongoDb}
  */
-function getDbInstance(connection) {
+function getDbInstance(connection: string | undefined): MongoDb {
   if (!dbInstance) {
     dbInstance = new MongoDb(connection);
   }
