@@ -1,49 +1,37 @@
+import { AnyAction } from 'redux';
+import { actionEnum } from '../actions';
 
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
-const { actionEnum } = require('../actions');
 
 /**
  * Raised when a save event is triggered for a note.
- * @param {UiNotes} state
- * @param {import('redux').AnyAction} action
- * @returns {UiNotes} state
  */
-function upsertNoteRequestSuccess(state, action) {
+function upsertNoteRequestSuccess(state: UiNotes, action: AnyAction): UiNotes {
   const { _id = '' } = action.payload.note || {};
   if (!_id) {
-    // console.error('No _id in note in upsertNoteRequestSuccess', action.payload);
     return state;
   }
   return seamless.set(state, _id, action.payload.note);
 }
 
 /**
- *
- * @param {UiNotes} state
- * @param {import('redux').AnyAction} action - action.payload holds _id of note being deleted
- * @returns {UiNotes} state
+ * @param action - action.payload holds _id of note being deleted
  */
-function deleteNoteRequest(state, action) {
+function deleteNoteRequest(state: UiNotes, action: AnyAction): UiNotes {
   const { payload: _id } = action;
   return seamless.without(state, _id);
 }
 
 
 /**
- *
- * @param {UiNotes} state
- * @param {import('redux').AnyAction} action - action.payload is an array of notes from the server
- * @returns {UiNotes} state
+ * @param action - action.payload is an array of notes from the server
  */
-function loadNotesSuccess(state, { payload: notes }) {
+function loadNotesSuccess(state: UiNotes, { payload: notes }: AnyAction): UiNotes {
   if (notes && notes.length) {
     const newNotes = notes.reduce(
-      /**
-       * @param {UiNotes} acc
-       * @param {UiNotesValue} note
-       */
-      (acc, note) => {
+      (acc: UiNotes, note: UiNotesValue) => {
         acc[note._id] = note;
         return acc;
       }, {});
@@ -56,13 +44,10 @@ function loadNotesSuccess(state, { payload: notes }) {
 
 
 /**
- *
- * @param {UiNotes} state
- * @param {import('redux').AnyAction} action - action.payload is the _id of the note whose
- *                                             images we are going to tag as showable
- * @returns {UiNotes}
+ * @param action - action.payload is the _id of the note whose
+ *                 images we are going to tag as showable
  */
-function showNoteImages(state, { payload: _id }) {
+function showNoteImages(state: UiNotes, { payload: _id }: AnyAction): UiNotes {
   const noteIds = Array.isArray(_id) ? _id : [_id];
   const notes = noteIds.reduce((acc, noteId) => {
     const note = state[noteId];
@@ -77,11 +62,7 @@ function showNoteImages(state, { payload: _id }) {
   }
 
   const updatedNotes = notes.reduce(
-    /**
-     * @param {UiNotes} acc
-     * @param {UiNotesValue} note
-     */
-    (acc, note) => {
+    (acc: UiNotes, note: UiNotesValue) => {
       acc[note._id] = { ...note, showImages: true };
       return acc;
     }, {});
@@ -101,12 +82,7 @@ const reducers = seamless.from({
 
 });
 
-/**
- * @param {UiNotes} state
- * @param {import('redux').AnyAction} action
- * @returns {UiNotes}
- */
-module.exports = (state = {}, action) => {
+module.exports = (state: UiNotes = {}, action: AnyAction): UiNotes => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

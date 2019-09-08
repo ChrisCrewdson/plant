@@ -1,3 +1,5 @@
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const { combineReducers } = require('redux');
 const interim = require('./interim');
 const locations = require('./locations');

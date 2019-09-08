@@ -1,7 +1,9 @@
+import { AnyAction } from 'redux';
+import { actionEnum } from '../actions';
 
-// @ts-ignore - static hasn't been defined on seamless types yet.
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
-const { actionEnum } = require('../actions');
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.
@@ -11,19 +13,9 @@ const { actionEnum } = require('../actions');
 
 // The action.payload are the returned locations from the server.
 
-/**
- *
- * @param {UiLocations} state
- * @param {import('redux').AnyAction} action
- * @returns {UiLocations}
- */
-function loadLocationsSuccess(state, { payload }) {
+function loadLocationsSuccess(state: UiLocations, { payload }: AnyAction): UiLocations {
   const locations = Object.keys(payload || {}).reduce(
-    /**
-     * @param {UiLocations} acc
-     * @param {string} locationId
-     */
-    (acc, locationId) => {
+    (acc: UiLocations, locationId: string) => {
       const location = payload[locationId];
       acc[location._id] = { ...location, plantIds: location.plantIds || [] };
       return acc;
@@ -39,13 +31,7 @@ function loadLocationsSuccess(state, { payload }) {
 // _id
 // title
 // createdBy
-/**
- *
- * @param {UiLocations} state
- * @param {import('redux').AnyAction} action
- * @returns {UiLocations}
- */
-function createPlantRequest(state, action) {
+function createPlantRequest(state: UiLocations, action: AnyAction): UiLocations {
   // payload is an object of new plant being POSTed to server
   // an _id has already been assigned to this object
   const plant = action.payload;
@@ -64,24 +50,14 @@ function createPlantRequest(state, action) {
 // If a bunch of plants are loaded then check that the plant
 // is on the locations' plantIds list
 // action.payload is an array of plant objects
-/**
- *
- * @param {UiLocations} state
- * @param {import('redux').AnyAction} action
- * @returns {UiLocations}
- */
-function loadPlantsSuccess(state, action) {
+function loadPlantsSuccess(state: UiLocations, action: AnyAction): UiLocations {
 /** @type {UiPlantsValue[]} */
-  const plants = action.payload;
+  const plants: UiPlantsValue[] = action.payload;
   if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}
     const locations = plants.reduce(
-      /**
-       * @param {UiLocations} acc
-       * @param {UiPlantsValue} plant - should this be a BizPlant?
-       */
-      (acc, { locationId, _id: plantId }) => {
+      (acc: UiLocations, { locationId, _id: plantId }: UiPlantsValue) => {
         if (state[locationId]) {
           acc[locationId] = acc[locationId]
             || seamless.asMutable(state[locationId], { deep: true });
@@ -98,12 +74,11 @@ function loadPlantsSuccess(state, action) {
 }
 
 /**
- * @param {UiLocations} state
- * @param {import('redux').AnyAction} action - payload:
- *                                             {plantId: <plant-id>, locationId: <location-id>}
- * @returns {UiLocations}
+ * @param {AnyAction} action - payload:
+ *                             {plantId: <plant-id>, locationId: <location-id>}
  */
-function deletePlantRequest(state, { payload: { locationId, plantId } }) {
+function deletePlantRequest(state: UiLocations, { payload: { locationId, plantId } }: AnyAction):
+ UiLocations {
   const plantIds = (state[locationId] && state[locationId].plantIds) || [];
   if (plantIds.includes(plantId)) {
     const pIds = plantIds.filter((pId) => pId !== plantId);
@@ -130,12 +105,7 @@ const reducers = {
   // [actionEnum.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
-/**
- * @param {UiLocations} state
- * @param {import('redux').AnyAction} action
- * @returns {UiLocations}
- */
-module.exports = (state = seamless({}), action) => {
+module.exports = (state: UiLocations = seamless({}), action: AnyAction): UiLocations => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

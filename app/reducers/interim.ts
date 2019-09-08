@@ -1,28 +1,19 @@
 // The most difficult part of creating this module was naming it.
 // "interim" is the least worst of all the bad names I came up with.
 
-// @ts-ignore - static hasn't been defined on seamless types yet.
+import { AnyAction } from 'redux';
+import { actionEnum } from '../actions';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 const seamless = require('seamless-immutable').static;
 
-const { actionEnum } = require('../actions');
-
-/**
- * editNoteOpen
- * @param {UiInterim} state
- * @param {import('redux').AnyAction} action
- * @returns {UiInterim}
- */
-function editNoteOpen(state, action) {
+function editNoteOpen(state: UiInterim, action: AnyAction): UiInterim {
 //  * @param {UiNotesValue} action.payload
   return seamless.set(state, 'note', action.payload);
 }
 
-/**
- * editNoteClose
- * @param {UiInterim} state
- * @returns {UiInterim}
- */
-function editNoteClose(state) {
+function editNoteClose(state: UiInterim): UiInterim {
   // Just remove note element if editing is canceled
   // or if the note has been saved
   return seamless.without(state, 'note');
@@ -36,23 +27,15 @@ function editNoteClose(state) {
  *   note:
  *     note,
  *     plant
- * @param {UiInterim} state
- * @param {import('redux').AnyAction} action
- * @returns {UiInterim}
  */
-function editNoteChange(state, action) {
+function editNoteChange(state: UiInterim, action: AnyAction): UiInterim {
 //  * @param {UiNotesValue} action.payload
   return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
 }
 
 // action.payload:
 // {plant}
-/**
- * @param {UiInterim} state
- * @param {import('redux').AnyAction} action
- * @returns {UiInterim}
- */
-function editPlantOpen(state, { payload }) {
+function editPlantOpen(state: UiInterim, { payload }: AnyAction): UiInterim {
   let { plant = {} } = payload;
   if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
     plant = seamless.asMutable(plant, { deep: true });
@@ -64,10 +47,8 @@ function editPlantOpen(state, { payload }) {
 
 /**
  * action.payload is empty
- * @param {UiInterim} state
- * @returns {UiInterim}
  */
-function editPlantClose(state) {
+function editPlantClose(state: UiInterim): UiInterim {
   // Just remove plant element if editing is canceled
   // or if the plant has been saved
   return seamless.without(state, 'plant');
@@ -79,36 +60,20 @@ function editPlantClose(state) {
  * state:
  *   plant:
  *     plant
- * @param {UiInterim} state
- * @param {import('redux').AnyAction} action
- * @returns {UiInterim}
  */
-function editPlantChange(state, action) {
+function editPlantChange(state: UiInterim, action: AnyAction): UiInterim {
   return seamless.merge(state, { plant: { plant: action.payload } }, { deep: true });
 }
 
-/**
- * @param {UiInterim} state
- * @param {import('redux').AnyAction} action
- * @returns {UiInterim}
- */
-function loadPlantsRequest(state, action) {
+function loadPlantsRequest(state: UiInterim, action: AnyAction): UiInterim {
   return seamless.set(state, 'loadPlantRequest', action.payload);
 }
 
-/**
- * @param {UiInterim} state
- * @returns {UiInterim}
- */
-function loadPlantsSuccess(state) {
+function loadPlantsSuccess(state: UiInterim): UiInterim {
   return seamless.without(state, 'loadPlantRequest');
 }
 
-/**
- * @param {UiInterim} state
- * @returns {UiInterim}
- */
-function loadPlantsFailure(state) {
+function loadPlantsFailure(state: UiInterim): UiInterim {
   return seamless.without(state, 'loadPlantRequest');
 }
 
@@ -126,12 +91,7 @@ const reducers = {
   [actionEnum.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
-/**
- * @param {UiInterim} state
- * @param {import('redux').AnyAction} action
- * @returns {UiInterim}
- */
-module.exports = (state = seamless({}), action) => {
+module.exports = (state: UiInterim = seamless({}), action: AnyAction): UiInterim => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
