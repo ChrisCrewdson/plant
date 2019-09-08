@@ -1,76 +1,58 @@
+import { AnyAction } from 'redux';
+import { actionEnum } from '../actions';
+
+export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+
 // An array of plants loaded from the server.
 // Plants could be for any user.
 // If a user is logged in then some of the items in the array
 // might be plants belonging to the user.
 
-// @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = require('seamless-immutable').static;
 const uniq = require('lodash/uniq');
-const { actionEnum } = require('../actions');
 
 /**
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
  */
-function replaceInPlace(state, { payload }) {
+function replaceInPlace(state: UiPlants, { payload }: AnyAction): UiPlants {
   return seamless.set(state, payload._id, payload);
 }
 
 /**
  * User clicks save after creating a new plant
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
  */
-function createPlantRequest(state, action) {
+function createPlantRequest(state: UiPlants, action: AnyAction): UiPlants {
   // payload is an object of new plant being POSTed to server
   // an id has already been assigned to this object
   return replaceInPlace(state, action);
 }
 
-/**
- * ajaxPlantFailure
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
- */
-function ajaxPlantFailure(state, action) {
+function ajaxPlantFailure(state: UiPlants, action: AnyAction): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
- * updatePlantRequest
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action - payload is an object of plant being PUT to server
- * @returns {UiPlants} state
+ * @param action - payload is an object of plant being PUT to server
  */
-function updatePlantRequest(state, action) {
+function updatePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
- * deletePlantRequest
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action - action.payload: <plant-id>
- * @returns {UiPlants} state
+ * @param action - action.payload: <plant-id>
  */
-function deletePlantRequest(state, action) {
+function deletePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
   return seamless.without(state, action.payload.plantId);
 }
 
 /**
  * payload is {id} of note being DELETEd from server
  * Need to remove this note from the notes array in all plants
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action - action.payload: <noteId>
- * @returns {UiPlants} state
+ * @param action - action.payload: <noteId>
  */
-function deleteNoteRequest(state, { payload: noteId }) {
-  /** @type {UiPlants} */
-  const initPlants = {};
+function deleteNoteRequest(state: UiPlants, { payload: noteId }: AnyAction): UiPlants {
+  const initPlants: UiPlants = {};
 
   return seamless.from(Object.keys(state).reduce((acc, plantId) => {
     const plant = state[plantId];
@@ -85,39 +67,23 @@ function deleteNoteRequest(state, { payload: noteId }) {
 
 
 /**
- * loadPlantSuccess
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action - action.payload is a plant object
- * @returns {UiPlants} state
+ * @param action - action.payload is a plant object
  */
-function loadPlantSuccess(state, action) {
+function loadPlantSuccess(state: UiPlants, action: AnyAction): UiPlants {
+  return replaceInPlace(state, action);
+}
+
+function loadPlantFailure(state: UiPlants, action: AnyAction): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
- * loadPlantFailure
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
+ * @param action - action.payload is an array of plant objects
  */
-function loadPlantFailure(state, action) {
-  return replaceInPlace(state, action);
-}
-
-/**
- * loadPlantsSuccess
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action - action.payload is an array of plant objects
- * @returns {UiPlants} state
- */
-function loadPlantsSuccess(state, { payload: plants }) {
+function loadPlantsSuccess(state: UiPlants, { payload: plants }: AnyAction): UiPlants {
   if (plants && plants.length > 0) {
     return seamless.merge(state, plants.reduce(
-      /**
-       * @param {UiPlants} acc
-       * @param {UiPlantsValue} plant
-       */
-      (acc, plant) => {
+      (acc: UiPlants, plant: UiPlantsValue) => {
         if (plant._id) {
           acc[plant._id] = plant;
         }
@@ -129,11 +95,8 @@ function loadPlantsSuccess(state, { payload: plants }) {
 
 /**
  * The action.payload.note is the returned note from the server.
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
  */
-function upsertNoteSuccess(state, { payload: { note } }) {
+function upsertNoteSuccess(state: UiPlants, { payload: { note } }: AnyAction): UiPlants {
   const {
     _id, // The id of the note
     plantIds = [], // The plants that this note applies to
@@ -158,11 +121,7 @@ function upsertNoteSuccess(state, { payload: { note } }) {
   // Iterate through all the plants in the state object and get from
   // that a new object of plants that have to be updated.
   const updatedPlants = Object.keys(state).reduce(
-    /**
-     * @param {UiPlants} acc
-     * @param {string} plantId
-     */
-    (acc, plantId) => {
+    (acc: UiPlants, plantId: string) => {
       const plant = state[plantId];
       const plantNotes = plant.notes || [];
 
@@ -196,13 +155,7 @@ function upsertNoteSuccess(state, { payload: { note } }) {
   return seamless.merge(state, updatedPlants);
 }
 
-/**
- * loadNotesRequest
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
- */
-function loadNotesRequest(state, action) {
+function loadNotesRequest(state: UiPlants, action: AnyAction): UiPlants {
 // action.payload is {
 //   noteIds: [<note-id>, <note-id>, ...]
 // OR
@@ -219,11 +172,7 @@ function loadNotesRequest(state, action) {
   }
 
   const requestedPlants = plantIds.reduce(
-    /**
-     * @param {UiPlants} acc
-     * @param {string} plantId
-     */
-    (acc, plantId) => {
+    (acc: UiPlants, plantId: string) => {
       const plant = state[plantId];
       if (!plant) {
       // console.error('No plant in state for plantId:', plantId);
@@ -238,23 +187,14 @@ function loadNotesRequest(state, action) {
 
 /**
  * action.payload is an array of notes from the server
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants} state
  */
-function loadNotesSuccess(state, { payload: notes }) {
+function loadNotesSuccess(state: UiPlants, { payload: notes }: AnyAction): UiPlants {
   if (!notes || !notes.length) {
     return state;
   }
 
   const plants = notes.reduce(
-    /**
-     * @param {object} acc
-     * @param {object} note
-     * @param {string[]} note.plantIds
-     * @param {string} note._id
-     */
-    (acc, note) => {
+    (acc: Record<string, string[]>, note: UiNotesValue) => {
       (note.plantIds || []).forEach((plantId) => {
         if (acc[plantId]) {
           acc[plantId].push(note._id);
@@ -270,11 +210,7 @@ function loadNotesSuccess(state, { payload: notes }) {
   }
 
   return seamless.from(Object.keys(state).reduce(
-    /**
-     * @param {UiPlants} acc
-     * @param {string} plantId
-     */
-    (acc, plantId) => {
+    (acc: UiPlants, plantId: string) => {
       const plant = state[plantId];
 
       if (!plants[plantId]) {
@@ -307,11 +243,8 @@ const reducers = {
 
 /**
  * The plants reducer
- * @param {UiPlants} state
- * @param {import('redux').AnyAction} action
- * @returns {UiPlants}
  */
-module.exports = (state = seamless.from({}), action) => {
+module.exports = (state: UiPlants = seamless.from({}), action: AnyAction): UiPlants => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
