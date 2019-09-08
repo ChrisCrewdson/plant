@@ -1,8 +1,9 @@
+import cloneDeep from 'lodash/cloneDeep';
+import omit from 'lodash/omit';
+import isArray from 'lodash/isArray';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const cloneDeep = require('lodash/cloneDeep');
-const omit = require('lodash/omit');
-const isArray = require('lodash/isArray');
 const validatejs = require('validate.js');
 const { makeMongoId } = require('../libs/utils');
 const constants = require('../libs/constants');

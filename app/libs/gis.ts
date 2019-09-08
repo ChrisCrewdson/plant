@@ -1,6 +1,7 @@
+import getIn from 'lodash/get';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const getIn = require('lodash/get');
 const seamless = require('seamless-immutable').static;
 const constants = require('./constants');
 

@@ -1,8 +1,8 @@
 import { Store } from 'redux';
+import isFunction from 'lodash/isFunction';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const isFunction = require('lodash/isFunction');
 const $ = require('jquery');
 
 /**
