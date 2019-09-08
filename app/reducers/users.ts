@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
+import { actionEnum } from '../actions';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const seamless = require('seamless-immutable').static;
-const { actionEnum } = require('../actions');
 
 /**
  * Called after users received back from server request

@@ -1,7 +1,6 @@
-// Redux Actions - Migrating to this version
+// Redux Actions
 
-/** @type {UiActionType[]} */
-const actionList = [
+const actionList: UiActionType[] = [
   'CHANGE_ACTIVE_LOCATION_ID',
   'CREATE_PLANT_FAILURE',
   'CREATE_PLANT_REQUEST',
@@ -61,34 +60,36 @@ const actionList = [
 /**
  * Given a type, will create a method that will accept the payload and return
  * the payload and type as an object
- * @param {UiActionType} type - The type of the action - element from actionList array
- * @returns {ActionMethod}
+ * @param type - The type of the action - element from actionList array
  */
-const createMethod = (type) => (payload) => ({ type, payload });
+const createMethod = (type: UiActionType): ActionMethod => (payload) => ({ type, payload });
 
 /**
  * Change a string into proper case
- * @param {string} text - a string to turn into proper case.
+ * @param text - a string to turn into proper case.
  */
-const properCase = (text) => text[0].toUpperCase() + text.slice(1).toLowerCase();
+const properCase = (text: string) => text[0].toUpperCase() + text.slice(1).toLowerCase();
 
-/** @type {UiActionsAcc} */
 const actions = actionList.reduce(
-  /**
-   * @param {UiActionsAcc} acc
-   * @param {UiActionType} action
-   */
-  (acc, action) => {
+  (acc: UiActionsAcc, action: UiActionType) => {
     acc.enum[action] = action;
     const funcName = action.split('_').map((part, index) => (index === 0 ? part.toLowerCase() : properCase(part))).join('');
     acc.func[funcName] = createMethod(action);
     return acc;
-  }, /** @type {UiActionsAcc} */ ({
+  }, {
     enum: {},
     func: {},
-  }));
+  } as UiActionsAcc);
+
+const actionEnum = actions.enum;
+const actionFunc = actions.func;
 
 module.exports = {
-  actionEnum: actions.enum,
-  actionFunc: actions.func,
+  actionEnum,
+  actionFunc,
+};
+
+export {
+  actionEnum,
+  actionFunc,
 };
