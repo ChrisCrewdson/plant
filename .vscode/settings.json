@@ -11,6 +11,7 @@
         "YYYYMMDD",
         "bson",
         "camelcase",
+        "datetime",
         "gmail",
         "johnsmith",
         "noteid",
