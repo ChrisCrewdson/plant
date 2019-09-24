@@ -87,7 +87,7 @@
     "@types/webpack": "4.39.1",
     "@types/webpack-dev-server": "3.1.7",
     "@types/webpack-merge": "4.1.5",
-    "@typescript-eslint/eslint-plugin": "2.3.0",
+    "@typescript-eslint/eslint-plugin": "2.3.1",
     "@typescript-eslint/parser": "2.3.1",
     "babel-eslint": "10.0.3",
     "concurrently": "4.1.2",
