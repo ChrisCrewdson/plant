@@ -91,7 +91,7 @@
     "@typescript-eslint/parser": "2.3.1",
     "babel-eslint": "10.0.3",
     "concurrently": "4.1.2",
-    "eslint": "6.5.0",
+    "eslint": "6.5.1",
     "eslint-config-airbnb": "18.0.1",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jest": "22.17.0",
