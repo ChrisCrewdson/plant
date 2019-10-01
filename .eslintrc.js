@@ -38,6 +38,7 @@ module.exports = {
     }],
     'no-shadow': [2, {'allow': ['Location']}],
     'no-underscore-dangle': 0,
+    'react/jsx-curly-brace-presence': 0, // TODO: Enable this once 2883 conversion done
     'react/jsx-filename-extension': 0,
     'react/no-unused-state': 0,
     'security/detect-object-injection': 0,
