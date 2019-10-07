@@ -107,7 +107,6 @@
     "oauth": "0.9.15",
     "pre-commit": "1.2.2",
     "react-hot-loader": "4.12.14",
-    "react-log-lifecycle": "1.1.0",
     "react-test-renderer": "16.10.2",
     "redux-devtools": "3.5.0",
     "stylelint": "11.0.0",
