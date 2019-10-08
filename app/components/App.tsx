@@ -1,8 +1,14 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const { actionFunc } = require('../actions');
+import React from 'react';
+import PropTypes from 'prop-types';
+import { actionFunc } from '../actions';
 
 class App extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
+  static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    children: PropTypes.object.isRequired,
+  };
+
   // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
@@ -38,10 +44,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  children: PropTypes.object.isRequired,
-};
 
 module.exports = App;
