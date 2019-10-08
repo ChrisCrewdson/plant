@@ -1,11 +1,11 @@
 // Used to show a list of users.
 // Url: /users
 
-const React = require('react');
-const { Link } = require('react-router-dom');
-const PropTypes = require('prop-types');
-const utils = require('../../libs/utils');
-const Base = require('../base/Base');
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import utils from '../../libs/utils';
+import Base from '../base/Base';
 
 const { makeSlug } = utils;
 
@@ -16,18 +16,14 @@ class Users extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * @param {UsersProps} props
-   * @memberof Users
-   */
-  constructor(props) {
+  constructor(props: UsersProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context as {store: PlantStore};
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.onChange();
@@ -40,22 +36,25 @@ class Users extends React.Component {
   }
 
   onChange() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context as {store: PlantStore};
     const state = store.getState();
     const { users, locations } = state;
     this.setState({ users, locations });
   }
 
+  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
+  unsubscribe() {}
+
   /**
    * Render the users
-   * @param {UiUsersValue} user - user is from the users collection and not the loggedIn user
+   * @param user - user is from the users collection and not the loggedIn user
    */
-  renderUser(user) {
+  renderUser(user: UiUsersValue) {
     const { _id, name: userName, locationIds } = user;
     let link = `/locations/${makeSlug(userName)}/${_id}`;
 
     if (locationIds.length === 1) {
-      const { store } = /** @type {{store: PlantStore}} */ (this.context);
+      const { store } = this.context as {store: PlantStore};
       const state = store.getState();
       const { locations } = state;
       if (locations) {
@@ -82,7 +81,7 @@ class Users extends React.Component {
   }
 
   renderUsers() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context as {store: PlantStore};
     const { users } = store.getState();
     const userIds = Object.keys(users);
     if (userIds.length) {

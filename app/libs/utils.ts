@@ -565,7 +565,7 @@ function constantEquals(userSuppliedValue: string | undefined, internalValue: st
   return !mismatch;
 }
 
-module.exports = {
+const utils = {
   constantEquals,
   dateToInt,
   filterPlants,
@@ -591,5 +591,9 @@ module.exports = {
   sortPlants,
   transformErrors,
 };
+
+module.exports = utils;
+
+export default utils;
 
 // TODO: Move this file to a /shared/ folder.
