@@ -1,3 +1,5 @@
+import { UiActionType } from '../../../app/actions';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const { actionFunc, actionEnum } = require('../../../app/actions');
