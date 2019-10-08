@@ -3,7 +3,7 @@ interface NoteAssocPlantProps {
   dispatch: import('redux').Dispatch;
   error: string;
   plantIds: string[];
-  plants: Dictionary<UiPlantsValue>;
+  plants: Record<string, UiPlantsValue>;
 }
 
 interface NoteAssocPlantState {

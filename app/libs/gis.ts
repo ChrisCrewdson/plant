@@ -82,7 +82,7 @@ function scaleToCanvas(immutablePlants: UiPlants, width: number): UiPlantLocatio
       };
     }
     return acc;
-  }, {} as Dictionary<UiPlantLocation>);
+  }, {} as Record<string, UiPlantLocation>);
   return seamless.from({
     plants,
     canvasHeight,

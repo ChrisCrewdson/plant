@@ -11,7 +11,7 @@ const plantsApi = require('./api-plants');
 const userApi = require('./api-user');
 const rss = require('./rss');
 
-const shortMap: Dictionary<string> = {
+const shortMap: Record<string, string> = {
   guy: '/location/guy-ellis-yard/5851d7d52967c2153ab6c856',
   prea: '/location/preashni-aheer-yard/5851d7d52967c2153ab6c857',
 };

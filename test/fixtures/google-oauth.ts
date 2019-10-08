@@ -1,5 +1,5 @@
 
-const requests: Dictionary<object> = {
+const requests: Record<string, object> = {
   'accounts.google.com': {
     options: {
       host: 'accounts.google.com',

@@ -48,7 +48,7 @@ interface InputComboProps {
   style?: React.CSSProperties;
   type?: InputComboPropsType;
   value: string | number | boolean;
-  options?: Dictionary<string>;
+  options?: Record<string, string>;
 }
 
 interface SelectComboProps {
@@ -63,7 +63,7 @@ interface SelectComboProps {
   placeholder?: string;
   style?: React.CSSProperties;
   value: string | number | boolean;
-  options?: Dictionary<string>;
+  options?: Record<string, string>;
 }
 
 declare type GridCellInputType = 'select' | 'boolean' | 'text';
@@ -73,7 +73,7 @@ interface GridCellProps {
   editId?: string;
   error: string;
   index: number;
-  options?: Dictionary<string>;
+  options?: Record<string, string>;
   rowId: string;
   title: string;
   type: GridCellInputType;
@@ -102,7 +102,7 @@ interface EditDeleteButtonsProps {
 }
 
 interface GridPropsColumn {
-  options?: Dictionary<string>; // Might not be right
+  options?: Record<string, string>; // Might not be right
   title: string;
   type: string;
   width: number;
@@ -140,7 +140,7 @@ interface GridState {
 }
 
 interface GridColumn {
-  options?: Dictionary<string>;
+  options?: Record<string, string>;
   title: string;
   type: string;
   width: number;

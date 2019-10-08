@@ -51,13 +51,6 @@ interface Geo {
 
 type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
 
-/**
- * An interface mapping string indexes to T values in an object
- */
-interface Dictionary<T> {
-  [key: string]: T;
-}
-
 interface AwsKey {
   Key: string;
 }
@@ -90,7 +83,7 @@ interface DerivedMulterFile {
  * Used by tests making HTTP requests to specify the options for the request
  */
 interface HelperMakeRequestOptions {
-  headers?: Dictionary<string>;
+  headers?: Record<string, string>;
   authenticate: boolean;
   followRedirect?: boolean;
   url: string;
@@ -133,7 +126,7 @@ interface AjaxOptions {
  * It returns an object that has the "type" and "payload" props.
  * This is the PlantAction<T> object
  */
-declare type ActionMethod = (payload?: Dictionary<any> | string) => PlantRedux.PlantAction;
+declare type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
 
 /**
  * Also using this for AddLocationButtonProps

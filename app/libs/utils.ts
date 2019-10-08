@@ -163,7 +163,7 @@ function filterPlants(plantIds: string[], plants: object, filter: string | undef
  * @param items - a object that has ids as props
  * @returns - true if already sorted otherwise false
  */
-function alreadySorted(prop: string, itemIds: string[], items: Dictionary<any>): boolean {
+function alreadySorted(prop: string, itemIds: string[], items: Record<string, any>): boolean {
   return itemIds.every((itemId, index) => {
     if (index === 0) {
       return true;
@@ -190,7 +190,7 @@ function alreadySorted(prop: string, itemIds: string[], items: Dictionary<any>):
  * @param items - an object with MongoIds as keys. The values are objects.
  * @returns - an immutable array of sorted itemIds
  */
-function sortItems(prop: string, itemIds: string[], items: Dictionary<any>): Array<any> {
+function sortItems(prop: string, itemIds: string[], items: Record<string, any>): Array<any> {
   // TODO: Memoize this method.
   if (!itemIds || !itemIds.length) {
     return itemIds || [];
@@ -230,7 +230,7 @@ function sortItems(prop: string, itemIds: string[], items: Dictionary<any>): Arr
  * @param notes - an object with MongoIds as keys. The values are note objects.
  * @returns - an immutable array of sorted noteIds
  */
-function sortNotes(noteIds: string[], notes: Dictionary<any>): string[] {
+function sortNotes(noteIds: string[], notes: Record<string, any>): string[] {
   // TODO: Memoize this method
   return sortItems('date', noteIds, notes);
 }
@@ -241,7 +241,7 @@ function sortNotes(noteIds: string[], notes: Dictionary<any>): string[] {
  * @param plants - all the plants available to sort
  * @returns - an immutable array of sorted plantIds
  */
-function sortPlants(plantIds: string[], plants: Dictionary<any>): string[] {
+function sortPlants(plantIds: string[], plants: Record<string, any>): string[] {
   // TODO: Memoize this method
   return sortItems('title', plantIds, plants);
 }
@@ -253,7 +253,8 @@ function sortPlants(plantIds: string[], plants: Dictionary<any>): string[] {
  * @param filter - optional text to filter title of plant
  * @returns - an array of sorted and filtered plantIds
  */
-function filterSortPlants(plantIds: string[], plants: Dictionary<any>, filter: string): string[] {
+function filterSortPlants(plantIds: string[], plants: Record<string, any>, filter: string):
+string[] {
   const filteredPlantIds = filterPlants(plantIds, plants, filter);
 
   return sortPlants(filteredPlantIds, plants);
@@ -264,7 +265,7 @@ function filterSortPlants(plantIds: string[], plants: Dictionary<any>, filter: s
  * @param plantIds
  * @param plants
  */
-function plantStats(plantIds: string[], plants: Dictionary<any>) {
+function plantStats(plantIds: string[], plants: Record<string, any>) {
   return {
     total: plantIds.length,
     alive: plantIds.reduce((acc, plantId) => {
@@ -279,16 +280,17 @@ function plantStats(plantIds: string[], plants: Dictionary<any>) {
  * @param errors - values are arrays
  * @returns - first element of value for each key
  */
-function transformErrors(errors: Dictionary<string[]> | undefined): Dictionary<string> | undefined {
+function transformErrors(errors: Record<string, string[]> | undefined):
+ Record<string, string> | undefined {
   if (!errors) {
     return errors as undefined;
   }
   return Object.keys(errors).reduce(
-    (acc: Dictionary<string>, key: string) => {
+    (acc: Record<string, string>, key: string) => {
       // Assign first element of errors[key] (which is an array) to acc[key]
       [acc[key]] = errors[key];
       return acc;
-    }, /** @type {Dictionary<string>} */ ({}));
+    }, /** @type {Record<string, string>} */ ({}));
 }
 
 /**

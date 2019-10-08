@@ -12,8 +12,8 @@ interface DbLocation {
   _id: import('mongodb').ObjectID;
   createdBy: import('mongodb').ObjectID;
   loc?: Geo;
-  members: Dictionary<Role>;
-  stations?: Dictionary<DbLocationStationObj>;
+  members: Record<string, Role>;
+  stations?: Record<string, DbLocationStationObj>;
   title: string;
 }
 
@@ -83,8 +83,8 @@ interface UiLocationsValue {
   _id: string;
   loc: UiLocationsLoc;
   createdBy: string;
-  members: Dictionary<Role>;
-  stations: Dictionary<UiLocationsStation>;
+  members: Record<string, Role>;
+  stations: Record<string, UiLocationsStation>;
   title: string;
   plantIds: string[];
 }

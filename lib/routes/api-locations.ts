@@ -18,7 +18,7 @@ const {
   UPSERT_LOCATION_WEATHER,
   DELETE_LOCATION_MEMBER,
   DELETE_LOCATION_WEATHER,
-} = actions.actionEnum as Dictionary<UiActionType>;
+} = actions.actionEnum as Record<string, UiActionType>;
 
 /**
  * Return a 500 response to caller
@@ -75,13 +75,13 @@ module.exports = (app: Application) => {
   /**
    * Returns true if the loggedInMember is an owner.
    * Throws an error message if not an owner or not logged in.
-   * @param {Dictionary<Role>} members - key is userId and value is role
+   * @param {Record<string, Role>} members - key is userId and value is role
    * @param {string} loggedInUserId - userId of logged in user
    * @param {string} locationId
    * @param {string} methodName - caller's method name - used for logging
    * @returns {boolean} - true if member is owner or throws
    */
-  function checkLocationOwner(members: Dictionary<Role>,
+  function checkLocationOwner(members: Record<string, Role>,
     loggedInUserId: string, locationId: string, methodName: string): boolean {
     if (!members[loggedInUserId]) {
       throw new Error(`logged in user ${loggedInUserId} is not a member of location ${locationId} in ${methodName}`);
@@ -166,14 +166,14 @@ module.exports = (app: Application) => {
     return mongo.updateLocationById(modifiedLocation, loggedInUserId, logger);
   }
 
-  /** @type {Dictionary<UpsertLocationMemberFnBound>} */
-  const modifyMemberActions: Dictionary<UpsertLocationMemberFnBound> = {
+  /** @type {Record<string, UpsertLocationMemberFnBound>} */
+  const modifyMemberActions: Record<string, UpsertLocationMemberFnBound> = {
     [UPSERT_LOCATION_MEMBER]: upsertLocationMember.bind(null, UPSERT_LOCATION_MEMBER),
     [DELETE_LOCATION_MEMBER]: upsertLocationMember.bind(null, DELETE_LOCATION_MEMBER),
   };
 
-  /** @type {Dictionary<UpsertLocationWeatherFnBound>} */
-  const modifyWeatherActions: Dictionary<UpsertLocationWeatherFnBound> = {
+  /** @type {Record<string, UpsertLocationWeatherFnBound>} */
+  const modifyWeatherActions: Record<string, UpsertLocationWeatherFnBound> = {
     [UPSERT_LOCATION_WEATHER]: upsertLocationWeather.bind(null, UPSERT_LOCATION_WEATHER),
     [DELETE_LOCATION_WEATHER]: upsertLocationWeather.bind(null, DELETE_LOCATION_WEATHER),
   };

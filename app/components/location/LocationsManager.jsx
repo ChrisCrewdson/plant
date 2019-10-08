@@ -40,7 +40,7 @@ const weatherColumns = [{
 
 /**
  *
- * @param {Dictionary<Role>} members
+ * @param {Record<string, Role>} members
  */
 const getMembers = (members) => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
@@ -51,7 +51,7 @@ const getMembers = (members) => Object.keys(members || {}).map((_id) => {
 });
 
 /**
- * @param {Dictionary<UiLocationsStation>} stations
+ * @param {Record<string, UiLocationsStation>} stations
  */
 const getStations = (stations) => Object.keys(stations || {}).map((_id) => {
   const { name, enabled } = stations[_id];
@@ -131,7 +131,7 @@ class LocationsManager extends React.Component {
       const { _id, name } = props.users[userId];
       acc[_id] = name;
       return acc;
-    }, /** @type {Dictionary<string>} */ ({}));
+    }, /** @type {Record<string, string>} */ ({}));
     userColumns[0].options['<select>'] = '<select>';
   }
 

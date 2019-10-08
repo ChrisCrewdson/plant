@@ -88,7 +88,7 @@ class NoteAssocPlant extends React.Component {
   /**
    * Render Plant Buttons
    * @param {string[]} plantIds
-   * @param {Dictionary<UiPlantsValue>} plants
+   * @param {Record<string, UiPlantsValue>} plants
    * @param {boolean} selected
    * @returns {Array<> | null}
    * @memberof NoteAssocPlant

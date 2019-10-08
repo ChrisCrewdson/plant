@@ -170,7 +170,7 @@ class PlantEdit extends React.Component {
     const locationIdTitleMap = locationIds.reduce((acc, locationId) => {
       acc[locationId] = (locations[locationId] || {}).title;
       return acc;
-    }, /** @type {Dictionary<string>} */ ({}));
+    }, /** @type {Record<string, string>} */ ({}));
     // activeLocationId is the one that you last viewed which might not be
     // one that you own/manage. Only set locationId to this if it's one that
     // is in the locationIds list.

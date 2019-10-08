@@ -23,7 +23,7 @@ class NoteEditMetrics extends React.PureComponent {
     this.renderToggle = this.renderToggle.bind(this);
     this.renderWeight = this.renderWeight.bind(this);
 
-    /** @type {Dictionary<Function>} */
+    /** @type {Record<string, Function>} */
     this.metricTypes = Object.freeze({
       length: this.renderLength,
       count: this.renderCount,

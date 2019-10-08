@@ -55,7 +55,7 @@ interface BizPlant extends Omit<DbPlant, '_id' | 'locationId' | 'userId'> {
 
 interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId'> {
   _id?: string;
-  errors?: Dictionary<string>;
+  errors?: Record<string, string>;
   isNew?: boolean;
   isTerminated?: boolean;
 
@@ -117,7 +117,7 @@ interface UiPlantLocation {
 
 interface UiPlantLocationCanvas {
   canvasHeight: number;
-  plants: Dictionary<UiPlantLocation>;
+  plants: Record<string, UiPlantLocation>;
 }
 
 interface PlantPropsParams {

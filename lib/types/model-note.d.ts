@@ -134,7 +134,7 @@ interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
    * file there are validation tests that confirms that it's not a string.
    */
   date?: number;
-  errors?: Dictionary<string>;
+  errors?: Record<string, string>;
   isNew?: boolean;
   plant?: UiPlantsValue;
   uploadProgress?: UiInterimUploadProgress;

@@ -63,7 +63,7 @@ declare type UiActionsEnum = { [key in UiActionType]: string; }
  * It returns an object that has the "type" and "payload" props.
  * This is the PlantAction<T> object
  */
-declare type ActionMethod = (payload?: Dictionary<any> | string) => PlantRedux.PlantAction;
+declare type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
 
 interface UiActionsFunction {
   [key: string]: ActionMethod;

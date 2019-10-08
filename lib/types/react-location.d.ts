@@ -8,8 +8,8 @@ interface LocationsManagerRowUpdateRow {
 
 interface LocationsManagerRowUpdateMetaLocation {
   _id: string;
-  members: Dictionary<Role>;
-  stations?: Dictionary<UiLocationsStation>;
+  members: Record<string, Role>;
+  stations?: Record<string, UiLocationsStation>;
 }
 
 interface LocationsManagerRowUpdateMeta {
@@ -79,8 +79,8 @@ interface LocationProps {
 
 interface LocationState {
   filter: string;
-  locations?: Dictionary<UiLocationsValue>;
-  allLoadedPlants?: Dictionary<UiPlantsValue>;
+  locations?: Record<string, UiLocationsValue>;
+  allLoadedPlants?: Record<string, UiPlantsValue>;
   interim?: UiInterim;
   authUser?: UiUsersValue;
 }

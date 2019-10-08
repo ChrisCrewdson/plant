@@ -7,13 +7,21 @@
     },
     "cSpell.words": [
         "Dropzone",
+        "KHTML",
         "Plaaant",
+        "Rebases",
         "YYYYMMDD",
+        "appender",
         "bson",
         "camelcase",
+        "coordindates",
         "datetime",
+        "esnext",
+        "fieldname",
         "gmail",
         "johnsmith",
+        "linebreak",
+        "locat",
         "noteid",
         "numericality",
         "originalname",
@@ -22,8 +30,11 @@
         "slugify",
         "subheader",
         "upsert",
+        "upserted",
+        "userid",
         "validatejs",
-        "validators"
+        "validators",
+        "vcenter"
     ],
     "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -12,7 +12,7 @@ function jqueryAjax(options: JQueryAjaxSettings) {
   return $.ajax(options);
 }
 
-const pending: Dictionary<boolean> = {};
+const pending: Record<string, boolean> = {};
 
 /**
  * Flags a URL as waiting on a response from the server to prevent an identical second

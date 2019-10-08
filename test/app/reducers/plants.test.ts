@@ -110,7 +110,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load a plant', () => {
-    const expected: Dictionary<object> = {
+    const expected: Record<string, object> = {
       1: {
         _id: '1',
         name: 'one',
@@ -138,7 +138,7 @@ describe('/app/reducers/plants', () => {
   });
 
   test('should load multiple plants', () => {
-    const expected: Dictionary<object> = {
+    const expected: Record<string, object> = {
       1: {
         _id: '1',
         name: 'one',
@@ -319,7 +319,7 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should flag that notes have been requested for a plant', () => {
-      const expected: Dictionary<object> = {
+      const expected: Record<string, object> = {
         1: { },
       };
       const payload = {
@@ -355,7 +355,7 @@ describe('/app/reducers/plants', () => {
     });
 
     test('should return original state if notes do not have plantIds', () => {
-      const expected: Dictionary<object> = {
+      const expected: Record<string, object> = {
         'p-1': {
           notes: ['n-7', 'n-8'],
         },
