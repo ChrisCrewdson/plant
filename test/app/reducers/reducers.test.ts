@@ -2,9 +2,24 @@ import si from 'seamless-immutable';
 import rootReducer from '../../../app/reducers';
 import { actionFunc } from '../../../app/actions';
 
+import { reducers as interimReducers } from '../../../app/reducers/interim';
+import { reducers as locationsReducers } from '../../../app/reducers/locations';
+import { reducers as notesReducers } from '../../../app/reducers/notes';
+import { reducers as plantsReducers } from '../../../app/reducers/plants';
+import { reducers as userReducers } from '../../../app/reducers/user';
+import { reducers as usersReducers } from '../../../app/reducers/users';
+
+const reducerModules = [
+  interimReducers,
+  locationsReducers,
+  notesReducers,
+  plantsReducers,
+  userReducers,
+  usersReducers,
+];
+
 // @ts-ignore
 const seamless = si.static;
-
 
 describe('/app/reducers', () => {
   test('should reduce a logout success', () => {
@@ -23,15 +38,13 @@ describe('/app/reducers', () => {
   });
 
   describe('sanity check all reducers', () => {
-    ['interim', 'locations', 'notes', 'plants', 'user', 'users']
-      .forEach((reducer) => {
-        test(`${reducer} should not have an undefined reducer`, () => {
-          // eslint-disable-next-line
-          const { reducers } = require(`../../../app/reducers/${reducer}`);
-          expect(reducers).toBeInstanceOf(Object);
-          expect(reducers.undefined).toBeUndefined();
-          Object.keys(reducers).forEach((reducerKey) => {
-            const value = reducers[reducerKey];
+    reducerModules
+      .forEach((reducerMap) => {
+        test(`${reducerMap} should not have an undefined reducer`, () => {
+          expect(reducerMap).toBeInstanceOf(Object);
+          expect(reducerMap.undefined).toBeUndefined();
+          Object.keys(reducerMap).forEach((reducerKey) => {
+            const value = reducerMap[reducerKey];
             expect(value).toBeInstanceOf(Function);
           });
         });

@@ -83,7 +83,7 @@ export const reducers = seamless.from({
 
   [actionEnum.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
 
-});
+}) as Record<string, (state: UiNotes, action: AnyAction) => UiNotes>;
 
 export const notes = (state: UiNotes = {}, action: AnyAction): UiNotes => {
   if (reducers[action.type]) {
