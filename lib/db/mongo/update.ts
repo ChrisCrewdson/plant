@@ -1,6 +1,5 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const Helper = require('./helper');
+import { Db, UpdateWriteOpResult, UpdateQuery } from 'mongodb';
+import { Helper } from './helper';
 
 /*
 MongoDB Driver v3.x changes to:
@@ -15,11 +14,15 @@ testCollection.updateOne({_id: 'test'}, {});
 // An error is returned: The update operation document must contain at least one atomic operator.
 */
 
+interface GenericUpdateQuery {
+  [key: string]: any;
+}
+
 module.exports = class Update {
-  static async updateOne(db: import('mongodb').Db, collection: DbCollectionName,
-    query: object, doc: object): Promise<import('mongodb').UpdateWriteOpResult> {
+  static async updateOne(db: Db, collection: DbCollectionName,
+    query: UpdateQuery<GenericUpdateQuery>, doc: object): Promise<UpdateWriteOpResult> {
     const coll = db.collection(collection);
-    const cleanedDoc = Helper.removeEmpty(doc);
+    const cleanedDoc = Helper.removeEmpty(doc) as UpdateQuery<GenericUpdateQuery>;
     const set = !cleanedDoc.$set && !cleanedDoc.$unset && !cleanedDoc.$rename
       ? { $set: cleanedDoc }
       : cleanedDoc;

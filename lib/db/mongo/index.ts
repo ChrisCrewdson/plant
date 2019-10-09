@@ -1,4 +1,5 @@
 import { MongoClient, ObjectID, Db } from 'mongodb';
+import { Helper } from './helper';
 
 const _ = require('lodash');
 const { produce } = require('immer');
@@ -12,7 +13,8 @@ const Update = require('./update');
 const remove = require('./delete');
 const utils = require('../../../app/libs/utils');
 const modelLocation = require('./model-location');
-const dbHelper = require('./helper');
+
+const dbHelper = Helper;
 
 const moduleName = 'lib/db/mongo/index';
 
@@ -218,10 +220,8 @@ class MongoDb {
           logger.error({ moduleName, msg: `Unexpected user.length: ${user.length}`, user });
         }
 
-        /**
-         * @type {BizUser}
-         */
-        const bizUser: BizUser = user && user.length > 0 && dbHelper.convertIdToString(user[0]);
+        const bizUser: BizUser = (user && user.length > 0
+          && dbHelper.convertIdToString(user[0])) as BizUser;
         return bizUser;
       };
 
@@ -531,14 +531,6 @@ class MongoDb {
     return convertedPlant;
   }
 
-  /**
-   * Create Plant
-   * @param {UiPlantsValue} plantIn
-   * @param {string} loggedInUserId
-   * @param {Logger} logger
-   * @returns {Promise<BizPlant>}
-   * @memberof MongoDb
-   */
   async createPlant(plantIn: UiPlantsValue, loggedInUserId: string, logger: Logger):
   Promise<BizPlant> {
     try {
@@ -573,12 +565,9 @@ class MongoDb {
    * Gets the plant document from the plant collection and sets the
    * notes property of this document to an array of notes queried
    * from the notes collection.
-   * @param {string} plantId - mongoId of plant to fetch
-   * @param {string|undefined} loggedInUserId - the id of the user currently logged in or falsy if
+   * @param plantId - mongoId of plant to fetch
+   * @param loggedInUserId - the id of the user currently logged in or falsy if
    *   anonymous request
-   * @param {Logger} logger
-   * @returns {Promise<Readonly<BizPlant>|undefined>}
-   * @memberof MongoDb
    */
   async getPlantById(plantId: string, loggedInUserId: string | undefined, logger: Logger):
   Promise<Readonly<BizPlant> | undefined> {
@@ -630,8 +619,6 @@ class MongoDb {
    * @param {string} locationId - the locationId to query against the plant collection.
    * @param {string|undefined} loggedInUserId - the id of the user currently logged in or
    *   falsy if anonymous request
-   * @param {Logger} logger
-   * @return {Promise<BizPlant|BizPlant[]|undefined>}
    */
   async getPlantsByLocationId(locationId: string, loggedInUserId: string | undefined,
     logger: Logger): Promise<BizPlant | BizPlant[] | undefined> {
@@ -664,14 +651,6 @@ class MongoDb {
     }
   }
 
-  /**
-   * Get Plants By IDs
-   * @param {String[]} ids
-   * @param {String|undefined|null} loggedInUserId
-   * @param {Logger} logger
-   * @returns {Promise<BizPlant|BizPlant[]>}
-   * @memberof MongoDb
-   */
   async getPlantsByIds(ids: string[], loggedInUserId: string | undefined | null, logger: Logger):
    Promise<BizPlant | BizPlant[]> {
     try {
@@ -691,14 +670,6 @@ class MongoDb {
 
   // Plant U: updatePlant
 
-  /**
-   * Update Plant
-   * @param {BizPlant|UiPlantsValue} plantIn
-   * @param {string} loggedInUserId
-   * @param {Logger} logger
-   * @returns {Promise<BizPlant>}
-   * @memberof MongoDb
-   */
   async updatePlant(plantIn: BizPlant | UiPlantsValue, loggedInUserId: string, logger: Logger):
    Promise<BizPlant> {
     try {
@@ -730,10 +701,9 @@ class MongoDb {
    * Removes the plant from the plant collection and also removes any notes that
    * reference this plant only. Any notes that reference multiple plants will be
    * updated and the reference to that plant removed.
-   * @param {string} id - Id of plant to delete
-   * @param {string} userIdParam - Id of user that plant belongs to
-   * @param {Logger} logger
-   * @returns {Promise<number|undefined>}
+   * @param id - Id of plant to delete
+   * @param userIdParam - Id of user that plant belongs to
+
    */
   async deletePlant(id: string, userIdParam: string, logger: Logger): Promise<number | undefined> {
     // Steps to delete a plant
@@ -815,10 +785,6 @@ class MongoDb {
   // Only used for testing - so far - needs to delete notes as well if to be used in prod
   /**
    * TEST ONLY METHOD: Delete All Plants By UserId
-   * @param {string} userIdParam
-   * @param {Logger} logger
-   * @returns {Promise<number|undefined>}
-   * @memberof MongoDb
    */
   async deleteAllPlantsByUserId(userIdParam: string, logger: Logger): Promise<number | undefined> {
     const db = await this.GetDb(logger);
@@ -834,9 +800,6 @@ class MongoDb {
 
   /**
    * Convert Note Data Types for Saving
-   * @param {BizNote|BizNoteNew} noteParam
-   * @returns {DbNote}
-   * @memberof MongoDb
    */
   // eslint-disable-next-line class-methods-use-this
   convertNoteDataTypesForSaving(noteParam: BizNote | BizNoteNew): DbNote {
@@ -907,13 +870,6 @@ class MongoDb {
 
   // Note R: getNoteById
 
-  /**
-   * Get Notes by Query
-   * @param {object} query
-   * @param {Logger} logger
-   * @returns {Promise<BizNote[]|undefined>}
-   * @memberof MongoDb
-   */
   async getNotesByQuery(query: object, logger: Logger): Promise<BizNote[] | undefined> {
     try {
       const db = await this.GetDb(logger);
@@ -935,13 +891,6 @@ class MongoDb {
     }
   }
 
-  /**
-   * Get Note by Query
-   * @param {object} query
-   * @param {Logger} logger
-   * @returns {Promise<BizNote|undefined>}
-   * @memberof MongoDb
-   */
   async getNoteByQuery(query: object, logger: Logger): Promise<BizNote | undefined> {
     try {
       const notes = await this.getNotesByQuery(query, logger);
@@ -958,13 +907,6 @@ class MongoDb {
     }
   }
 
-  /**
-   * Get Notes by Query
-   * @param {string=} id
-   * @param {Logger} logger
-   * @returns {Promise<BizNote|undefined>}
-   * @memberof MongoDb
-   */
   async getNoteById(id: string | undefined, logger: Logger): Promise<BizNote | undefined> {
     if (!id) {
       return undefined;
@@ -973,13 +915,6 @@ class MongoDb {
     return this.getNoteByQuery({ _id }, logger);
   }
 
-  /**
-   * Get Note by Image ID
-   * @param {string} imageId
-   * @param {Logger} logger
-   * @returns {Promise<BizNote|undefined>}
-   * @memberof MongoDb
-   */
   async getNoteByImageId(imageId: string, logger: Logger): Promise<BizNote | undefined> {
     const query = {
       images: { $elemMatch: { id: imageId } },
@@ -987,13 +922,6 @@ class MongoDb {
     return this.getNoteByQuery(query, logger);
   }
 
-  /**
-   * Get Notes by IDs
-   * @param {string[]} ids
-   * @param {Logger} logger
-   * @returns {Promise<BizNote[]|undefined>}
-   * @memberof MongoDb
-   */
   async getNotesByIds(ids: string[], logger: Logger): Promise<BizNote[] | undefined> {
     const query = {
       _id: { $in: ids.map((id) => new ObjectID(id)) },
@@ -1003,10 +931,6 @@ class MongoDb {
 
   /**
    * Get Notes Latest (Used for RSS)
-   * @param {number} qty
-   * @param {Logger} logger
-   * @returns {Promise<DbNoteWithPlants[]>}
-   * @memberof MongoDb
    */
   async getNotesLatest(qty: number, logger: Logger): Promise<DbNoteWithPlants[]> {
     // This method doesn't work with getNoteByQuery since we need .limit()
@@ -1112,13 +1036,6 @@ class MongoDb {
     }
   }
 
-  /**
-   * Add sizes to Note Image
-   * @param {NoteImageUpdateData} noteUpdate
-   * @param {Logger} logger
-   * @returns {Promise<void>}
-   * @memberof MongoDb
-   */
   async addSizesToNoteImage(noteUpdate: NoteImageUpdateData, logger: Logger): Promise<void> {
     try {
       const db = await this.GetDb(logger);
@@ -1148,13 +1065,6 @@ class MongoDb {
 
   // Note UI: upsertNote
 
-  /**
-   * Upsert Note
-   * @param {BizNote|BizNoteNew} note
-   * @param {Logger} logger
-   * @returns {Promise<BizNote>}
-   * @memberof MongoDb
-   */
   async upsertNote(note: BizNote | BizNoteNew, logger: Logger): Promise<BizNote> {
     try {
       const { _id } = note;
@@ -1172,14 +1082,6 @@ class MongoDb {
 
   // Note D: deleteNote
 
-  /**
-   * Delete Note
-   * @param {string} _id
-   * @param {string|undefined} userId
-   * @param {Logger} logger
-   * @returns {Promise<number|undefined>}
-   * @memberof MongoDb
-   */
   async deleteNote(_id: string, userId: string | undefined, logger: Logger):
    Promise<number | undefined> {
     try {
@@ -1206,13 +1108,6 @@ class MongoDb {
 
   // Location C: createLocation
 
-  /**
-   * Create Location
-   * @param {*} loc
-   * @param {Logger} logger
-   * @returns {Promise<Readonly<BizLocation>>}
-   * @memberof MongoDb
-   */
   async createLocation(loc: any, logger: Logger): Promise<Readonly<BizLocation>> {
     const db = await this.GetDb(logger);
     return modelLocation.createLocation({ db, loc, logger });
@@ -1220,12 +1115,6 @@ class MongoDb {
 
   // Location R: getLocationById
 
-  /**
-   * Get All Users
-   * @param {Logger} logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizUser>>>}
-   * @memberof MongoDb
-   */
   async getAllUsers(logger: Logger): Promise<ReadonlyArray<Readonly<BizUser>>> {
     try {
       const db = await this.GetDb(logger);
@@ -1266,12 +1155,6 @@ class MongoDb {
     });
   }
 
-  /**
-   * Get All Locations
-   * @param {Logger} logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
-   * @memberof MongoDb
-   */
   async getAllLocations(logger: Logger): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getAllLocations({ db, logger });
@@ -1279,49 +1162,23 @@ class MongoDb {
 
   /**
    * Get Location By ID - also gets other data besides just the location
-   * @param {string} id
-   * @param {Logger} logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
-   * @memberof MongoDb
    */
   async getLocationById(id: string, logger: Logger): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationById({ db, id, logger });
   }
 
-  /**
-   * Get Location By ID
-   * @param {string} id
-   * @param {Logger} logger
-   * @returns {Promise<BizLocation|undefined>}
-   * @memberof MongoDb
-   */
   async getLocationOnlyById(id: string, logger: Logger): Promise<BizLocation | undefined> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationOnlyById({ db, id, logger });
   }
 
-  /**
-   * Get locations by ids
-   * @param {string[]} ids
-   * @param {Logger} logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
-   * @memberof MongoDb
-   */
   async getLocationsByIds(ids: string[], logger: Logger):
   Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
     return modelLocation.getLocationsByIds({ db, ids, logger });
   }
 
-  /**
-   * Get locations by user ID
-   * @param {string} userId
-   * @param {object} options
-   * @param {Logger} logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
-   * @memberof MongoDb
-   */
   async getLocationsByUserId(userId: string, options: object, logger: Logger):
   Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);
@@ -1330,15 +1187,6 @@ class MongoDb {
     });
   }
 
-  /**
-   * Role at Location
-   * @param {string} locationId
-   * @param {string} userId
-   * @param {Role[]} roles
-   * @param {Logger} logger
-   * @returns {Promise<boolean>}
-   * @memberof MongoDb
-   */
   async roleAtLocation(locationId: string, userId: string, roles: Role[], logger: Logger):
   Promise<boolean> {
     const db = await this.GetDb(logger);
@@ -1349,14 +1197,6 @@ class MongoDb {
 
   // Location U: updateLocation
 
-  /**
-   * Update location by Id
-   * @param {BizLocation} location
-   * @param {string} loggedInUserId
-   * @param {Logger} logger
-   * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
-   * @memberof MongoDb
-   */
   async updateLocationById(location: BizLocation, loggedInUserId: string, logger: Logger):
   Promise<import('mongodb').UpdateWriteOpResult> {
     const db = await this.GetDb(logger);
@@ -1367,14 +1207,6 @@ class MongoDb {
 
   // Location D: deleteLocation
 
-  /**
-   * Delete location
-   * @param {string} _id
-   * @param {string} loggedInUserId
-   * @param {Logger} logger
-   * @returns {Promise<number|undefined>}
-   * @memberof MongoDb
-   */
   async deleteLocation(_id: string, loggedInUserId: string, logger: Logger):
   Promise<number | undefined> {
     const db = await this.GetDb(logger);
@@ -1387,10 +1219,8 @@ class MongoDb {
 
   /**
    * Read the documents from a collection
-   * @param {DbCollectionName} collection - the collection being read from
-   * @param {object} query - the filter to apply to the read
-   * @param {Logger} logger
-   * @returns {Promise<DbShapes|null>}
+   * @param collection - the collection being read from
+   * @param query - the filter to apply to the read
    */
   async queryByCollection(collection: DbCollectionName, query: object, logger: Logger):
   Promise<DbShapes | null> {
@@ -1433,15 +1263,10 @@ class MongoDb {
   // }
 }
 
-/**
- * @type {MongoDb}
- */
 let dbInstance: MongoDb;
 
 /**
  * gets the singleton instance of the DB class
- * @param {string=} connection
- * @returns {MongoDb}
  */
 export function getDbInstance(connection?: string): MongoDb {
   if (!dbInstance) {

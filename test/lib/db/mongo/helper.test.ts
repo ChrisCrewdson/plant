@@ -1,11 +1,11 @@
 // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 import si from 'seamless-immutable';
+import { Helper } from '../../../../lib/db/mongo/helper';
 
 // @ts-ignore
 const seamless = si.static;
 
-const Helper = require('../../../../lib/db/mongo/helper');
 
 describe('/lib/db/mongo/helper', () => {
   describe('removeEmpty', () => {

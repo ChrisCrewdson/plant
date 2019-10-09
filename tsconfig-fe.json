@@ -9,6 +9,8 @@
     "noEmit": false,
     "moduleResolution": "node",
     "outDir": "./build",
+    "sourceMap": true,
+    "strict": true,
     "target": "es6",
   }
 }

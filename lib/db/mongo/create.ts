@@ -1,6 +1,4 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const Helper = require('./helper');
+import { Helper } from './helper';
 
 // See https://stackoverflow.com/a/36794912/1463
 // for a description of insertOne/insertMany/bulkWrite

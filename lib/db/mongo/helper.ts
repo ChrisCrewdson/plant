@@ -1,12 +1,9 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const _ = require('lodash');
 
-module.exports = class Helper {
+export class Helper {
   /**
    * Removes empty string values from properties
-   * @param {object|array} doc - an object with props that might have empty string values
-   * @returns {object|array}
+   * @param doc - an object with props that might have empty string values
    */
   static removeEmpty(doc: object | Array<any>): object | Array<any> {
     if (!doc) {
@@ -20,8 +17,8 @@ module.exports = class Helper {
 
   /**
    * Helper function to convert _id from MongoId to string. Used in reads
-   * @param {object} obj - Object that might have an _id
-   * @returns {object} - the same object with a converted _id
+   * @param obj - Object that might have an _id
+   * @returns - the same object with a converted _id
    */
   static convertIdToString(obj: any): object {
     if (_.isArray(obj)) {
@@ -33,4 +30,4 @@ module.exports = class Helper {
     }
     return obj;
   }
-};
+}
