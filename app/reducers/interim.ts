@@ -1,12 +1,12 @@
 // The most difficult part of creating this module was naming it.
 // "interim" is the least worst of all the bad names I came up with.
 
+import si from 'seamless-immutable';
 import { AnyAction } from 'redux';
 import { actionEnum } from '../actions';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 
 function editNoteOpen(state: UiInterim, action: AnyAction): UiInterim {
 //  * @param {UiNotesValue} action.payload

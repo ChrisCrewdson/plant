@@ -1,6 +1,7 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import si from 'seamless-immutable';
 
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 const locations = require('../../../app/reducers/locations');
 const { actionFunc } = require('../../../app/actions');
 

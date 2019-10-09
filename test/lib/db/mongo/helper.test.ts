@@ -1,6 +1,10 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+// To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const seamless = require('seamless-immutable').static;
+import si from 'seamless-immutable';
+
+// @ts-ignore
+const seamless = si.static;
+
 const Helper = require('../../../../lib/db/mongo/helper');
 
 describe('/lib/db/mongo/helper', () => {

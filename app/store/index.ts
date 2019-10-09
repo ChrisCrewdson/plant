@@ -1,8 +1,10 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import si from 'seamless-immutable';
 
 const { createStore, applyMiddleware } = require('redux');
 
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
+
 const reducers = require('../reducers'); // combineReducers already called on reducers in her)e
 const api = require('../middleware/api');
 const { setupSubscribe: userSubscribe } = require('./user');

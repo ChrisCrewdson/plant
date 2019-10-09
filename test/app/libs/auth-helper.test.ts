@@ -1,8 +1,10 @@
+import si from 'seamless-immutable';
 import * as helper from '../../helper';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 const authHelper = require('../../../app/libs/auth-helper');
 
 describe('/app/libs/auth-helper', () => {

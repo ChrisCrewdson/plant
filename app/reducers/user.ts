@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
+import si from 'seamless-immutable';
 import { actionEnum } from '../actions';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 const { initialState } = require('../store/user');
 
 function logoutRequest() {

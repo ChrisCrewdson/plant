@@ -1,3 +1,4 @@
+import si from 'seamless-immutable';
 import { Store } from 'redux';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
@@ -7,7 +8,8 @@ export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 // 1. Listen to state changes.
 // 2. If the user object has changed then write to localStorage
 // @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 
 let user: UiUser;
 

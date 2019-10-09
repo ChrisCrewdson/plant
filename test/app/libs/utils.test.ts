@@ -1,7 +1,8 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import si from 'seamless-immutable';
 
 const moment = require('moment');
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 

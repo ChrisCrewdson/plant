@@ -1,7 +1,9 @@
+import si from 'seamless-immutable';
 import { ssrRenderArticle } from './article-render';
 
 const { createStore } = require('redux');
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
 const { deepOrange500 } = require('material-ui/styles/colors');
 const appReducers = require('../../app/reducers');

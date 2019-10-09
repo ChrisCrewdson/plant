@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
+import si from 'seamless-immutable';
 import { actionEnum } from '../actions';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.

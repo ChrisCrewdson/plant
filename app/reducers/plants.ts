@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import uniq from 'lodash/uniq';
+import si from 'seamless-immutable';
 import { actionEnum } from '../actions';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
@@ -9,7 +10,8 @@ export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 // If a user is logged in then some of the items in the array
 // might be plants belonging to the user.
 
-const seamless = require('seamless-immutable').static;
+// @ts-ignore
+const seamless = si.static;
 
 /**
  * This is a helper function for when the action.payload holds a new plant
