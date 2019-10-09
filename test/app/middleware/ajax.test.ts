@@ -1,6 +1,6 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const helper = require('../../helper');
+import { Store } from 'redux';
+import * as helper from '../../helper';
+import { ajax } from '../../../app/middleware/ajax';
 
 let ajaxCallCounter: number;
 let opts: JQueryAjaxSettings;
@@ -12,11 +12,10 @@ jest.mock('jquery', () => ({
   },
 }));
 
-const ajax = require('../../../app/middleware/ajax');
 
 describe('/app/middleware/ajax', () => {
   test('should return an object if data is object', (done) => {
-    const store: import('redux').Store = helper.getFakeStore();
+    const store: Store = helper.getFakeStore();
     const options = {
       url: '/something',
       success: () => {},

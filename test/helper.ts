@@ -18,7 +18,7 @@ const serverModule = require('../lib/server');
 
 const data = {} as HelperData;
 
-function getUrl(url: string) {
+export function getUrl(url: string) {
   if ((url || '').startsWith('http')) {
     return url;
   }
@@ -39,7 +39,7 @@ const isPutOrPost = (method: string) => {
   return methodLower === 'put' || methodLower === 'post';
 };
 
-async function makeRequest(opts: HelperMakeRequestOptions) {
+export async function makeRequest(opts: HelperMakeRequestOptions) {
   // fetch is fetch-cookie which will manage the authenticated session cookie.
   // nodeFetch is plain fetch that will not have a cookie.
   const fetcher = opts.authenticate ? fetch : nodeFetch;
@@ -80,7 +80,7 @@ let localServer: Server|undefined;
  * Starts an authenticated server
  * @returns {Promise<HelperData>}
  */
-async function startServerAuthenticated(): Promise<HelperData> {
+export async function startServerAuthenticated(): Promise<HelperData> {
   const port = 3000 + parseInt(process.env.JEST_WORKER_ID || '1', 10);
   async function emptyDatabase() {
     const db = await mongo.GetDb(mockLogger);
@@ -139,7 +139,7 @@ async function startServerAuthenticated(): Promise<HelperData> {
   return data;
 }
 
-const stopServer = async () => new Promise((resolve, reject) => {
+export const stopServer = async () => new Promise((resolve, reject) => {
   if (localServer) {
     localServer.close(
       (err: Error|undefined|null) => (err ? reject(err) : resolve()));
@@ -153,7 +153,7 @@ const stopServer = async () => new Promise((resolve, reject) => {
  * @param {string} locationId - Location Id at which to create the plants
  * @returns {Promise<BizPlant[]>}
  */
-async function createPlants(numPlants: number, userId: string, locationId: string):
+export async function createPlants(numPlants: number, userId: string, locationId: string):
   Promise<BizPlant[]> {
   const plantTemplate = {
     title: 'Plant Title',
@@ -189,7 +189,7 @@ async function createPlants(numPlants: number, userId: string, locationId: strin
   return Promise.all(promises);
 }
 
-async function createNote(plantIds: string[], noteOverride = {}) {
+export async function createNote(plantIds: string[], noteOverride = {}) {
   expect(_.isArray(plantIds)).toBeTruthy();
   const noteTemplate = {
     note: 'This is a note',
@@ -215,14 +215,14 @@ async function createNote(plantIds: string[], noteOverride = {}) {
   return httpMsg;
 }
 
-const getFakeStore = (): Store => ({
+export const getFakeStore = (): Store => ({
   dispatch: jest.fn(),
   getState: jest.fn(),
   replaceReducer: jest.fn(),
   subscribe: jest.fn(),
 });
 
-const expectMongoId = (values: string[]) => {
+export const expectMongoId = (values: string[]) => {
   values.forEach((value) => expect(constants.mongoIdRE.test(value)).toBe(true));
 };
 

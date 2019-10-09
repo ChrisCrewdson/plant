@@ -1,13 +1,15 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import { Store } from 'redux';
 
-const { actionEnum } = require('../../../app/actions');
-const helper = require('../../helper');
+import { actionEnum } from '../../../app/actions';
+import * as helper from '../../helper';
 
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-let ajax = (store: import('redux').Store, options: AjaxOptions) => {};
+let ajaxer = (store: Store, options: AjaxOptions) => {};
 
-const mockAjax = (store: import('redux').Store, options: AjaxOptions) => {
-  ajax(store, options);
+const mockAjax = {
+  ajax: (store: Store, options: AjaxOptions) => {
+    ajaxer(store, options);
+  },
 };
 
 jest.mock('../../../app/middleware/ajax', () => mockAjax);
@@ -21,7 +23,7 @@ describe('/app/middleware/api', () => {
     const next = () => {};
     let callCounter = 0;
 
-    ajax = (state, options) => {
+    ajaxer = (state, options) => {
       expect(typeof options.url).toBe('string');
       expect(options.success).toBeInstanceOf(Function);
       expect(options.failure).toBeInstanceOf(Function);
@@ -51,7 +53,7 @@ describe('/app/middleware/api', () => {
       const store = helper.getFakeStore();
       const next = () => {};
       let callCounter = 0;
-      ajax = (state, options) => {
+      ajaxer = (state, options) => {
         expect(options.contentType).toBe('multipart/form-data');
         expect(options.data.append).toBeInstanceOf(Function);
         expect(options.failure).toBeInstanceOf(Function);

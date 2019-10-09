@@ -5,12 +5,10 @@ import {
   Action,
   Dispatch,
   Store,
+  AnyAction,
 } from 'redux';
-
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const { actionEnum, actionFunc } = require('../actions');
-const ajax = require('./ajax');
+import { actionEnum, actionFunc } from '../actions';
+import { ajax } from './ajax';
 
 function logoutRequest(store: Store /* , action */) {
   const options: AjaxOptions = {
@@ -305,8 +303,12 @@ interface ModifyLocationRequestAction {
 /**
  * Entry point for inserting/updating/deleting a part of a location document.
  */
-function modifyLocationRequest(store: object | null, action: ModifyLocationRequestAction,
-  next: Function) {
+function modifyLocationRequest(store: Store<any, AnyAction> | null,
+  action: ModifyLocationRequestAction, next: Function) {
+  if (!store) {
+    return next(action);
+  }
+
   const { payload: data } = action;
 
   const options: AjaxOptions = {

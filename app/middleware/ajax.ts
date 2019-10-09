@@ -1,9 +1,6 @@
 import { Store } from 'redux';
 import isFunction from 'lodash/isFunction';
-
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const $ = require('jquery');
+import $ from 'jquery';
 
 /**
  * Make the AJAX call to the server
@@ -41,7 +38,7 @@ function clearPending(options: JQueryAjaxSettings): void {
   }
 }
 
-module.exports = (store: Store, options: AjaxOptions) => {
+export const ajax = (store: Store, options: AjaxOptions) => {
   if (!options.url || !isFunction(options.success) || !isFunction(options.failure)) {
     // console.error('Invalid options for ajax:', options);
   }
