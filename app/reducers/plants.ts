@@ -226,7 +226,8 @@ function loadNotesSuccess(state: UiPlants, { payload: notes }: AnyAction): UiPla
     }, {}));
 }
 
-const reducers = {
+// This is only exported for testing
+export const reducers = {
   [actionEnum.CREATE_PLANT_FAILURE]: ajaxPlantFailure,
   [actionEnum.CREATE_PLANT_REQUEST]: createPlantRequest,
   [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
@@ -246,13 +247,10 @@ const reducers = {
 /**
  * The plants reducer
  */
-module.exports = (state: UiPlants = seamless.from({}), action: AnyAction): UiPlants => {
+export const plants = (state: UiPlants = seamless.from({}), action: AnyAction): UiPlants => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
 
   return state;
 };
-
-// This is only exported for testing
-module.exports.reducers = reducers;

@@ -1,4 +1,5 @@
 import { ssrRenderPlant } from './plant-render';
+import appReducers from '../../app/reducers';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
@@ -7,7 +8,6 @@ const { createStore } = require('redux');
 const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
 const { deepOrange500 } = require('material-ui/styles/colors');
 const singlePlant = require('../db/single-plant');
-const appReducers = require('../../app/reducers');
 const indexHtml = require('.');
 
 const moduleName = 'lib/render/plant';

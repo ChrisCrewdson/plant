@@ -65,7 +65,8 @@ function changeActiveLocationId(state: UiUser, { payload }: AnyAction): UiUser {
   return seamless.set(state, 'activeLocationId', _id);
 }
 
-const reducers = {
+// This is only exported for testing
+export const reducers = {
   [actionEnum.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
   [actionEnum.LOGOUT_FAILURE]: logoutFailure,
   [actionEnum.LOGOUT_REQUEST]: logoutRequest,
@@ -76,7 +77,7 @@ const reducers = {
 /**
  * The user reducer
  */
-module.exports = (state: UiUser, action: PlantRedux.PlantAction): UiUser => {
+export const user = (state: UiUser, action: PlantRedux.PlantAction): UiUser => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
@@ -87,6 +88,3 @@ module.exports = (state: UiUser, action: PlantRedux.PlantAction): UiUser => {
 
   return state;
 };
-
-// This is only exported for testing
-module.exports.reducers = reducers;

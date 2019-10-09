@@ -1,9 +1,10 @@
 import { getDbInstance } from '../../../lib/db/mongo';
 import * as helper from '../../helper';
 
+import utils from '../../../app/libs/utils';
+import { mockLogger } from '../../mock-logger';
+
 const mongo = getDbInstance();
-const utils = require('../../../app/libs/utils');
-const { mockLogger } = require('../../mock-logger');
 
 describe('plant-api-delete', () => {
   let userId: string;

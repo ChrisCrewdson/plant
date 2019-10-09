@@ -1,6 +1,5 @@
 import * as helper from '../../helper';
-
-const constants = require('../../../app/libs/constants');
+import * as constants from '../../../app/libs/constants';
 
 describe('plant-api', () => {
   let user: BizUser;

@@ -94,7 +94,8 @@ function deletePlantRequest(state: UiLocations, { payload: { locationId, plantId
 //   return state;
 // }
 
-const reducers = {
+// This is only exported for testing
+export const reducers = {
   // [actionEnum.CREATE_LOCATION_REQUEST]: createLocationRequest,
   [actionEnum.CREATE_PLANT_REQUEST]: createPlantRequest,
   // [actionEnum.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
@@ -105,13 +106,10 @@ const reducers = {
   // [actionEnum.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
-module.exports = (state: UiLocations = seamless({}), action: AnyAction): UiLocations => {
+export const locations = (state: UiLocations = seamless({}), action: AnyAction): UiLocations => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
 
   return state;
 };
-
-// This is only exported for testing
-module.exports.reducers = reducers;

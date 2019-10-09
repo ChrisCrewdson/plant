@@ -2,8 +2,6 @@ import { AnyAction } from 'redux';
 import si from 'seamless-immutable';
 import { actionEnum } from '../actions';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 // @ts-ignore
 const seamless = si.static;
 
@@ -107,7 +105,8 @@ function loadUserSuccess(state: UiUsers, action: AnyAction): UiUsers {
 //   }
 // }
 
-const reducers = {
+// This is only exported for testing
+export const reducers = {
   // [actionEnum.CREATE_LOCATION_REQUEST]: createLocationRequest,
   // [actionEnum.DELETE_LOCATION_REQUEST]: deleteLocationRequest,
   // [actionEnum.LOAD_LOCATIONS_SUCCESS]: loadLocationsSuccess,
@@ -118,16 +117,13 @@ const reducers = {
 /**
  * The action.payload is the returned user from the server.
  */
-module.exports = (state: UiUsers = seamless.from({}), action: AnyAction): UiUsers => {
+export const users = (state: UiUsers = seamless.from({}), action: AnyAction): UiUsers => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
 
   return state;
 };
-
-// This is only exported for testing
-module.exports.reducers = reducers;
 
 // This state is an object with userId's as keys and each value is an object with:
 // _id

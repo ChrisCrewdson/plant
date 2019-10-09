@@ -1,15 +1,12 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import { combineReducers, ReducersMapObject } from 'redux';
+import { interim } from './interim';
+import { locations } from './locations';
+import { notes } from './notes';
+import { plants } from './plants';
+import { user } from './user';
+import { users } from './users';
 
-const { combineReducers } = require('redux');
-const interim = require('./interim');
-const locations = require('./locations');
-const notes = require('./notes');
-const plants = require('./plants');
-const user = require('./user');
-const users = require('./users');
-
-/** @type {import('redux').ReducersMapObject<any, PlantRedux.PlantAction>} */
-const reducersMap = {
+const reducersMap: ReducersMapObject<any, PlantRedux.PlantAction> = {
   interim,
   locations,
   notes,
@@ -18,7 +15,7 @@ const reducersMap = {
   users,
 };
 
-module.exports = combineReducers(reducersMap);
+export default combineReducers(reducersMap);
 
 /*
 State Shapes:

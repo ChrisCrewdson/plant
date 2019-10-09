@@ -1,10 +1,11 @@
 import si from 'seamless-immutable';
 
-const _ = require('lodash');
+import _ from 'lodash';
+import { plants } from '../../../app/reducers/plants';
+import { actionFunc } from '../../../app/actions';
+
 // @ts-ignore
 const seamless = si.static;
-const plants = require('../../../app/reducers/plants');
-const { actionFunc } = require('../../../app/actions');
 
 describe('/app/reducers/plants', () => {
   describe('similar methods', () => {

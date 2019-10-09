@@ -1,11 +1,11 @@
 import si from 'seamless-immutable';
+import reducers from '../reducers'; // combineReducers already called on reducers in her)e
 
 const { createStore, applyMiddleware } = require('redux');
 
 // @ts-ignore
 const seamless = si.static;
 
-const reducers = require('../reducers'); // combineReducers already called on reducers in her)e
 const api = require('../middleware/api');
 const { setupSubscribe: userSubscribe } = require('./user');
 

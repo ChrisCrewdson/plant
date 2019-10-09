@@ -1,9 +1,9 @@
 import si from 'seamless-immutable';
+import { locations } from '../../../app/reducers/locations';
+import { actionFunc } from '../../../app/actions';
 
 // @ts-ignore
 const seamless = si.static;
-const locations = require('../../../app/reducers/locations');
-const { actionFunc } = require('../../../app/actions');
 
 describe('/app/reducers/locations', () => {
   const stateA = seamless.from({

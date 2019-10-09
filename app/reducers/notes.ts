@@ -72,7 +72,8 @@ function showNoteImages(state: UiNotes, { payload: _id }: AnyAction): UiNotes {
   return seamless.merge(state, updatedNotes);
 }
 
-const reducers = seamless.from({
+// This is only exported for testing
+export const reducers = seamless.from({
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
   [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
 
@@ -84,13 +85,10 @@ const reducers = seamless.from({
 
 });
 
-module.exports = (state: UiNotes = {}, action: AnyAction): UiNotes => {
+export const notes = (state: UiNotes = {}, action: AnyAction): UiNotes => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
 
   return state;
 };
-
-// This is only exported for testing
-module.exports.reducers = reducers;

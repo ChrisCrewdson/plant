@@ -1,11 +1,10 @@
 import * as helper from '../../helper';
 import { getDbInstance } from '../../../lib/db/mongo';
-
-const utils = require('../../../app/libs/utils');
-const constants = require('../../../app/libs/constants');
+import utils from '../../../app/libs/utils';
+import * as constants from '../../../app/libs/constants';
+import { mockLogger } from '../../mock-logger';
 
 const mongo = getDbInstance();
-const { mockLogger } = require('../../mock-logger');
 
 const { mongoIdRE: mongoIdRegEx } = constants;
 

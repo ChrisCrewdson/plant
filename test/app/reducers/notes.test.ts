@@ -1,9 +1,9 @@
 import si from 'seamless-immutable';
+import { notes } from '../../../app/reducers/notes';
+import { actionFunc } from '../../../app/actions';
 
 // @ts-ignore
 const seamless = si.static;
-const notes = require('../../../app/reducers/notes');
-const { actionFunc } = require('../../../app/actions');
 
 function checkReducer(
   actionName: string, state: any, payload: string | object | undefined | any[], expected: any) {

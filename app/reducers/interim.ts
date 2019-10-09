@@ -77,7 +77,8 @@ function loadPlantsFailure(state: UiInterim): UiInterim {
   return seamless.without(state, 'loadPlantRequest');
 }
 
-const reducers = {
+// This is only exported for testing
+export const reducers = {
   // Init the note prop in the interim state with something
   // so that the note is editable
   [actionEnum.EDIT_NOTE_OPEN]: editNoteOpen,
@@ -91,13 +92,10 @@ const reducers = {
   [actionEnum.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
-module.exports = (state: UiInterim = seamless({}), action: AnyAction): UiInterim => {
+export const interim = (state: UiInterim = seamless({}), action: AnyAction): UiInterim => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
 
   return state;
 };
-
-// This is only exported for testing
-module.exports.reducers = reducers;
