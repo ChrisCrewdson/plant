@@ -1,11 +1,8 @@
 import { getDbInstance } from '../../../../lib/db/mongo';
-
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const utils = require('../../../../app/libs/utils');
+import utils from '../../../../app/libs/utils';
+import { mockLogger } from '../../../mock-logger';
 
 const mongo = getDbInstance();
-const { mockLogger } = require('../../../mock-logger');
 
 describe('/lib/db/mongo/update', () => {
   describe('note', () => {

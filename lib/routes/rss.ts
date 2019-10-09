@@ -19,7 +19,7 @@ function buildXml(notes: DbNoteWithPlants[], httpHost: string) {
     // https://www.feedvalidator.org/docs/error/InvalidRFC2822Date.html
     const utcDate = `${intToMoment(currNote.date).format('ddd, DD MMM YYYY HH:mm:ss')} PST`;
     // uctDate now looks like this: "Mon, 31 Jul 2017 00:00:00 PST"
-    // On 6/23/19 Changed the ZZ in the time foramt to PST so that tests are consistent in
+    // On 6/23/19 Changed the ZZ in the time format to PST so that tests are consistent in
     // multiple time zones. At some pont in the future we need to make this user aware.
 
     // Create the link URL with note ID. This will also make it unique for GUID

@@ -1250,22 +1250,14 @@ class MongoDb {
         throw new Error(`locations is unexpectedly falsy ${typeof locations}`);
       }
       const convertedLocations = modelLocation.convertLocationDataForRead(locations);
-      const usersWithlocationIds = getUsersWithLocations(users, convertedLocations);
-      return usersWithlocationIds;
+      const usersWithLocationIds = getUsersWithLocations(users, convertedLocations);
+      return usersWithLocationIds;
     } catch (error) {
       logger.error({ moduleName, msg: 'getAllUsers', error });
       throw error;
     }
   }
 
-  /**
-   * Get Locations by Query
-   * @param {object} query
-   * @param {object} options
-   * @param {Logger} logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
-   * @memberof MongoDb
-   */
   async getLocationsByQuery(query: object, options: object, logger: Logger):
    Promise<ReadonlyArray<Readonly<BizLocation>>> {
     const db = await this.GetDb(logger);

@@ -10,9 +10,6 @@ import * as constants from './constants';
 // @ts-ignore
 const seamless = si.static;
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-
 const { gisMultiplier } = constants;
 
 function makeMongoId() {

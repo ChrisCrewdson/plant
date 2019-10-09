@@ -1,6 +1,4 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const helper = require('../../helper');
+import * as helper from '../../helper';
 
 describe('api', () => {
   beforeAll(async () => {

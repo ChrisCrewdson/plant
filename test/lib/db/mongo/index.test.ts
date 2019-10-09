@@ -1,16 +1,13 @@
+import _ from 'lodash';
+
 import { getDbInstance } from '../../../../lib/db/mongo';
 import { requests } from '../../../fixtures/google-oauth';
-
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const _ = require('lodash');
-
-const constants = require('../../../../app/libs/constants');
-const helper = require('../../../helper');
+import * as helper from '../../../helper';
+import * as constants from '../../../../app/libs/constants';
+import { mockLogger } from '../../../mock-logger';
 
 const mongo = getDbInstance();
 const googleOAuth = requests;
-const { mockLogger } = require('../../../mock-logger');
 
 const { id: googleId } = googleOAuth['www.googleapis.com'].result;
 

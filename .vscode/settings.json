@@ -6,6 +6,7 @@
         "**/.nyc_output": true
     },
     "cSpell.words": [
+        "AKID",
         "Dropzone",
         "KHTML",
         "Plaaant",
@@ -23,19 +24,23 @@
         "johnsmith",
         "linebreak",
         "locat",
+        "mimetype",
         "noteid",
         "numericality",
         "originalname",
         "polyfill",
+        "rssxml",
         "sinensis",
         "slugify",
         "subheader",
         "upsert",
         "upserted",
+        "upserting",
         "userid",
         "validatejs",
         "validators",
-        "vcenter"
+        "vcenter",
+        "xmlns"
     ],
     "typescript.tsdk": "node_modules/typescript/lib"
 }

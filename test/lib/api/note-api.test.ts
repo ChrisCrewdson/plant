@@ -1,8 +1,6 @@
+import * as helper from '../../helper';
 import { getDbInstance } from '../../../lib/db/mongo';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const helper = require('../../helper');
 const utils = require('../../../app/libs/utils');
 const constants = require('../../../app/libs/constants');
 

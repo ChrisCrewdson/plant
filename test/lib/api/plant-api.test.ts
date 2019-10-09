@@ -1,6 +1,5 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import * as helper from '../../helper';
 
-const helper = require('../../helper');
 const constants = require('../../../app/libs/constants');
 
 describe('plant-api', () => {
