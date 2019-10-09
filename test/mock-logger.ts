@@ -1,8 +1,6 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const _ = require('lodash');
 
-const mockLogger: Logger = {
+export const mockLogger: Logger = {
   trace: jest.fn(),
   info: jest.fn(),
   warn: jest.fn(),
@@ -62,7 +60,7 @@ const loggerTimeEndMockFunction = (label: string, extraLogData: object | undefin
   }
 };
 
-const mockLoggerReset = () => {
+export const mockLoggerReset = () => {
   // const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
   mockLogger.trace = jest.fn(loggerMockFunction);
   mockLogger.info = jest.fn(loggerMockFunction);
@@ -78,8 +76,3 @@ const mockLoggerReset = () => {
 };
 
 mockLoggerReset();
-
-module.exports = {
-  mockLogger,
-  mockLoggerReset,
-};

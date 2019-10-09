@@ -1,20 +1,24 @@
-import { RequestInit, Response } from 'node-fetch';
+import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { Server } from 'net';
 import { Store } from 'redux';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import _ from 'lodash';
 
-const _ = require('lodash');
-const nodeFetch = require('node-fetch');
 // fetch-cookie wraps nodeFetch and preserves cookies.
 // @ts-ignore - cannot find import
-const fetch = require('fetch-cookie/node-fetch')(nodeFetch);
+import fetchCookie from 'fetch-cookie/node-fetch';
 
-const constants = require('../app/libs/constants');
-const { mockLogger } = require('./mock-logger');
-const mongo = require('../lib/db/mongo')();
+import * as constants from '../app/libs/constants';
+import { mockLogger } from './mock-logger';
+import { getDbInstance } from '../lib/db/mongo';
 
-const serverModule = require('../lib/server');
+import { serverServer } from '../lib/server';
+
+const serverModule = serverServer;
+
+const mongo = getDbInstance();
+
+const fetch = fetchCookie(nodeFetch);
 
 const data = {} as HelperData;
 

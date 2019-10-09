@@ -1,5 +1,5 @@
 
-const requests: Record<string, object> = {
+export const requests: Record<string, any> = {
   'accounts.google.com': {
     options: {
       host: 'accounts.google.com',
@@ -80,5 +80,3 @@ const requests: Record<string, object> = {
     },
   },
 };
-
-module.exports = requests;

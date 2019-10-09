@@ -1,11 +1,15 @@
+import { getDbInstance } from '../../../../lib/db/mongo';
+import { requests } from '../../../fixtures/google-oauth';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const _ = require('lodash');
 
 const constants = require('../../../../app/libs/constants');
 const helper = require('../../../helper');
-const mongo = require('../../../../lib/db/mongo')();
-const googleOAuth = require('../../../fixtures/google-oauth');
+
+const mongo = getDbInstance();
+const googleOAuth = requests;
 const { mockLogger } = require('../../../mock-logger');
 
 const { id: googleId } = googleOAuth['www.googleapis.com'].result;
@@ -57,9 +61,12 @@ describe('/lib/db/mongo/', () => {
       expect(body).toBeInstanceOf(Object);
       expect(body._id).toBeTruthy();
       expect(constants.mongoIdRE.test(body._id)).toBe(true);
-      expect(body.locationIds).toBeTruthy();
-      const [bodyLocationId] = /** @type {string[]} */ (body.locationIds);
-      expect(constants.mongoIdRE.test(bodyLocationId)).toBe(true);
+      const { locationIds } = body;
+      expect(locationIds).toBeTruthy();
+      if (locationIds) {
+        const [bodyLocationId] = locationIds;
+        expect(constants.mongoIdRE.test(bodyLocationId)).toBe(true);
+      }
 
       expect(body).toMatchSnapshot({
         locationIds: expect.any(Array),
@@ -120,21 +127,22 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get existing plants', async () => {
-      const results = /** @type {BizPlant[]} */ (
+      const results: BizPlant[] = (
         await mongo.getPlantsByIds([plantId], userId, mockLogger)
-      );
+      ) as BizPlant[];
       expect(_.isArray(results)).toBeTruthy();
       expect(results).toHaveLength(1);
-      const result = results[0];
-      expect(typeof result.userId).toBe('string');
-      expect(result.title).toBe(plant.title);
-      expect(result.plantedOn).toBe(plant.plantedOn);
-      expect(result.userId).toBe(plant.userId.toString());
+      if (Array.isArray(results)) {
+        const result = results[0];
+        expect(typeof result.userId).toBe('string');
+        expect(result.title).toBe(plant.title);
+        expect(result.plantedOn).toBe(plant.plantedOn);
+        expect(result.userId).toBe(plant.userId.toString());
+      }
     });
 
     test('should update an existing plant with "Set"', async () => {
-      /** @type {BizPlant} */
-      const plantUpdate = {
+      const plantUpdate: BizPlant = {
         title: 'New Name',
         // @ts-ignore - intentionally mistyping for testing
         other: 'Other Text',

@@ -1,8 +1,9 @@
+import * as helper from '../../helper';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const seamless = require('seamless-immutable').static;
 const authHelper = require('../../../app/libs/auth-helper');
-const helper = require('../../helper');
 
 describe('/app/libs/auth-helper', () => {
   describe('canEdit', () => {

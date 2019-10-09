@@ -1,8 +1,10 @@
+import { getDbInstance } from './mongo';
+
 // Get all the data from the DB for a single plant to be able
 // to render it on the server
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const db = require('./mongo')();
+const db = getDbInstance();
 
 async function getNotes(plantId: string, logger: Logger): Promise<BizNoteMap> {
   const retrievedNotes: BizNote[]|undefined = await db.getNotesByPlantId(plantId, logger);

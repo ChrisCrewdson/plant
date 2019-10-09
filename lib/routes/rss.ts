@@ -1,8 +1,9 @@
 import marked from 'marked';
+import { getDbInstance } from '../db/mongo';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const mongo = require('../db/mongo');
+const mongo = getDbInstance;
 const { makeSlug, intToMoment } = require('../../app/libs/utils');
 
 /**

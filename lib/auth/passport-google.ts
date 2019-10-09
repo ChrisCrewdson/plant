@@ -1,3 +1,5 @@
+import { getDbInstance } from '../db/mongo';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const _ = require('lodash');
@@ -5,7 +7,8 @@ const _ = require('lodash');
 const passportGoogle = require('@passport-next/passport-google-oauth2');
 // @ts-ignore - Types for lalog are not complete yet
 const Logger = require('lalog');
-const mongoDb = require('../db/mongo')();
+
+const mongoDb = getDbInstance();
 const { SERVICE_NAME } = require('../../app/libs/constants');
 
 const moduleName = 'lib/auth/passport-google';

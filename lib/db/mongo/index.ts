@@ -1,7 +1,5 @@
 import { MongoClient, ObjectID, Db } from 'mongodb';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const _ = require('lodash');
 const { produce } = require('immer');
 
@@ -1453,11 +1451,9 @@ let dbInstance: MongoDb;
  * @param {string=} connection
  * @returns {MongoDb}
  */
-function getDbInstance(connection: string | undefined): MongoDb {
+export function getDbInstance(connection?: string): MongoDb {
   if (!dbInstance) {
     dbInstance = new MongoDb(connection);
   }
   return dbInstance;
 }
-
-module.exports = getDbInstance;

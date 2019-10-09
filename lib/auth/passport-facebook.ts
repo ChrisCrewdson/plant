@@ -1,3 +1,5 @@
+import { getDbInstance } from '../db/mongo';
+
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const _ = require('lodash');
@@ -7,7 +9,7 @@ const Logger = require('lalog');
 // @ts-ignore - Types for @passport-next are not complete yet
 const FacebookStrategy = require('@passport-next/passport-facebook').Strategy;
 
-const mongoDb = require('../db/mongo')();
+const mongoDb = getDbInstance();
 const { SERVICE_NAME } = require('../../app/libs/constants');
 
 const moduleName = 'lib/auth/passport-facebook';

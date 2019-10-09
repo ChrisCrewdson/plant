@@ -12,7 +12,6 @@ import { CollectionCreateOptions } from 'mongodb';
 
 // bsonType's are here: https://docs.mongodb.com/manual/reference/bson-types/
 
-/** @type {object} */
 const loc: object = {
   bsonType: 'object',
   required: ['type', 'coordinates'],
@@ -38,7 +37,6 @@ const loc: object = {
   },
 };
 
-/** @type {object} */
 const plantSchema: object = {
   bsonType: 'object',
   required: ['title', 'userId', 'locationId', '_id'],
@@ -95,7 +93,6 @@ const plantSchema: object = {
   },
 };
 
-/** @type {object} */
 const locationSchema: object = {
   bsonType: 'object',
   required: ['title', 'createdBy', 'members', '_id'],
@@ -124,7 +121,6 @@ const locationSchema: object = {
   },
 };
 
-/** @type {object} */
 const metrics: object = {
   bsonType: 'object',
   properties: {
@@ -175,7 +171,6 @@ const metrics: object = {
   },
 };
 
-/** @type {object} */
 const noteSchema: object = {
   bsonType: 'object',
   required: ['date', 'plantIds', 'userId', '_id'],
@@ -215,12 +210,6 @@ const getCreateOptions = ($jsonSchema: object): CollectionCreateOptions => ({
   },
 });
 
-const location = getCreateOptions(locationSchema);
-const note = getCreateOptions(noteSchema);
-const plant = getCreateOptions(plantSchema);
-
-module.exports = {
-  location,
-  note,
-  plant,
-};
+export const location = getCreateOptions(locationSchema);
+export const note = getCreateOptions(noteSchema);
+export const plant = getCreateOptions(plantSchema);

@@ -1,4 +1,5 @@
 import { Application, Request, Response } from 'express';
+import { getDbInstance } from '../db/mongo';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
@@ -7,7 +8,8 @@ const aws = require('aws-sdk');
 const multer = require('multer');
 const { requireToken } = require('../auth/token-check');
 const constants = require('../../app/libs/constants');
-const mongo = require('../db/mongo')();
+
+const mongo = getDbInstance();
 const serverValidateNote = require('../validation/ssv-note');
 const utils = require('../../app/libs/utils');
 

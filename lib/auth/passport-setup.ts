@@ -1,14 +1,16 @@
+
 import {
   Application,
 } from 'express';
 import { Db } from 'mongodb';
+import { getDbInstance } from '../db/mongo';
 
 // @ts-ignore - Types for @passport-next are not complete yet
 const passport = require('@passport-next/passport');
 const connectMongo = require('connect-mongo');
 const session = require('express-session');
 
-const mongo = require('../db/mongo');
+const mongo = getDbInstance;
 const googleAuth = require('./passport-google');
 const facebookAuth = require('./passport-facebook');
 const { sessionKey } = require('../constants');

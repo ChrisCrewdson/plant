@@ -1,10 +1,12 @@
 import { Application, Response, Request } from 'express';
+import { getDbInstance } from '../db/mongo';
 import { UiActionType } from '../../app/actions';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const _ = require('lodash');
-const mongo = require('../db/mongo')();
+
+const mongo = getDbInstance();
 const actions = require('../../app/actions');
 const constants = require('../../app/libs/constants');
 const tokenCheck = require('../auth/token-check');

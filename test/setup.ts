@@ -1,19 +1,22 @@
 import { RequestOptions } from 'http';
-import { dataCallback } from 'oauth';
+import oauth2, { dataCallback } from 'oauth';
 
-const uuid = require('uuid');
+import uuid from 'uuid';
+
+import * as createOptions from '../lib/db/mongo/schema';
+import { requests } from './fixtures/google-oauth';
+import { mockLogger } from './mock-logger';
+import { getDbInstance } from '../lib/db/mongo';
 
 /** @type {Global} */
 const globalAny = global;
 
+const googleOAuth = requests;
+const mongo = getDbInstance;
+
 jest.setTimeout(60000); // 60 second timeout
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const oauth2 = require('oauth');
-
-const createOptions = require('../lib/db/mongo/schema');
-const googleOAuth = require('./fixtures/google-oauth');
-const { mockLogger } = require('./mock-logger');
 
 // @ts-ignore - _executeRequest is protected - we're deliberately doing this for testing
 // eslint-disable-next-line operator-linebreak
@@ -33,7 +36,6 @@ oauth2.OAuth2.prototype._executeRequest = function _executeRequest(_httpLibrary:
 
 process.env.TESTING = 'true';
 
-const mongo = require('../lib/db/mongo');
 
 // Create a unique database name in the setup file because there
 // may be multiple workers running tests and each worker will

@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import { getDbInstance } from './db/mongo';
 
 import UnhandledRejectionListener = NodeJS.UnhandledRejectionListener;
 import UncaughtExceptionListener = NodeJS.UncaughtExceptionListener;
@@ -12,7 +13,8 @@ const Logger = require('lalog');
 const morgan = require('morgan');
 const methodOverride = require('method-override');
 const path = require('path');
-const mongoFn = require('./db/mongo');
+
+const mongoFn = getDbInstance;
 // const tokenCheck = require('./config/token-check');
 const routes = require('./routes');
 const indexHtml = require('./render');
@@ -41,7 +43,7 @@ process.on('uncaughtException', handleException);
 /**
  * Server
  */
-module.exports = async (portParam: number | undefined, mongoConnection: string | undefined): Promise<import('net').Server> => {
+export const serverServer = async (portParam?: number, mongoConnection?: string): Promise<import('net').Server> => {
   const port = portParam || parseInt(process.env.PLANT_PORT || '3001', 10);
   try {
     const app = express();

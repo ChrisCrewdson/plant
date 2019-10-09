@@ -1,8 +1,9 @@
 import { Application } from 'express';
+import { getDbInstance } from '../db/mongo';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const mongo = require('../db/mongo')();
+const mongo = getDbInstance();
 const tokenCheck = require('../auth/token-check');
 const validators = require('../../app/models');
 const utils = require('../../app/libs/utils');
