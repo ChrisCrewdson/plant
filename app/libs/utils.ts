@@ -1,15 +1,17 @@
 import { ObjectID } from 'bson';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import isDate from 'lodash/isDate';
 import isNumber from 'lodash/isNumber';
+import slug from 'slugify';
+import si from 'seamless-immutable';
+
+import * as constants from './constants';
+
+// @ts-ignore
+const seamless = si.static;
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const slug = require('slugify');
-const moment = require('moment');
-const seamless = require('seamless-immutable').static;
-
-const constants = require('./constants');
 
 const { gisMultiplier } = constants;
 

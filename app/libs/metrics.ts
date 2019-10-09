@@ -1,9 +1,9 @@
 // A helper module for doing metric calculations
 import { Moment } from 'moment';
+import utils from './utils';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const utils = require('./utils');
 
 /**
  * Create the object that represents the component that goes between notes describing

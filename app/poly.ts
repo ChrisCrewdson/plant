@@ -1,6 +1,4 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const features = [
+export const features = [
   'fetch',
   'Map',
   'Promise',
@@ -41,13 +39,10 @@ function loadScript(done: Function) {
 /**
  * Load Polyfills for browser features that are missing
  */
-module.exports = (done: (err?: Error) => void) => {
+export const poly = (done: (err?: Error) => void) => {
   if (browserSupportsAllFeatures()) {
     done();
   } else {
     loadScript(done);
   }
 };
-
-// Export to help with testing
-module.exports.features = features;

@@ -1,6 +1,4 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const poly = require('../../app/poly');
+import { poly, features } from '../../app/poly';
 
 describe('/app/poly', () => {
   test('should have not have all features by default', (done) => {
@@ -62,7 +60,6 @@ describe('/app/poly', () => {
   test('should have all features', (done) => {
     // Discover the features that are missing from the window object
     // and set each one to true to force a different code path.
-    const { features } = poly as { features: string[]};
     const missing: string[] = [];
     features.forEach((feature) => {
       if (!window[feature]) {

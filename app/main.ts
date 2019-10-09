@@ -1,4 +1,5 @@
 import { renderMain } from './main-render';
+import { poly } from './poly';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
@@ -11,7 +12,6 @@ require('konva');
 // @ts-ignore - because this is a css file
 require('./stylesheets/main.css');
 
-const poly = require('./poly');
 
 /**
  * Check if local storage needs updating or not based on version.
@@ -43,7 +43,7 @@ function updateLocalStorage() {
 }
 
 // Polyfill any new browser features we need
-poly((err: Error) => {
+poly((err?: Error) => {
   if (err) {
     // eslint-disable-next-line no-console
     console.error(err);

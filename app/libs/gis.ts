@@ -1,10 +1,11 @@
 import getIn from 'lodash/get';
+import si from 'seamless-immutable';
+import * as constants from './constants';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const seamless = require('seamless-immutable').static;
-const constants = require('./constants');
-
+// @ts-ignore
+const seamless = si.static;
 const { gisMultiplier } = constants;
 
 /**
