@@ -1,8 +1,6 @@
 import marked from 'marked';
 import { getDbInstance } from '../db/mongo';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const mongo = getDbInstance;
 const { makeSlug, intToMoment } = require('../../app/libs/utils');
 
@@ -76,7 +74,7 @@ style="max-width: 100%" />`;
 /**
  * Short Url alias for location - start off with hard coding a single one
  */
-module.exports = (app: import('express').Application) => {
+export const rss = (app: import('express').Application) => {
   // Set up the RSS route
   app.get('/rss', async (req, res) => {
     const { logger } = req;

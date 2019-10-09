@@ -1,6 +1,8 @@
 import { Application } from 'express';
+import bson from 'bson';
 
-const bson = require('bson');
+import { rss } from '../../../lib/routes/rss';
+
 
 const { ObjectID } = bson;
 
@@ -28,8 +30,6 @@ jest.mock('../../../lib/db/mongo', () => ({
     getNotesLatest: async () => Promise.resolve(dbNoteWithPlants),
   }),
 }));
-
-const rss = require('../../../lib/routes/rss');
 
 const req = {
   protocol: 'fake protocol',

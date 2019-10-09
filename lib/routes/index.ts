@@ -1,4 +1,5 @@
 import { Application } from 'express';
+import { rss } from './rss';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
@@ -9,7 +10,6 @@ const noteApi = require('./api-note');
 const plantApi = require('./api-plant');
 const plantsApi = require('./api-plants');
 const userApi = require('./api-user');
-const rss = require('./rss');
 
 const shortMap: Record<string, string> = {
   guy: '/location/guy-ellis-yard/5851d7d52967c2153ab6c856',
