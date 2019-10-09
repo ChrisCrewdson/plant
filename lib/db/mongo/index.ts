@@ -131,6 +131,7 @@ class MongoDb {
         logger.time('connect-to-mongo');
         this.client = await MongoClient.connect(connection, {
           useNewUrlParser: true,
+          useUnifiedTopology: true,
         });
         if (!this.client) {
           throw new Error(`client is not truthy ${this.client}`);
