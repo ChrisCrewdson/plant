@@ -8,14 +8,14 @@ export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 /**
  * Create the object that represents the component that goes between notes describing
  * what has happened between the notes.
- * @param {MetricNote[]} acc - An array of render information for the list of notes
- * @param {UiNotesValue} note - the note being processed
- * @param {string} noteId - current note's id
- * @param {Moment|undefined} lastNoteDate - the date of the previous note
- * @returns {Moment} - The date from the note object as a Moment object
+ * @param acc - An array of render information for the list of notes
+ * @param note - the note being processed
+ * @param noteId - current note's id
+ * @param lastNoteDate - the date of the previous note
+ * @returns - The date from the note object as a Moment object
  */
 function since(acc: MetricNote[], note: UiNotesValue, noteId: string,
-  lastNoteDate: Moment | undefined): Moment {
+  lastNoteDate?: Moment): Moment {
   const { date } = note;
   const currentNoteDate = utils.intToMoment(date);
   const sinceLast = lastNoteDate

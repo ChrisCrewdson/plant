@@ -95,7 +95,7 @@ export async function startServerAuthenticated(): Promise<HelperData> {
     return Promise.all(promises);
   }
 
-  function startServer(app: Server|undefined, server: ServerFunc | undefined): Promise<Server> {
+  function startServer(app?: Server, server?: ServerFunc): Promise<Server> {
     if (app) {
       // @ts-ignore - [ts] Type 'Server' is missing the following properties from type
       // 'Promise<Server>': then, catch, [Symbol.toStringTag], finally [2739]

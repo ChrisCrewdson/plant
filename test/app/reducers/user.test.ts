@@ -4,7 +4,7 @@ const seamless = require('seamless-immutable').static;
 const user = require('../../../app/reducers/user');
 const { actionFunc } = require('../../../app/actions');
 
-function checkReducer(actionName: string, state: any, payload: object | undefined) {
+function checkReducer(actionName: string, state: any, payload?: object) {
   const action = actionFunc[actionName](payload);
   const actual = user(state, action);
 

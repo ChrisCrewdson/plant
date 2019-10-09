@@ -67,7 +67,7 @@ function makeLayoutUrl(layout: MakeUrlOptions): string {
  * Convert a date like object to an Integer
  * @returns - a date in the form YYYYMMDD
  */
-function dateToInt(date: Moment | Date | string | number | undefined): number {
+function dateToInt(date?: Moment | Date | string | number): number {
   if (moment.isMoment(date)) {
     return dateToInt((date as Moment).toDate());
   } if (isDate(date)) {
@@ -144,7 +144,7 @@ function plantFromBody(body: PlantFromBodyPayload): UiPlantsValue {
  * @param filter - optional text to filter title of plant
  * @returns - an array of filtered plantIds
  */
-function filterPlants(plantIds: string[], plants: object, filter: string | undefined): Array<any> {
+function filterPlants(plantIds: string[], plants: object, filter?: string): Array<any> {
   const lowerFilter = (filter || '').toLowerCase();
   return lowerFilter
     ? plantIds.filter((plantId) => {
@@ -282,7 +282,7 @@ function plantStats(plantIds: string[], plants: Record<string, any>) {
  * @param errors - values are arrays
  * @returns - first element of value for each key
  */
-function transformErrors(errors: Record<string, string[]> | undefined):
+function transformErrors(errors?: Record<string, string[]>):
  Record<string, string> | undefined {
   if (!errors) {
     return errors as undefined;

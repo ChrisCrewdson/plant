@@ -27,12 +27,12 @@ const localLogger = Logger.create({
   addTrackId: true,
 });
 
-const handleRejection: UnhandledRejectionListener = (err: {} | null | undefined) => {
+const handleRejection: UnhandledRejectionListener = (err?: {} | null) => {
   localLogger.fatal({ err });
   process.exit(1);
 };
 
-const handleException: UncaughtExceptionListener = (err: {} | null | undefined) => {
+const handleException: UncaughtExceptionListener = (err?: {} | null) => {
   localLogger.fatal({ err });
   process.exit(1);
 };

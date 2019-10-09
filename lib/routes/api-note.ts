@@ -74,7 +74,7 @@ module.exports = (app: Application) => {
     /**
      * Send the notes to the client
      */
-    const okay = (notes: BizNote[] | undefined) => {
+    const okay = (notes?: BizNote[]) => {
       logger.trace({ moduleName, msg: 'responding with notes:', notes });
       return res.send(notes);
     };

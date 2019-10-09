@@ -96,7 +96,7 @@ interface HelperMakeRequestOptions {
   text?: boolean;
 }
 
-type ServerFunc = (port: number | undefined, mongoConnection?: string) => Promise<import('net').Server>;
+type ServerFunc = (port?: number, mongoConnection?: string) => Promise<import('net').Server>;
 
 interface HelperData {
   port?: number;

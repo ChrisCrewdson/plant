@@ -34,7 +34,7 @@ jest.mock('lalog', () => ({
  * @param {object|undefined} errObj
  * @param {object=} extra
  */
-const loggerMockFunction = (errObj: object | undefined, extra?: object | undefined) => {
+const loggerMockFunction = (errObj?: object, extra?: object) => {
   if (!_.isObject(errObj)) {
     throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
   }
@@ -48,7 +48,7 @@ const loggerMockFunction = (errObj: object | undefined, extra?: object | undefin
  * @param {string} label
  * @param {object|undefined} extraLogData
  */
-const loggerTimeEndMockFunction = (label: string, extraLogData: object | undefined) => {
+const loggerTimeEndMockFunction = (label: string, extraLogData?: object) => {
   if (typeof label !== 'string') {
     throw new Error(`First param to lalog timeEnd method is not an string: ${typeof label}`);
   }

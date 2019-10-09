@@ -92,7 +92,7 @@ class MongoDb {
   /**
    * MongoDB Constructor
    */
-  constructor(connection: string | undefined) {
+  constructor(connection?: string) {
     this.connection = connection || mongoConnection;
   }
 
@@ -502,7 +502,7 @@ class MongoDb {
 
   async convertPlantDataForReadOne(plant: Readonly<DbPlant>,
     loggedInUserId: string | undefined | null, logger: Logger,
-    notes: (DbNote[] | null) | undefined): Promise<Readonly<BizPlant>> {
+    notes?: DbNote[] | null): Promise<Readonly<BizPlant>> {
     const convertedPlant = plant as unknown as BizPlant;
 
     if (convertedPlant._id) {
