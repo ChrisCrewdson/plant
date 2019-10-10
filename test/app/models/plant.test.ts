@@ -1,7 +1,6 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const _ = require('lodash');
-const validators = require('../../../app/models');
+import _ from 'lodash';
+import * as validators from '../../../app/models';
 
 const { plant: plantValidator } = validators;
 

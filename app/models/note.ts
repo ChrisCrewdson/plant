@@ -1,13 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep';
 import omit from 'lodash/omit';
 import isArray from 'lodash/isArray';
+import validatejs from 'validate.js';
+import utils from '../libs/utils';
+import * as constants from '../libs/constants';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const validatejs = require('validate.js');
-const { makeMongoId } = require('../libs/utils');
-const constants = require('../libs/constants');
-const utils = require('../libs/utils');
+const { makeMongoId } = utils;
 
 interface PlantIdsValidateOptions {
   length: {
@@ -125,7 +123,7 @@ const intParser = (value: number | string): number => {
  * Don't need a userId if we're in the client, this will get added on the server
  * to prevent tampering with the logged in user.
  */
-module.exports = (atts: UiInterimNote): UiInterimNote => {
+export const note = (atts: UiInterimNote): UiInterimNote => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     date: { intDateValidate: { presence: true, name: 'Date' } },

@@ -1,12 +1,10 @@
 import cloneDeep from 'lodash/cloneDeep';
 import trim from 'lodash/trim';
+import validatejs from 'validate.js';
+import utils from '../libs/utils';
+import * as constants from '../libs/constants';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const validatejs = require('validate.js');
-const { makeMongoId } = require('../libs/utils');
-const constants = require('../libs/constants');
-const utils = require('../libs/utils');
+const { makeMongoId } = utils;
 
 //  The validator receives the following arguments:
 //     value - The value exactly how it looks in the attribute object.
@@ -64,7 +62,7 @@ interface ValidateOptions {
  * Don't need a userId if we're in the client, this will get added on the server
  * to prevent tampering with the logged in user.
  */
-module.exports = (attributes: UiPlantsValue, { isNew }: ValidateOptions): UiPlantsValue => {
+export const plant = (attributes: UiPlantsValue, { isNew }: ValidateOptions): UiPlantsValue => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     botanicalName: { length: { maximum: 100 } },

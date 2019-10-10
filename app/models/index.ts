@@ -1,8 +1,6 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const validatejs = require('validate.js');
-const note = require('./note');
-const plant = require('./plant');
+import validatejs from 'validate.js';
+import { note } from './note';
+import { plant } from './plant';
 
 // const utils = require('../libs/utils');
 
@@ -75,7 +73,7 @@ validatejs.validators.intDateValidate = (value: number, options: IntDateValidate
   return null;
 };
 
-module.exports = {
+export {
   note, plant,
 };
 
