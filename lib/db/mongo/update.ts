@@ -1,4 +1,6 @@
-import { Db, UpdateWriteOpResult, UpdateQuery } from 'mongodb';
+import {
+  Db, UpdateWriteOpResult, UpdateQuery, FilterQuery,
+} from 'mongodb';
 import { Helper } from './helper';
 
 /*
@@ -18,36 +20,36 @@ interface GenericUpdateQuery {
   [key: string]: any;
 }
 
-module.exports = class Update {
+export class Update {
   static async updateOne(db: Db, collection: DbCollectionName,
-    query: UpdateQuery<GenericUpdateQuery>, doc: object): Promise<UpdateWriteOpResult> {
+    filter: FilterQuery<any>, doc: UpdateQuery<any> | Partial<any>): Promise<UpdateWriteOpResult> {
     const coll = db.collection(collection);
-    const cleanedDoc = Helper.removeEmpty(doc) as UpdateQuery<GenericUpdateQuery>;
+    const cleanedDoc = Helper.removeEmpty(doc) as UpdateQuery<any> | Partial<any>;
     const set = !cleanedDoc.$set && !cleanedDoc.$unset && !cleanedDoc.$rename
       ? { $set: cleanedDoc }
       : cleanedDoc;
 
-    const result = await coll.updateOne(query, set);
+    const result = await coll.updateOne(filter, set);
     return result;
   }
 
-  static async updateLocation(db: import('mongodb').Db, query: object,
-    doc: Partial<DbLocation>): Promise<import('mongodb').UpdateWriteOpResult> {
-    return Update.updateOne(db, 'location', query, doc);
+  static async updateLocation(db: Db, filter: FilterQuery<any>,
+    updateDoc: DbLocation): Promise<UpdateWriteOpResult> {
+    return Update.updateOne(db, 'location', filter, updateDoc);
   }
 
-  static async updateNote(db: import('mongodb').Db, query: object, doc: Partial<DbNote>):
-   Promise<import('mongodb').UpdateWriteOpResult> {
-    return Update.updateOne(db, 'note', query, doc);
+  static async updateNote(db: Db, filter: FilterQuery<any>, updateDoc: DbNote):
+    Promise<UpdateWriteOpResult> {
+    return Update.updateOne(db, 'note', filter, updateDoc);
   }
 
-  static async updatePlant(db: import('mongodb').Db, query: object, doc: Partial<DbPlant>):
-   Promise<import('mongodb').UpdateWriteOpResult> {
-    return Update.updateOne(db, 'plant', query, doc);
+  static async updatePlant(db: Db, filter: FilterQuery<any>, updateDoc: DbPlant):
+   Promise<UpdateWriteOpResult> {
+    return Update.updateOne(db, 'plant', filter, updateDoc);
   }
 
-  static async updateUser(db: import('mongodb').Db, query: object, doc: Partial<DbUser>):
-   Promise<import('mongodb').UpdateWriteOpResult> {
-    return Update.updateOne(db, 'user', query, doc);
+  static async updateUser(db: Db, filter: FilterQuery<any>, updateDoc: DbUser):
+   Promise<UpdateWriteOpResult> {
+    return Update.updateOne(db, 'user', filter, updateDoc);
   }
-};
+}

@@ -3,7 +3,7 @@ import { Helper } from './helper';
 // See https://stackoverflow.com/a/36794912/1463
 // for a description of insertOne/insertMany/bulkWrite
 
-module.exports = class Create {
+export class Create {
   static async create(db: import('mongodb').Db, collection: DbCollectionName, doc: object):
   Promise<any> {
     const coll = db.collection(collection);
@@ -33,4 +33,4 @@ module.exports = class Create {
   static async createUser(db: import('mongodb').Db, doc: UserDetails): Promise<DbUser> {
     return Create.createOne(db, 'user', doc);
   }
-};
+}

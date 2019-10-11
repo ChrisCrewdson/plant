@@ -1,18 +1,20 @@
-import { MongoClient, ObjectID, Db } from 'mongodb';
+import {
+  MongoClient, ObjectID, Db,
+} from 'mongodb';
+import _ from 'lodash';
+import { produce } from 'immer';
+
 import { Helper } from './helper';
-
-const _ = require('lodash');
-const { produce } = require('immer');
-
-const constants = require('../../../app/libs/constants');
-const {
+import * as constants from '../../../app/libs/constants';
+import {
   readUser, readUserTiny, readLocation, readNote, readPlant, readByCollection,
-} = require('./read');
-const Create = require('./create');
-const Update = require('./update');
-const remove = require('./delete');
-const utils = require('../../../app/libs/utils');
-const modelLocation = require('./model-location');
+} from './read';
+import { Create } from './create';
+import { Update } from './update';
+import { remove } from './delete';
+import { LocationData as modelLocation } from './model-location';
+
+import utils from '../../../app/libs/utils';
 
 const dbHelper = Helper;
 
@@ -208,11 +210,11 @@ class MongoDb {
           'google.id': google.id,
         };
       }
-      if (!queryBySocialMedia) {
-        throw new Error('One of facebook or google must be defined on userDetails');
-      }
 
       const userFromSocialMedia = async () => {
+        if (!queryBySocialMedia) {
+          throw new Error('One of facebook or google must be defined on userDetails');
+        }
         // 3. Find the user by OAuth provider id
         const user = await readUser(db, queryBySocialMedia, {});
 
@@ -249,7 +251,7 @@ class MongoDb {
       //    that.
       if (user) {
         _.merge(user, userDetails);
-        const userData = _.omit(user, ['_id']);
+        const userData = _.omit(user, ['_id']) as DbUser;
         const query = { _id: new ObjectID(user._id) };
         try {
           await Update.updateUser(db, query, userData);
@@ -679,7 +681,7 @@ class MongoDb {
       const plant = this.convertPlantDataTypesForSaving(plantIn);
       const db = await this.GetDb(logger);
       const query = _.pick(plant, ['_id', 'userId']);
-      const set = _.omit(plant, ['_id']);
+      const set = _.omit(plant, ['_id']) as DbPlant;
       await Update.updatePlant(db, query, set);
       return this.convertPlantDataForReadOne(plant, loggedInUserId, logger, null);
     } catch (error) {
@@ -763,7 +765,7 @@ class MongoDb {
         }));
         const promises = updatedNotes.map((updateNote) => {
           const noteUpdateQuery = { _id: updateNote._id };
-          const set = _.omit(updateNote, ['_id']);
+          const set = _.omit(updateNote, ['_id']) as DbNote;
           return Update.updateNote(db, noteUpdateQuery, set);
         });
         await Promise.all(promises);
@@ -1023,7 +1025,7 @@ class MongoDb {
       }
       const convertedNote = this.convertNoteDataTypesForSaving(note);
       const query = _.pick(note, ['_id', 'userId']);
-      const set = _.omit(convertedNote, ['_id']);
+      const set = _.omit(convertedNote, ['_id']) as DbNote;
       await Update.updateNote(db, query, set);
       // results => {n:1, nModified:1, ok:1}
 

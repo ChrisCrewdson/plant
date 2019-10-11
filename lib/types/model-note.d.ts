@@ -85,7 +85,7 @@ interface MetricChangePair {
 interface DbNote {
   _id: import('mongodb').ObjectID;
   /**
-   * Appart from the _id the date is the only other field that's
+   * Apart from the _id the date is the only other field that's
    * required for this record.
    */
   date: number;

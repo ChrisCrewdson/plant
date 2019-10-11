@@ -1,18 +1,16 @@
-import { Db } from 'mongodb';
+import mongodb, { Db } from 'mongodb';
+
+import _ from 'lodash';
+import { produce } from 'immer';
+
 import {
   readLocation, readPlant,
 } from './read';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const _ = require('lodash');
-const mongodb = require('mongodb');
-const { produce } = require('immer');
-
-const Create = require('./create');
-const constants = require('../../../app/libs/constants');
-const Update = require('./update');
-const remove = require('./delete');
+import { Create } from './create';
+import { Update } from './update';
+import { remove } from './delete';
+import * as constants from '../../../app/libs/constants';
 
 const { ObjectID } = mongodb;
 interface CreateLocationOptions {
@@ -29,7 +27,7 @@ interface GetLocationByQueryOptions {
   query: object;
 }
 // CRUD operations for Location collection
-class LocationData {
+export class LocationData {
   // Location C: createLocation
 
   /**
@@ -267,7 +265,7 @@ class LocationData {
         _id: location._id,
         [`members.${loggedInUserId}`]: 'owner',
       };
-      const set = _.omit(location, '_id');
+      const set = _.omit(location, '_id') as DbLocation;
       return Update.updateLocation(db, updateQuery, set);
     } catch (error) {
       logger.error({
@@ -297,5 +295,3 @@ class LocationData {
 
   // End CRUD methods for Location collection
 }
-
-module.exports = LocationData;
