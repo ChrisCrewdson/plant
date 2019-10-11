@@ -1,13 +1,14 @@
+import _ from 'lodash';
+import { createStore } from 'redux';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { deepOrange500 } from 'material-ui/styles/colors';
+
 import { ssrRenderPlant } from './plant-render';
 import appReducers from '../../app/reducers';
+import { singlePlant } from '../db/single-plant';
 
 export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const _ = require('lodash');
-const { createStore } = require('redux');
-const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
-const { deepOrange500 } = require('material-ui/styles/colors');
-const singlePlant = require('../db/single-plant');
 const indexHtml = require('.');
 
 const moduleName = 'lib/render/plant';

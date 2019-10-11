@@ -1,8 +1,10 @@
 import marked from 'marked';
 import { getDbInstance } from '../db/mongo';
+import utils from '../../app/libs/utils';
+
+const { makeSlug, intToMoment } = utils;
 
 const mongo = getDbInstance;
-const { makeSlug, intToMoment } = require('../../app/libs/utils');
 
 /**
  * Build the XML for RSS

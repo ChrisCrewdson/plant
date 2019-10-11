@@ -2,7 +2,6 @@ import { getDbInstance } from './mongo';
 
 // Get all the data from the DB for a single plant to be able
 // to render it on the server
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 const db = getDbInstance();
 
@@ -42,7 +41,7 @@ async function getPlants(loggedInUser: BizUser | undefined, plantId: string, log
   });
 }
 
-const singlePlant = async (loggedInUser: BizUser | undefined,
+export const singlePlant = async (loggedInUser: BizUser | undefined,
   plantId: string, noteId: string, logger: Logger): Promise<any> => {
   const promises = [
     db.getAllLocations(logger),
@@ -74,8 +73,6 @@ const singlePlant = async (loggedInUser: BizUser | undefined,
     users,
   };
 };
-
-module.exports = singlePlant;
 
 /*
 Load:

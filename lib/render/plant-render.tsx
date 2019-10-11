@@ -1,4 +1,6 @@
 import { StaticRouterContext } from 'react-router';
+import { MuiTheme } from 'material-ui/styles';
+import { Store } from 'redux';
 
 const React = require('react');
 const { Provider } = require('react-redux');
@@ -9,8 +11,8 @@ const Plant = require('../../app/components/plant/Plant');
 const App = require('../../app/components/App');
 
 interface SsrRenderPlantOptions {
-  muiTheme: string;
-  store: string;
+  muiTheme: MuiTheme;
+  store: Store<any, PlantRedux.PlantAction<any>>;
   context: StaticRouterContext;
   url: string;
   params: string;
