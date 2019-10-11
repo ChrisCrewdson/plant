@@ -2,19 +2,17 @@ import { Store } from 'redux';
 
 import { actionEnum } from '../../../app/actions';
 import * as helper from '../../helper';
+import { api, apis } from '../../../app/middleware/api';
 
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 let ajaxer = (store: Store, options: AjaxOptions) => {};
 
-const mockAjax = {
+jest.mock('../../../app/middleware/ajax', () => ({
   ajax: (store: Store, options: AjaxOptions) => {
     ajaxer(store, options);
   },
-};
+}));
 
-jest.mock('../../../app/middleware/ajax', () => mockAjax);
-
-const api = require('../../../app/middleware/api');
 
 describe('/app/middleware/api', () => {
   test('should check that functions/url exist', () => {
@@ -30,7 +28,7 @@ describe('/app/middleware/api', () => {
       callCounter += 1;
     };
 
-    Object.keys(api.apis).forEach((key) => {
+    Object.keys(apis).forEach((key) => {
       const action = {
         payload: {
           _id: '123',
@@ -42,7 +40,7 @@ describe('/app/middleware/api', () => {
       api(store)(next)({ ...action, type: key });
     });
 
-    expect(callCounter).toBe(Object.keys(api.apis).length);
+    expect(callCounter).toBe(Object.keys(apis).length);
     expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
     consoleErrorSpy.mockRestore();
   });

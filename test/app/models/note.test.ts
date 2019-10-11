@@ -1,9 +1,7 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const _ = require('lodash');
-const validators = require('../../../app/models');
-const constants = require('../../../app/libs/constants');
-const utils = require('../../../app/libs/utils');
+import _ from 'lodash';
+import * as validators from '../../../app/models';
+import * as constants from '../../../app/libs/constants';
+import utils from '../../../app/libs/utils';
 
 const { makeMongoId } = utils;
 const { note: noteValidator } = validators;

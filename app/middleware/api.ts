@@ -323,7 +323,7 @@ function modifyLocationRequest(store: Store<any, AnyAction> | null,
   return next(action);
 }
 
-const apis: Record<string, Function> = {
+export const apis: Record<string, Function> = {
   [actionEnum.CREATE_PLANT_REQUEST]: createPlant,
   [actionEnum.DELETE_NOTE_REQUEST]: deleteNoteRequest,
   [actionEnum.DELETE_PLANT_REQUEST]: deletePlantRequest,
@@ -340,12 +340,10 @@ const apis: Record<string, Function> = {
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
 };
 
-module.exports = (store: Store): Function => (next: Dispatch) => (action: Action) => {
+export const api = (store: Store): Function => (next: Dispatch) => (action: Action) => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);
   }
 
   return next(action);
 };
-
-module.exports.apis = apis;
