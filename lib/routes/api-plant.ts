@@ -1,14 +1,12 @@
 import { Application } from 'express';
 import { getDbInstance } from '../db/mongo';
+import { requireToken } from '../auth/token-check';
 
 const mongo = getDbInstance();
-const tokenCheck = require('../auth/token-check');
 const validators = require('../../app/models');
 const utils = require('../../app/libs/utils');
 
 const { plant: plantValidator } = validators;
-
-const { requireToken } = tokenCheck;
 
 const moduleName = 'routes/api-plant';
 

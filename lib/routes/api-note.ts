@@ -1,15 +1,15 @@
 import { Application, Request, Response } from 'express';
-import { getDbInstance } from '../db/mongo';
+import _ from 'lodash';
+import aws from 'aws-sdk';
+import multer from 'multer';
 
-const _ = require('lodash');
-const aws = require('aws-sdk');
-const multer = require('multer');
-const { requireToken } = require('../auth/token-check');
-const constants = require('../../app/libs/constants');
+import { getDbInstance } from '../db/mongo';
+import { requireToken } from '../auth/token-check';
+import * as constants from '../../app/libs/constants';
+import { serverValidateNote } from '../validation/ssv-note';
+import utils from '../../app/libs/utils';
 
 const mongo = getDbInstance();
-const serverValidateNote = require('../validation/ssv-note');
-const utils = require('../../app/libs/utils');
 
 const moduleName = 'routes/api-note';
 

@@ -1,15 +1,13 @@
 import { Application, Response, Request } from 'express';
 import { getDbInstance } from '../db/mongo';
 import { UiActionType } from '../../app/actions';
+import { requireToken } from '../auth/token-check';
 
 const _ = require('lodash');
 
 const mongo = getDbInstance();
 const actions = require('../../app/actions');
 const constants = require('../../app/libs/constants');
-const tokenCheck = require('../auth/token-check');
-
-const { requireToken } = tokenCheck;
 
 const moduleName = 'routes/api-locations';
 

@@ -15,7 +15,7 @@ interface NoteUpsertRequest extends Request {
  * need to validate the note properties and convert it from a
  * UiInterimNote to a BizNoteNew or BizNote.
  */
-module.exports = (req: NoteUpsertRequest): BizNoteNew => {
+export const serverValidateNote = (req: NoteUpsertRequest): BizNoteNew => {
   const {
     body,
     user,

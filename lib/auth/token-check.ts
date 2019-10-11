@@ -5,14 +5,9 @@ import { Request, Response, NextFunction } from 'express';
 /**
  * requireToken
  */
-function requireToken(req: Request, res: Response, next: NextFunction) {
+export function requireToken(req: Request, res: Response, next: NextFunction) {
   if (!req.isAuthenticated || !req.isAuthenticated()) {
     return res.status(401).send({ error: 'Not Authenticated' });
   }
   return next();
 }
-
-module.exports = {
-  // tokenCheck,
-  requireToken,
-};
