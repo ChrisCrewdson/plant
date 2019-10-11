@@ -1,8 +1,8 @@
 import si from 'seamless-immutable';
+import * as gis from '../../../app/libs/gis';
 
 // @ts-ignore
 const seamless = si.static;
-const gis = require('../../../app/libs/gis');
 
 describe('/app/libs/gis', () => {
   describe('scaling to canvas', () => {

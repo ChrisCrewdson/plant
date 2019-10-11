@@ -1,8 +1,4 @@
-import { UiActionType } from '../../../app/actions';
-
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const { actionFunc, actionEnum } = require('../../../app/actions');
+import { UiActionType, actionFunc, actionEnum } from '../../../app/actions';
 
 describe('/app/actions', () => {
   test('should create a logout failure', (done) => {

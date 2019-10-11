@@ -1,7 +1,7 @@
 import { Request } from 'express';
 // SSV = Server Side Validation
-const validators = require('../../app/models');
-const utils = require('../../app/libs/utils');
+import * as validators from '../../app/models';
+import utils from '../../app/libs/utils';
 
 const { note: noteValidator } = validators;
 
