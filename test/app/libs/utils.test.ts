@@ -1,10 +1,10 @@
 import si from 'seamless-immutable';
+import moment from 'moment';
+import utils, { PlantFromBodyPayload } from '../../../app/libs/utils';
+import * as constants from '../../../app/libs/constants';
 
-const moment = require('moment');
 // @ts-ignore
 const seamless = si.static;
-const utils = require('../../../app/libs/utils');
-const constants = require('../../../app/libs/constants');
 
 describe('/app/libs/utils', () => {
   describe('slugs', () => {
@@ -129,7 +129,7 @@ describe('/app/libs/utils', () => {
         purchasedDate: '20160404',
         terminatedDate: '20170228',
         isTerminated: 'true',
-      };
+      } as PlantFromBodyPayload;
       const actual = utils.plantFromBody(body);
       expect(actual).toMatchSnapshot();
     });
@@ -447,9 +447,9 @@ describe('/app/libs/utils', () => {
   describe('getGeo', () => {
     test('that getGeo returns an error if not supported', (done) => {
       utils.getGeo({},
-        (err: Error) => {
+        (err: Error | PositionError | null) => {
           expect(err).toBeInstanceOf(Error);
-          const error: Error = /** @type {Error} */ (err);
+          const error = err as Error;
           expect(error.message).toBe('This device does not have geolocation available');
           done();
         });
@@ -512,7 +512,7 @@ describe('/app/libs/utils', () => {
       };
 
       utils.getGeo({},
-        (err: PositionError) => {
+        (err: Error | PositionError | null) => {
           expect(err).toBe(positionError);
           done();
         });
@@ -534,6 +534,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should not show feature if user._id is missing', () => {
+      // @ts-ignore - intentionally omitting object's prop for testing
       expect(utils.showFeature({})).toBe(false);
     });
 

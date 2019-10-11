@@ -104,7 +104,7 @@ function intToString(date: number): string {
   return intToMoment(date).format('MM/DD/YYYY');
 }
 
-interface PlantFromBodyPayload extends
+export interface PlantFromBodyPayload extends
   Omit<UiPlantsValue, 'plantedDate' | 'purchasedDate' | 'terminatedDate' | 'isTerminated'> {
   plantedDate: string;
   purchasedDate: string;
