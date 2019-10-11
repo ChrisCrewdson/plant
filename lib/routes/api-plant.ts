@@ -1,8 +1,6 @@
 import { Application } from 'express';
 import { getDbInstance } from '../db/mongo';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const mongo = getDbInstance();
 const tokenCheck = require('../auth/token-check');
 const validators = require('../../app/models');
@@ -17,7 +15,7 @@ const moduleName = 'routes/api-plant';
 /**
  * api plant routes
  */
-module.exports = (app: Application) => {
+export const plantApi = (app: Application) => {
   // Plant CRUD operations
   // Plant Create
   app.post('/api/plant', requireToken, async (req, res) => {

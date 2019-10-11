@@ -2,8 +2,6 @@ import { Application, Response, Request } from 'express';
 import { getDbInstance } from '../db/mongo';
 import { UiActionType } from '../../app/actions';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const _ = require('lodash');
 
 const mongo = getDbInstance();
@@ -30,7 +28,7 @@ const server500 = (res: Response): Response => res.status(500).send({ success: f
 /**
  * api locations routes
  */
-module.exports = (app: Application) => {
+export const locationsApi = (app: Application) => {
   /**
    * getLocationById
    */

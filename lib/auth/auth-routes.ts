@@ -11,7 +11,7 @@ const { sessionKey } = require('../constants');
 /**
  * api locations routes
  */
-function auth(app: Application) {
+export function auth(app: Application) {
   app.get('/auth/facebook', passport.authenticate('facebook'));
   app.get('/auth/google', passport.authenticate('google', {
     scope: 'email',
@@ -106,5 +106,3 @@ function auth(app: Application) {
     res.redirect('/');
   });
 }
-
-module.exports = { auth };

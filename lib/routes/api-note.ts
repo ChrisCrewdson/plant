@@ -1,8 +1,6 @@
 import { Application, Request, Response } from 'express';
 import { getDbInstance } from '../db/mongo';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const _ = require('lodash');
 const aws = require('aws-sdk');
 const multer = require('multer');
@@ -20,7 +18,7 @@ const moduleName = 'routes/api-note';
 /**
  * api note routes
  */
-module.exports = (app: Application) => {
+export const noteApi = (app: Application) => {
   // Note CRUD operations
   // Note Upsert
   app.post('/api/note', requireToken, async (req, res) => {

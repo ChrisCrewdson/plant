@@ -1,15 +1,13 @@
 import { Application } from 'express';
 import { rss } from './rss';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const auth = require('../auth/auth-routes');
-const client = require('./client');
-const locationsApi = require('./api-locations');
-const noteApi = require('./api-note');
-const plantApi = require('./api-plant');
-const plantsApi = require('./api-plants');
-const userApi = require('./api-user');
+import { auth } from '../auth/auth-routes';
+import { clientServerApi as client } from './client';
+import { locationsApi } from './api-locations';
+import { noteApi } from './api-note';
+import { plantApi } from './api-plant';
+import { plantsApi } from './api-plants';
+import { userApi } from './api-user';
 
 const shortMap: Record<string, string> = {
   guy: '/location/guy-ellis-yard/5851d7d52967c2153ab6c856',
@@ -35,7 +33,7 @@ const shortUrl = (app: Application) => {
  */
 async function index(app: Application): Promise<any> {
   client(app);
-  auth.auth(app);
+  auth(app);
   locationsApi(app);
   noteApi(app);
   plantApi(app);

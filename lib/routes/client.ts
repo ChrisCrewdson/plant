@@ -4,8 +4,6 @@
 
 import { Application, Request, Response } from 'express';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const indexHtml = require('../render');
 const plant = require('../render/plant');
 const article = require('../render/article');
@@ -53,7 +51,7 @@ function server(app: Application) {
 /**
  * api note routes
  */
-module.exports = (app: Application) => {
+export const clientServerApi = (app: Application) => {
   client(app);
   server(app);
 };

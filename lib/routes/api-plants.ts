@@ -1,8 +1,6 @@
 import { Application } from 'express';
 import { getDbInstance } from '../db/mongo';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 const mongo = getDbInstance();
 
 const moduleName = 'routes/api-plants';
@@ -10,7 +8,7 @@ const moduleName = 'routes/api-plants';
 /**
  * api note routes
  */
-module.exports = (app: Application) => {
+export const plantsApi = (app: Application) => {
   /**
    * An anonymous request for all plants at a given location.
    */
