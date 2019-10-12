@@ -7,13 +7,11 @@ import { ssrRenderPlant } from './plant-render';
 import appReducers from '../../app/reducers';
 import { singlePlant } from '../db/single-plant';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const indexHtml = require('.');
+import { indexHtml } from '.';
 
 const moduleName = 'lib/render/plant';
 
-const target = async (req: import('express').Request, res: import('express').Response): Promise<void> => {
+export const renderPlant = async (req: import('express').Request, res: import('express').Response): Promise<void> => {
   const { logger } = req;
   try {
     const {
@@ -28,7 +26,7 @@ const target = async (req: import('express').Request, res: import('express').Res
     const searchParams = new Map([['noteid', noteId]]);
 
     if (!plantId) {
-      res.send(indexHtml({ req }));
+      res.send(indexHtml({ req }, false));
       return;
     }
 
@@ -127,11 +125,9 @@ const target = async (req: import('express').Request, res: import('express').Res
     res.send(indexHtml(data, true));
   } catch (error) {
     logger.error({ moduleName, msg: 'Unexpected error in SSR of Plant', err: error });
-    res.status(404).send(indexHtml({ req }));
+    res.status(404).send(indexHtml({ req }, false));
   }
 };
-
-module.exports = target;
 
 /*
 Load:

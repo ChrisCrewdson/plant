@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { getDbInstance } from './db/mongo';
+import { indexHtml } from './render';
 
 import UnhandledRejectionListener = NodeJS.UnhandledRejectionListener;
 import UncaughtExceptionListener = NodeJS.UncaughtExceptionListener;
@@ -17,7 +18,7 @@ const path = require('path');
 const mongoFn = getDbInstance;
 // const tokenCheck = require('./config/token-check');
 const routes = require('./routes');
-const indexHtml = require('./render');
+
 const { SERVICE_NAME } = require('../app/libs/constants');
 const authPassportSetup = require('./auth/passport-setup');
 
@@ -99,7 +100,7 @@ export const serverServer = async (portParam?: number, mongoConnection?: string)
     };
     app.use(errorHandler);
 
-    app.use((req, res) => res.status(404).send(indexHtml({ req })),
+    app.use((req, res) => res.status(404).send(indexHtml({ req }, false)),
     );
 
     return new Promise((resolve, reject) => {

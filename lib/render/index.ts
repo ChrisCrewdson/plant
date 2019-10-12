@@ -1,6 +1,4 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const _ = require('lodash');
+import _ from 'lodash';
 
 /**
  * Get user object
@@ -45,7 +43,7 @@ const getUser = (req: import('express').Request): UiUser | undefined => {
 /**
  * Server Side Render SSR
  */
-module.exports = (data: ServerSideRenderData, ssr: boolean): string => {
+export const indexHtml = (data: ServerSideRenderData, ssr: boolean): string => {
   const {
     html = '',
     initialState = /** @type {PlantStateTree} */ ({}),

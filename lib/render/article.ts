@@ -1,15 +1,16 @@
 import si from 'seamless-immutable';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { deepOrange500 } from 'material-ui/styles/colors';
+import { createStore } from 'redux';
+
+import { indexHtml } from '.';
 import { ssrRenderArticle } from './article-render';
 import appReducers from '../../app/reducers';
 
-const { createStore } = require('redux');
 // @ts-ignore
 const seamless = si.static;
-const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
-const { deepOrange500 } = require('material-ui/styles/colors');
-const indexHtml = require('.');
 
-const target = (req: import('express').Request, res: import('express').Response): void => {
+export const renderArticle = (req: import('express').Request, res: import('express').Response): void => {
   const muiTheme = getMuiTheme({
     palette: {
       accent1Color: deepOrange500,
@@ -31,7 +32,5 @@ const target = (req: import('express').Request, res: import('express').Response)
     req,
     title: 'A Fruit Tree Emergency',
   };
-  res.send(indexHtml(data));
+  res.send(indexHtml(data, false));
 };
-
-module.exports = target;

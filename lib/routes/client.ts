@@ -4,9 +4,9 @@
 
 import { Application, Request, Response } from 'express';
 
-const indexHtml = require('../render');
-const plant = require('../render/plant');
-const article = require('../render/article');
+import { indexHtml } from '../render';
+import { renderPlant as plant } from '../render/plant';
+import { renderArticle as article } from '../render/article';
 
 // For these types of routes just send back the basic html
 // and it will do the rest of the routing on the client.
@@ -14,7 +14,7 @@ const article = require('../render/article');
  * static index
  */
 function staticIndex(title: string, req: Request, res: Response) {
-  res.send(indexHtml({ title, req }));
+  res.send(indexHtml({ title, req }, false));
 }
 
 /**
