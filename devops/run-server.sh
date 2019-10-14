@@ -30,7 +30,11 @@ export NODE_ENV=development
 # You can comment out the DEBUG line below if you want fewer terminal messages
 export DEBUG=plant:*
 
+# Do this from the root of the project
 tsc
+# Copy public/ and any other non-transpiled files to the dist/ folder
+./devops/copy-to-dist.sh
+# CD to dist so we can run the transpiled code
 cd dist/
 pwd
 nodemon server.js
