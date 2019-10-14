@@ -2,9 +2,6 @@
 import { Moment } from 'moment';
 import utils from './utils';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-
 /**
  * Create the object that represents the component that goes between notes describing
  * what has happened between the notes.
@@ -130,7 +127,7 @@ function calculateMetrics(acc: MetricNote[], note: UiNotesValue, noteId: string,
  * @param notes - An Immutable map of notes
  * @returns - A collection of objects that can be rendered on a Plant's page
  */
-function notesToMetricNotes(sortedNoteIds: string[], notes: UiNotes): MetricNote[] {
+export function notesToMetricNotes(sortedNoteIds: string[], notes: UiNotes): MetricNote[] {
   let lastNoteDate: Moment;
   const metrics: MetricItem[] = [];
 
@@ -148,7 +145,3 @@ function notesToMetricNotes(sortedNoteIds: string[], notes: UiNotes): MetricNote
 
   return sortedNoteIds.reduce(metricReducer, []);
 }
-
-module.exports = {
-  notesToMetricNotes,
-};

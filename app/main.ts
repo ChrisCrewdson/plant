@@ -1,8 +1,6 @@
 import { renderMain } from './main-render';
 import { poly } from './poly';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 require('jquery');
 require('bootstrap');
 // @ts-ignore - because this is a css file

@@ -3,8 +3,6 @@ import uniq from 'lodash/uniq';
 import si from 'seamless-immutable';
 import { actionEnum } from '../actions';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 // An array of plants loaded from the server.
 // Plants could be for any user.
 // If a user is logged in then some of the items in the array
