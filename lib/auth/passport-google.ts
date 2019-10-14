@@ -1,16 +1,14 @@
+import _ from 'lodash';
+// @ts-ignore - Types for @passport-next are not complete yet
+import passportGoogle from '@passport-next/passport-google-oauth2';
+// @ts-ignore - Types for lalog are not complete yet
+import Logger from 'lalog';
+
 import { getDbInstance } from '../db/mongo';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
-const _ = require('lodash');
-// @ts-ignore - Types for @passport-next are not complete yet
-const passportGoogle = require('@passport-next/passport-google-oauth2');
-// @ts-ignore - Types for lalog are not complete yet
-const Logger = require('lalog');
+import { SERVICE_NAME } from '../../app/libs/constants';
 
 const mongoDb = getDbInstance();
-const { SERVICE_NAME } = require('../../app/libs/constants');
-
 const moduleName = 'lib/auth/passport-google';
 
 const localLogger = Logger.create({
@@ -24,7 +22,7 @@ const GoogleStrategy = passportGoogle.Strategy;
 /**
  * googlePassport
  */
-function googlePassport(passport: { use: Function }) {
+export function googlePassport(passport: { use: Function }) {
   const { PLANT_GOOGLE_ID, PLANT_GOOGLE_SECRET } = process.env;
   if (!PLANT_GOOGLE_ID) {
     localLogger.error({
@@ -82,5 +80,3 @@ function googlePassport(passport: { use: Function }) {
     },
   ));
 }
-
-module.exports = { googlePassport };

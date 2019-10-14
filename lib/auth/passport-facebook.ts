@@ -1,16 +1,18 @@
-import { getDbInstance } from '../db/mongo';
+import _ from 'lodash';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const _ = require('lodash');
 // @ts-ignore - Types for lalog are not complete yet
-const Logger = require('lalog');
+import Logger from 'lalog';
 
 // @ts-ignore - Types for @passport-next are not complete yet
-const FacebookStrategy = require('@passport-next/passport-facebook').Strategy;
+import fb from '@passport-next/passport-facebook';
+import { getDbInstance } from '../db/mongo';
+
+import { SERVICE_NAME } from '../../app/libs/constants';
+
+const FacebookStrategy = fb.Strategy;
 
 const mongoDb = getDbInstance();
-const { SERVICE_NAME } = require('../../app/libs/constants');
 
 const moduleName = 'lib/auth/passport-facebook';
 
@@ -36,7 +38,7 @@ const profileFields = [
 /**
  * fbPassport
  */
-function fbPassport(passport: { use: Function}) {
+export function fbPassport(passport: { use: Function}) {
   const { PLANT_FB_ID, PLANT_FB_SECRET } = process.env;
 
   if (!PLANT_FB_ID) {
@@ -100,5 +102,3 @@ function fbPassport(passport: { use: Function}) {
     },
   ));
 }
-
-module.exports = { fbPassport };

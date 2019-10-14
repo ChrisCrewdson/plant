@@ -3,18 +3,20 @@ import {
   Application,
 } from 'express';
 import { Db } from 'mongodb';
-import { getDbInstance } from '../db/mongo';
 
 // @ts-ignore - Types for @passport-next are not complete yet
-const passport = require('@passport-next/passport');
-const connectMongo = require('connect-mongo');
-const session = require('express-session');
+import passport from '@passport-next/passport';
+import connectMongo from 'connect-mongo';
+import session from 'express-session';
+
+import { getDbInstance } from '../db/mongo';
+
+import * as googleAuth from './passport-google';
+import * as facebookAuth from './passport-facebook';
+
+import { sessionKey } from '../constants';
 
 const mongo = getDbInstance;
-const googleAuth = require('./passport-google');
-const facebookAuth = require('./passport-facebook');
-const { sessionKey } = require('../constants');
-
 const MongoStore = connectMongo(session);
 
 /**
