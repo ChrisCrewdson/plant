@@ -1,8 +1,6 @@
 import si from 'seamless-immutable';
 import { Store } from 'redux';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 // Purpose: Keep localStorage up-to-date with changes in the user object.
 
 // 1. Listen to state changes.
@@ -16,7 +14,7 @@ let user: UiUser;
 /**
  * setup the subscription
  */
-function setupSubscribe(store: Store) {
+export function setupSubscribe(store: Store) {
   let currentValue = user || seamless.from({});
 
   function handleChange() {
@@ -33,7 +31,7 @@ function setupSubscribe(store: Store) {
   store.subscribe(handleChange);
 }
 
-function initialState() {
+export function initialState() {
   if (!user) {
     try {
       const localStorageUser = localStorage.getItem('user');
@@ -48,8 +46,3 @@ function initialState() {
 
   return user;
 }
-
-module.exports = {
-  initialState,
-  setupSubscribe,
-};

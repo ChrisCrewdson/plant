@@ -4,10 +4,8 @@ import {
   Store,
 } from 'redux';
 
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
-
 /* eslint-disable no-console */
-const logger = (store: Store): Function => (next: Dispatch) => (action: Action) => {
+export const logger = (store: Store): Function => (next: Dispatch) => (action: Action) => {
   console.group(action.type);
   console.info('dispatching', action);
   const result = next(action);
@@ -16,5 +14,3 @@ const logger = (store: Store): Function => (next: Dispatch) => (action: Action) 
   return result;
 };
 /* eslint-enable no-console */
-
-module.exports = logger;
