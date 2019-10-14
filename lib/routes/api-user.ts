@@ -1,8 +1,8 @@
 import { Application } from 'express';
 import { getDbInstance } from '../db/mongo';
+import { sessionKey } from '../constants';
 
 const mongo = getDbInstance();
-const { sessionKey } = require('../constants');
 
 const moduleName = 'routes/api-user';
 
