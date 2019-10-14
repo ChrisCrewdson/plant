@@ -1,13 +1,13 @@
 import { Application, Response, Request } from 'express';
-import { getDbInstance } from '../db/mongo';
-import { UiActionType } from '../../app/actions';
-import { requireToken } from '../auth/token-check';
+import _ from 'lodash';
 
-const _ = require('lodash');
+import { getDbInstance } from '../db/mongo';
+import { UiActionType, actionEnum } from '../../app/actions';
+import { requireToken } from '../auth/token-check';
+import * as constants from '../../app/libs/constants';
+
 
 const mongo = getDbInstance();
-const actions = require('../../app/actions');
-const constants = require('../../app/libs/constants');
 
 const moduleName = 'routes/api-locations';
 
@@ -16,7 +16,7 @@ const {
   UPSERT_LOCATION_WEATHER,
   DELETE_LOCATION_MEMBER,
   DELETE_LOCATION_WEATHER,
-} = actions.actionEnum as Record<string, UiActionType>;
+} = actionEnum as Record<string, UiActionType>;
 
 /**
  * Return a 500 response to caller
@@ -127,7 +127,7 @@ export const locationsApi = (app: Application) => {
       const members = { ...location.members, [userId]: role };
       modifiedLocation = { ...location, members };
     } else {
-      modifiedLocation = /** @type {BizLocation} */ (_.omit(location, `members.${userId}`));
+      modifiedLocation = _.omit(location, `members.${userId}`) as BizLocation;
     }
 
     return mongo.updateLocationById(modifiedLocation, loggedInUserId, logger);
@@ -157,7 +157,7 @@ export const locationsApi = (app: Application) => {
       const stations = { ...location.stations, [stationId]: { name, enabled } };
       modifiedLocation = { ...location, stations };
     } else { // delete
-      modifiedLocation = /** @type {BizLocation} */ (_.omit(location, `stations.${stationId}`));
+      modifiedLocation = _.omit(location, `stations.${stationId}`) as BizLocation;
     }
     // TODO: If the station does not exist in the stations collection then
     // insert it into that collection.

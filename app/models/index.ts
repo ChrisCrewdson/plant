@@ -2,8 +2,6 @@ import validatejs from 'validate.js';
 import { note } from './note';
 import { plant } from './plant';
 
-// const utils = require('../libs/utils');
-
 //  The validator receives the following arguments:
 //     value - The value exactly how it looks in the attribute object.
 //     options - The options for the validator. Guaranteed to not be null or undefined.

@@ -1,10 +1,10 @@
 import {
   Request, Response, NextFunction, Application,
 } from 'express';
-import { sessionKey } from '../constants';
-
 // @ts-ignore - Types for @passport-next are not complete yet
-const passport = require('@passport-next/passport');
+import passport from '@passport-next/passport';
+
+import { sessionKey } from '../constants';
 
 const moduleName = 'routes/auth';
 
