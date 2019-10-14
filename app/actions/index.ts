@@ -155,15 +155,5 @@ const actions = actionList.reduce(
     func: {},
   } as UiActionsAcc);
 
-const actionEnum = actions.enum;
-const actionFunc = actions.func;
-
-module.exports = {
-  actionEnum,
-  actionFunc,
-};
-
-export {
-  actionEnum,
-  actionFunc,
-};
+export const actionEnum = actions.enum;
+export const actionFunc = actions.func;

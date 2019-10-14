@@ -229,15 +229,3 @@ export const getFakeStore = (): Store => ({
 export const expectMongoId = (values: string[]) => {
   values.forEach((value) => expect(constants.mongoIdRE.test(value)).toBe(true));
 };
-
-module.exports = {
-  createNote,
-  createPlants,
-  getFakeStore,
-  getUrl,
-  expectMongoId,
-  makeRequest,
-  mockLogger,
-  startServerAuthenticated,
-  stopServer,
-};

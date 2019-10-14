@@ -14,16 +14,3 @@ export const awsBucketName = 'i.plaaant.com';
 
 export const gisMultiplier = 10 ** 7;
 export const SERVICE_NAME = 'plant';
-
-const constants = {
-  uuidRE,
-  mongoIdRE,
-  maxImageFilesPerUpload,
-  awsBucketName,
-  imageSizeNames,
-  gisMultiplier,
-  roles,
-  SERVICE_NAME,
-};
-
-module.exports = constants;

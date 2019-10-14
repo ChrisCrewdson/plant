@@ -42,5 +42,3 @@ export async function index(app: Application): Promise<any> {
   rss(app);
   shortUrl(app);
 }
-
-module.exports = { index };
