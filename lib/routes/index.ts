@@ -31,7 +31,7 @@ const shortUrl = (app: Application) => {
 /**
  * Short Url alias for location - start off with hard coding a single one
  */
-async function index(app: Application): Promise<any> {
+export async function index(app: Application): Promise<any> {
   client(app);
   auth(app);
   locationsApi(app);

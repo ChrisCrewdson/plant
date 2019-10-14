@@ -18,6 +18,7 @@
         "camelcase",
         "coordindates",
         "datetime",
+        "deserialize",
         "esnext",
         "fieldname",
         "gmail",

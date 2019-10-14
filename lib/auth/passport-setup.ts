@@ -81,4 +81,4 @@ const init = (app: Application, db: Db, logger: Logger): void => {
   googleAuth.googlePassport(passport);
 };
 
-module.exports = init;
+export default init;

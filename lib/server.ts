@@ -1,26 +1,25 @@
 import express, { Request, Response, NextFunction } from 'express';
+
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import http from 'http';
+// @ts-ignore
+import Logger from 'lalog';
+import morgan from 'morgan';
+import methodOverride from 'method-override';
+import path from 'path';
+
 import { getDbInstance } from './db/mongo';
 import { indexHtml } from './render';
+import * as routes from './routes';
+
+import { SERVICE_NAME } from '../app/libs/constants';
+import authPassportSetup from './auth/passport-setup';
 
 import UnhandledRejectionListener = NodeJS.UnhandledRejectionListener;
 import UncaughtExceptionListener = NodeJS.UncaughtExceptionListener;
 
-const bodyParser = require('body-parser');
-const compression = require('compression');
-// const cookieParser = require('cookie-parser');
-const http = require('http');
-// @ts-ignore
-const Logger = require('lalog');
-const morgan = require('morgan');
-const methodOverride = require('method-override');
-const path = require('path');
-
 const mongoFn = getDbInstance;
-// const tokenCheck = require('./config/token-check');
-const routes = require('./routes');
-
-const { SERVICE_NAME } = require('../app/libs/constants');
-const authPassportSetup = require('./auth/passport-setup');
 
 const localLogger = Logger.create({
   serviceName: SERVICE_NAME,
@@ -103,15 +102,15 @@ export const serverServer = async (portParam?: number, mongoConnection?: string)
     app.use((req, res) => res.status(404).send(indexHtml({ req }, false)),
     );
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       /**
        * Server callback
        */
-      const serverCallback = (err: Error) => {
-        if (err) {
-          localLogger.fatal({ msg: 'Error in server.listen', err });
-          return reject(err);
-        }
+      const serverCallback = () => {
+        // if (err) {
+        //   localLogger.fatal({ msg: 'Error in server.listen', err });
+        //   return reject(err);
+        // }
         localLogger.info({
           msg: 'Express server started and listening',
           port,
