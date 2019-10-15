@@ -1,38 +1,32 @@
 // Used for managing the user's settings.
 // Only the logged in user can get to their profile page.
 
-const PropTypes = require('prop-types');
-const { RadioButton } = require('material-ui/RadioButton');
-const { RadioButtonGroup } = require('material-ui/RadioButton');
-const React = require('react');
-const getIn = require('lodash/get');
-const LocationsManager = require('../location/LocationsManager');
-const Base = require('../base/Base');
+import PropTypes from 'prop-types';
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+
+import React from 'react';
+import getIn from 'lodash/get';
+import LocationsManager from '../location/LocationsManager';
+import Base from '../base/Base';
 
 // Responsible for:
 // 1. Current user: /profile
 // 2. Other user: /profile/slug/<id>
 // Only implementing #1 for now.
 
-/**
- * @param {ProfileProps} props
- * @param {*} context
- * @returns
- */
-function profile(props, context) {
-  /** @type {React.CSSProperties} */
-  const radioGroup = {
+export default function profile(props: ProfileProps, context: any) {
+  const radioGroup: React.CSSProperties = {
     display: 'flex',
   };
-  /** @type {React.CSSProperties} */
-  const radioButton = {
+
+  const radioButton: React.CSSProperties = {
     marginBottom: 16,
     width: 'inherit',
   };
 
   const { userSettings } = props;
   const { imperial } = userSettings;
-  const { store } = /** @type {{store: PlantStore}} */ (context);
+  const { store } = context as {store: PlantStore};
   const { dispatch } = store;
   const state = store.getState();
   const users = getIn(state, 'users', {});
@@ -94,5 +88,3 @@ profile.contextTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   store: PropTypes.object.isRequired,
 };
-
-module.exports = profile;
