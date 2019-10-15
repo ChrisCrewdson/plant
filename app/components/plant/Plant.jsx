@@ -13,7 +13,7 @@ const { makeMongoId } = require('../../libs/utils');
 const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 const PlantEdit = require('./PlantEdit');
-const PlantRead = require('./PlantRead');
+const PlantRead = require('./PlantRead').default;
 const NoteCreate = require('../note/NoteCreate');
 
 class Plant extends React.Component {

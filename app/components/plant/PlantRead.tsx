@@ -288,4 +288,4 @@ Plant not found or still loading...
 }
 
 // @ts-ignore - TODO: Solve withRouter() param and tsc
-module.exports = withRouter(PlantRead);
+export default withRouter(PlantRead);
