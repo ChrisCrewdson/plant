@@ -1,25 +1,37 @@
 // Used to show each plant on a user's plant list page.
 // Url: /location/<location-name>/<location-id>
 
-const { Link } = require('react-router-dom');
-const React = require('react');
-const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const AddIcon = require('material-ui/svg-icons/content/add').default;
-const moment = require('moment');
-const PropTypes = require('prop-types');
-const utils = require('../../libs/utils');
-const { actionFunc } = require('../../actions');
-const { makeSlug } = require('../../libs/utils');
+import { Link } from 'react-router-dom';
+import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
-class PlantItem extends React.PureComponent {
-  /**
-   *Creates an instance of PlantItem.
-   * @param {PlantItemProps} props
-   * @memberof PlantItem
-   */
-  constructor(props) {
+import utils from '../../libs/utils';
+import { actionFunc } from '../../actions';
+
+const { makeSlug } = utils;
+
+export default class PlantItem extends React.PureComponent {
+  props: PlantItemProps;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    userCanEdit: PropTypes.bool.isRequired,
+    plant: PropTypes.shape({
+      _id: PropTypes.string,
+      botanicalName: PropTypes.string,
+      isTerminated: PropTypes.bool,
+      notesRequested: PropTypes.bool,
+      title: PropTypes.string,
+    }).isRequired,
+  };
+
+  constructor(props: PlantItemProps) {
     super(props);
     this.createNote = this.createNote.bind(this);
+    this.props = props;
   }
 
   createNote() {
@@ -108,17 +120,3 @@ class PlantItem extends React.PureComponent {
     );
   }
 }
-
-PlantItem.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  userCanEdit: PropTypes.bool.isRequired,
-  plant: PropTypes.shape({
-    _id: PropTypes.string,
-    botanicalName: PropTypes.string,
-    isTerminated: PropTypes.bool,
-    notesRequested: PropTypes.bool,
-    title: PropTypes.string,
-  }).isRequired,
-};
-
-module.exports = PlantItem;
