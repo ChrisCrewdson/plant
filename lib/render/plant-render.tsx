@@ -2,13 +2,13 @@ import { StaticRouterContext } from 'react-router';
 import { MuiTheme } from 'material-ui/styles';
 import { Store } from 'redux';
 
-const React = require('react');
-const { Provider } = require('react-redux');
-const { renderToString } = require('react-dom/server');
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
-const { StaticRouter } = require('react-router-dom');
-const Plant = require('../../app/components/plant/Plant');
-const App = require('../../app/components/App');
+import React from 'react';
+import { Provider } from 'react-redux';
+import { renderToString } from 'react-dom/server';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { StaticRouter } from 'react-router-dom';
+import Plant from '../../app/components/plant/Plant';
+import App from '../../app/components/App';
 
 interface SsrRenderPlantOptions {
   muiTheme: MuiTheme;

@@ -1,30 +1,32 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+// To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-const {
+import {
   BrowserRouter, Route, Redirect, Switch,
-} = require('react-router-dom');
-const { deepOrange500 } = require('material-ui/styles/colors');
-const { Provider } = require('react-redux');
-const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
-const React = require('react');
-const ReactDOM = require('react-dom');
-const App = require('./components/App');
-const Help = require('./components/base/Help');
-const Home = require('./components/base/Home');
-const Login = require('./components/auth/Login');
-const Plant = require('./components/plant/Plant');
-const Article = require('./components/article/Article');
-const Plants = require('./components/plant/Plants');
-const Privacy = require('./components/info/Privacy');
-const Profile = require('./components/user/Profile');
-const LayoutMap = require('./components/layout/LayoutMap');
-const store = require('./store');
-const Terms = require('./components/info/Terms');
-const Location = require('./components/location/Location');
-const Metrics = require('./components/location/metrics/Metrics');
-const Locations = require('./components/location/Locations');
-const Users = require('./components/user/Users');
+} from 'react-router-dom';
+import { deepOrange500 } from 'material-ui/styles/colors';
+import { Provider } from 'react-redux';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+import Help from './components/base/Help';
+import Home from './components/base/Home';
+import Login from './components/auth/Login';
+import Plant from './components/plant/Plant';
+import Article from './components/article/Article';
+import Plants from './components/plant/Plants';
+import Privacy from './components/info/Privacy';
+import Profile from './components/user/Profile';
+import LayoutMap from './components/layout/LayoutMap';
+import store from './store';
+import Terms from './components/info/Terms';
+import Location from './components/location/Location';
+import Metrics from './components/location/metrics/Metrics';
+import Locations from './components/location/Locations';
+import Users from './components/user/Users';
+
+export {};
 
 const muiTheme = getMuiTheme({
   palette: {

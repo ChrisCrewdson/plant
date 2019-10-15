@@ -1,12 +1,12 @@
 import { MuiTheme } from 'material-ui/styles';
 import { Store } from 'redux';
-import { PlantAction } from '../types/redux-payloads';
 
-const React = require('react');
-const { Provider } = require('react-redux');
-const { renderToString } = require('react-dom/server');
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
-const Article = require('../../app/components/article/Article');
+import React from 'react';
+import { Provider } from 'react-redux';
+import { renderToString } from 'react-dom/server';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { PlantAction } from '../types/redux-payloads';
+import Article from '../../app/components/article/Article';
 
 interface SsrRenderArticleOptions {
   muiTheme: MuiTheme;
