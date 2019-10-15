@@ -3,36 +3,96 @@
 // Url: /plant/slug/<plant-id>
 // Unless Create then Url: /plant
 
-const CircularProgress = require('material-ui/CircularProgress').default;
-const React = require('react');
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
-const getIn = require('lodash/get');
-const { canEdit } = require('../../libs/auth-helper');
-const { makeMongoId } = require('../../libs/utils');
-const { actionFunc } = require('../../actions');
-const Base = require('../base/Base');
-const PlantEdit = require('./PlantEdit').default;
-const PlantRead = require('./PlantRead').default;
-const NoteCreate = require('../note/NoteCreate');
+import CircularProgress from 'material-ui/CircularProgress';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import getIn from 'lodash/get';
+import { Location } from 'history';
+import { match as matcher } from 'react-router';
+
+import { canEdit } from '../../libs/auth-helper';
+import utils from '../../libs/utils';
+import { actionFunc } from '../../actions';
+import Base from '../base/Base';
+import PlantEdit from './PlantEdit';
+import PlantRead from './PlantRead';
+import NoteCreate from '../note/NoteCreate';
+
+const { makeMongoId } = utils;
+
+interface PlantPropsParams {
+  id?: string;
+}
+
+interface PlantPropsSearchParams {
+  get: Function;
+}
+
+/**
+ * The params and searchParams are available when Plant is created during SSR.
+ * The match and location are available when this is created via React Router.
+ * I've no idea why I did this. Seems to be a terrible design.
+ * TODO: Fix this so that the SSR provides shapes that replicate the React Router interfaces.
+ */
+interface PlantProps {
+  location?: Location;
+  match?: matcher<any>;
+  params?: PlantPropsParams;
+  searchParams?: PlantPropsSearchParams;
+}
 
 class Plant extends React.Component {
+  props: PlantProps;
+
+  unsubscribe: any;
+
+  // @ts-ignore
+  context: {store: PlantStore};
+
+  static propTypes = {
+    // eslint-disable-next-line react/no-unused-prop-types
+    location: PropTypes.shape({
+      hash: PropTypes.string,
+      pathname: PropTypes.string,
+      search: PropTypes.string, // this has query params
+    }).isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string,
+      }),
+    }),
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+    // eslint-disable-next-line react/no-unused-prop-types
+    searchParams: PropTypes.shape({
+      get: PropTypes.func.isRequired,
+    }),
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * @param {PlantProps} props
-   */
-  constructor(props) {
+  static defaultProps = {
+    match: {
+      params: {},
+    },
+    params: {},
+    searchParams: null,
+  };
+
+  constructor(props: PlantProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.props = props;
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     this.initState(true);
   }
@@ -45,11 +105,8 @@ class Plant extends React.Component {
 - parameter to this function is nextProps
 - can call this.setState() here (will not trigger additional render)
 */
-  /**
-   * @param {PlantProps} nextProps
-   */
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: PlantProps) {
     this.initState(true, nextProps);
   }
 
@@ -64,15 +121,10 @@ class Plant extends React.Component {
     // this.initState(false);
   }
 
-  /**
-   * @param {boolean} first
-   * @param {PlantProps=} initProps
-   * @memberof Plant
-   */
-  initState(first, initProps) {
-    const props = /** @type {PlantProps} */ (initProps
+  initState(first: boolean, initProps?: PlantProps) {
+    const props: PlantProps = /** @type {PlantProps} */ (initProps
       || this.props || {});
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { user, users, plants } = store.getState();
 
     const {
@@ -108,7 +160,7 @@ class Plant extends React.Component {
     } else {
       const { _id: userId = '', activeLocationId } = user;
 
-      const locationIds = (users[userId] && users[userId].locationIds) || [];
+      const locationIds = (users[userId] && users[userId].locationIds) || []; // as string[];
 
       // activeLocationId is the one that you last viewed which might not be
       // one that you own/manage. Only set locationId to this if it's one that
@@ -128,7 +180,7 @@ class Plant extends React.Component {
   }
 
   render() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { match = {}, params = {} } = this.props;
     const {
       interim,
@@ -154,6 +206,7 @@ class Plant extends React.Component {
       );
     }
 
+    // @ts-ignore
     const plantId = params.id || (match.params && match.params.id);
     if (!plantId) {
       // eslint-disable-next-line no-console
@@ -206,34 +259,5 @@ class Plant extends React.Component {
   }
 }
 
-Plant.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  location: PropTypes.shape({
-    hash: PropTypes.string,
-    pathname: PropTypes.string,
-    search: PropTypes.string, // this has query params
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }),
-  params: PropTypes.shape({
-    id: PropTypes.string,
-  }),
-  // eslint-disable-next-line react/no-unused-prop-types
-  searchParams: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-  }),
-};
-
-Plant.defaultProps = {
-  match: {
-    params: {},
-  },
-  params: {},
-  searchParams: null,
-};
-
 // @ts-ignore - TODO: Solve withRouter() param and tsc
-module.exports = withRouter(Plant);
+export default withRouter(Plant);

@@ -120,27 +120,6 @@ interface UiPlantLocationCanvas {
   plants: Record<string, UiPlantLocation>;
 }
 
-interface PlantPropsParams {
-  id?: string;
-}
-
-interface PlantPropsSearchParams {
-  get: Function;
-}
-
-/**
- * The params and searchParams are available when Plant is created during SSR.
- * The match and location are available when this is created via React Router.
- * I've no idea why I did this. Seems to be a terrible design.
- * TODO: Fix this so that the SSR provides shapes that replicate the React Router interfaces.
- */
-interface PlantProps {
-  location?: import('history').Location;
-  match?: import('react-router').match<any>;
-  params?: PlantPropsParams;
-  searchParams?: PlantPropsSearchParams;
-}
-
 interface PlantEditProps {
   dispatch: import('redux').Dispatch;
   history: import('history').History;
