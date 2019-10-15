@@ -1,21 +1,32 @@
-const React = require('react');
-const Toggle = require('material-ui/Toggle').default;
-const Divider = require('material-ui/Divider').default;
-const { RadioButton } = require('material-ui/RadioButton');
-const { RadioButtonGroup } = require('material-ui/RadioButton');
-const PropTypes = require('prop-types');
-const InputComboText = require('../common/InputComboText');
-const { actionFunc } = require('../../actions');
+import React from 'react';
+import Toggle from 'material-ui/Toggle';
+import Divider from 'material-ui/Divider';
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
-class PlantEditTerminated extends React.Component {
-  /**
-   * @param {PlantEditTerminatedProps} props
-   */
-  constructor(props) {
+import PropTypes from 'prop-types';
+import InputComboText from '../common/InputComboText';
+import { actionFunc } from '../../actions';
+
+export default class PlantEditTerminated extends React.Component {
+  props: PlantEditTerminatedProps;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    interimPlant: PropTypes.shape({
+      errors: PropTypes.object,
+      isTerminated: PropTypes.bool,
+      terminatedDate: PropTypes.string,
+      terminatedDescription: PropTypes.string,
+      terminatedReason: PropTypes.string,
+    }).isRequired,
+  };
+
+  constructor(props: PlantEditTerminatedProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.booleanHandler = this.booleanHandler.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
+    this.props = props;
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
@@ -33,31 +44,18 @@ class PlantEditTerminated extends React.Component {
 
   /**
    * Change Handler for InputCombo
-   * @param {React.ChangeEvent<HTMLInputElement>} e
-   * @returns {void}
    */
-  onChange(e) {
+  onChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = e.target;
     this.dispatchChange(name, value);
   }
 
-  /**
-   * @param {React.MouseEvent<HTMLInputElement>} e
-   * @param {boolean} isInputChecked
-   * @returns {void}
-   */
-  booleanHandler = (e, isInputChecked) => {
+  booleanHandler = (e: React.MouseEvent<HTMLInputElement>, isInputChecked: boolean): void => {
     const { name } = e.currentTarget;
     this.dispatchChange(name, isInputChecked);
   };
 
-  /**
-   * @param {string} name
-   * @param {string|boolean} value
-   * @returns {void}
-   * @memberof PlantEditTerminated
-   */
-  dispatchChange(name, value) {
+  dispatchChange(name: string, value: string | boolean): void {
     const { dispatch } = this.props;
     dispatch(actionFunc.editPlantChange({ [name]: value }));
   }
@@ -146,16 +144,3 @@ class PlantEditTerminated extends React.Component {
     );
   }
 }
-
-PlantEditTerminated.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  interimPlant: PropTypes.shape({
-    errors: PropTypes.object,
-    isTerminated: PropTypes.bool,
-    terminatedDate: PropTypes.string,
-    terminatedDescription: PropTypes.string,
-    terminatedReason: PropTypes.string,
-  }).isRequired,
-};
-
-module.exports = PlantEditTerminated;

@@ -11,9 +11,8 @@ const MapsAddLocation = require('material-ui/svg-icons/maps/add-location').defau
 const PropTypes = require('prop-types');
 const { withRouter } = require('react-router-dom');
 const getIn = require('lodash/get');
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
-const PlantEditTerminated = require('./PlantEditTerminated');
+const si = require('seamless-immutable');
+const PlantEditTerminated = require('./PlantEditTerminated').default;
 const utils = require('../../libs/utils');
 const CancelSaveButtons = require('../common/CancelSaveButtons');
 const InputCombo = require('../common/InputCombo');
@@ -23,6 +22,8 @@ const validators = require('../../models');
 const { makeSlug } = require('../../libs/utils');
 
 const { plant: plantValidator } = validators;
+// @ts-ignore - static hasn't been defined on seamless types yet.
+const seamless = si.static;
 
 class PlantEdit extends React.Component {
   static contextTypes = {
