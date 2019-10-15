@@ -1,17 +1,16 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import React from 'react';
+import renderer from 'react-test-renderer';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-const React = require('react');
-const renderer = require('react-test-renderer');
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
-const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
-const lightBaseTheme = require('material-ui/styles/baseThemes/lightBaseTheme').default;
-const {
-  MemoryRouter,
-} = require('react-router-dom');
-const { Provider } = require('react-redux');
-const NoteEditMetrics = require('../../../../app/components/note/NoteEditMetrics');
-const store = require('../../../../app/store');
-const App = require('../../../../app/components/App');
+import { Dispatch } from 'redux';
+import NoteEditMetrics from '../../../../app/components/note/NoteEditMetrics';
+import store from '../../../../app/store';
+import App from '../../../../app/components/App';
+import { PlantAction } from '../../../../lib/types/redux-payloads';
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
@@ -19,7 +18,7 @@ describe('NoteEditMetrics', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
-    store.dispatch = () => {};
+    store.dispatch = (() => {}) as Dispatch<PlantAction<any>>;
   });
 
   afterAll(() => {
