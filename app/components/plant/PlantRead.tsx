@@ -1,29 +1,62 @@
-const moment = require('moment');
-const Paper = require('material-ui/Paper').default;
-const React = require('react');
-const RaisedButton = require('material-ui/RaisedButton').default;
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
-const utils = require('../../libs/utils');
-const NotesRead = require('../note/NotesRead');
-const EditDeleteButtons = require('../common/EditDeleteButtons');
-const { actionFunc } = require('../../actions');
-const Markdown = require('../common/Markdown');
+import moment from 'moment';
+import Paper from 'material-ui/Paper';
+import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import si from 'seamless-immutable';
+import utils from '../../libs/utils';
+import NotesRead from '../note/NotesRead';
+import EditDeleteButtons from '../common/EditDeleteButtons';
+import { actionFunc } from '../../actions';
+import Markdown from '../common/Markdown';
 
 const dateFormat = 'DD-MMM-YYYY';
+// @ts-ignore
+const seamless = si.static;
+
+interface PlantReadState {
+  showDeleteConfirmation: boolean;
+}
 
 class PlantRead extends React.PureComponent {
+  static propTypes = {
+    // dispatch: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+    interim: PropTypes.shape({
+    }).isRequired,
+    // userCanEdit: PropTypes.bool.isRequired,
+    notes: PropTypes.shape({
+    }).isRequired,
+    locations: PropTypes.shape({
+    }).isRequired,
+    plant: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      botanicalName: PropTypes.string,
+      commonName: PropTypes.string,
+      description: PropTypes.string,
+      isTerminated: PropTypes.bool,
+      locationId: PropTypes.string.isRequired,
+      notes: PropTypes.arrayOf(PropTypes.string),
+      notesRequested: PropTypes.bool,
+      plantedDate: PropTypes.number,
+      terminatedDate: PropTypes.number,
+      terminatedDescription: PropTypes.string,
+      terminatedReason: PropTypes.string,
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+    plants: PropTypes.shape({
+    }).isRequired,
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,
   };
 
-  /**
-   * @param {PlantReadProps} props
-   */
-  constructor(props) {
+  constructor(props: PlantReadProps) {
     super(props);
     this.edit = this.edit.bind(this);
     this.checkDelete = this.checkDelete.bind(this);
@@ -33,7 +66,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
-    const { plant: { notesRequested, _id }, dispatch } = /** @type {PlantReadProps} */ (this.props);
+    const { plant: { notesRequested, _id }, dispatch } = this.props as PlantReadProps;
     if (!notesRequested) {
       if (_id) {
         dispatch(actionFunc.loadNotesRequest({
@@ -46,7 +79,7 @@ class PlantRead extends React.PureComponent {
   }
 
   edit() {
-    const { plant: propsPlant, dispatch } = /** @type {PlantReadProps} */ (this.props);
+    const { plant: propsPlant, dispatch } = this.props as PlantReadProps;
     const plant = seamless.asMutable(propsPlant);
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
@@ -62,7 +95,7 @@ class PlantRead extends React.PureComponent {
   }
 
   showImages() {
-    const { plant, dispatch } = /** @type {PlantReadProps} */ (this.props);
+    const { plant, dispatch } = this.props as PlantReadProps;
     const noteIds = (plant && plant.notes) || [];
     dispatch(actionFunc.showNoteImages(noteIds));
   }
@@ -71,7 +104,7 @@ class PlantRead extends React.PureComponent {
    * @param {boolean} yes
    * @memberof PlantRead
    */
-  confirmDelete(yes) {
+  confirmDelete(yes: boolean) {
     if (yes) {
       const {
         plant: {
@@ -79,8 +112,8 @@ class PlantRead extends React.PureComponent {
           locationId,
         },
         dispatch,
-      } = /** @type {PlantReadProps} */ (this.props);
-      const { locations, history } = /** @type {PlantReadProps} */ (this.props);
+      } = this.props as PlantReadProps;
+      const { locations, history } = this.props as PlantReadProps;
       const payload = {
         locationId,
         plantId: _id,
@@ -101,7 +134,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this
   plantedDateTitle() {
-    const { plant: { plantedDate } } = /** @type {PlantReadProps} */ (this.props);
+    const { plant: { plantedDate } } = this.props as PlantReadProps;
     if (plantedDate) {
       const date = utils.intToMoment(plantedDate);
       const daysAgo = date.isSame(moment(), 'day')
@@ -113,7 +146,7 @@ class PlantRead extends React.PureComponent {
   }
 
   renderDetails() {
-    const { plant } = /** @type {PlantReadProps} */ (this.props);
+    const { plant } = this.props as PlantReadProps;
     if (!plant) {
       return null;
     }
@@ -196,11 +229,11 @@ class PlantRead extends React.PureComponent {
       notes,
       plant,
       plants,
-    } = /** @type {PlantReadProps} */ (this.props);
+    } = this.props as PlantReadProps;
 
     const {
       showDeleteConfirmation = false,
-    } = this.state || {};
+    } = (this.state || {}) as PlantReadState;
 
     const { locationId, title } = plant;
 
@@ -253,37 +286,6 @@ Plant not found or still loading...
     );
   }
 }
-
-PlantRead.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  interim: PropTypes.shape({
-  }).isRequired,
-  userCanEdit: PropTypes.bool.isRequired,
-  notes: PropTypes.shape({
-  }).isRequired,
-  locations: PropTypes.shape({
-  }).isRequired,
-  plant: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    botanicalName: PropTypes.string,
-    commonName: PropTypes.string,
-    description: PropTypes.string,
-    isTerminated: PropTypes.bool,
-    locationId: PropTypes.string.isRequired,
-    notes: PropTypes.arrayOf(PropTypes.string),
-    notesRequested: PropTypes.bool,
-    plantedDate: PropTypes.number,
-    terminatedDate: PropTypes.number,
-    terminatedDescription: PropTypes.string,
-    terminatedReason: PropTypes.string,
-    title: PropTypes.string.isRequired,
-  }).isRequired,
-  plants: PropTypes.shape({
-  }).isRequired,
-};
 
 // @ts-ignore - TODO: Solve withRouter() param and tsc
 module.exports = withRouter(PlantRead);
