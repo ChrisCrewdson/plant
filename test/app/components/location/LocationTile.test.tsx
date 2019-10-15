@@ -1,19 +1,16 @@
-export {}; // To get around: Cannot redeclare block-scoped variable .ts(2451)
+import { Dispatch } from 'redux';
 
-const React = require('react');
-const renderer = require('react-test-renderer');
-const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
-const getMuiTheme = require('material-ui/styles/getMuiTheme').default;
-const lightBaseTheme = require('material-ui/styles/baseThemes/lightBaseTheme').default;
-const {
-  MemoryRouter,
-} = require('react-router-dom');
-const LocationTile = require('../../../../app/components/location/LocationTile');
+import React from 'react';
+import renderer from 'react-test-renderer';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import { MemoryRouter } from 'react-router-dom';
+import LocationTile from '../../../../app/components/location/LocationTile';
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-/** @type {import('redux').Dispatch} */
-const mockDispatch = () => {};
+const mockDispatch = (() => {}) as Dispatch;
 
 describe('LocationTile', () => {
   test('LocationTile should be rendered', () => {
