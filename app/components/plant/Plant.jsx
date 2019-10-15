@@ -12,7 +12,7 @@ const { canEdit } = require('../../libs/auth-helper');
 const { makeMongoId } = require('../../libs/utils');
 const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
-const PlantEdit = require('./PlantEdit');
+const PlantEdit = require('./PlantEdit').default;
 const PlantRead = require('./PlantRead').default;
 const NoteCreate = require('../note/NoteCreate');
 

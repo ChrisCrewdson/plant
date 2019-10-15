@@ -2,50 +2,83 @@
 // Url Create: /plant
 // Url Update: /plant/<slug>/<plant-id>
 
-const isEmpty = require('lodash/isEmpty');
-const Divider = require('material-ui/Divider').default;
-const Paper = require('material-ui/Paper').default;
-const React = require('react');
-const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const MapsAddLocation = require('material-ui/svg-icons/maps/add-location').default;
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
-const getIn = require('lodash/get');
-const si = require('seamless-immutable');
-const PlantEditTerminated = require('./PlantEditTerminated').default;
-const utils = require('../../libs/utils');
-const CancelSaveButtons = require('../common/CancelSaveButtons');
-const InputCombo = require('../common/InputCombo');
-const SelectCombo = require('../common/SelectCombo');
-const { actionFunc } = require('../../actions');
-const validators = require('../../models');
-const { makeSlug } = require('../../libs/utils');
+import isEmpty from 'lodash/isEmpty';
+import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
+import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import MapsAddLocation from 'material-ui/svg-icons/maps/add-location';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import getIn from 'lodash/get';
+import si from 'seamless-immutable';
+import PlantEditTerminated from './PlantEditTerminated';
+import utils from '../../libs/utils';
+import CancelSaveButtons from '../common/CancelSaveButtons';
+import InputCombo from '../common/InputCombo';
+import SelectCombo from '../common/SelectCombo';
+import { actionFunc } from '../../actions';
+import * as validators from '../../models';
+
+const { makeSlug } = utils;
 
 const { plant: plantValidator } = validators;
 // @ts-ignore - static hasn't been defined on seamless types yet.
 const seamless = si.static;
 
+interface PlantEditState {
+  pageTitle?: string;
+}
+
 class PlantEdit extends React.Component {
+  props: PlantEditProps;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+    interimPlant: PropTypes.shape({
+      botanicalName: PropTypes.string,
+      commonName: PropTypes.string,
+      description: PropTypes.string,
+      errors: PropTypes.object,
+      isNew: PropTypes.bool,
+      loc: PropTypes.shape({
+        coordindates: PropTypes.shape({}),
+      }),
+      locationId: PropTypes.string,
+      plantedDate: PropTypes.string,
+      price: PropTypes.string,
+      purchasedDate: PropTypes.string,
+      title: PropTypes.string,
+    }).isRequired,
+    user: PropTypes.shape({
+      _id: PropTypes.string,
+      activeLocationId: PropTypes.string,
+    }).isRequired,
+    users: PropTypes.shape({}).isRequired,
+    locations: PropTypes.shape({}).isRequired,
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object,
   };
 
-  /**
-   * @param {PlantEditProps} props
-   */
-  constructor(props) {
+  constructor(props: PlantEditProps) {
     super(props);
     this.cancel = this.cancel.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onChangeLocation = this.onChangeLocation.bind(this);
     this.save = this.save.bind(this);
     this.addGeo = this.addGeo.bind(this);
+    this.props = props;
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { interimPlant } = /** @type {PlantEditProps} */ (this.props);
+    const { interimPlant } = this.props;
     const pageTitle = interimPlant.isNew
       ? 'Add New Plant'
       : `Edit ${interimPlant.title}`;
@@ -53,42 +86,34 @@ class PlantEdit extends React.Component {
   }
 
   componentWillUnmount() {
-    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
+    const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantClose());
   }
 
   /**
    * Called when the Location dropdown (a Select component) changes
    * its value
-   * @param {React.SyntheticEvent<{}>} e - event - unused
-   * @param {number} index - positional index of new value - unused
-   * @param {any} value - new value - MongoId of new value
-   * @memberof PlantEdit
+   * @param e - event - unused
+   * @param index - positional index of new value - unused
+   * @param value - new value - MongoId of new value
    */
-  onChangeLocation(e, index, value) {
-    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
+  onChangeLocation(e: React.SyntheticEvent<{}>, index: number, value: any) {
+    const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
       locationId: value,
     }));
   }
 
-  /**
-   *e: React.ChangeEvent<HTMLInputElement>, newValue: string
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} e
-   * @param {string} value
-   * @memberof PlantEdit
-   */
-  onChange(e, value) {
+  onChange(e: React.ChangeEvent<HTMLInputElement>, value: string) {
     const { name } = e.target;
-    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
+    const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
       [name]: value,
     }));
   }
 
   cancel() {
-    const { dispatch } = /** @type {PlantEditProps} */ (this.props);
+    const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantClose());
   }
 
@@ -98,7 +123,7 @@ class PlantEdit extends React.Component {
         if (err) {
           // console.error(err);
         } else {
-          const { dispatch } = /** @type {PlantEditProps} */ (this.props);
+          const { dispatch } = (this.props);
           dispatch(actionFunc.editPlantChange({ loc }));
         }
       });
@@ -107,18 +132,14 @@ class PlantEdit extends React.Component {
     }
   }
 
-  /**
-   * @param {React.MouseEvent<{}, MouseEvent>} e
-   * @memberof PlantEdit
-   */
-  save(e) {
+  save(e: React.MouseEvent<{}, MouseEvent>) {
     const {
       interimPlant, user, dispatch, history,
-    } = /** @type {PlantEditProps} */ (this.props);
-    const plant = /** @type {UiPlantsValue} */ (seamless.asMutable(interimPlant));
+    } = (this.props);
+    const plant: UiPlantsValue = /** @type {UiPlantsValue} */ (seamless.asMutable(interimPlant));
     const { isNew = false } = plant;
     /** @type {PlantDateFieldNames[]} */
-    const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
+    const dateFields: PlantDateFieldNames[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
       if (plant[dateField]) {
         plant[dateField] = utils.dateToInt(plant[dateField]);
@@ -147,7 +168,7 @@ class PlantEdit extends React.Component {
   render() {
     const {
       interimPlant, user, users, locations, dispatch,
-    } = /** @type {PlantEditProps} */ (this.props);
+    } = (this.props);
     const {
       title = '',
       botanicalName = '',
@@ -164,13 +185,13 @@ class PlantEdit extends React.Component {
       activeLocationId = '',
     } = user;
     const {
-      locationIds = /** @type {string[]} */ ([]),
+      locationIds = [] as string[],
     } = users[_id] || {};
 
     const locationIdTitleMap = locationIds.reduce((acc, locationId) => {
       acc[locationId] = (locations[locationId] || {}).title;
       return acc;
-    }, /** @type {Record<string, string>} */ ({}));
+    }, {} as Record<string, string>);
     // activeLocationId is the one that you last viewed which might not be
     // one that you own/manage. Only set locationId to this if it's one that
     // is in the locationIds list.
@@ -184,10 +205,10 @@ class PlantEdit extends React.Component {
 
     const {
       pageTitle = '',
-    } = this.state || {};
+    } = (this.state || {}) as PlantEditState;
 
     /** @type {React.CSSProperties} */
-    const paperStyle = {
+    const paperStyle: React.CSSProperties = {
       padding: 20,
       width: '100%',
       margin: 20,
@@ -196,7 +217,7 @@ class PlantEdit extends React.Component {
     };
 
     /** @type {React.CSSProperties} */
-    const textAreaStyle = {
+    const textAreaStyle: React.CSSProperties = {
       textAlign: 'left',
     };
 
@@ -359,33 +380,5 @@ There were errors. Please check your input.
   }
 }
 
-PlantEdit.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  interimPlant: PropTypes.shape({
-    botanicalName: PropTypes.string,
-    commonName: PropTypes.string,
-    description: PropTypes.string,
-    errors: PropTypes.object,
-    isNew: PropTypes.bool,
-    loc: PropTypes.shape({
-      coordindates: PropTypes.shape({}),
-    }),
-    locationId: PropTypes.string,
-    plantedDate: PropTypes.string,
-    price: PropTypes.string,
-    purchasedDate: PropTypes.string,
-    title: PropTypes.string,
-  }).isRequired,
-  user: PropTypes.shape({
-    _id: PropTypes.string,
-    activeLocationId: PropTypes.string,
-  }).isRequired,
-  users: PropTypes.shape({}).isRequired,
-  locations: PropTypes.shape({}).isRequired,
-};
-
 // @ts-ignore - TODO: Solve withRouter() param and tsc
-module.exports = withRouter(PlantEdit);
+export default withRouter(PlantEdit);
