@@ -10,7 +10,6 @@ import Base from '../base/Base';
 const { makeSlug } = utils;
 
 export default class Users extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,

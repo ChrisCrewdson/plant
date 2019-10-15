@@ -15,7 +15,6 @@ const Markdown = require('../common/Markdown');
 const dateFormat = 'DD-MMM-YYYY';
 
 class PlantRead extends React.PureComponent {
-  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,

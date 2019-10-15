@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { actionFunc } from '../actions';
 
 class App extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     children: PropTypes.object.isRequired,
   };
 
-  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,

@@ -17,7 +17,6 @@ const PlantRead = require('./PlantRead');
 const NoteCreate = require('../note/NoteCreate');
 
 class Plant extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,

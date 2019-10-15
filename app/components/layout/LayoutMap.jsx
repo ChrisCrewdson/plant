@@ -15,7 +15,6 @@ const { actionFunc } = require('../../actions');
 const Base = require('../base/Base');
 
 class LayoutMap extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,

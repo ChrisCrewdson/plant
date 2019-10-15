@@ -41,6 +41,7 @@ module.exports = {
     'react/jsx-curly-brace-presence': 0, // TODO: Enable this once 2883 conversion done
     'react/jsx-filename-extension': 0,
     'react/no-unused-state': 0,
+    'react/static-property-placement': 0,
     'security/detect-object-injection': 0,
     // These carried over from the plant-image-lambda project to accelerate
     // the linting

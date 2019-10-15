@@ -25,7 +25,6 @@ const { makeSlug } = require('../../libs/utils');
 const { plant: plantValidator } = validators;
 
 class PlantEdit extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object,

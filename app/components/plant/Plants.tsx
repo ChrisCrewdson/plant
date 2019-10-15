@@ -3,14 +3,27 @@
 // Now it redirects to a Location owned by the user
 // Redirect: /location/slug/_location_id
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
-const getIn = require('lodash/get');
-const utils = require('../../libs/utils');
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import getIn from 'lodash/get';
+import utils from '../../libs/utils';
 
 class Plants extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
+  unsubscribe: any;
+
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     router: PropTypes.object.isRequired,
@@ -18,11 +31,7 @@ class Plants extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * @param {PlantsProps} props
-   * @memberof Plants
-   */
-  constructor(props) {
+  constructor(props: PlantsProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.redirectIfReady = this.redirectIfReady.bind(this);
@@ -30,7 +39,7 @@ class Plants extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context as {store: PlantStore};
     this.unsubscribe = store.subscribe(this.onChange);
     this.onChange();
     this.redirectIfReady();
@@ -48,20 +57,20 @@ class Plants extends React.Component {
   }
 
   onChange() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context as {store: PlantStore};
     const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
 
   redirectIfReady() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
-    const { match, history } = /** @type {PlantsProps} */ (this.props);
+    const { store } = this.context as {store: PlantStore};
+    const { match, history } = this.props as PlantsProps;
     const { params } = match;
     const userId = params && params.id;
     let fwdUrl = '/';
     if (userId) {
       const state = store.getState();
-      const user = getIn(state, ['users', userId], /** @type {UiUsersValue} */ ({}));
+      const user = getIn(state, ['users', userId], {}) as UiUsersValue;
       const locationIds = user.locationIds || [];
       if (locationIds.length) {
         const locationId = locationIds[0];
@@ -86,17 +95,5 @@ class Plants extends React.Component {
   }
 }
 
-Plants.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
 // @ts-ignore - TODO: Solve withRouter() param and tsc
-module.exports = withRouter(Plants);
+export default withRouter(Plants);
