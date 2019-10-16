@@ -1,12 +1,24 @@
-const MenuItem = require('material-ui/MenuItem').default;
-const PropTypes = require('prop-types');
-const React = require('react');
-const SelectField = require('material-ui/SelectField').default;
+import MenuItem from 'material-ui/MenuItem';
+import PropTypes from 'prop-types';
+import React from 'react';
+import SelectField from 'material-ui/SelectField';
 
-/**
- * @param {SelectComboProps} props
- */
-function selectCombo(props) {
+interface SelectComboProps {
+  changeHandler: (e: React.SyntheticEvent<{}>, index: number, menuItemValue: any) => void;
+  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
+  disabled?: boolean;
+  error: React.ReactNode;
+  fullWidth?: boolean;
+  id: string;
+  label: React.ReactNode;
+  multiLine?: boolean;
+  placeholder?: string;
+  style?: React.CSSProperties;
+  value: string | number | boolean;
+  options?: Record<string, string>;
+}
+
+export default function selectCombo(props: SelectComboProps) {
   const {
     changeHandler,
     error,
@@ -71,5 +83,3 @@ selectCombo.defaultProps = {
   options: {},
   style: {},
 };
-
-module.exports = selectCombo;

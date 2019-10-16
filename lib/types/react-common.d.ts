@@ -55,20 +55,6 @@ interface InputComboProps {
   options?: Record<string, string>;
 }
 
-interface SelectComboProps {
-  changeHandler: (e: React.SyntheticEvent<{}>, index: number, menuItemValue: any) => void;
-  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
-  disabled?: boolean;
-  error: React.ReactNode;
-  fullWidth?: boolean;
-  id: string;
-  label: React.ReactNode;
-  multiLine?: boolean;
-  placeholder?: string;
-  style?: React.CSSProperties;
-  value: string | number | boolean;
-  options?: Record<string, string>;
-}
 
 declare type GridCellInputType = 'select' | 'boolean' | 'text';
 
