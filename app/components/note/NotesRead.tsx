@@ -97,7 +97,6 @@ export default class NotesRead extends React.PureComponent {
         <NoteEdit
           dispatch={dispatch}
           interimNote={interimNote}
-          plant={plant}
           plants={plants}
           locationId={locationId}
         />

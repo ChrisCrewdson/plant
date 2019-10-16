@@ -6,7 +6,7 @@ const AddIcon = require('material-ui/svg-icons/content/add').default;
 const moment = require('moment');
 const PropTypes = require('prop-types');
 const utils = require('../../libs/utils');
-const NoteEdit = require('./NoteEdit');
+const NoteEdit = require('./NoteEdit').default;
 const { actionFunc } = require('../../actions');
 
 class NoteCreate extends React.PureComponent {

@@ -33,15 +33,6 @@ interface NoteCreateProps {
   locationId: string;
 }
 
-interface NoteEditProps {
-  dispatch: import('redux').Dispatch;
-  interimNote: UiInterimNote;
-  plants: UiPlants;
-  postSaveSuccess: Function;
-  locationId: string;
-}
-
-
 declare type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
 
 interface LastMeasuredProps {

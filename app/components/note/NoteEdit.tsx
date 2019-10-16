@@ -1,26 +1,28 @@
 // Used to add a note to a plant
 
-const Paper = require('material-ui/Paper').default;
-const React = require('react');
-const Dropzone = require('react-dropzone').default;
-const LinearProgress = require('material-ui/LinearProgress').default;
-const CircularProgress = require('material-ui/CircularProgress').default;
-const PropTypes = require('prop-types');
+import Paper from 'material-ui/Paper';
+import React from 'react';
+import Dropzone from 'react-dropzone';
+import LinearProgress from 'material-ui/LinearProgress';
+import CircularProgress from 'material-ui/CircularProgress';
+import PropTypes from 'prop-types';
+import si from 'seamless-immutable';
+
+import { Dispatch } from 'redux';
+import CancelSaveButtons from '../common/CancelSaveButtons';
+import InputComboText from '../common/InputComboText';
+import { actionFunc } from '../../actions';
+import utils from '../../libs/utils';
+import NoteAssocPlant from './NoteAssocPlant';
+import NoteEditMetrics from './NoteEditMetrics';
+import * as validators from '../../models';
+import { PlantAction } from '../../../lib/types/redux-payloads';
+
 // @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
-
-const CancelSaveButtons = require('../common/CancelSaveButtons');
-const InputComboText = require('../common/InputComboText');
-const { actionFunc } = require('../../actions');
-const utils = require('../../libs/utils');
-const NoteAssocPlant = require('./NoteAssocPlant');
-const NoteEditMetrics = require('./NoteEditMetrics').default;
-const validators = require('../../models');
-
+const seamless = si.static;
 const { note: noteValidator } = validators;
 
-/** @type {React.CSSProperties} */
-const paperStyle = {
+const paperStyle: React.CSSProperties = {
   padding: 20,
   width: '100%',
   margin: 20,
@@ -28,19 +30,16 @@ const paperStyle = {
   display: 'inline-block',
 };
 
-/** @type {React.CSSProperties} */
-const textAreaStyle = {
+const textAreaStyle: React.CSSProperties = {
   textAlign: 'left',
 };
 
-/** @type {React.CSSProperties} */
-const textFieldStyle = {
+const textFieldStyle: React.CSSProperties = {
   marginLeft: 20,
   textAlign: 'left',
 };
 
-/** @type {React.CSSProperties} */
-const dropZoneStyle = {
+const dropZoneStyle: React.CSSProperties = {
   backgroundColor: 'beige',
   borderColor: 'khaki',
   borderStyle: 'solid',
@@ -49,17 +48,54 @@ const dropZoneStyle = {
   width: '100%',
 };
 
-/** @type {React.CSSProperties} */
-const dropZoneActiveStyle = {
+const dropZoneActiveStyle: React.CSSProperties = {
   backgroundColor: 'darkseagreen',
   borderColor: 'tan',
 };
 
-class NoteEdit extends React.PureComponent {
-  /**
-   * @param {NoteEditProps} props
-   */
-  constructor(props) {
+interface NoteEditProps {
+  dispatch: Dispatch<PlantAction<any>>;
+  interimNote: UiInterimNote;
+  plants: UiPlants;
+  postSaveSuccess: Function;
+  locationId: string;
+}
+
+export default class NoteEdit extends React.PureComponent {
+  props: NoteEditProps;
+
+  dropzone: any;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    interimNote: PropTypes.shape({
+      _id: PropTypes.string,
+      date: PropTypes.number,
+      errors: PropTypes.shape({
+        date: PropTypes.string,
+        length: PropTypes.number,
+        metrics: PropTypes.string,
+        note: PropTypes.string,
+        plantIds: PropTypes.string,
+      }),
+      note: PropTypes.string,
+      plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+      uploadProgress: PropTypes.shape({
+        max: PropTypes.number,
+        value: PropTypes.number,
+      }),
+    }).isRequired,
+    locationId: PropTypes.string.isRequired,
+    plants: PropTypes.shape({
+    }).isRequired,
+    postSaveSuccess: PropTypes.func,
+  };
+
+  static defaultProps = {
+    postSaveSuccess: () => {},
+  };
+
+  constructor(props: NoteEditProps) {
     super(props);
     this.cancel = this.cancel.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -67,10 +103,11 @@ class NoteEdit extends React.PureComponent {
     this.onOpenClick = this.onOpenClick.bind(this);
     this.save = this.save.bind(this);
     this.saveFiles = this.saveFiles.bind(this);
+    this.props = props;
   }
 
   componentWillUnmount() {
-    const { dispatch } = /** @type {NoteEditProps} */ (this.props);
+    const { dispatch } = this.props;
     dispatch(actionFunc.editNoteClose());
   }
 
@@ -78,19 +115,14 @@ class NoteEdit extends React.PureComponent {
    * Change Handler
    * @param {React.ChangeEvent<HTMLInputElement>} e
    */
-  onChange(e) {
-    const { dispatch } = /** @type {NoteEditProps} */ (this.props);
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { dispatch } = this.props;
     dispatch(actionFunc.editNoteChange({
       [e.target.name]: e.target.value,
     }));
   }
 
-  /**
-   * @param {File[]} acceptedFiles
-   * @param {File[]} rejectedFiles
-   * param {React.DragEvent<HTMLElement>}
-   */
-  onDrop(acceptedFiles, rejectedFiles) {
+  onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
     if (rejectedFiles && rejectedFiles.length) {
       // eslint-disable-next-line no-console
       console.warn('Some files were rejected', rejectedFiles);
@@ -107,18 +139,15 @@ class NoteEdit extends React.PureComponent {
   }
 
   cancel() {
-    const { dispatch } = /** @type {NoteEditProps} */ (this.props);
+    const { dispatch } = this.props;
     dispatch(actionFunc.editNoteClose());
   }
 
-  /**
-   * @param {File[]=} files
-   */
-  saveNote(files) {
+  saveNote(files?: File[]) {
     const {
       dispatch, interimNote: propInterimNote, postSaveSuccess,
-    } = /** @type {NoteEditProps} */ (this.props);
-    const interimNote = /** @type {UiInterimNote} */ (seamless.asMutable(propInterimNote, {
+    } = this.props;
+    const interimNote: UiInterimNote = (seamless.asMutable(propInterimNote, {
       deep: true,
     }));
 
@@ -134,19 +163,11 @@ class NoteEdit extends React.PureComponent {
     }
   }
 
-  /**
-   * @param {File[]} files
-   */
-  saveFiles(files) {
+  saveFiles(files: File[]) {
     this.saveNote(files);
   }
 
-  /**
-   * Change Handler
-   * @param {React.MouseEvent<{}>} e
-   * @returns {void}
-   */
-  save(e) {
+  save(e: React.MouseEvent<{}>): void {
     this.saveNote();
     e.preventDefault();
     e.stopPropagation();
@@ -158,7 +179,7 @@ class NoteEdit extends React.PureComponent {
       interimNote,
       locationId,
       plants,
-    } = /** @type {NoteEditProps} */ (this.props);
+    } = this.props;
     const { uploadProgress } = interimNote;
 
     if (uploadProgress) {
@@ -201,14 +222,14 @@ Upload complete... Finishing up... Hang on...
 
     // TODO: Next line (reduce) should happen in NoteAssocPlant and not here because
     // then NoteAssocPlant can be a PureComponent
-    const plantsAtLocation = Object.keys(plants).reduce((acc, plantId) => {
+    const plantsAtLocation = Object.keys(plants).reduce((acc: UiPlants, plantId) => {
       const plant = plants[plantId];
       const { locationId: locId } = plant;
       if (locId === locationId) {
         acc[plantId] = plant;
       }
       return acc;
-    }, /** @type {UiPlants} */ ({}));
+    }, {});
 
     const associatedPlants = (
       <NoteAssocPlant
@@ -295,34 +316,3 @@ There were errors. Please check your input.
     /* eslint-enable react/jsx-props-no-spreading */
   }
 }
-
-NoteEdit.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  interimNote: PropTypes.shape({
-    _id: PropTypes.string,
-    date: PropTypes.number,
-    errors: PropTypes.shape({
-      date: PropTypes.string,
-      length: PropTypes.number,
-      metrics: PropTypes.string,
-      note: PropTypes.string,
-      plantIds: PropTypes.string,
-    }),
-    note: PropTypes.string,
-    plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    uploadProgress: PropTypes.shape({
-      max: PropTypes.number,
-      value: PropTypes.number,
-    }),
-  }).isRequired,
-  locationId: PropTypes.string.isRequired,
-  plants: PropTypes.shape({
-  }).isRequired,
-  postSaveSuccess: PropTypes.func,
-};
-
-NoteEdit.defaultProps = {
-  postSaveSuccess: () => {},
-};
-
-module.exports = NoteEdit;
