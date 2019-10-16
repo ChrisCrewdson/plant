@@ -14,7 +14,7 @@ const InputComboText = require('../common/InputComboText');
 const { actionFunc } = require('../../actions');
 const utils = require('../../libs/utils');
 const NoteAssocPlant = require('./NoteAssocPlant');
-const NoteEditMetrics = require('./NoteEditMetrics');
+const NoteEditMetrics = require('./NoteEditMetrics').default;
 const validators = require('../../models');
 
 const { note: noteValidator } = validators;

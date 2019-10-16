@@ -27,7 +27,7 @@ describe('NoteEditMetrics', () => {
 
   test('should render NoteEditMetrics', () => {
     const interimNote = {
-    };
+    } as UiInterimNote;
 
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>

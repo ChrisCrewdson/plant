@@ -1,18 +1,42 @@
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
-const React = require('react');
-const Toggle = require('material-ui/Toggle').default;
-const PropTypes = require('prop-types');
-const { actionFunc } = require('../../actions');
-const Errors = require('../common/Errors');
-const InputCombo = require('../common/InputCombo');
-const utils = require('../../libs/utils');
+import si from 'seamless-immutable';
+import React from 'react';
+import Toggle from 'material-ui/Toggle';
+import PropTypes from 'prop-types';
 
-class NoteEditMetrics extends React.PureComponent {
-  /**
-   * @param {NoteEditMetricProps} props
-   */
-  constructor(props) {
+import { Dispatch } from 'redux';
+import { actionFunc } from '../../actions';
+import Errors from '../common/Errors';
+import InputCombo from '../common/InputCombo';
+import utils from '../../libs/utils';
+import { PlantAction } from '../../../lib/types/redux-payloads';
+
+// @ts-ignore - static hasn't been defined on seamless types yet.
+const seamless = si.static;
+
+interface NoteEditMetricProps {
+  dispatch: Dispatch<PlantAction<any>>;
+  interimNote: UiInterimNote;
+  error: string;
+}
+
+export default class NoteEditMetrics extends React.PureComponent {
+  props: NoteEditMetricProps;
+
+  metricTypes: Record<string, Function>;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    error: PropTypes.string,
+    interimNote: PropTypes.shape({
+      metrics: PropTypes.object,
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    error: '',
+  };
+
+  constructor(props: NoteEditMetricProps) {
     super(props);
     this.booleanHandler = this.booleanHandler.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
@@ -23,43 +47,32 @@ class NoteEditMetrics extends React.PureComponent {
     this.renderToggle = this.renderToggle.bind(this);
     this.renderWeight = this.renderWeight.bind(this);
 
-    /** @type {Record<string, Function>} */
     this.metricTypes = Object.freeze({
       length: this.renderLength,
       count: this.renderCount,
       weight: this.renderWeight,
       toggle: this.renderToggle,
     });
+    this.props = props;
   }
 
   /**
    * Change Handler for InputCombo
-   * @param {React.ChangeEvent<HTMLInputElement>} e
-   * @returns {void}
    */
-  onChange(e) {
+  onChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = e.target;
     this.dispatchChange(name, value);
   }
 
-  /**
-   * @param {React.MouseEvent<HTMLInputElement>} e
-   * @param {boolean} isInputChecked
-   * @returns {void}
-   */
-  booleanHandler = (e, isInputChecked) => {
+  booleanHandler = (e: React.MouseEvent<HTMLInputElement>, isInputChecked: boolean): void => {
     const { name } = e.currentTarget;
     this.dispatchChange(name, isInputChecked);
   };
 
   /**
    * Handle multiple change value types
-   * @param {string} name
-   * @param {string|boolean} value
-   * @returns {void}
-   * @memberof NoteEditMetrics
    */
-  dispatchChange(name, value) {
+  dispatchChange(name: string, value: string | boolean): void {
     const { interimNote, dispatch } = /** @type {NoteEditMetricProps} */ (this.props);
     const interimMetrics = interimNote.metrics || {};
 
@@ -70,11 +83,7 @@ class NoteEditMetrics extends React.PureComponent {
     dispatch(actionFunc.editNoteChange({ metrics }));
   }
 
-  /**
-   * @param {MetaMetric} metaMetric
-   * @param {*} value
-   */
-  renderLength(metaMetric, value) {
+  renderLength(metaMetric: MetaMetric, value: any) {
     const renderValue = (value || value === 0) ? value.toString() : '';
     return (
       <InputCombo
@@ -90,27 +99,15 @@ class NoteEditMetrics extends React.PureComponent {
     );
   }
 
-  /**
-   * @param {MetaMetric} metaMetric
-   * @param {*} value
-   */
-  renderCount(metaMetric, value) {
+  renderCount(metaMetric: MetaMetric, value: any) {
     return this.renderLength(metaMetric, value);
   }
 
-  /**
-   * @param {MetaMetric} metaMetric
-   * @param {*} value
-   */
-  renderWeight(metaMetric, value) {
+  renderWeight(metaMetric: MetaMetric, value: any) {
     return this.renderLength(metaMetric, value);
   }
 
-  /**
-   * @param {MetaMetric} metaMetric
-   * @param {*} value
-   */
-  renderToggle(metaMetric, value) {
+  renderToggle(metaMetric: MetaMetric, value: any) {
     const isToggled = value === 'true' || value === true;
     return (
       <Toggle
@@ -126,19 +123,19 @@ class NoteEditMetrics extends React.PureComponent {
   }
 
   /**
-   * @param {MetaMetric} metaMetric - All the metrics available
-   * @param {number|boolean} value - the value if one has been set or an empty string.
-   * @returns {object} - a rendered React component to edit this type of metric
+   * @param metaMetric - All the metrics available
+   * @param value - the value if one has been set or an empty string.
+   * @returns - a rendered React component to edit this type of metric
    */
-  renderMetric(metaMetric, value) {
+  renderMetric(metaMetric: MetaMetric, value: number | boolean): object {
     return this.metricTypes[metaMetric.type](metaMetric, value);
   }
 
   render() {
-    const { interimNote, error } = /** @type {NoteEditMetricProps} */ (this.props);
+    const { interimNote, error } = this.props;
     const {
-      metrics = /** @type {NoteMetric} */ ({}),
-    } = /** @type {UiInterimNote} */ (interimNote || {});
+      metrics = {} as NoteMetric,
+    } = interimNote || {};
     const { metaMetrics } = utils;
 
     const renderedMetrics = metaMetrics.map((metaMetric) => {
@@ -158,17 +155,3 @@ class NoteEditMetrics extends React.PureComponent {
     );
   }
 }
-
-NoteEditMetrics.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  error: PropTypes.string,
-  interimNote: PropTypes.shape({
-    metrics: PropTypes.object,
-  }).isRequired,
-};
-
-NoteEditMetrics.defaultProps = {
-  error: '',
-};
-
-module.exports = NoteEditMetrics;

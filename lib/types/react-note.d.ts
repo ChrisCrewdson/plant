@@ -41,11 +41,6 @@ interface NoteEditProps {
   locationId: string;
 }
 
-interface NoteEditMetricProps {
-  dispatch: import('redux').Dispatch;
-  interimNote: UiInterimNote;
-  error: string;
-}
 
 declare type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
 
