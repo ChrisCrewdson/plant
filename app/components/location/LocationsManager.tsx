@@ -1,13 +1,12 @@
 // For the user to manage their Locations (Orchards/Yards)
 
-const Paper = require('material-ui/Paper').default;
-const PropTypes = require('prop-types');
-const React = require('react');
-const Grid = require('../common/Grid');
-const { actionFunc, actionEnum } = require('../../actions');
+import Paper from 'material-ui/Paper';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Grid from '../common/Grid';
+import { actionFunc, actionEnum } from '../../actions';
 
-/** @type {GridColumn[]} */
-const userColumns = [{
+const userColumns: GridColumn[] = [{
   title: 'Name',
   type: 'select',
   width: 50,
@@ -23,8 +22,7 @@ const userColumns = [{
   width: 50,
 }];
 
-/** @type {GridColumn[]} */
-const weatherColumns = [{
+const weatherColumns: GridColumn[] = [{
   title: 'Station ID',
   type: 'text',
   width: 33,
@@ -38,11 +36,7 @@ const weatherColumns = [{
   width: 33,
 }];
 
-/**
- *
- * @param {Record<string, Role>} members
- */
-const getMembers = (members) => Object.keys(members || {}).map((_id) => {
+const getMembers = (members: Record<string, Role>) => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
   return {
     _id,
@@ -50,30 +44,33 @@ const getMembers = (members) => Object.keys(members || {}).map((_id) => {
   };
 });
 
-/**
- * @param {Record<string, UiLocationsStation>} stations
- */
-const getStations = (stations) => Object.keys(stations || {}).map((_id) => {
-  const { name, enabled } = stations[_id];
-  return {
-    _id,
-    values: [_id, name, enabled],
-  };
-});
+const getStations = (stations: Record<string, UiLocationsStation>) => Object.keys(stations || {})
+  .map((_id) => {
+    const { name, enabled } = stations[_id];
+    return {
+      _id,
+      values: [_id, name, enabled],
+    };
+  });
 
-class LocationsManager extends React.Component {
+interface LocationsManagerProps {
+  dispatch: import('redux').Dispatch;
+  locationIds: string[];
+  locations: UiLocations;
+  users: UiUsers;
+}
+
+export default class LocationsManager extends React.Component {
   /**
    * Called with a save on an edit/new is done. Validation is failed by returning an
    * array that has at least 1 truthy value in it.
-   * @param {LocationsManagerRowUpdate} data
-   * @returns {string[]} - An array of errors, empty strings or a mixture of the two
+   * @returns - An array of errors, empty strings or a mixture of the two
    */
-  static validateLocationMember({ row, meta, isNew }) {
+  static validateLocationMember({ row, meta, isNew }: LocationsManagerRowUpdate): string[] {
     const { values, _id } = row;
 
     // Check that each of the Select components has a value selected
-    /** @type {string[]} */
-    const errors = values.map((value) => (value === '<select>' ? 'You must select a value' : ''));
+    const errors: string[] = values.map((value) => (value === '<select>' ? 'You must select a value' : ''));
 
     // For an insert, check that the user is not already listed at the location
     if (isNew) {
@@ -86,10 +83,7 @@ class LocationsManager extends React.Component {
     return errors;
   }
 
-  /**
-   * @param {LocationsManagerRowUpdate} data
-   */
-  static validateLocationWeather({ row, meta, isNew }) {
+  static validateLocationWeather({ row, meta, isNew }: LocationsManagerRowUpdate) {
     const { values } = row;
     const [stationId, name] = values;
     const errors = [];
@@ -116,10 +110,16 @@ class LocationsManager extends React.Component {
     return errors;
   }
 
-  /**
-   * @param {LocationsManagerProps} props
-   */
-  constructor(props) {
+  props: LocationsManagerProps;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    locationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    locations: PropTypes.shape({}).isRequired,
+    users: PropTypes.shape({}).isRequired,
+  };
+
+  constructor(props: LocationsManagerProps) {
     super(props);
     this.upsertLocationMember = this.upsertLocationMember.bind(this);
     this.deleteLocationMember = this.deleteLocationMember.bind(this);
@@ -127,12 +127,14 @@ class LocationsManager extends React.Component {
     this.upsertLocationWeather = this.upsertLocationWeather.bind(this);
     this.deleteLocationWeather = this.deleteLocationWeather.bind(this);
 
-    userColumns[0].options = Object.keys(props.users).reduce((acc, userId) => {
-      const { _id, name } = props.users[userId];
-      acc[_id] = name;
-      return acc;
-    }, /** @type {Record<string, string>} */ ({}));
+    userColumns[0].options = Object.keys(props.users).reduce(
+      (acc: Record<string, string>, userId) => {
+        const { _id, name } = props.users[userId];
+        acc[_id] = name;
+        return acc;
+      }, {});
     userColumns[0].options['<select>'] = '<select>';
+    this.props = props;
   }
 
   /**
@@ -140,10 +142,9 @@ class LocationsManager extends React.Component {
    * locationId, userId, role
    * On the server we also need the logged-in user to verify that they are an
    * owner of that location and therefore authorized.
-   * @param {LocationsManagerRowUpdate} data
    */
-  upsertLocationMember({ row, meta }) {
-    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
+  upsertLocationMember({ row, meta }: LocationsManagerRowUpdate) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [userId, role] = row.values;
     const action = actionEnum.UPSERT_LOCATION_MEMBER;
@@ -154,11 +155,8 @@ class LocationsManager extends React.Component {
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
-  /**
-   * @param {LocationsManagerRowUpdate} data
-   */
-  upsertLocationWeather({ row, meta }) {
-    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
+  upsertLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [stationId, name, enabled] = row.values;
     const action = actionEnum.UPSERT_LOCATION_WEATHER;
@@ -169,11 +167,8 @@ class LocationsManager extends React.Component {
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
-  /**
-   * @param {LocationsManagerRowUpdate} data
-   */
-  deleteLocationMember({ row, meta }) {
-    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
+  deleteLocationMember({ row, meta }: LocationsManagerRowUpdate) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [userId] = row.values;
     const action = actionEnum.DELETE_LOCATION_MEMBER;
@@ -182,11 +177,8 @@ class LocationsManager extends React.Component {
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
 
-  /**
-   * @param {LocationsManagerRowUpdate} data
-   */
-  deleteLocationWeather({ row, meta }) {
-    const { dispatch } = /** @type {LocationsManagerProps} */ (this.props);
+  deleteLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
+    const { dispatch } = this.props;
     const { _id: locationId } = meta.location;
     const [stationId] = row.values;
     const action = actionEnum.DELETE_LOCATION_WEATHER;
@@ -203,7 +195,7 @@ class LocationsManager extends React.Component {
       display: 'inline-block',
     };
 
-    const { locationIds, locations } = /** @type {LocationsManagerProps} */ (this.props);
+    const { locationIds, locations } = this.props;
 
     return (
       <div>
@@ -247,12 +239,3 @@ class LocationsManager extends React.Component {
     );
   }
 }
-
-LocationsManager.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  locationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  locations: PropTypes.shape({}).isRequired,
-  users: PropTypes.shape({}).isRequired,
-};
-
-module.exports = LocationsManager;

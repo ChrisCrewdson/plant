@@ -22,13 +22,6 @@ interface LocationsManagerRowUpdate {
   isNew: boolean;
 }
 
-interface LocationsManagerProps {
-  dispatch: import('redux').Dispatch;
-  locationIds: string[];
-  locations: UiLocations;
-  users: UiUsers;
-}
-
 // This state is an object with locationId's as keys and
 // each value is an object with:
 // _id
