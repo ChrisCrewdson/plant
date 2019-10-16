@@ -1,28 +1,24 @@
 // Used to show a collection of metrics for a location.
 // Url: /metrics/<location-name>/_location_id
 
-const CircularProgress = require('material-ui/CircularProgress').default;
-const React = require('react');
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
-const Base = require('../../base/Base');
-const PlantItem = require('../../plant/PlantItem').default;
-const { canEdit } = require('../../../libs/auth-helper');
-const { actionFunc } = require('../../../actions');
-const utils = require('../../../libs/utils');
-const AddPlantButton = require('../../common/AddPlantButton');
-const LastMeasured = require('./LastMeasured');
+import CircularProgress from 'material-ui/CircularProgress';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import Base from '../../base/Base';
+import PlantItem from '../../plant/PlantItem';
+import { canEdit } from '../../../libs/auth-helper';
+import { actionFunc } from '../../../actions';
+import utils from '../../../libs/utils';
+import AddPlantButton from '../../common/AddPlantButton';
+import LastMeasured from './LastMeasured';
 
 // TODO: AT THIS POINT THIS FILE IS JUST A COPY OF THE Location file/class
 // with the class renamed to Metrics. It's tested and works on the url.
 // With this as an initial commit it is easy to iterate on this.
 
 class Metrics extends React.Component {
-  /**
-   *
-   * @param {boolean} userCanEdit
-   */
-  static addPlantButton(userCanEdit) {
+  static addPlantButton(userCanEdit: boolean) {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
         <AddPlantButton
@@ -31,6 +27,16 @@ class Metrics extends React.Component {
       </div>
     );
   }
+
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
+
 
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
@@ -50,6 +56,7 @@ class Metrics extends React.Component {
   UNSAFE_componentWillMount() {
     const { store } = /** @type {{store: PlantStore}} */ (this.context);
     const { locations = {} } = store.getState();
+    // @ts-ignore - This file is a copy of the Location file and needs to be finished
     const { match } = this.props;
     const { id: locationId } = match.params;
 
@@ -58,11 +65,14 @@ class Metrics extends React.Component {
       store.dispatch(actionFunc.loadPlantsRequest(locationId));
     }
     this.onChange();
+    // @ts-ignore - This file is a copy of the Location file and needs to be finished
     this.unsubscribe = store.subscribe(this.onChange);
   }
 
   componentWillUnmount() {
+  // @ts-ignore - This file is a copy of the Location file and needs to be finished
     if (this.unsubscribe) {
+      // @ts-ignore - This file is a copy of the Location file and needs to be finished
       this.unsubscribe();
     }
   }
@@ -141,6 +151,7 @@ No plants added yet...
       allLoadedPlants,
       // @ts-ignore - This file is a copy of the Location file and needs to be finished
       authUser,
+      // @ts-ignore - This file is a copy of the Location file and needs to be finished
       filter = '',
       // @ts-ignore - This file is a copy of the Location file and needs to be finished
       interim,
@@ -148,6 +159,7 @@ No plants added yet...
       locations,
     } = this.state || {};
 
+    // @ts-ignore - This file is a copy of the Location file and needs to be finished
     const { match } = this.props;
     const location = locations && locations[match.params.id];
 
@@ -216,8 +228,7 @@ No plants added yet...
 
     // TODO: metricDate must come from a collection of toggle/checkbox inputs that
     // the user selects to determine what the most recent date is for that metric
-    /** @type {MetricDate[]} */
-    const metricDates = ['height', 'girth'];
+    const metricDates: MetricDate[] = ['height', 'girth'];
 
     return (
       <Base>
@@ -239,13 +250,5 @@ No plants added yet...
   }
 }
 
-Metrics.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
-
-module.exports = withRouter(Metrics);
+// @ts-ignore
+export default withRouter(Metrics);
