@@ -8,7 +8,7 @@ const InputComboText = require('../common/InputComboText');
 const Errors = require('../common/Errors');
 const utils = require('../../libs/utils');
 const { actionFunc } = require('../../actions');
-const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton');
+const NoteAssocPlantToggleButton = require('./NoteAssocPlantToggleButton').default;
 
 /**
  * @class

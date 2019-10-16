@@ -15,15 +15,6 @@ interface NoteAssocPlantState {
 interface INoteAssocPlant extends React.Component<NoteAssocPlantProps, NoteAssocPlantState> {
 }
 
-interface NoteAssocPlantToggleButtonProps {
-  _id: string;
-  label: React.ReactNode;
-  primary: boolean;
-  secondary: boolean;
-  style: React.CSSProperties;
-  toggleFunc: (id: string) => void;
-}
-
 declare type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
 
 interface LastMeasuredProps {
