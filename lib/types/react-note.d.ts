@@ -66,10 +66,6 @@ interface LastMetricDates {
   harvestEnd?: Date;
 }
 
-interface NoteReadMetricsProps {
-  note: UiNotesValue;
-}
-
 interface NoteReadProps {
   dispatch: import('redux').Dispatch;
   userCanEdit: boolean;

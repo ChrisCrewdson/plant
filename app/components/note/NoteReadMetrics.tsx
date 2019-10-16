@@ -1,11 +1,12 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const utils = require('../../libs/utils');
+import React from 'react';
+import PropTypes from 'prop-types';
+import utils from '../../libs/utils';
 
-/**
- * @param {NoteReadMetricsProps} props
- */
-function noteReadMetrics(props) {
+interface NoteReadMetricsProps {
+  note: UiNotesValue;
+}
+
+export default function noteReadMetrics(props: NoteReadMetricsProps) {
   const { note: { metrics } } = props;
   if (!metrics) {
     return null;
@@ -57,5 +58,3 @@ noteReadMetrics.propTypes = {
     metrics: PropTypes.object,
   }).isRequired,
 };
-
-module.exports = noteReadMetrics;

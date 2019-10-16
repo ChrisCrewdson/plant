@@ -8,7 +8,7 @@ const { actionFunc } = require('../../actions');
 const EditDeleteButtons = require('../common/EditDeleteButtons');
 const utils = require('../../libs/utils');
 const Markdown = require('../common/Markdown');
-const NoteReadMetrics = require('./NoteReadMetrics');
+const NoteReadMetrics = require('./NoteReadMetrics').default;
 
 class NoteRead extends React.PureComponent {
   /**
