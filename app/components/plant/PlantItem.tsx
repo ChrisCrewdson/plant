@@ -14,7 +14,7 @@ import { actionFunc } from '../../actions';
 const { makeSlug } = utils;
 
 export default class PlantItem extends React.PureComponent {
-  props: PlantItemProps;
+  props!: PlantItemProps;
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -31,7 +31,6 @@ export default class PlantItem extends React.PureComponent {
   constructor(props: PlantItemProps) {
     super(props);
     this.createNote = this.createNote.bind(this);
-    this.props = props;
   }
 
   createNote() {

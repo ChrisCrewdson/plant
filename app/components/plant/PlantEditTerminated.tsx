@@ -8,7 +8,7 @@ import InputComboText from '../common/InputComboText';
 import { actionFunc } from '../../actions';
 
 export default class PlantEditTerminated extends React.Component {
-  props: PlantEditTerminatedProps;
+  props!: PlantEditTerminatedProps;
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -26,7 +26,6 @@ export default class PlantEditTerminated extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.booleanHandler = this.booleanHandler.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
-    this.props = props;
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp

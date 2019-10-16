@@ -28,7 +28,7 @@ export default class NotesRead extends React.PureComponent {
   // eslint-disable-next-line react/state-in-constructor
   state: NotesReadState;
 
-  props: NotesReadProps;
+  props!: NotesReadProps;
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -52,7 +52,6 @@ export default class NotesRead extends React.PureComponent {
     super(props);
     // eslint-disable-next-line react/state-in-constructor
     this.state = {};
-    this.props = props;
   }
 
   // eslint-disable-next-line camelcase

@@ -25,7 +25,7 @@ interface NoteAssocPlantState {
 }
 
 export default class NoteAssocPlant extends React.Component {
-  props: NoteAssocPlantProps;
+  props!: NoteAssocPlantProps;
 
   // eslint-disable-next-line react/state-in-constructor
   state: NoteAssocPlantState;
@@ -51,7 +51,6 @@ export default class NoteAssocPlant extends React.Component {
     this.expand = this.expand.bind(this);
     this.toggle = this.toggle.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
-    this.props = props;
   }
 
   changeHandler(e: React.ChangeEvent<HTMLInputElement>) {

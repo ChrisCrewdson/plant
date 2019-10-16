@@ -3,25 +3,42 @@
 // or the locations for a specific user
 // Url: /locations/<user-name>/<_user_id>
 
-const React = require('react');
-const { withRouter } = require('react-router-dom');
-const PropTypes = require('prop-types');
-const Base = require('../base/Base');
-const AddLocationButton = require('./AddLocationButton');
-const LocationTile = require('./LocationTile').default;
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Base from '../base/Base';
+import AddLocationButton from './AddLocationButton';
+import LocationTile from './LocationTile';
 
 class Locations extends React.Component {
+  props!: LocationProps;
+
+  unsubscribe!: Function;
+
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
+
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string,
+        slug: PropTypes.string,
+      }),
+    }),
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * Shares the same props shape as Location
-   * @param {LocationProps} props
-   * @memberof Locations
-   */
-  constructor(props) {
+  static defaultProps = {
+    match: {
+      params: {},
+    },
+  };
+
+  constructor(props: LocationProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.renderLocation = this.renderLocation.bind(this);
@@ -29,7 +46,7 @@ class Locations extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.updateState();
@@ -46,29 +63,18 @@ class Locations extends React.Component {
   }
 
   updateState() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { locations, users } = store.getState();
     this.setState({ locations, users });
   }
 
-  /**
-   * @param {UiUsersValue|undefined} user
-   * @returns
-   * @memberof Locations
-   */
-  isOwner(user) {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+  isOwner(user?: UiUsersValue) {
+    const { store } = this.context;
     const { user: authUser } = store.getState();
     return !!(user && authUser && authUser._id === user._id);
   }
 
-  /**
-   * @static
-   * @param {string|undefined} title
-   * @returns
-   * @memberof Locations
-   */
-  static renderTitle(title) {
+  static renderTitle(title?: string) {
     return (
       <h2 style={{ textAlign: 'center' }}>
         {`${title || 'Location Does Not Have a Name'}`}
@@ -76,12 +82,7 @@ class Locations extends React.Component {
     );
   }
 
-  /**
-   * @param {UiLocationsValue} location
-   * @returns
-   * @memberof Locations
-   */
-  renderLocation(location) {
+  renderLocation(location: UiLocationsValue) {
     if (!location) {
       return null;
     }
@@ -101,12 +102,7 @@ class Locations extends React.Component {
     );
   }
 
-  /**
-   * @param {UiUsersValue|undefined} user
-   * @returns
-   * @memberof Locations
-   */
-  renderNoLocations(user) {
+  renderNoLocations(user?: UiUsersValue) {
     return (
       <div>
         {Locations.renderTitle(user && user.name)}
@@ -125,7 +121,7 @@ No locations added yet...
 
   renderLocations() {
     // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
 
     const { users, locations } = store.getState();
 
@@ -181,20 +177,5 @@ No locations added yet...
   }
 }
 
-Locations.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-      slug: PropTypes.string,
-    }),
-  }),
-};
-
-Locations.defaultProps = {
-  match: {
-    params: {},
-  },
-};
-
 // @ts-ignore - TODO: Solve withRouter() param and tsc
-module.exports = withRouter(Locations);
+export default withRouter(Locations);

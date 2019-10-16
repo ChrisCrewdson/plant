@@ -62,7 +62,7 @@ interface NoteEditProps {
 }
 
 export default class NoteEdit extends React.PureComponent {
-  props: NoteEditProps;
+  props!: NoteEditProps;
 
   dropzone: any;
 
@@ -103,7 +103,6 @@ export default class NoteEdit extends React.PureComponent {
     this.onOpenClick = this.onOpenClick.bind(this);
     this.save = this.save.bind(this);
     this.saveFiles = this.saveFiles.bind(this);
-    this.props = props;
   }
 
   componentWillUnmount() {

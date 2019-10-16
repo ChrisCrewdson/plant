@@ -110,7 +110,7 @@ export default class LocationsManager extends React.Component {
     return errors;
   }
 
-  props: LocationsManagerProps;
+  props!: LocationsManagerProps;
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -134,7 +134,6 @@ export default class LocationsManager extends React.Component {
         return acc;
       }, {});
     userColumns[0].options['<select>'] = '<select>';
-    this.props = props;
   }
 
   /**

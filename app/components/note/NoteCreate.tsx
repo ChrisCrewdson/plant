@@ -22,7 +22,7 @@ interface NoteCreateProps {
 }
 
 export default class NoteCreate extends React.PureComponent {
-  props: NoteCreateProps;
+  props!: NoteCreateProps;
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -42,7 +42,6 @@ export default class NoteCreate extends React.PureComponent {
     super(props);
 
     this.createNote = this.createNote.bind(this);
-    this.props = props;
   }
 
   createNote() {

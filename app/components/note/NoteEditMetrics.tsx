@@ -20,7 +20,7 @@ interface NoteEditMetricProps {
 }
 
 export default class NoteEditMetrics extends React.PureComponent {
-  props: NoteEditMetricProps;
+  props!: NoteEditMetricProps;
 
   metricTypes: Record<string, Function>;
 
@@ -53,7 +53,6 @@ export default class NoteEditMetrics extends React.PureComponent {
       weight: this.renderWeight,
       toggle: this.renderToggle,
     });
-    this.props = props;
   }
 
   /**

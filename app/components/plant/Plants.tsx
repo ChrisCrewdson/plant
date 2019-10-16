@@ -10,7 +10,10 @@ import getIn from 'lodash/get';
 import utils from '../../libs/utils';
 
 class Plants extends React.Component {
-  unsubscribe: any;
+  unsubscribe!: Function;
+
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
 
   static propTypes = {
     match: PropTypes.shape({
@@ -39,7 +42,7 @@ class Plants extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context as {store: PlantStore};
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     this.onChange();
     this.redirectIfReady();
@@ -57,13 +60,13 @@ class Plants extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context as {store: PlantStore};
+    const { store } = this.context;
     const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
 
   redirectIfReady() {
-    const { store } = this.context as {store: PlantStore};
+    const { store } = this.context;
     const { match, history } = this.props as PlantsProps;
     const { params } = match;
     const userId = params && params.id;

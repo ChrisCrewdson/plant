@@ -10,6 +10,9 @@ import Base from '../base/Base';
 const { makeSlug } = utils;
 
 export default class Users extends React.Component {
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
@@ -22,7 +25,7 @@ export default class Users extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = this.context as {store: PlantStore};
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.onChange();
@@ -35,7 +38,7 @@ export default class Users extends React.Component {
   }
 
   onChange() {
-    const { store } = this.context as {store: PlantStore};
+    const { store } = this.context;
     const state = store.getState();
     const { users, locations } = state;
     this.setState({ users, locations });
@@ -53,7 +56,7 @@ export default class Users extends React.Component {
     let link = `/locations/${makeSlug(userName)}/${_id}`;
 
     if (locationIds.length === 1) {
-      const { store } = this.context as {store: PlantStore};
+      const { store } = this.context;
       const state = store.getState();
       const { locations } = state;
       if (locations) {
@@ -80,7 +83,7 @@ export default class Users extends React.Component {
   }
 
   renderUsers() {
-    const { store } = this.context as {store: PlantStore};
+    const { store } = this.context;
     const { users } = store.getState();
     const userIds = Object.keys(users);
     if (userIds.length) {

@@ -55,7 +55,7 @@ export default class NoteRead extends React.PureComponent {
     return '';
   }
 
-  props: NoteReadProps;
+  props!: NoteReadProps;
 
   // eslint-disable-next-line react/state-in-constructor
   state: NoteReadState;
@@ -81,7 +81,6 @@ export default class NoteRead extends React.PureComponent {
     /** @type {NoteReadState} */
     // eslint-disable-next-line react/state-in-constructor
     this.state = { showDeleteConfirmation: false };
-    this.props = props;
   }
 
   /**

@@ -43,12 +43,12 @@ interface PlantProps {
 }
 
 class Plant extends React.Component {
-  props: PlantProps;
+  props!: PlantProps;
 
-  unsubscribe: any;
+  unsubscribe!: Function;
 
-  // @ts-ignore
-  context: {store: PlantStore};
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
 
   static propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
@@ -87,7 +87,6 @@ class Plant extends React.Component {
   constructor(props: PlantProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    this.props = props;
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp

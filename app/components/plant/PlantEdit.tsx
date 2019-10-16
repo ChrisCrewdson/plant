@@ -31,7 +31,7 @@ interface PlantEditState {
 }
 
 class PlantEdit extends React.Component {
-  props: PlantEditProps;
+  props!: PlantEditProps;
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -73,7 +73,6 @@ class PlantEdit extends React.Component {
     this.onChangeLocation = this.onChangeLocation.bind(this);
     this.save = this.save.bind(this);
     this.addGeo = this.addGeo.bind(this);
-    this.props = props;
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp

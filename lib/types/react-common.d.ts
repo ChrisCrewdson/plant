@@ -15,6 +15,10 @@ interface ServerSideRenderData {
   title?: string;
 }
 
+interface PlantContext {
+  store: PlantStore;
+}
+
 declare type InputComboTextPropsType = 'text' | 'number';
 
 interface InputComboTextProps {

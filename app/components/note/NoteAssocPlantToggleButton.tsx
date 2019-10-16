@@ -16,7 +16,7 @@ interface NoteAssocPlantToggleButtonProps {
 }
 
 export default class NoteAssocPlantToggleButton extends React.PureComponent {
-  props: NoteAssocPlantToggleButtonProps;
+  props!: NoteAssocPlantToggleButtonProps;
 
   static propTypes = {
     _id: PropTypes.string.isRequired,
@@ -30,7 +30,6 @@ export default class NoteAssocPlantToggleButton extends React.PureComponent {
   constructor(props: NoteAssocPlantToggleButtonProps) {
     super(props);
     this.toggle = this.toggle.bind(this);
-    this.props = props;
   }
 
   toggle() {
