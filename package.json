@@ -104,7 +104,7 @@
     "jest": "24.9.0",
     "jest-circus": "24.9.0",
     "node-fetch": "2.6.0",
-    "nodemon": "1.19.3",
+    "nodemon": "1.19.4",
     "oauth": "0.9.15",
     "pre-commit": "1.2.2",
     "react-hot-loader": "4.12.15",
