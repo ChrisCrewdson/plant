@@ -122,6 +122,11 @@ export default class NotesRead extends React.PureComponent {
       const {
         noteId, note, sinceLast, change,
       } = metricNote;
+
+      if (!note) {
+        return null;
+      }
+
       switch (metricNote.type) {
         case 'note':
           return (
@@ -130,7 +135,6 @@ export default class NotesRead extends React.PureComponent {
               userCanEdit={userCanEdit}
               key={noteId}
               note={note}
-              notes={notes}
               plant={plant}
             />
           );

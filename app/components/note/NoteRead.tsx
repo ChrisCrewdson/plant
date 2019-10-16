@@ -1,37 +1,38 @@
-const RaisedButton = require('material-ui/RaisedButton').default;
-const LinkIcon = require('material-ui/svg-icons/content/link').default;
-const PropTypes = require('prop-types');
-const React = require('react');
-const Paper = require('material-ui/Paper').default;
-const moment = require('moment');
-const { actionFunc } = require('../../actions');
-const EditDeleteButtons = require('../common/EditDeleteButtons');
-const utils = require('../../libs/utils');
-const Markdown = require('../common/Markdown');
-const NoteReadMetrics = require('./NoteReadMetrics').default;
+import RaisedButton from 'material-ui/RaisedButton';
+import LinkIcon from 'material-ui/svg-icons/content/link';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Paper from 'material-ui/Paper';
+import moment from 'moment';
+import { Dispatch } from 'redux';
 
-class NoteRead extends React.PureComponent {
-  /**
-   * @static
-   * @param {ImageSizeName} size
-   * @param {NoteImage} image
-   * @returns
-   * @memberof NoteRead
-   */
-  static buildImageUrl(size, image) {
+import { actionFunc } from '../../actions';
+import EditDeleteButtons from '../common/EditDeleteButtons';
+import utils from '../../libs/utils';
+import Markdown from '../common/Markdown';
+import NoteReadMetrics from './NoteReadMetrics';
+import { PlantAction } from '../../../lib/types/redux-payloads';
+
+interface NoteReadProps {
+  dispatch: Dispatch<PlantAction<any>>;
+  userCanEdit: boolean;
+  note: UiNotesValue;
+  plant: UiPlantsValue;
+}
+
+interface NoteReadState {
+  showDeleteConfirmation: boolean;
+}
+
+export default class NoteRead extends React.PureComponent {
+  static buildImageUrl(size: ImageSizeName, image: NoteImage) {
     const { id, ext } = image;
     const folder = process.env.NODE_ENV === 'production' ? 'up' : 'test';
     const { PLANT_IMAGE_CACHE: imageCache = '' } = process.env;
     return `//${imageCache}i.plaaant.com/${folder}/${size}/${id}${ext && ext.length ? '.' : ''}${ext}`;
   }
 
-  /**
-   * @static
-   * @param {NoteImage} image
-   * @returns
-   * @memberof NoteRead
-   */
-  static buildImageSrc(image) {
+  static buildImageSrc(image: NoteImage) {
     const sizes = image.sizes || [];
     const size = sizes && sizes.length
       ? sizes[sizes.length - 1].name
@@ -39,13 +40,7 @@ class NoteRead extends React.PureComponent {
     return NoteRead.buildImageUrl(size, image);
   }
 
-  /**
-   * @static
-   * @param {NoteImage} image
-   * @returns
-   * @memberof NoteRead
-   */
-  static buildImageSrcSet(image) {
+  static buildImageSrcSet(image: NoteImage) {
     // If the cache is live then don't set a value for srcset
     if (process.env.PLANT_IMAGE_CACHE) {
       return '';
@@ -60,12 +55,25 @@ class NoteRead extends React.PureComponent {
     return '';
   }
 
-  /**
-   *Creates an instance of NoteRead.
-   * @param {NoteReadProps} props
-   * @memberof NoteRead
-   */
-  constructor(props) {
+  props: NoteReadProps;
+
+  // eslint-disable-next-line react/state-in-constructor
+  state: NoteReadState;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    userCanEdit: PropTypes.bool.isRequired,
+    note: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      date: PropTypes.number.isRequired,
+      images: PropTypes.array,
+      note: PropTypes.string,
+      showImages: PropTypes.bool,
+    }).isRequired,
+    plant: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  };
+
+  constructor(props: NoteReadProps) {
     super(props);
     this.checkDelete = this.checkDelete.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
@@ -73,11 +81,11 @@ class NoteRead extends React.PureComponent {
     /** @type {NoteReadState} */
     // eslint-disable-next-line react/state-in-constructor
     this.state = { showDeleteConfirmation: false };
+    this.props = props;
   }
 
   /**
    * Called after user clicks on delete
-   * @memberof NoteRead
    */
   checkDelete() {
     this.setState({ showDeleteConfirmation: true });
@@ -85,10 +93,8 @@ class NoteRead extends React.PureComponent {
 
   /**
    * Called after user confirms or cancels a delete action
-   * @param {boolean} yes
-   * @memberof NoteRead
    */
-  confirmDelete(yes) {
+  confirmDelete(yes: boolean) {
     if (yes) {
       const { dispatch, note: { _id } } = this.props;
       dispatch(actionFunc.deleteNoteRequest(_id));
@@ -108,13 +114,7 @@ class NoteRead extends React.PureComponent {
     dispatch(actionFunc.editNoteOpen({ plant, note }));
   }
 
-  /**
-   * @static
-   * @param {NoteImage} image
-   * @returns
-   * @memberof NoteRead
-   */
-  static renderImage(image) {
+  static renderImage(image: NoteImage) {
     const imageStyle = {
       maxWidth: '100%',
       padding: '1%',
@@ -131,12 +131,7 @@ class NoteRead extends React.PureComponent {
     );
   }
 
-  /**
-   * @param {UiNotesValue} note
-   * @returns
-   * @memberof NoteRead
-   */
-  renderImages({ images, showImages, _id }) {
+  renderImages({ images, showImages, _id }: UiNotesValue) {
     if (images && images.length) {
       if (showImages) {
         return images.map((image) => NoteRead.renderImage(image));
@@ -211,18 +206,3 @@ class NoteRead extends React.PureComponent {
     );
   }
 }
-
-NoteRead.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  userCanEdit: PropTypes.bool.isRequired,
-  note: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    date: PropTypes.number.isRequired,
-    images: PropTypes.array,
-    note: PropTypes.string,
-    showImages: PropTypes.bool,
-  }).isRequired,
-  plant: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-};
-
-module.exports = NoteRead;

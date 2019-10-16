@@ -66,17 +66,6 @@ interface LastMetricDates {
   harvestEnd?: Date;
 }
 
-interface NoteReadProps {
-  dispatch: import('redux').Dispatch;
-  userCanEdit: boolean;
-  note: UiNotesValue;
-  plant: UiPlantsValue;
-}
-
-interface NoteReadState {
-  showDeleteConfirmation: boolean;
-}
-
 interface LoadNotesRequestPayload {
   plantIds?: string[];
   noteIds?: string[];
