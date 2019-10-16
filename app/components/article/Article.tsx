@@ -1,8 +1,8 @@
 // This is a temporary component so that I can quickly get a single article on the site.
 
-const React = require('react');
-const Base = require('../base/Base');
-const Markdown = require('../common/Markdown');
+import React from 'react';
+import Base from '../base/Base';
+import Markdown from '../common/Markdown';
 
 // Once this is in the DB use this MongoId for the insert: 58a9d4ec27b363e3630c969b
 // Url will be something like: /article/fruit-tree-emergency/58a9d4ec27b363e3630c969b
@@ -57,7 +57,7 @@ const markdown = `**911 Operator:** 911 - what's your emergency?
 
 ...CLICK…`;
 
-function article() {
+export default function article() {
   const style = {
     marginBottom: '50px',
     marginLeft: '25px',
@@ -72,5 +72,3 @@ function article() {
     </Base>
   );
 }
-
-module.exports = article;
