@@ -1,20 +1,5 @@
 
-interface NoteAssocPlantProps {
-  dispatch: import('redux').Dispatch;
-  error: string;
-  plantIds: string[];
-  plants: Record<string, UiPlantsValue>;
-}
-
-interface NoteAssocPlantState {
-  expanded: boolean;
-  filter: string;
-}
-
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
-interface INoteAssocPlant extends React.Component<NoteAssocPlantProps, NoteAssocPlantState> {
-}
-
 declare type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
 
 interface LastMeasuredProps {

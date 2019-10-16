@@ -42,7 +42,7 @@ describe('NoteAssocPlant', () => {
         _id: 'p-3',
         title: 'Plant Three',
       },
-    };
+    } as unknown as Record<string, UiPlantsValue>;
 
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
