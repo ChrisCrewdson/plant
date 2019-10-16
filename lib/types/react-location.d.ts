@@ -48,24 +48,3 @@ interface LocationsManagerRowUpdate {
   }
 }
 */
-
-interface LocationPropsMatchParams {
-  id: string;
-  slug: string;
-}
-
-interface LocationPropsMatch {
-  params: LocationPropsMatchParams;
-}
-
-interface LocationProps {
-  match: LocationPropsMatch;
-}
-
-interface LocationState {
-  filter: string;
-  locations?: Record<string, UiLocationsValue>;
-  allLoadedPlants?: Record<string, UiPlantsValue>;
-  interim?: UiInterim;
-  authUser?: UiUsersValue;
-}

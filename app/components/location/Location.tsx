@@ -1,25 +1,43 @@
 // Used to show a list of plants for a location.
 // Url: /location/<location-name>/_location_id
 
-const CircularProgress = require('material-ui/CircularProgress').default;
-const React = require('react');
-const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
-const Base = require('../base/Base');
-const InputComboText = require('../common/InputComboText');
-const PlantItem = require('../plant/PlantItem').default;
-const { canEdit } = require('../../libs/auth-helper');
-const { actionFunc } = require('../../actions');
-const NoteCreate = require('../note/NoteCreate');
-const utils = require('../../libs/utils');
-const AddPlantButton = require('../common/AddPlantButton');
+import CircularProgress from 'material-ui/CircularProgress';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import Base from '../base/Base';
+import InputComboText from '../common/InputComboText';
+import PlantItem from '../plant/PlantItem';
+import { canEdit } from '../../libs/auth-helper';
+import { actionFunc } from '../../actions';
+import NoteCreate from '../note/NoteCreate';
+import utils from '../../libs/utils';
+import AddPlantButton from '../common/AddPlantButton';
+
+
+interface LocationPropsMatchParams {
+  id: string;
+  slug: string;
+}
+
+interface LocationPropsMatch {
+  params: LocationPropsMatchParams;
+}
+
+export interface LocationProps {
+  match: LocationPropsMatch;
+}
+
+interface LocationState {
+  filter: string;
+  locations?: Record<string, UiLocationsValue>;
+  allLoadedPlants?: Record<string, UiPlantsValue>;
+  interim?: UiInterim;
+  authUser?: UiUsersValue;
+}
 
 class Location extends React.Component {
-  /**
-   *
-   * @param {boolean} userCanEdit
-   */
-  static addPlantButton(userCanEdit) {
+  static addPlantButton(userCanEdit: boolean) {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
         <AddPlantButton
@@ -29,26 +47,40 @@ class Location extends React.Component {
     );
   }
 
+  context!: PlantContext;
+
+  props!: LocationProps;
+
+  unsubscribe!: Function;
+
+  // eslint-disable-next-line react/state-in-constructor
+  state: LocationState;
+
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * @param {LocationProps} props
-   */
-  constructor(props) {
+  constructor(props: LocationProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.postSaveSuccessCreateNote = this.postSaveSuccessCreateNote.bind(this);
-    /** @type {LocationState} */
     // eslint-disable-next-line react/state-in-constructor
     this.state = { filter: '' };
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { locations = {} } = store.getState();
     const { match: { params } } = this.props;
     const { id: locationId } = params;
@@ -68,7 +100,7 @@ class Location extends React.Component {
   }
 
   onChange() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const {
       interim,
       locations,
@@ -87,7 +119,7 @@ class Location extends React.Component {
   }
 
   postSaveSuccessCreateNote() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     store.dispatch(actionFunc.editNoteClose());
   }
 
@@ -97,7 +129,7 @@ class Location extends React.Component {
    * @returns
    * @memberof Location
    */
-  static renderTitle(location) {
+  static renderTitle(location: UiLocationsValue) {
     return (
       <h2 style={{ textAlign: 'center' }}>
         {`${location.title} - Plant List`}
@@ -111,7 +143,7 @@ class Location extends React.Component {
    * @returns
    * @memberof Location
    */
-  static renderWaiting(location) {
+  static renderWaiting(location: UiLocationsValue) {
     return (
       <Base>
         <div>
@@ -131,7 +163,7 @@ class Location extends React.Component {
    * @returns
    * @memberof Location
    */
-  static renderNoPlants(location, userCanEdit) {
+  static renderNoPlants(location: UiLocationsValue, userCanEdit: boolean) {
     return (
       <Base>
         <div>
@@ -151,11 +183,11 @@ No plants added yet...
   }
 
   render() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const {
       filter = '',
       locations,
-      allLoadedPlants,
+      allLoadedPlants = {},
       interim,
       authUser,
     } = this.state;
@@ -172,8 +204,8 @@ No plants added yet...
       );
     }
 
-    const interimNote = interim && interim.note && interim.note.note;
-    const plantCreateNote = interim && interim.note && interim.note.plant;
+    const interimNote = (interim && interim.note && interim.note.note) || {} as UiInterimNote;
+    const plantCreateNote = (interim && interim.note && interim.note.plant) || {} as UiPlantsValue;
 
     const createNote = !!(interimNote && interimNote.isNew);
 
@@ -182,7 +214,7 @@ No plants added yet...
 
     if (createNote && userCanEdit) {
       /** @type {React.CSSProperties} */
-      const style = {
+      const style: React.CSSProperties = {
         paddingTop: '30px',
         textAlign: 'center',
       };
@@ -198,7 +230,6 @@ No plants added yet...
               interimNote={interimNote}
               plant={plantCreateNote}
               plants={allLoadedPlants}
-              postSaveSuccess={this.postSaveSuccessCreateNote}
               locationId={locationId}
             />
           </div>
@@ -237,8 +268,8 @@ No plants added yet...
       }
       return acc;
     }, {
-      found: /** @type {JSX.Element[]} */ ([]),
-      unloaded: /** @type {string[]} */ ([]),
+      found: [] as JSX.Element[],
+      unloaded: [] as string[],
     });
 
     if (tileElements.unloaded.length) {
@@ -284,14 +315,5 @@ No plants added yet...
   }
 }
 
-Location.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
-
 // @ts-ignore - TODO: Solve withRouter() param and tsc
-module.exports = withRouter(Location);
+export default withRouter(Location);
