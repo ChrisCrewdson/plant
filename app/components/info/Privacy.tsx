@@ -1,7 +1,7 @@
-const React = require('react');
-const Paper = require('material-ui/Paper').default;
-const Base = require('../base/Base');
-const Markdown = require('../common/Markdown');
+import React from 'react';
+import Paper from 'material-ui/Paper';
+import Base from '../base/Base';
+import Markdown from '../common/Markdown';
 
 const markdown = `# Plant Privacy Policy
 
@@ -171,7 +171,7 @@ below.
 Last Edited on 2019-04-07
 `;
 
-function privacy() {
+export default function privacy() {
   const paperStyle = {
     padding: 20,
     width: '100%',
@@ -187,5 +187,3 @@ function privacy() {
     </Base>
   );
 }
-
-module.exports = privacy;

@@ -1,7 +1,7 @@
-const React = require('react');
-const Paper = require('material-ui/Paper').default;
-const Base = require('../base/Base');
-const Markdown = require('../common/Markdown');
+import React from 'react';
+import Paper from 'material-ui/Paper';
+import Base from '../base/Base';
+import Markdown from '../common/Markdown';
 
 const markdown = `# Introduction
 
@@ -124,7 +124,7 @@ These terms and conditions constitute the entire agreement between you and Plaaa
 These terms and conditions will be governed by and construed in accordance with United States Law, and any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the courts of Arizona.
 `;
 
-function terms() {
+export default function terms() {
   const paperStyle = {
     padding: 20,
     width: '100%',
@@ -140,5 +140,3 @@ function terms() {
     </Base>
   );
 }
-
-module.exports = terms;
