@@ -29,14 +29,6 @@ interface LocationsManagerProps {
   users: UiUsers;
 }
 
-interface LocationTileProps {
-  _id: string;
-  dispatch: import('redux').Dispatch;
-  numPlants: number;
-  title: string;
-}
-
-
 // This state is an object with locationId's as keys and
 // each value is an object with:
 // _id

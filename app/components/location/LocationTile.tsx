@@ -1,25 +1,27 @@
 // Used to show a summary tile/card of a Location
 
-const React = require('react');
-const { Link } = require('react-router-dom');
-const PropTypes = require('prop-types');
-const utils = require('../../libs/utils');
-const { actionFunc } = require('../../actions');
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Dispatch } from 'redux';
+
+import utils from '../../libs/utils';
+import { actionFunc } from '../../actions';
 
 const { makeSlug } = utils;
 
-/**
- * @param {string} _id
- * @param {import('redux').Dispatch} dispatch
- */
-function onLinkClick(_id, dispatch) {
+interface LocationTileProps {
+  _id: string;
+  dispatch: import('redux').Dispatch;
+  numPlants: number;
+  title: string;
+}
+
+function onLinkClick(_id: string, dispatch: Dispatch) {
   dispatch(actionFunc.changeActiveLocationId({ _id }));
 }
 
-/**
- * @param {LocationTileProps} props
- */
-function locationTile(props) {
+export default function locationTile(props: LocationTileProps) {
   const {
     _id,
     dispatch,
@@ -56,5 +58,3 @@ locationTile.propTypes = {
   numPlants: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };
-
-module.exports = locationTile;

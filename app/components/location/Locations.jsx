@@ -8,7 +8,7 @@ const { withRouter } = require('react-router-dom');
 const PropTypes = require('prop-types');
 const Base = require('../base/Base');
 const AddLocationButton = require('./AddLocationButton');
-const LocationTile = require('./LocationTile');
+const LocationTile = require('./LocationTile').default;
 
 class Locations extends React.Component {
   static contextTypes = {
