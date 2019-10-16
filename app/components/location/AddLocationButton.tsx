@@ -1,13 +1,10 @@
-const React = require('react');
-const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const AddIcon = require('material-ui/svg-icons/content/add').default;
-const { Link } = require('react-router-dom');
-const PropTypes = require('prop-types');
+import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-/**
- * @param {AddPlantButtonProps} props
- */
-function addLocationButton(props) {
+export default function addLocationButton(props: AddPlantButtonProps) {
   const {
     mini,
     show,
@@ -41,5 +38,3 @@ addLocationButton.defaultProps = {
   mini: false,
   style: {},
 };
-
-module.exports = addLocationButton;
