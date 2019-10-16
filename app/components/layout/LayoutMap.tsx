@@ -1,29 +1,44 @@
+import { RouteComponentProps } from 'react-router';
+
 // Used to show the physical layout (a map) of plants at a Location
 // Currently under development - was used at one point but no longer functional.
 // Needs to be reworked.
 // Url: ?
 
-const React = require('react');
+import React from 'react';
 
-const {
-  Layer, Text: KonvaText, Circle, Stage, Group,
-} = require('react-konva');
-const PropTypes = require('prop-types');
+import {
+  Layer, Text as KonvaText, Circle, Stage, Group,
+} from 'react-konva';
+import PropTypes from 'prop-types';
 
-const gis = require('../../libs/gis');
-const { actionFunc } = require('../../actions');
-const Base = require('../base/Base');
+import * as gis from '../../libs/gis';
+import { actionFunc } from '../../actions';
+import Base from '../base/Base';
 
-class LayoutMap extends React.Component {
+export default class LayoutMap extends React.Component {
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
+
+  props!: RouteComponentProps;
+
+  unsubscribe!: Function;
+
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * @param {import('react-router').RouteComponentProps} props
-   */
-  constructor(props) {
+  constructor(props: RouteComponentProps) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -32,7 +47,7 @@ class LayoutMap extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const {
       plants,
       users,
@@ -44,8 +59,10 @@ class LayoutMap extends React.Component {
       users,
     });
 
-    const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
+    const { match } = this.props;
+    // @ts-ignore - fix this - file not in use right now
     if (match.params && match.params.id) {
+    // @ts-ignore - fix this - file not in use right now
       const { id: userId } = match.params;
       const user = users[userId] || {};
       // This is the user id for this page.
@@ -71,7 +88,7 @@ class LayoutMap extends React.Component {
   }
 
   onChange() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
 
     const {
       plants,
@@ -93,9 +110,10 @@ class LayoutMap extends React.Component {
   }
 
   renderTitle() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
-    const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
+    const { store } = this.context;
+    const { match } = this.props;
     const { params = {} } = match || {};
+    // @ts-ignore - fix this - file not in use right now
     const { id: userId } = params;
 
     const { users } = store.getState();
@@ -108,12 +126,7 @@ class LayoutMap extends React.Component {
     );
   }
 
-  /**
-   * @param {UiPlantLocation} plant
-   * @returns
-   * @memberof LayoutMap
-   */
-  renderPlantLocation(plant) {
+  renderPlantLocation(plant: UiPlantLocation) {
     /*
     var circle = new Konva.Circle({
       x: stage.getWidth() / 2,
@@ -144,6 +157,7 @@ class LayoutMap extends React.Component {
      */
     /*
         */
+    // @ts-ignore - fix this - file not in use right now
     const { color } = this.state;
     return (
       <Group key={plant._id}>
@@ -172,15 +186,17 @@ class LayoutMap extends React.Component {
    * @returns
    * @memberof LayoutMap
    */
-  renderPlantLocations(width) {
+  renderPlantLocations(width: number) {
     if (width < 30) {
       // console.error('Width is less than 30');
       return null;
     }
-    const { match } = /** @type {import('react-router').RouteComponentProps} */ (this.props);
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { match } = this.props;
+    const { store } = this.context;
     const params = match && match.params;
+    // @ts-ignore - fix this - file not in use right now
     if (params && params.id) {
+    // @ts-ignore - fix this - file not in use right now
       const { id: userId } = params;
       const { plants, users } = store.getState();
       const user = users[userId];
@@ -191,6 +207,7 @@ class LayoutMap extends React.Component {
       const userPlants = Object.keys(plants).reduce((acc, plantId) => {
         const plant = plants[plantId];
         if (plant.userId === userId && plant.loc) {
+          // @ts-ignore - fix this - file not in use right now
           acc[plantId] = plant;
         }
         return acc;
@@ -241,14 +258,3 @@ No plants have been mapped yet...
     );
   }
 }
-
-LayoutMap.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
-
-module.exports = LayoutMap;
