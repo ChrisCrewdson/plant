@@ -247,13 +247,18 @@ function loadLocationsRequest(store: Store) {
   ajax(store, options);
 }
 
+interface LoadNotesRequestPayload {
+  plantIds?: string[];
+  noteIds?: string[];
+}
+
 // Get all the notes listed
 // action.payload is an object with one of 2 properties:
 // noteIds: an array of noteIds
 // plantIds: an array of plantIds
 function loadNotesRequest(store: Store, action: PlantRedux.PlantAction<LoadNotesRequestPayload>,
   next: Function) {
-  const { plantIds, noteIds } = /** @type {LoadNotesRequestPayload} */ (action.payload || {});
+  const { plantIds, noteIds } = action.payload || {};
 
   if (!noteIds && !plantIds) {
     // eslint-disable-next-line no-console

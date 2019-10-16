@@ -11,7 +11,7 @@ import { canEdit } from '../../../libs/auth-helper';
 import { actionFunc } from '../../../actions';
 import utils from '../../../libs/utils';
 import AddPlantButton from '../../common/AddPlantButton';
-import LastMeasured from './LastMeasured';
+import LastMeasured, { MetricDate } from './LastMeasured';
 
 // TODO: AT THIS POINT THIS FILE IS JUST A COPY OF THE Location file/class
 // with the class renamed to Metrics. It's tested and works on the url.

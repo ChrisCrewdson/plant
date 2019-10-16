@@ -1,14 +1,22 @@
-const React = require('react');
-// const utils = require('../../../libs/utils');
-const PropTypes = require('prop-types');
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = require('seamless-immutable').static;
-const { actionFunc } = require('../../../actions');
+import React from 'react';
+import PropTypes from 'prop-types';
+import si from 'seamless-immutable';
+import { actionFunc } from '../../../actions';
 
-/**
- * @param {LastMeasuredProps} props
- */
-function lastMeasured(props) {
+// @ts-ignore - static hasn't been defined on seamless types yet.
+const seamless = si.static;
+
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
+export type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
+
+interface LastMeasuredProps {
+  plantIds: string[];
+  plants: UiPlants;
+  metricDates: MetricDate[];
+  dispatch: import('redux').Dispatch;
+}
+
+export default function lastMeasured(props: LastMeasuredProps) {
   const {
     plantIds,
     plants,
@@ -16,34 +24,28 @@ function lastMeasured(props) {
     dispatch,
   } = props;
 
-  /** @type {string[]} */
-  const initMissingPlants = [];
-
   // We need all the plants in this list to have had their notes loaded.
   // This is determined by the "notesRequested" flag on the plant object.
-  const missingPlants = plantIds.reduce((acc, plantId) => {
+  const missingPlants = plantIds.reduce((acc: string[], plantId) => {
     if (plants[plantId]) {
       return acc;
     }
     acc.push(plantId);
     return acc;
-  }, initMissingPlants);
+  }, []);
 
   if (missingPlants.length) {
     dispatch(actionFunc.loadUnloadedPlantsRequest(missingPlants));
   }
 
-  /** @type {string[]} */
-  const initMissingNotesPlantIds = [];
-
-  const missingNotesPlantIds = plantIds.reduce((acc, plantId) => {
+  const missingNotesPlantIds = plantIds.reduce((acc: string[], plantId) => {
     const plant = plants[plantId];
     if (!plant || plant.notesRequested) {
       return acc;
     }
     acc.push(plantId);
     return acc;
-  }, initMissingNotesPlantIds);
+  }, []);
 
   if (missingNotesPlantIds.length) {
     dispatch(actionFunc.loadNotesRequest({
@@ -52,61 +54,57 @@ function lastMeasured(props) {
   }
 
   // Get an array with flattened metrics and their most recent date.
-  /** @type {LastMetricDates[]} */
-  const plantsWithLatestMetrics = plantIds.reduce((acc, plantId) => {
-    const plant = plants[plantId];
-    if (!plant) {
-      return acc;
-    }
+  const plantsWithLatestMetrics: LastMetricDates[] = plantIds.reduce(
+    (acc: LastMetricDates[], plantId) => {
+      const plant = plants[plantId];
+      if (!plant) {
+        return acc;
+      }
 
-    // Build an object that looks like this. All the metrics have the last entered
-    // date value on them:
-    //
-    // plantId:
-    // title:
-    // lastDate: Date Object with most recent date of interested metric
-    // height: 2/2/2018
-    // girth: 1/2/2018
-    // harvestCount: 6/7/2016
-    // harvestEnd: 6/7/2016
+      // Build an object that looks like this. All the metrics have the last entered
+      // date value on them:
+      //
+      // plantId:
+      // title:
+      // lastDate: Date Object with most recent date of interested metric
+      // height: 2/2/2018
+      // girth: 1/2/2018
+      // harvestCount: 6/7/2016
+      // harvestEnd: 6/7/2016
 
-    /** @type {LastMetricDates} */
-    const metricPlant = {
-      plantId,
-      title: plant.title,
-    };
+      const metricPlant: LastMetricDates = {
+        plantId,
+        title: plant.title,
+      };
 
-    // Now iterate through notes...
-    (plant.notes || []).forEach((note) => {
-      if (note.metrics) {
-        Object.keys(note.metrics).forEach((metric) => {
+      // Now iterate through notes...
+      (plant.notes || []).forEach((note) => {
+        // @ts-ignore - TODO - return to this and fix it
+        if (note.metrics) {
           // @ts-ignore - TODO - return to this and fix it
-          if (!metricPlant[metric] || metricPlant[metric] < note.date) {
+          Object.keys(note.metrics).forEach((metric) => {
+          // @ts-ignore - TODO - return to this and fix it
+            if (!metricPlant[metric] || metricPlant[metric] < note.date) {
             // @ts-ignore - TODO - return to this and fix it
-            metricPlant[metric] = note.date;
-          }
-          // @ts-ignore - TODO - return to this and fix it
-          if (metricDates.includes(metric)
+              metricPlant[metric] = note.date;
+            }
+            // @ts-ignore - TODO - return to this and fix it
+            if (metricDates.includes(metric)
             // @ts-ignore - TODO - return to this and fix it
             && (!metricPlant.lastDate || metricPlant.lastDate < note.date)) {
             // @ts-ignore - TODO - return to this and fix it
-            metricPlant.lastDate = note.date;
-          }
-        });
-      }
-    });
+              metricPlant.lastDate = note.date;
+            }
+          });
+        }
+      });
 
-    acc.push(metricPlant);
-    return acc;
-  }, /** @type {LastMetricDates[]} */ ([]));
+      acc.push(metricPlant);
+      return acc;
+    }, []);
 
-  /** @type {LastMetricDates[]} */
-  const sortedMetrics = seamless.asMutable(plantsWithLatestMetrics).sort(
-    /**
-     * @param {LastMetricDates} a
-     * @param {LastMetricDates} b
-     */
-    (a, b) => {
+  const sortedMetrics: LastMetricDates[] = seamless.asMutable(plantsWithLatestMetrics).sort(
+    (a: LastMetricDates, b: LastMetricDates) => {
       // TODO: Move to utils module and write tests around this.
       if (a.lastDate && b.lastDate) {
         if (a.lastDate.valueOf() === b.lastDate.valueOf()) {
@@ -152,5 +150,3 @@ lastMeasured.propTypes = {
   metricDates: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
-
-module.exports = lastMeasured;
