@@ -24,15 +24,6 @@ interface NoteAssocPlantToggleButtonProps {
   toggleFunc: (id: string) => void;
 }
 
-interface NoteCreateProps {
-  dispatch: import('redux').Dispatch;
-  userCanEdit: boolean;
-  interimNote: UiInterimNote;
-  plant: UiPlantsValue;
-  plants: UiPlants;
-  locationId: string;
-}
-
 declare type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
 
 interface LastMeasuredProps {

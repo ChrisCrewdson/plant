@@ -1,36 +1,62 @@
 // Used to add a note to a plant
 
-const React = require('react');
-const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const AddIcon = require('material-ui/svg-icons/content/add').default;
-const moment = require('moment');
-const PropTypes = require('prop-types');
-const utils = require('../../libs/utils');
-const NoteEdit = require('./NoteEdit').default;
-const { actionFunc } = require('../../actions');
+import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import { Dispatch } from 'redux';
 
-class NoteCreate extends React.PureComponent {
-  /**
-   * @param {NoteCreateProps} props
-   */
-  constructor(props) {
+import utils from '../../libs/utils';
+import NoteEdit from './NoteEdit';
+import { actionFunc } from '../../actions';
+import { PlantAction } from '../../../lib/types/redux-payloads';
+
+interface NoteCreateProps {
+  dispatch: Dispatch<PlantAction<any>>;
+  userCanEdit: boolean;
+  interimNote: UiInterimNote;
+  plant: UiPlantsValue;
+  plants: UiPlants;
+  locationId: string;
+}
+
+export default class NoteCreate extends React.PureComponent {
+  props: NoteCreateProps;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    userCanEdit: PropTypes.bool.isRequired,
+    interimNote: PropTypes.shape({
+      note: PropTypes.string,
+      isNew: PropTypes.bool,
+    }).isRequired,
+    plant: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    }).isRequired,
+    plants: PropTypes.shape({}).isRequired,
+    locationId: PropTypes.string.isRequired,
+  };
+
+  constructor(props: NoteCreateProps) {
     super(props);
 
     this.createNote = this.createNote.bind(this);
+    this.props = props;
   }
 
   createNote() {
     const {
       plant, locationId, plants: plantsObj, dispatch,
-    } = /** @type {NoteCreateProps} */ (this.props);
+    } = this.props;
 
-    const plants = Object.keys(plantsObj).reduce((acc, plantId) => {
+    const plants = Object.keys(plantsObj).reduce((acc: UiPlants, plantId) => {
       const p = plantsObj[plantId];
       if (p.locationId === locationId) {
         acc[plantId] = p;
       }
       return acc;
-    }, /** @type {UiPlants} */ ({}));
+    }, {});
 
     const note = {
       _id: utils.makeMongoId(),
@@ -50,10 +76,9 @@ class NoteCreate extends React.PureComponent {
       dispatch,
       interimNote,
       locationId,
-      plant,
       plants,
       userCanEdit,
-    } = /** @type {NoteCreateProps} */ (this.props);
+    } = this.props;
 
     if (!userCanEdit) {
       return null;
@@ -68,7 +93,6 @@ class NoteCreate extends React.PureComponent {
             <NoteEdit
               dispatch={dispatch}
               interimNote={interimNote}
-              plant={plant}
               plants={plants}
               locationId={locationId}
             />
@@ -88,19 +112,3 @@ class NoteCreate extends React.PureComponent {
     );
   }
 }
-
-NoteCreate.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  userCanEdit: PropTypes.bool.isRequired,
-  interimNote: PropTypes.shape({
-    note: PropTypes.string,
-    isNew: PropTypes.bool,
-  }).isRequired,
-  plant: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
-  plants: PropTypes.shape({}).isRequired,
-  locationId: PropTypes.string.isRequired,
-};
-
-module.exports = NoteCreate;

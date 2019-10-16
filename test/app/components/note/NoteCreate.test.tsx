@@ -27,17 +27,17 @@ describe('NoteCreate', () => {
   test('should render a NoteCreate', () => {
     const interimNote = {
       note: 'test note text',
-    };
+    } as UiInterimNote;
 
     const plant = {
       _id: 'p-1',
-    };
+    } as UiPlantsValue;
 
     const plants = {
       'p-1': {
         _id: 'p-1',
       },
-    };
+    } as unknown as UiPlants;
 
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
