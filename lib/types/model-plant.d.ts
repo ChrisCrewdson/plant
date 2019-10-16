@@ -59,7 +59,7 @@ interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId'> {
   isNew?: boolean;
   isTerminated?: boolean;
 
-  notes?: UiPlantsNote[];
+  notes?: string[];
   /**
    * Used by UI to signal if the notes for the plant have been requested
    * from the server.

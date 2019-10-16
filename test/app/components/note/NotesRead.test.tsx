@@ -45,13 +45,13 @@ describe('NotesRead', () => {
         plantIds: ['p-1'],
         title: 'Note #1',
       },
-    };
+    } as unknown as UiNotes;
     const plant = {
       _id: 'p-1',
       notes: ['n-1'],
-    };
+    } as unknown as UiPlantsValue;
 
-    const plants = {
+    const plants: UiPlants = {
       'p-1': plant,
     };
 

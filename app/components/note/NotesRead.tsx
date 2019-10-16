@@ -1,24 +1,58 @@
-const CircularProgress = require('material-ui/CircularProgress').default;
-const Paper = require('material-ui/Paper').default;
-const PropTypes = require('prop-types');
-const React = require('react');
+import CircularProgress from 'material-ui/CircularProgress';
+import Paper from 'material-ui/Paper';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Dispatch } from 'redux';
 
-const NoteEdit = require('./NoteEdit');
-const NoteRead = require('./NoteRead');
-const metrics = require('../../libs/metrics');
-const utils = require('../../libs/utils');
+import NoteEdit from './NoteEdit';
+import NoteRead from './NoteRead';
+import { notesToMetricNotes } from '../../libs/metrics';
+import utils from '../../libs/utils';
+import { PlantAction } from '../../../lib/types/redux-payloads';
 
-class NotesRead extends React.PureComponent {
-  /**
-   *Creates an instance of NotesRead.
-   * @param {NotesReadProps} props
-   * @memberof NotesRead
-   */
-  constructor(props) {
+interface NotesReadProps {
+  dispatch: Dispatch<PlantAction<any>>;
+  interim: UiInterim;
+  locationId: string;
+  notes: UiNotes;
+  plant: UiPlantsValue;
+  plants: UiPlants;
+  userCanEdit: boolean;
+}
+
+interface NotesReadState {
+  sortedIds?: string[];
+}
+
+export default class NotesRead extends React.PureComponent {
+  // eslint-disable-next-line react/state-in-constructor
+  state: NotesReadState;
+
+  props: NotesReadProps;
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    interim: PropTypes.shape({
+      note: PropTypes.object,
+    }).isRequired,
+    locationId: PropTypes.string.isRequired,
+    notes: PropTypes.shape({
+      // _id: PropTypes.string.required,
+    }).isRequired,
+    plant: PropTypes.shape({
+      notes: PropTypes.array,
+    }).isRequired,
+    plants: PropTypes.shape({
+      notes: PropTypes.array,
+    }).isRequired,
+    userCanEdit: PropTypes.bool.isRequired,
+  };
+
+  constructor(props: NotesReadProps) {
     super(props);
-    /** @type {NotesReadState} */
     // eslint-disable-next-line react/state-in-constructor
     this.state = {};
+    this.props = props;
   }
 
   // eslint-disable-next-line camelcase
@@ -26,12 +60,8 @@ class NotesRead extends React.PureComponent {
     this.sortNotes();
   }
 
-  /**
-   * @param {any} nextProps
-   * @memberof NotesRead
-   */
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: NotesReadProps) {
     this.sortNotes(nextProps);
   }
 
@@ -56,10 +86,10 @@ class NotesRead extends React.PureComponent {
       plant,
       plants,
       userCanEdit,
-    } = /** @type {NotesReadProps} */ (this.props);
+    } = this.props;
 
-    const interimNote = /** @type {UiInterimNote} */ (interim && interim.note
-      && interim.note.note) || {};
+    const interimNote = ((interim && interim.note
+      && interim.note.note) || {}) as UiInterimNote;
     const { isNew, _id: interimNoteId } = interimNote;
 
     if (interimNoteId && userCanEdit && !isNew) {
@@ -79,8 +109,7 @@ class NotesRead extends React.PureComponent {
       return null;
     }
 
-    /** @type {React.CSSProperties} */
-    const paperStyle = {
+    const paperStyle: React.CSSProperties = {
       backgroundColor: '#ddd',
       display: 'inline-block',
       margin: 20,
@@ -88,7 +117,7 @@ class NotesRead extends React.PureComponent {
       width: '100%',
     };
 
-    const metricNotes = metrics.notesToMetricNotes(sortedIds, notes);
+    const metricNotes = notesToMetricNotes(sortedIds, notes);
     const renderedNotes = metricNotes.map((metricNote) => {
       const {
         noteId, note, sinceLast, change,
@@ -131,23 +160,3 @@ class NotesRead extends React.PureComponent {
     );
   }
 }
-
-NotesRead.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  interim: PropTypes.shape({
-    note: PropTypes.object,
-  }).isRequired,
-  locationId: PropTypes.string.isRequired,
-  notes: PropTypes.shape({
-    // _id: PropTypes.string.required,
-  }).isRequired,
-  plant: PropTypes.shape({
-    notes: PropTypes.array,
-  }).isRequired,
-  plants: PropTypes.shape({
-    notes: PropTypes.array,
-  }).isRequired,
-  userCanEdit: PropTypes.bool.isRequired,
-};
-
-module.exports = NotesRead;

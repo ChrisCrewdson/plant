@@ -66,20 +66,6 @@ interface LastMetricDates {
   harvestEnd?: Date;
 }
 
-interface NotesReadProps {
-  dispatch: import('redux').Dispatch;
-  interim: UiInterim;
-  locationId: string;
-  notes: UiNotes;
-  plant: UiPlantsValue;
-  plants: UiPlants;
-  userCanEdit: boolean;
-}
-
-interface NotesReadState {
-  sortedIds?: string[];
-}
-
 interface NoteReadMetricsProps {
   note: UiNotesValue;
 }
