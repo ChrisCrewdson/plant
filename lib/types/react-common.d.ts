@@ -19,25 +19,6 @@ interface PlantContext {
   store: PlantStore;
 }
 
-declare type InputComboPropsType = 'text' | 'number' | 'boolean';
-
-interface InputComboProps {
-  changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
-  disabled?: boolean;
-  error: React.ReactNode;
-  fullWidth?: boolean;
-  id: string;
-  label: React.ReactNode;
-  multiLine?: boolean;
-  name: string;
-  placeholder?: string;
-  style?: React.CSSProperties;
-  type?: InputComboPropsType;
-  value: string | number | boolean;
-  options?: Record<string, string>;
-}
-
-
 declare type GridCellInputType = 'select' | 'boolean' | 'text';
 
 interface GridCellProps {

@@ -4,7 +4,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const CheckBox = require('material-ui/svg-icons/toggle/check-box').default;
 const CheckBoxOutlineBlank = require('material-ui/svg-icons/toggle/check-box-outline-blank').default;
-const InputCombo = require('./InputCombo');
+const InputCombo = require('./InputCombo').default;
 const SelectCombo = require('./SelectCombo').default;
 
 class GridCell extends React.Component {
