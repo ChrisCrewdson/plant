@@ -15,7 +15,7 @@ const {
 } = require('material-ui/Table');
 
 const utils = require('../../libs/utils');
-const GridCell = require('./GridCell');
+const GridCell = require('./GridCell').default;
 const EditDeleteButtons = require('./EditDeleteButtons');
 const CancelSaveButtons = require('./CancelSaveButtons');
 
