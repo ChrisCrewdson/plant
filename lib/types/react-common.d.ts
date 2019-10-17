@@ -27,19 +27,6 @@ interface CancelSaveButtonsProps {
   mini?: boolean;
 }
 
-interface EditDeleteButtonsProps {
-  clickDelete: Function;
-  clickEdit: Function;
-  confirmDelete: Function;
-  confirmMsg?: string;
-  deleteData?: object;
-  deleteTitle: string;
-  disabled?: boolean;
-  mini?: boolean;
-  showButtons: boolean;
-  showDeleteConfirmation: boolean;
-}
-
 type PlantStateTreeProps =
   'interim' |
   'locations' |

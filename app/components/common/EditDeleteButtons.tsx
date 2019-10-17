@@ -1,14 +1,24 @@
-const React = require('react');
-const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const EditIcon = require('material-ui/svg-icons/editor/mode-edit').default;
-const DeleteIcon = require('material-ui/svg-icons/action/delete').default;
-const PropTypes = require('prop-types');
-const RemoveConfirm = require('./RemoveConfirm').default;
+import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import PropTypes from 'prop-types';
+import RemoveConfirm from './RemoveConfirm';
 
-/**
- * @param {EditDeleteButtonsProps} props
- */
-function editDeleteButtons(props) {
+interface EditDeleteButtonsProps {
+  clickDelete: Function;
+  clickEdit: Function;
+  confirmDelete: Function;
+  confirmMsg?: string;
+  deleteData?: object;
+  deleteTitle: string;
+  disabled?: boolean;
+  mini?: boolean;
+  showButtons: boolean;
+  showDeleteConfirmation: boolean;
+}
+
+export default function editDeleteButtons(props: EditDeleteButtonsProps) {
   const {
     clickDelete,
     clickEdit,
@@ -40,9 +50,9 @@ function editDeleteButtons(props) {
         ? (
           <RemoveConfirm
             confirmFn={confirmDelete}
-            confirmMsg={confirmMsg}
+            confirmMsg={confirmMsg || ''}
             deleteData={deleteData}
-            mini={mini}
+            mini={!!mini}
             title={deleteTitle}
           />
         )
@@ -91,5 +101,3 @@ editDeleteButtons.defaultProps = {
   disabled: false,
   mini: false,
 };
-
-module.exports = editDeleteButtons;
