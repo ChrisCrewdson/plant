@@ -40,51 +40,6 @@ interface EditDeleteButtonsProps {
   showDeleteConfirmation: boolean;
 }
 
-interface GridPropsColumn {
-  options?: Record<string, string>; // Might not be right
-  title: string;
-  type: string;
-  width: number;
-}
-
-interface GridPropsRow {
-  _id: string;
-  values: (string|boolean)[];
-}
-
-interface GridRowValidate {
-  isNew?: boolean;
-  meta?: object;
-  row?: GridPropsRow;
-}
-
-interface GridProps {
-  columns: GridPropsColumn[];
-  delete: Function;
-  insert: Function;
-  meta?: object;
-  rows?: GridPropsRow[];
-  title: string;
-  update: Function;
-  validate: (data: GridRowValidate) => string[];
-}
-
-// TODO: This is probably a subset of GridProps - if so contruct that way
-interface GridState {
-  rows?: GridPropsRow[];
-  errors?: string[];
-  newRow?: boolean;
-  editId?: string;
-  deleteId?: string;
-}
-
-interface GridColumn {
-  options?: Record<string, string>;
-  title: string;
-  type: string;
-  width: number;
-}
-
 type PlantStateTreeProps =
   'interim' |
   'locations' |

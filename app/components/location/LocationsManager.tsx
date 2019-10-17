@@ -3,8 +3,37 @@
 import Paper from 'material-ui/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Grid from '../common/Grid';
+import Grid, { GridPropsRow, GridRowValidate } from '../common/Grid';
 import { actionFunc, actionEnum } from '../../actions';
+import { GridCellInputType } from '../common/GridCell';
+
+interface LocationsManagerRowUpdateRow extends Partial<GridPropsRow> {
+  _id: string;
+  values: string[];
+}
+
+interface LocationsManagerRowUpdateMetaLocation {
+  _id: string;
+  members: Record<string, Role>;
+  stations?: Record<string, UiLocationsStation>;
+}
+
+interface LocationsManagerRowUpdateMeta {
+  location: LocationsManagerRowUpdateMetaLocation;
+}
+
+export interface LocationsManagerRowUpdate extends Partial<GridRowValidate> {
+  isNew?: boolean;
+  meta?: LocationsManagerRowUpdateMeta;
+  row: LocationsManagerRowUpdateRow;
+}
+
+interface GridColumn {
+  options?: Record<string, string>;
+  title: string;
+  type: GridCellInputType;
+  width: number;
+}
 
 const userColumns: GridColumn[] = [{
   title: 'Name',
@@ -60,56 +89,98 @@ interface LocationsManagerProps {
   users: UiUsers;
 }
 
+function isStringArray(item: (string|boolean)[]): item is string[] {
+  if ((item as string[]).push) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Called with a save on an edit/new is done. Validation is failed by returning an
+ * array that has at least 1 truthy value in it.
+ * @returns - An array of errors, empty strings or a mixture of the two
+ */
+function validateLocationMember(data: LocationsManagerRowUpdate): string[] {
+  const { row, meta, isNew } = data;
+  const { values, _id } = row;
+
+  // Check that each of the Select components has a value selected
+  const errors: string[] = values.map((value) => (value === '<select>' ? 'You must select a value' : ''));
+
+  // For an insert, check that the user is not already listed at the location
+  if (isNew && meta) {
+    const { location } = meta;
+    if (location.members[_id]) {
+      errors[0] = 'This user already belongs to this location';
+    }
+  }
+
+  return errors;
+}
+
+function gridRowValidateToLocationsManagerRowUpdate(
+  data: GridRowValidate): LocationsManagerRowUpdate {
+  const { isNew, meta, row } = data;
+  if (!meta || !row) {
+    throw new Error('No meta or row');
+  }
+
+  const locationRow: LocationsManagerRowUpdateRow = {
+    _id: row._id,
+    values: isStringArray(row.values) ? row.values : [],
+  };
+
+  const transformedData: LocationsManagerRowUpdate = {
+    meta,
+    row: locationRow,
+    isNew: !!isNew,
+  };
+
+  return transformedData;
+}
+
+function wrapValidateLocationMember(data: GridRowValidate): string[] {
+  return validateLocationMember(
+    gridRowValidateToLocationsManagerRowUpdate(data),
+  );
+}
+
+function validateLocationWeather(data: LocationsManagerRowUpdate) {
+  const { row, meta, isNew } = data;
+  const { values } = row;
+  const [stationId, name] = values;
+  const errors = [];
+  errors[0] = (stationId || '').length < 1
+    ? 'Station ID must be at least 1 character'
+    : '';
+  errors[1] = (name || '').length < 1
+    ? 'Station Name must be at least 1 character'
+    : '';
+  errors[2] = '';
+
+  // For an insert, check that the stationId is not already listed at the location
+  if (isNew && meta) {
+    const { location } = meta;
+    const { stations = {} } = location;
+    if (stations[stationId]) {
+      errors[0] = 'This Station ID already belongs to this location';
+    }
+    if (Object.keys(stations).some((id) => stations[id].name === name)) {
+      errors[1] = 'This Name already used';
+    }
+  }
+
+  return errors;
+}
+
+function wrapValidateLocationWeather(data: GridRowValidate): string[] {
+  return validateLocationWeather(
+    gridRowValidateToLocationsManagerRowUpdate(data),
+  );
+}
+
 export default class LocationsManager extends React.Component {
-  /**
-   * Called with a save on an edit/new is done. Validation is failed by returning an
-   * array that has at least 1 truthy value in it.
-   * @returns - An array of errors, empty strings or a mixture of the two
-   */
-  static validateLocationMember({ row, meta, isNew }: LocationsManagerRowUpdate): string[] {
-    const { values, _id } = row;
-
-    // Check that each of the Select components has a value selected
-    const errors: string[] = values.map((value) => (value === '<select>' ? 'You must select a value' : ''));
-
-    // For an insert, check that the user is not already listed at the location
-    if (isNew) {
-      const { location } = meta;
-      if (location.members[_id]) {
-        errors[0] = 'This user already belongs to this location';
-      }
-    }
-
-    return errors;
-  }
-
-  static validateLocationWeather({ row, meta, isNew }: LocationsManagerRowUpdate) {
-    const { values } = row;
-    const [stationId, name] = values;
-    const errors = [];
-    errors[0] = (stationId || '').length < 1
-      ? 'Station ID must be at least 1 character'
-      : '';
-    errors[1] = (name || '').length < 1
-      ? 'Station Name must be at least 1 character'
-      : '';
-    errors[2] = '';
-
-    // For an insert, check that the stationId is not already listed at the location
-    if (isNew) {
-      const { location } = meta;
-      const { stations = {} } = location;
-      if (stations[stationId]) {
-        errors[0] = 'This Station ID already belongs to this location';
-      }
-      if (Object.keys(stations).some((id) => stations[id].name === name)) {
-        errors[1] = 'This Name already used';
-      }
-    }
-
-    return errors;
-  }
-
   props!: LocationsManagerProps;
 
   static propTypes = {
@@ -144,7 +215,7 @@ export default class LocationsManager extends React.Component {
    */
   upsertLocationMember({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const { _id: locationId } = meta.location;
+    const locationId = meta && meta.location && meta.location._id;
     const [userId, role] = row.values;
     const action = actionEnum.UPSERT_LOCATION_MEMBER;
 
@@ -156,7 +227,7 @@ export default class LocationsManager extends React.Component {
 
   upsertLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const { _id: locationId } = meta.location;
+    const locationId = meta && meta.location && meta.location._id;
     const [stationId, name, enabled] = row.values;
     const action = actionEnum.UPSERT_LOCATION_WEATHER;
 
@@ -168,7 +239,7 @@ export default class LocationsManager extends React.Component {
 
   deleteLocationMember({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const { _id: locationId } = meta.location;
+    const locationId = meta && meta.location && meta.location._id;
     const [userId] = row.values;
     const action = actionEnum.DELETE_LOCATION_MEMBER;
 
@@ -178,7 +249,7 @@ export default class LocationsManager extends React.Component {
 
   deleteLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const { _id: locationId } = meta.location;
+    const locationId = meta && meta.location && meta.location._id;
     const [stationId] = row.values;
     const action = actionEnum.DELETE_LOCATION_WEATHER;
 
@@ -218,7 +289,7 @@ export default class LocationsManager extends React.Component {
                   rows={getMembers(location.members)}
                   title="Users"
                   update={this.upsertLocationMember}
-                  validate={LocationsManager.validateLocationMember}
+                  validate={wrapValidateLocationMember}
                 />
                 <Grid
                   columns={weatherColumns}
@@ -228,7 +299,7 @@ export default class LocationsManager extends React.Component {
                   rows={getStations(location.stations)}
                   title="Weather Stations"
                   update={this.upsertLocationWeather}
-                  validate={LocationsManager.validateLocationWeather}
+                  validate={wrapValidateLocationWeather}
                 />
               </Paper>
             );

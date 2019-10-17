@@ -7,7 +7,7 @@ import CheckBoxOutlineBlank from 'material-ui/svg-icons/toggle/check-box-outline
 import InputCombo from './InputCombo';
 import SelectCombo from './SelectCombo';
 
-declare type GridCellInputType = 'select' | 'boolean' | 'text';
+export type GridCellInputType = 'select' | 'boolean' | 'text';
 
 interface GridCellProps {
   editCell: (rowId: string, colIndex: number, value: string|boolean) => void;
