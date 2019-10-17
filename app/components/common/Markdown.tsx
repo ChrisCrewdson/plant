@@ -1,12 +1,13 @@
 
-const marked = require('marked');
-const React = require('react');
-const PropTypes = require('prop-types');
+import marked from 'marked';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-/**
- * @param {MarkdownProps} props
- */
-function markdown(props) {
+interface MarkdownProps {
+  markdown: string;
+}
+
+export default function markdown(props: MarkdownProps) {
   const { markdown: md } = props;
   const mkn = { __html: marked(md || '') };
   // eslint-disable-next-line react/no-danger
@@ -16,5 +17,3 @@ function markdown(props) {
 markdown.propTypes = {
   markdown: PropTypes.string.isRequired,
 };
-
-module.exports = markdown;

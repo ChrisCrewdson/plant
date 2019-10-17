@@ -136,10 +136,6 @@ interface GridColumn {
   width: number;
 }
 
-interface MarkdownProps {
-  markdown: string;
-}
-
 type PlantStateTreeProps =
   'interim' |
   'locations' |
