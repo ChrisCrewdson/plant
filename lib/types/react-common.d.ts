@@ -136,14 +136,6 @@ interface GridColumn {
   width: number;
 }
 
-interface RemoveConfirmProps {
-  confirmFn: Function;
-  confirmMsg: string;
-  deleteData?: object;
-  mini: boolean;
-  title?: string;
-}
-
 interface MarkdownProps {
   markdown: string;
 }
