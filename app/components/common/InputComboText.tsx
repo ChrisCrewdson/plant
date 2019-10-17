@@ -1,12 +1,29 @@
-const PropTypes = require('prop-types');
-const React = require('react');
-const TextField = require('material-ui/TextField').default;
+import PropTypes from 'prop-types';
+import React from 'react';
+import TextField from 'material-ui/TextField';
+
+declare type InputComboTextPropsType = 'text' | 'number';
+
+interface InputComboTextProps {
+  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
+  changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
+  disabled?: boolean;
+  error: React.ReactNode;
+  fullWidth?: boolean;
+  id: string;
+  label: React.ReactNode;
+  multiLine?: boolean;
+  name: string;
+  placeholder?: string;
+  style?: React.CSSProperties;
+  type?: InputComboTextPropsType;
+  value: string | number;
+}
 
 /**
  * A very light wrapper around the MaterialUI TextField component
- * @param {InputComboTextProps} props
  */
-function inputComboText(props) {
+export default function inputComboText(props: InputComboTextProps) {
   const {
     changeHandler,
     disabled = false,
@@ -77,5 +94,3 @@ inputComboText.defaultProps = {
   style: {},
   type: 'text',
 };
-
-module.exports = inputComboText;

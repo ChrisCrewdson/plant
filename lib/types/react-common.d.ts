@@ -19,24 +19,6 @@ interface PlantContext {
   store: PlantStore;
 }
 
-declare type InputComboTextPropsType = 'text' | 'number';
-
-interface InputComboTextProps {
-  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
-  changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
-  disabled?: boolean;
-  error: React.ReactNode;
-  fullWidth?: boolean;
-  id: string;
-  label: React.ReactNode;
-  multiLine?: boolean;
-  name: string;
-  placeholder?: string;
-  style?: React.CSSProperties;
-  type?: InputComboTextPropsType;
-  value: string | number;
-}
-
 declare type InputComboPropsType = 'text' | 'number' | 'boolean';
 
 interface InputComboProps {

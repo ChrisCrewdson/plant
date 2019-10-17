@@ -1,7 +1,7 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const Toggle = require('material-ui/Toggle').default;
-const inputComboText = require('./InputComboText');
+const inputComboText = require('./InputComboText').default;
 
 /**
  * @param {InputComboProps} props
