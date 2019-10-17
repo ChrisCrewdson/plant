@@ -1,14 +1,12 @@
 
-const React = require('react');
-const PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-/**
- * errorHelper
- * @param {object} props
- * @param {string[]|string} props.errors
- * @returns
- */
-function errorHelper(props) {
+interface ErrorHelperProps {
+  errors: string[] | string;
+}
+
+export default function errorHelper(props: ErrorHelperProps) {
   let { errors } = props;
   if (!errors || !errors.length) {
     return null;
@@ -41,5 +39,3 @@ errorHelper.propTypes = {
 errorHelper.defaultProps = {
   errors: [],
 };
-
-module.exports = errorHelper;
