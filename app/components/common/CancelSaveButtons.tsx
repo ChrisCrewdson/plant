@@ -1,17 +1,22 @@
-const React = require('react');
-const FloatingActionButton = require('material-ui/FloatingActionButton').default;
-const ClearIcon = require('material-ui/svg-icons/content/clear').default;
-const DoneIcon = require('material-ui/svg-icons/action/done').default;
-const AddPhotoIcon = require('material-ui/svg-icons/image/add-a-photo').default;
-const PropTypes = require('prop-types');
+import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
+import DoneIcon from 'material-ui/svg-icons/action/done';
+import AddPhotoIcon from 'material-ui/svg-icons/image/add-a-photo';
+import PropTypes from 'prop-types';
 
-/**
- * @param {CancelSaveButtonsProps} props
- */
-function cancelSaveButtons(props) {
+interface CancelSaveButtonsProps {
+  clickAddPhoto: React.MouseEventHandler<{}>;
+  clickCancel: React.MouseEventHandler<{}>;
+  clickSave: React.MouseEventHandler<{}>;
+  showButtons: boolean;
+  mini?: boolean;
+}
+
+export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
   const {
     showButtons,
-  } = /** @type {CancelSaveButtonsProps} */ (props);
+  } = props;
 
   if (!showButtons) {
     return null;
@@ -22,7 +27,7 @@ function cancelSaveButtons(props) {
     clickCancel,
     clickSave,
     mini,
-  } = /** @type {CancelSaveButtonsProps} */ (props);
+  } = props;
 
   return (
     <h2 className="vcenter">
@@ -74,5 +79,3 @@ cancelSaveButtons.defaultProps = {
   clickAddPhoto: null,
   mini: false,
 };
-
-module.exports = cancelSaveButtons;

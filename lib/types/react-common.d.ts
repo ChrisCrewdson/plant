@@ -19,14 +19,6 @@ interface PlantContext {
   store: PlantStore;
 }
 
-interface CancelSaveButtonsProps {
-  clickAddPhoto: React.MouseEventHandler<{}>;
-  clickCancel: React.MouseEventHandler<{}>;
-  clickSave: React.MouseEventHandler<{}>;
-  showButtons: boolean;
-  mini?: boolean;
-}
-
 type PlantStateTreeProps =
   'interim' |
   'locations' |
