@@ -5,7 +5,7 @@ const { Link } = require('react-router-dom');
 const { actionFunc } = require('../../actions');
 const utils = require('../../libs/utils');
 const { isLoggedIn } = require('../../libs/auth-helper');
-const AddPlantButton = require('../common/AddPlantButton');
+const AddPlantButton = require('../common/AddPlantButton').default;
 
 class Navbar extends React.Component {
   static contextTypes = {

@@ -128,15 +128,6 @@ interface AjaxOptions {
  */
 declare type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
 
-/**
- * Also using this for AddLocationButtonProps
- */
-interface AddPlantButtonProps {
-  mini?: boolean;
-  show: boolean;
-  style?: object;
-}
-
 interface Window {
   [key: string]: any;
   // FormData: Function;

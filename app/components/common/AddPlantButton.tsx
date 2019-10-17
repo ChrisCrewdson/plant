@@ -3,23 +3,32 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { AddPlantButtonProps } from '../common/AddPlantButton';
 
-export default function addLocationButton(props: AddPlantButtonProps) {
+
+/**
+ * Also using this for AddLocationButtonProps
+ */
+export interface AddPlantButtonProps {
+  mini?: boolean;
+  show: boolean;
+  style?: object;
+}
+
+export default function addPlantButton(props: AddPlantButtonProps) {
   const {
     mini,
-    show,
+    show = false,
     style,
-  } = props;
+  } = props || {};
 
   if (!show) {
     return null;
   }
 
   return (
-    <Link to="/location">
+    <Link to="/plant">
       <FloatingActionButton
-        title="Add Location"
+        title="Add Plant"
         mini={mini}
         style={style}
       >
@@ -29,13 +38,16 @@ export default function addLocationButton(props: AddPlantButtonProps) {
   );
 }
 
-addLocationButton.propTypes = {
+/* eslint-disable react/no-unused-prop-types */
+addPlantButton.propTypes = {
   mini: PropTypes.bool,
   show: PropTypes.bool.isRequired,
-  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  // eslint-disable-next-line react/forbid-prop-types
+  style: PropTypes.object,
 };
+/* eslint-enable react/no-unused-prop-types */
 
-addLocationButton.defaultProps = {
+addPlantButton.defaultProps = {
   mini: false,
   style: {},
 };
