@@ -1,6 +1,6 @@
 import si from 'seamless-immutable';
 import {
-  createStore, applyMiddleware, Middleware, Store, AnyAction,
+  createStore, applyMiddleware, Middleware, Store,
 } from 'redux';
 
 import reducers from '../reducers'; // combineReducers already called on reducers in her)e
@@ -8,6 +8,7 @@ import { api } from '../middleware/api';
 
 import { logger } from '../middleware/logger';
 import { setupSubscribe as userSubscribe } from './user';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
 // @ts-ignore
 const seamless = si.static;
@@ -24,8 +25,9 @@ const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
 // @ts-ignore - __INITIAL_STATE__ is added on the server
 const initialState = seamless.from(window.__INITIAL_STATE__ || {});
-const store = createStoreWithMiddleware(reducers, initialState);
+const store = createStoreWithMiddleware(reducers, initialState) as Store<PlantStateTree,
+PlantAction>;
 
-userSubscribe(store as unknown as Store<any, AnyAction>);
+userSubscribe(store);
 
 export default store;
