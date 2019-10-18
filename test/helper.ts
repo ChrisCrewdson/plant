@@ -221,6 +221,7 @@ export const getFakeStore = (): Store => ({
   getState: jest.fn(),
   replaceReducer: jest.fn(),
   subscribe: jest.fn(),
+  [Symbol.observable]: jest.fn(),
 });
 
 export const expectMongoId = (values: string[]) => {
