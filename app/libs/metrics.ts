@@ -27,10 +27,10 @@ function since(acc: MetricNote[], note: UiNotesValue, noteId: string,
 /**
  * Get the change or null if the prop isn't found in the last and at least
  *   one previous item in the collection.
- * @param {MetricItem[]} metrics - An array
+ * @param metrics - An array
  * of the metrics to this point in time
- * @param {MetricItemMetricTypes} prop - the metric being checked: 'height' or 'girth'
- * @returns {MetricChangePair|null} - with props prev and last which each have a date and a
+ * @param prop - the metric being checked: 'height' or 'girth'
+ * @returns - with props prev and last which each have a date and a
  *   'height' or 'girth' prop. Or if there wasn't a previous object with this
  *   prop then null.
  */
@@ -60,9 +60,9 @@ function getChange(metrics: MetricItem[], prop: MetricItemMetricTypes): MetricCh
 
 /**
  * Simple math round function
- * @param {number} number - number to round
- * @param {number} places - number of places to round it to
- * @returns {number} - a rounded number
+ * @param number - number to round
+ * @param places - number of places to round it to
+ * @returns - a rounded number
  */
 function round(number: number, places: number): number {
   // eslint-disable-next-line no-restricted-properties
@@ -70,11 +70,6 @@ function round(number: number, places: number): number {
   return Math.round(number * pow) / pow;
 }
 
-/**
- * @param {MetricChangePair} metric
- * @param {MetricItemMetricTypes} prop
- * @returns {string}
- */
 function crunchChangeNumbers(metric: MetricChangePair, prop: MetricItemMetricTypes): string {
   const { last, prev } = metric;
   const lastValue = last[prop];

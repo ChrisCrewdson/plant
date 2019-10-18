@@ -10,7 +10,7 @@ const seamless = si.static;
  * The action.payload are the users returned users from the server.
  */
 function loadUsersSuccess(state: UiUsers, action: AnyAction): UiUsers {
-  const users: UiUsersValue[] = /** @type {UiUsersValue[]} */ (action.payload || []);
+  const users: UiUsersValue[] = action.payload || [];
   const usersSet = users.reduce((acc, user) => {
     acc[user._id] = { ...user, locationIds: user.locationIds || [] };
     return acc;

@@ -51,7 +51,6 @@ function createPlantRequest(state: UiLocations, action: AnyAction): UiLocations 
 // is on the locations' plantIds list
 // action.payload is an array of plant objects
 function loadPlantsSuccess(state: UiLocations, action: AnyAction): UiLocations {
-/** @type {UiPlantsValue[]} */
   const plants: UiPlantsValue[] = action.payload;
   if (plants && plants.length) {
     // Create an object with locations:
@@ -74,7 +73,7 @@ function loadPlantsSuccess(state: UiLocations, action: AnyAction): UiLocations {
 }
 
 /**
- * @param {AnyAction} action - payload:
+ * @param action - payload:
  *                             {plantId: <plant-id>, locationId: <location-id>}
  */
 function deletePlantRequest(state: UiLocations, { payload: { locationId, plantId } }: AnyAction):

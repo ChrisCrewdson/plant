@@ -27,7 +27,6 @@ describe('/lib/db/mongo/update', () => {
         }],
       };
 
-      /** @type {NoteImageSize[]} */
       const sizes: NoteImageSize[] = [
         { width: 100, name: 'thumb' },
         { width: 500, name: 'sm' },
@@ -39,7 +38,7 @@ describe('/lib/db/mongo/update', () => {
       const createdNote = await mongo.upsertNote(note, mockLogger);
       expect(createdNote).toBeTruthy();
 
-      /** @type {NoteImageUpdateData} */
+
       const noteUpdate = {
         _id: createdNote._id,
         userId: note.userId,

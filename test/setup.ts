@@ -8,8 +8,7 @@ import { requests } from './fixtures/google-oauth';
 import { mockLogger } from './mock-logger';
 import { getDbInstance } from '../lib/db/mongo';
 
-/** @type {Global} */
-const globalAny = global;
+const globalAny: Global = global;
 
 const googleOAuth = requests;
 const mongo = getDbInstance;
@@ -76,9 +75,6 @@ process.env.PLANT_TOKEN_SECRET = '<fake-token-secret>';
 process.env.PLANT_IMAGE_COMPLETE = 'fake-image-token';
 
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
-/**
- * @param {object} win
- */
 function propagateToGlobal(win: { [x: string]: any }) {
   Object.keys(win).forEach((key) => {
     // @ts-ignore No index signature with a parameter of type 'string' was found on type 'Global'.
@@ -95,7 +91,6 @@ function propagateToGlobal(win: { [x: string]: any }) {
 document.body.innerHTML = '<!doctype html><html><body></body></html>';
 
 // global.window = document.parentWindow;
-/** @type {Window} */
 // @ts-ignore - window not on global
 globalAny.window = document.defaultView as Window;
 

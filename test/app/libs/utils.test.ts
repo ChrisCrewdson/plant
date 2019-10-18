@@ -189,7 +189,6 @@ describe('/app/libs/utils', () => {
     });
 
     test('should return plants if plants is an empty array', () => {
-      /** @type {BizPlant[]} */
       const plants: BizPlant[] = [];
       const actual = utils.rebaseLocations(plants);
       expect(actual).toBe(plants);
@@ -479,9 +478,6 @@ describe('/app/libs/utils', () => {
       // @ts-ignore - intentional mistyping for testing
       window.navigator.geolocation = {
         getCurrentPosition:
-        /**
-         * @param {PositionCallback} cb
-         */
         (cb: PositionCallback) => {
           cb(fakePosition);
         },

@@ -8,7 +8,7 @@ const db = getDbInstance();
 async function getNotes(plantId: string, logger: Logger): Promise<BizNoteMap> {
   const retrievedNotes: BizNote[]|undefined = await db.getNotesByPlantId(plantId, logger);
 
-  const bizNoteMap: BizNoteMap = /** @type {BizNoteMap} */ ({});
+  const bizNoteMap: BizNoteMap = {};
   if (!retrievedNotes || !retrievedNotes.length) {
     return bizNoteMap;
   }
@@ -21,24 +21,24 @@ async function getNotes(plantId: string, logger: Logger): Promise<BizNoteMap> {
 }
 
 /**
- * @returns {Promise} - TODO: Work out how to return Promise<<BizPlantMap>
+ * @returns - TODO: Work out how to return Promise<<BizPlantMap>
  */
 async function getPlants(loggedInUser: BizUser | undefined, plantId: string, logger: Logger):
  Promise<any> {
   const loggedInUserId = loggedInUser && loggedInUser._id;
   const retrievedPlant = await db.getPlantById(plantId, loggedInUserId, logger);
 
-  const bizPlantMap: BizPlantMap = /** @type {BizPlantMap} */ ({});
+  const bizPlantMap: BizPlantMap = {};
   if (!retrievedPlant) {
     return bizPlantMap;
   }
 
-  return /** @type {BizPlantMap} */ ({
+  return {
     [retrievedPlant._id]: {
       ...retrievedPlant,
       notesRequested: true,
     },
-  });
+  }; // as BizMapPlant;
 }
 
 export const singlePlant = async (loggedInUser: BizUser | undefined,

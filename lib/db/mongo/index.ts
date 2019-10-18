@@ -23,16 +23,15 @@ const moduleName = 'lib/db/mongo/index';
 const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${process.env.PLANT_DB_NAME || 'plant'}`;
 
 // This stores a cache of the user's location
-/** @type {LocationLocCache} */
 const locationLocCache: LocationLocCache = {};
 
 /**
  * Given a collection of users and locations return a collection of users
  * with the locationIds populated for each user.
  * The Mongo ObjectIds should have already been stringified in each collection
- * @param {ReadonlyArray<Readonly<BizUser>>} users - an array of user object
- * @param {ReadonlyArray<Readonly<BizLocation>>} locations - an array of location objects
- * @returns {ReadonlyArray<Readonly<BizUser>>} an array of users,
+ * @param users - an array of user object
+ * @param locations - an array of location objects
+ * @returns an array of users,
  * each now with a locationIds array of strings
  */
 function getUsersWithLocations(users: ReadonlyArray<Readonly<BizUser>>,
@@ -102,7 +101,6 @@ class MongoDb {
 
   /**
    * Returns the string used to make the DB connection
-   * @returns {string}
    */
   getDbConnection(): string {
     return this.connection;
@@ -118,8 +116,6 @@ class MongoDb {
   /**
    * Get the DB connection to use for a CRUD operation.
    * If it doesn't exist then create it.
-   * @param {Logger} logger
-   * @return {Promise<Db>}
    */
   async GetDb(logger: Logger): Promise<Db> {
     try {
@@ -161,8 +157,6 @@ class MongoDb {
 
   /**
    * Close connection to DB
-   * @param {Logger} logger
-   * @returns {Promise<void>}
    */
   async _close(logger: Logger): Promise<void> {
     logger.trace({ moduleName, msg: 'Closing DB Connection.' });
@@ -183,9 +177,7 @@ class MongoDb {
   /**
    * Gets the user from the user collection based on the user's facebook/google id.
    * If the user does not exist then creates the user first.
-   * @param {UserDetails} userDetails - the object that Facebook/Google OAuth returns
-   * @param {Logger} logger - logger
-   * @return {Promise<Readonly<BizUser>>}
+   * @param userDetails - the object that Facebook/Google OAuth returns
    */
   async findOrCreateUser(userDetails: UserDetails, logger: Logger): Promise<Readonly<BizUser>> {
     try {
@@ -198,7 +190,6 @@ class MongoDb {
       const { facebook, google } = userDetails;
 
       // 2. Set the query to find the user
-      /** @type {QueryBySocialMedia|undefined} */
       let queryBySocialMedia: QueryBySocialMedia | undefined;
       if (facebook) {
         queryBySocialMedia = {
@@ -296,14 +287,8 @@ class MongoDb {
     }
   }
 
-  /**
-   * @memberof MongoDb
-   */
   static dbUserToBizUser(dbUser: Readonly<Partial<DbUser>>): Readonly<BizUser> {
     return produce(dbUser,
-      /**
-        * @param {BizUser} draft
-        */
       (draft: BizUser) => {
         if (draft._id) {
           draft._id = draft._id.toString();
@@ -312,14 +297,8 @@ class MongoDb {
       });
   }
 
-  /**
-   * @memberof MongoDb
-   */
   static dbUsersToBizUsers(dbUsers: Readonly<DbUser>[]): ReadonlyArray<Readonly<BizUser>> {
     return produce(dbUsers,
-      /**
-        * @param {BizUser[]} draft
-        */
       (draft: BizUser[]) => {
         draft.forEach((bizUser) => {
           bizUser._id = bizUser._id.toString();
@@ -425,9 +404,9 @@ class MongoDb {
 
   /**
    * Rebases a plant based on the location's loc value
-   * @param {BizPlant} plant - plant object with a loc property that needs rebasing
-   * @param {Geo} loc - the location's loc object
-   * @returns {BizPlant} - the rebased plant object.
+   * @param plant - plant object with a loc property that needs rebasing
+   * @param loc - the location's loc object
+   * @returns - the rebased plant object.
    */
   // eslint-disable-next-line class-methods-use-this
   rebasePlant(plant: BizPlant, loc: Geo): BizPlant {
@@ -544,7 +523,6 @@ class MongoDb {
       const isAuthorized = await this.roleAtLocation(plantIn.locationId, loggedInUserId, ['owner', 'manager'], logger);
       if (isAuthorized) {
         const plant = this.convertPlantDataTypesForSaving(plantIn);
-        /** @type {DbPlant} */
         const createdPlant: DbPlant = await Create.createPlant(db, plant);
         const convertedPlant = await this
           .convertPlantDataForReadOne(createdPlant, loggedInUserId, logger, null);
@@ -618,9 +596,8 @@ class MongoDb {
 
   /**
    * Gets all the plants belonging to a Location. Does not populate the notes field.
-   * @param {string} locationId - the locationId to query against the plant collection.
-   * @param {string|undefined} loggedInUserId - the id of the user currently logged in or
-   *   falsy if anonymous request
+   * @param locationId - the locationId to query against the plant collection.
+   * @param loggedInUserId - the id of the user currently logged in or falsy if anonymous request
    */
   async getPlantsByLocationId(locationId: string, loggedInUserId: string | undefined,
     logger: Logger): Promise<BizPlant | BizPlant[] | undefined> {
@@ -972,9 +949,6 @@ class MongoDb {
 
   async getNotesWithPlants(notesCopy: DbNote[], logger: Logger): Promise<DbNoteWithPlants[]> {
     try {
-      /**
-       * @type {string[]}
-      */
       const init: string[] = [];
 
       // Grab the plant ids off each note (can be more than 1 per note)

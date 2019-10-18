@@ -35,9 +35,6 @@ const profileFields = [
   'verified',
 ];
 
-/**
- * fbPassport
- */
 export function fbPassport(passport: { use: Function}) {
   const { PLANT_FB_ID, PLANT_FB_SECRET } = process.env;
 
@@ -75,7 +72,6 @@ export function fbPassport(passport: { use: Function}) {
       // Setup for new user in case user is not in DB
       const createdDate = new Date();
       const email = _.get(profile, '_json.emails.0', '') || _.get(profile, '_json.email', '');
-      /** @type {UserDetails} */
       const newUser: UserDetails = {
         facebook: profile._json,
         name: `${profile.name.givenName} ${profile.name.familyName}`,

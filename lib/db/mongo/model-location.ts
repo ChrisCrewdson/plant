@@ -71,11 +71,6 @@ export class LocationData {
     });
   }
 
-  /**
-   * Create Location
-   * @static
-   * @memberof LocationData
-   */
   static async createLocation({ db, loc, logger }: CreateLocationOptions):
    Promise<Readonly<BizLocation>> {
     try {
@@ -94,11 +89,6 @@ export class LocationData {
 
   // Location R: getLocationById
 
-  /**
-   * Get Locations
-   * @static
-   * @memberof LocationData
-   */
   static async getLocationsByQuery({
     db, query, options, logger,
   }: GetLocationByQueryOptions): Promise<ReadonlyArray<Readonly<BizLocation>>> {
@@ -127,9 +117,6 @@ export class LocationData {
         locationId: plant.locationId.toString(),
       }));
       const locationsWithPlantIds = (locations || []).map((location) => produce(location,
-        /**
-         * @param {BizLocation} draft
-         */
         (draft: BizLocation) => {
           draft._id = (draft._id || '').toString();
           const id = draft._id;
@@ -146,13 +133,6 @@ export class LocationData {
     }
   }
 
-  /**
-   * Get all locations
-   * @param {object} options
-   * @param {import('mongodb').Db} options.db
-   * @param {Logger} options.logger
-   * @returns {Promise<ReadonlyArray<Readonly<BizLocation>>>}
-   */
   static async getAllLocations({ db, logger }: {db: Db; logger: Logger},
   ): Promise<ReadonlyArray<Readonly<BizLocation>>> {
     return LocationData.getLocationsByQuery({

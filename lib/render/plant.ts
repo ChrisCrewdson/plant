@@ -15,7 +15,6 @@ export const renderPlant = async (req: import('express').Request, res: import('e
   const { logger } = req;
   try {
     const {
-      /** @type {BizUser|undefined} */
       user,
       params = {},
       query = {},

@@ -68,7 +68,6 @@ function saveFilesRequest(store: Store, action: PlantRedux.PlantAction,
   const { payload } = action as { payload: UpsertNoteRequestPayload};
 
   const data = new FormData();
-  /** @type {(string|Blob)[]} */
   // @ts-ignore - TODO: Come back and fix this
   const files: (string | Blob)[] = payload && payload.files;
   const note = payload && payload.note;
@@ -79,7 +78,6 @@ function saveFilesRequest(store: Store, action: PlantRedux.PlantAction,
   }
   data.append('note', JSON.stringify(note));
 
-  /** @type {AjaxOptions} */
   const options: AjaxOptions = {
     contentType: 'multipart/form-data',
     data,
@@ -187,7 +185,7 @@ function deleteNoteRequest(store: Store, action: PlantRedux.PlantAction, next: F
 }
 
 function loadPlantRequest(store: Store, action: PlantRedux.PlantAction) {
-  const { _id } = /** @type {{ _id: string }} */ (action.payload || {});
+  const { _id } = action.payload || {};
 
   if (_id) {
     const options: AjaxOptions = {

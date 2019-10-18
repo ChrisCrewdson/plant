@@ -46,8 +46,8 @@ const getUser = (req: import('express').Request): UiUser | undefined => {
 export const indexHtml = (data: ServerSideRenderData, ssr: boolean): string => {
   const {
     html = '',
-    initialState = /** @type {PlantStateTree} */ ({}),
-    og = /** @type {OpenGraphMeta[]} */ ([]), // Facebook Open Graph
+    initialState = {} as PlantStateTree,
+    og = [] as OpenGraphMeta[], // Facebook Open Graph
     req,
     title = 'Plaaant',
   } = data;

@@ -115,8 +115,8 @@ export interface PlantFromBodyPayload extends
 
 /**
  * Converts the body of a POST/PUT to a plant object.
- * @param {object} body - POST/PUT body
- * @returns {object} - body with relevant fields converted to correct data type
+ * @param body - POST/PUT body
+ * @returns - body with relevant fields converted to correct data type
  */
 function plantFromBody(body: PlantFromBodyPayload): UiPlantsValue {
   // TODO: Make UiPlantsValue Readonly<>
@@ -289,7 +289,7 @@ function transformErrors(errors?: Record<string, string[]>):
       // Assign first element of errors[key] (which is an array) to acc[key]
       [acc[key]] = errors[key];
       return acc;
-    }, /** @type {Record<string, string>} */ ({}));
+    }, {});
 }
 
 /**
@@ -307,7 +307,6 @@ function getGeo(optionsParam: PositionOptions, cb: GeoCallback): void {
     return cb(new Error('This device does not have geolocation available'));
   }
 
-  /** @type {PositionOptions} */
   const options: PositionOptions = {
     enableHighAccuracy: true,
     timeout: 30000, // 30 seconds
@@ -318,7 +317,6 @@ function getGeo(optionsParam: PositionOptions, cb: GeoCallback): void {
     (position) => {
     // { type: "Point", coordinates: [ 40, 5 ] }
     // position: {coords: {latitude: 11.1, longitude: 22.2}}
-      /** @type {Geo} */
       const geoJson: Geo = {
         type: 'Point',
         coordinates: [

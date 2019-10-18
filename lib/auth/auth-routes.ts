@@ -47,10 +47,6 @@ export function auth(app: Application) {
           return res.status(401).json({ error: 'Failed to authenticate user.' });
         }
 
-        /**
-         * Login Callback
-         * @param {Error} err2
-         */
         const loginCallback = (err2: Error) => {
           if (err2) {
             return logger.error({
@@ -95,12 +91,7 @@ export function auth(app: Application) {
     authenticate(req, res, next, 'google');
   });
 
-  /**
-   * route for logging out
-   * @param {Request} req - Express request object
-   * @param {Response} res - Express response object
-   */
-  app.get('/logout', (req, res) => {
+  app.get('/logout', (req: Request, res: Response) => {
     req.logout();
     res.clearCookie(sessionKey);
     res.redirect('/');

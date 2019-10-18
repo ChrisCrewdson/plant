@@ -30,7 +30,6 @@ export const noteApi = (app: Application) => {
       req_body: req.body,
     });
 
-    /** @type {BizNoteNew} */
     let transformed: BizNoteNew;
     try {
       transformed = serverValidateNote(req);
@@ -109,7 +108,6 @@ export const noteApi = (app: Application) => {
   function makeS3KeysFromImages(images: NoteImage[]): AwsKey[] {
     return constants.imageSizeNames.reduce(
       (acc: AwsKey[], size: ImageSizeName) => acc.concat(images.map((image) => {
-        /** @type {AwsKey} */
         const key: AwsKey = {
           Key: makeS3KeyFromImage(image, size),
         };
@@ -199,11 +197,6 @@ export const noteApi = (app: Application) => {
   // file:
   // {fieldname: 'file', originalname: '2016-08-28 08.54.26.jpg',
   // encoding: '7bit', mimetype: 'image/jpeg', buffer: ..., size: 3916869 }
-  /**
-   * Create file from multer object
-   * @param {Express.Multer.File} file
-   * @returns {DerivedMulterFile}
-   */
   function createFileFromMulterObject(file: Express.Multer.File): DerivedMulterFile {
     const { originalname: original = '', size } = file;
     const parts = original.toLowerCase().split('.');
@@ -229,10 +222,6 @@ export const noteApi = (app: Application) => {
     // Request<S3.Types.PutObjectOutput, AWSError>
     const s3 = new aws.S3();
 
-    /**
-     * @param {DerivedMulterFile} file
-     * @returns {Promise}
-     */
     const fileMapper = async (file: DerivedMulterFile): Promise<any> => {
       const Metadata = {
         userid: data.userid,
@@ -346,7 +335,7 @@ export const noteApi = (app: Application) => {
    * server to prevent malicious PUTs against this endpoint.
    */
   const imageCompleteRoute = async (req: Request, res: Response): Promise<Response> => {
-    const { logger, body, query } = /** @type {ImageCompleteRequest} */ (req);
+    const { logger, body, query } = req as ImageCompleteRequest;
     logger.info({ moduleName, msg: 'PUT /api/image-complete', body });
 
     if (!imageCompleteToken) {
@@ -392,7 +381,6 @@ export const noteApi = (app: Application) => {
     //   {"width":2000,"name":"xl"}
     // ]}
 
-    /** @type {NoteImageUpdateData} */
     const noteUpdate: NoteImageUpdateData = {
       _id,
       userId,

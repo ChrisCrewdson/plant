@@ -16,7 +16,6 @@ export function canEdit(loggedInUserId: (string | null) | undefined,
   if (!loggedInUserId || !location) {
     return false;
   }
-  /** @type {Role?} */
   const role: Role | null = getIn(location, ['members', loggedInUserId]);
   if (!role) {
     return false;

@@ -82,7 +82,6 @@ let localServer: Server|undefined;
 
 /**
  * Starts an authenticated server
- * @returns {Promise<HelperData>}
  */
 export async function startServerAuthenticated(): Promise<HelperData> {
   const port = 3000 + parseInt(process.env.JEST_WORKER_ID || '1', 10);
@@ -152,10 +151,9 @@ export const stopServer = async () => new Promise((resolve, reject) => {
 
 /**
  * Create a bunch of plants in the plant collection for testing
- * @param {number} numPlants - Number of plants to insert in plant collection for this user
- * @param {string} userId - User Id of user to create plants for
- * @param {string} locationId - Location Id at which to create the plants
- * @returns {Promise<BizPlant[]>}
+ * @param numPlants - Number of plants to insert in plant collection for this user
+ * @param userId - User Id of user to create plants for
+ * @param locationId - Location Id at which to create the plants
  */
 export async function createPlants(numPlants: number, userId: string, locationId: string):
   Promise<BizPlant[]> {
@@ -167,8 +165,7 @@ export async function createPlants(numPlants: number, userId: string, locationId
 
   /**
    * createPlant
-   * @param {number} count - the plant number/id being created not the number of plants to create
-   * @returns {Promise<BizPlant>}
+   * @param count - the plant number/id being created not the number of plants to create
    */
   async function createPlant(count: number): Promise<BizPlant> {
     const reqOptions: HelperMakeRequestOptions = {

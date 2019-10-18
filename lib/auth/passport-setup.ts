@@ -19,9 +19,6 @@ import { sessionKey } from '../constants';
 const mongo = getDbInstance;
 const MongoStore = connectMongo(session);
 
-/**
- * Init
- */
 const setupSession = (db: Db, app: Application): void => {
   // @ts-ignore - mongodb type library is referencing v3.x and the connect-mongo library has
   // a reference to v2.x of the mongodb library.
@@ -54,19 +51,11 @@ const init = (app: Application, db: Db, logger: Logger): void => {
   app.use(passport.session());
 
   passport.serializeUser(
-    /**
-     * @param {BizUser} user
-     * @param {Function} cb
-     */
     (user: BizUser, cb: Function) => {
       cb(null, user && user._id);
     });
 
   passport.deserializeUser(
-    /**
-     * @param {string} id
-     * @param {Function} cb
-     */
     async (id: string, cb: Function) => {
       try {
         const mongoDb = mongo();

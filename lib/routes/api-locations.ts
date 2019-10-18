@@ -63,8 +63,7 @@ export const locationsApi = (app: Application) => {
 
   /**
    * Check that role is valid
-   * @param {Role} role - A role such as "owner" or "manager"
-   * @returns {boolean}
+   * @param role - A role such as "owner" or "manager"
    */
   function roleIsValid(role: Role): boolean {
     return constants.roles.includes(role);
@@ -73,11 +72,11 @@ export const locationsApi = (app: Application) => {
   /**
    * Returns true if the loggedInMember is an owner.
    * Throws an error message if not an owner or not logged in.
-   * @param {Record<string, Role>} members - key is userId and value is role
-   * @param {string} loggedInUserId - userId of logged in user
-   * @param {string} locationId
-   * @param {string} methodName - caller's method name - used for logging
-   * @returns {boolean} - true if member is owner or throws
+   * @param members - key is userId and value is role
+   * @param loggedInUserId - userId of logged in user
+   * @param locationId
+   * @param methodName - caller's method name - used for logging
+   * @returns - true if member is owner or throws
    */
   function checkLocationOwner(members: Record<string, Role>,
     loggedInUserId: string, locationId: string, methodName: string): boolean {
@@ -92,10 +91,6 @@ export const locationsApi = (app: Application) => {
 
   /**
    * Add a new member to a location
-   * @param {string} action
-   * @param {UpsertLocationMember} data
-   * @param {Logger} logger
-   * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
    */
   async function upsertLocationMember(action: string, data: UpsertLocationMember, logger: Logger): Promise<import('mongodb').UpdateWriteOpResult> {
     const { body, user } = data;
@@ -121,7 +116,6 @@ export const locationsApi = (app: Application) => {
       throw new Error(`No location with _id ${locationId} found in DB`);
     }
     checkLocationOwner(location.members, loggedInUserId, locationId, 'upsertLocationMember');
-    /** @type {BizLocation} */
     let modifiedLocation: BizLocation;
     if (UPSERT_LOCATION_MEMBER === action) {
       const members = { ...location.members, [userId]: role };
@@ -135,10 +129,6 @@ export const locationsApi = (app: Application) => {
 
   /**
    * Add a new weather station to a location
-   * @param {string} action
-   * @param {UpsertLocationWeather} data
-   * @param {Logger} logger
-   * @returns {Promise<import('mongodb').UpdateWriteOpResult>}
    */
   async function upsertLocationWeather(action: string, data: UpsertLocationWeather, logger: Logger): Promise<import('mongodb').UpdateWriteOpResult> {
     const { body, user } = data;
@@ -151,7 +141,6 @@ export const locationsApi = (app: Application) => {
       throw new Error(`No location with _id ${locationId} found in DB during upsertLocationWeather`);
     }
     checkLocationOwner(location.members, loggedInUserId, locationId, 'upsertLocationWeather');
-    /** @type {BizLocation} */
     let modifiedLocation: BizLocation;
     if (UPSERT_LOCATION_WEATHER === action) { // create or update
       const stations = { ...location.stations, [stationId]: { name, enabled } };
@@ -164,13 +153,11 @@ export const locationsApi = (app: Application) => {
     return mongo.updateLocationById(modifiedLocation, loggedInUserId, logger);
   }
 
-  /** @type {Record<string, UpsertLocationMemberFnBound>} */
   const modifyMemberActions: Record<string, UpsertLocationMemberFnBound> = {
     [UPSERT_LOCATION_MEMBER]: upsertLocationMember.bind(null, UPSERT_LOCATION_MEMBER),
     [DELETE_LOCATION_MEMBER]: upsertLocationMember.bind(null, DELETE_LOCATION_MEMBER),
   };
 
-  /** @type {Record<string, UpsertLocationWeatherFnBound>} */
   const modifyWeatherActions: Record<string, UpsertLocationWeatherFnBound> = {
     [UPSERT_LOCATION_WEATHER]: upsertLocationWeather.bind(null, UPSERT_LOCATION_WEATHER),
     [DELETE_LOCATION_WEATHER]: upsertLocationWeather.bind(null, DELETE_LOCATION_WEATHER),

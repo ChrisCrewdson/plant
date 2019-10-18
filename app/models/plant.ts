@@ -92,7 +92,6 @@ export const plant = (attributes: UiPlantsValue, { isNew }: ValidateOptions): Ui
     attributes = { ...attributes, _id: makeMongoId() };
   }
 
-  /** @type {UiPlantsValue} */
   const cleaned: UiPlantsValue = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
   const transformed = transform(cleaned);
   const errors = validatejs.validate(transformed, constraints);
