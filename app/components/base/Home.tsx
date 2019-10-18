@@ -1,27 +1,28 @@
-const { Link } = require('react-router-dom');
-const React = require('react');
-const PropTypes = require('prop-types');
-const Base = require('./Base');
-const { isLoggedIn } = require('../../libs/auth-helper');
+import { Link } from 'react-router-dom';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Base from './Base';
+import { isLoggedIn } from '../../libs/auth-helper';
 
-class Home extends React.Component {
+export default class Home extends React.Component {
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
+
+  unsubscribe!: Function;
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props) {
+  constructor(props: object) {
     super(props);
     this.onChange = this.onChange.bind(this);
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.updateState();
@@ -38,20 +39,13 @@ class Home extends React.Component {
   }
 
   updateState() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { users, locations } = store.getState();
     this.setState({ users, locations });
   }
 
-  /**
-   * anonHome
-   * @param {boolean} existingUsers
-   * @param {boolean} existingLocations
-   * @returns {JSX.Element}
-   * @memberof Home
-   */
-  anonHome(existingUsers, existingLocations) {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+  anonHome(existingUsers: boolean, existingLocations: boolean): JSX.Element {
+    const { store } = this.context;
     return (
       <div id="hero">
         <section>
@@ -99,7 +93,7 @@ Login to get started
   }
 
   renderUsers() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { users = {}, locations = {} } = store.getState();
     const usersCount = Object.keys(users).length;
     const locationsCount = Object.keys(locations).length;
@@ -116,5 +110,3 @@ Login to get started
     );
   }
 }
-
-module.exports = Home;
