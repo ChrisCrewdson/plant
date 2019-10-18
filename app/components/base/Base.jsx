@@ -1,6 +1,6 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const Navbar = require('./Navbar');
+const Navbar = require('./Navbar').default;
 const Footer = require('./Footer');
 
 /**

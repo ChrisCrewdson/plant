@@ -1,23 +1,36 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const { Link } = require('react-router-dom');
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const { actionFunc } = require('../../actions');
-const utils = require('../../libs/utils');
-const { isLoggedIn } = require('../../libs/auth-helper');
-const AddPlantButton = require('../common/AddPlantButton').default;
+import { actionFunc } from '../../actions';
+import utils from '../../libs/utils';
+import { isLoggedIn } from '../../libs/auth-helper';
+import AddPlantButton from '../common/AddPlantButton';
 
-class Navbar extends React.Component {
+interface NavbarProps {
+
+}
+
+interface NavbarState {
+  user: UiUser;
+  interimMap: UiInterim;
+}
+
+export default class Navbar extends React.Component {
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
+
+  unsubscribe!: Function;
+
+  // eslint-disable-next-line react/state-in-constructor
+  state!: NavbarState;
+
   static contextTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     store: PropTypes.object.isRequired,
   };
 
-  /**
-   * Navbar constructor
-   * @param {NavbarProps} props
-   */
-  constructor(props) {
+  constructor(props: NavbarProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.logout = this.logout.bind(this);
@@ -25,7 +38,7 @@ class Navbar extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
@@ -38,13 +51,13 @@ class Navbar extends React.Component {
   }
 
   onChange() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
   }
 
   logout() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     store.dispatch(actionFunc.logoutRequest());
   }
 
@@ -58,17 +71,13 @@ class Navbar extends React.Component {
   // User has multiple locations: "My Plants" links to /locations/user-slug/user-id
   //   (Allows user to pick a location)
   //   (Just put a placeholder here for now)
-  /**
-   * May My Plants Menu
-   * @param {boolean} loggedIn
-   */
-  makeMyPlantsMenu(loggedIn) {
+  makeMyPlantsMenu(loggedIn: boolean) {
     if (!loggedIn) {
       return null;
     }
 
     const {
-      user = {},
+      user = {} as UiUser,
     } = this.state || {};
 
     const locationId = user.activeLocationId
@@ -79,7 +88,7 @@ class Navbar extends React.Component {
       // console.warn('Navbar.makeMyPlantsMenu: No default locationId found for user:', user);
       return null;
     }
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { locations = {} } = store.getState();
     const location = locations[locationId];
     if (!location) {
@@ -117,11 +126,11 @@ class Navbar extends React.Component {
 
   render() {
     const {
-      user = {},
+      user = {} as UiUser,
       interimMap = {},
     } = this.state || {};
     const displayName = user.name || '';
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
 
     const loggedIn = isLoggedIn(store);
     const notEditing = !Object.keys(interimMap).length;
@@ -208,5 +217,3 @@ Help
     );
   }
 }
-
-module.exports = Navbar;

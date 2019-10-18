@@ -1,6 +1,3 @@
-interface NavbarProps {
-
-}
 
 interface OpenGraphMeta {
   property: string;
