@@ -7,6 +7,7 @@ import { Dispatch } from 'redux';
 import Grid, { GridPropsRow, GridRowValidate } from '../common/Grid';
 import { actionFunc, actionEnum } from '../../actions';
 import { GridCellInputType } from '../common/GridCell';
+import { PlantAction } from '../../../lib/types/redux-payloads';
 
 interface LocationsManagerRowUpdateRow extends Partial<GridPropsRow> {
   _id: string;
@@ -84,7 +85,7 @@ const getStations = (stations: Record<string, UiLocationsStation>) => Object.key
   });
 
 interface LocationsManagerProps {
-  dispatch: Dispatch;
+  dispatch: Dispatch<PlantAction<any>>;
   locationIds: string[];
   locations: UiLocations;
   users: UiUsers;

@@ -7,17 +7,18 @@ import { Dispatch } from 'redux';
 
 import utils from '../../libs/utils';
 import { actionFunc } from '../../actions';
+import { PlantAction } from '../../../lib/types/redux-payloads';
 
 const { makeSlug } = utils;
 
 interface LocationTileProps {
   _id: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<PlantAction<any>>;
   numPlants: number;
   title: string;
 }
 
-function onLinkClick(_id: string, dispatch: Dispatch) {
+function onLinkClick(_id: string, dispatch: Dispatch<PlantAction<any>>) {
   dispatch(actionFunc.changeActiveLocationId({ _id }));
 }
 

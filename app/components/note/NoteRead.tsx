@@ -168,7 +168,7 @@ export default class NoteRead extends React.PureComponent {
     const {
       userCanEdit,
       note,
-    } = /** @type {NoteReadProps} */ (this.props);
+    } = this.props;
 
     const images = this.renderImages(note);
 

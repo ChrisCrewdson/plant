@@ -7,10 +7,11 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { MemoryRouter } from 'react-router-dom';
 import LocationTile from '../../../../app/components/location/LocationTile';
+import { PlantAction } from '../../../../lib/types/redux-payloads';
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-const mockDispatch = (() => {}) as Dispatch;
+const mockDispatch = (() => {}) as Dispatch<PlantAction<any>>;
 
 describe('LocationTile', () => {
   test('LocationTile should be rendered', () => {

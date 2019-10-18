@@ -28,6 +28,9 @@ class Metrics extends React.Component {
     );
   }
 
+  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
+  context!: PlantContext;
+
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.shape({
@@ -54,7 +57,7 @@ class Metrics extends React.Component {
 
   // eslint-disable-next-line camelcase, react/sort-comp
   UNSAFE_componentWillMount() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const { locations = {} } = store.getState();
     // @ts-ignore - This file is a copy of the Location file and needs to be finished
     const { match } = this.props;
@@ -78,7 +81,7 @@ class Metrics extends React.Component {
   }
 
   onChange() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const {
       interim,
       locations,
@@ -97,7 +100,7 @@ class Metrics extends React.Component {
   }
 
   postSaveSuccessCreateNote() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     store.dispatch(actionFunc.editNoteClose());
   }
 
@@ -145,7 +148,7 @@ No plants added yet...
   }
 
   render() {
-    const { store } = /** @type {{store: PlantStore}} */ (this.context);
+    const { store } = this.context;
     const {
       // @ts-ignore - This file is a copy of the Location file and needs to be finished
       allLoadedPlants,
