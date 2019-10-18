@@ -28,6 +28,4 @@ const store = createStoreWithMiddleware(reducers, initialState);
 
 userSubscribe(store as unknown as Store<any, AnyAction>);
 
-module.exports = store;
-
 export default store;

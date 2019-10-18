@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { actionFunc } from '../actions';
 
-class App extends React.Component {
+export default class App extends React.Component {
   // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
   context!: PlantContext;
 
@@ -45,7 +45,3 @@ class App extends React.Component {
     );
   }
 }
-
-module.exports = App;
-
-export default App;

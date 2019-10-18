@@ -589,8 +589,6 @@ const utils = {
   transformErrors,
 };
 
-module.exports = utils;
-
 export default utils;
 
 // TODO: Move this file to a /shared/ folder.
