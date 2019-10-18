@@ -1,7 +1,7 @@
-const React = require('react');
-const Base = require('./Base');
+import React from 'react';
+import Base from './Base';
 
-function help() {
+export default function help() {
   /* eslint-disable react/jsx-no-target-blank */
   return (
     <Base>
@@ -24,6 +24,3 @@ Need Help?
   );
   /* eslint-enable react/jsx-no-target-blank */
 }
-
-
-module.exports = help;

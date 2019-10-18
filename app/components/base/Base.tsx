@@ -1,14 +1,9 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const Navbar = require('./Navbar').default;
-const Footer = require('./Footer');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
-/**
- * base
- * @param {object} props
- * @param {object} props.children
- */
-function base(props) {
+export default function base(props: any) {
   const { children } = props;
   return (
     <div className="page">
@@ -25,5 +20,3 @@ base.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   children: PropTypes.object.isRequired,
 };
-
-module.exports = base;

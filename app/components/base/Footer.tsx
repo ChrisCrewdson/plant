@@ -1,8 +1,7 @@
-const React = require('react');
-// const Divider = require('material-ui/Divider').default;
-const { Link } = require('react-router-dom');
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-function footer() {
+export default function footer() {
   return (
     <nav className="navbar navbar-default navbar-fixed-bottom">
       <div className="container-fluid">
@@ -19,5 +18,3 @@ Terms
     </nav>
   );
 }
-
-module.exports = footer;

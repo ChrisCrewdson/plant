@@ -1,5 +1,5 @@
 const React = require('react');
-const Base = require('../base/Base');
+const Base = require('../base/Base').default;
 
 function login() {
   const devLogin = process.env.NODE_ENV !== 'production';
