@@ -1,7 +1,7 @@
-const React = require('react');
-const Base = require('../base/Base').default;
+import React from 'react';
+import Base from '../base/Base';
 
-function login() {
+export default function login() {
   const devLogin = process.env.NODE_ENV !== 'production';
   /* eslint-disable react/jsx-no-target-blank */
   return (
@@ -45,5 +45,3 @@ function login() {
 
   /* eslint-enable react/jsx-no-target-blank */
 }
-
-module.exports = login;
