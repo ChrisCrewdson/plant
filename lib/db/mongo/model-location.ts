@@ -1,4 +1,4 @@
-import mongodb, { Db } from 'mongodb';
+import mongodb, { Db, UpdateWriteOpResult } from 'mongodb';
 
 import _ from 'lodash';
 import { produce } from 'immer';
@@ -235,7 +235,7 @@ export class LocationData {
   static async updateLocationById({
     db, location: loc, loggedInUserId, logger,
   }: {db: Db; location: BizLocation; loggedInUserId: string; logger: Logger},
-  ): Promise<import('mongodb').UpdateWriteOpResult> {
+  ): Promise<UpdateWriteOpResult> {
     try {
       const location = LocationData.convertLocationDataTypesForSaving(loc);
       // By creating a query that restricts by the location's _id and also where

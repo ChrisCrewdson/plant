@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import si from 'seamless-immutable';
+import { Dispatch } from 'redux';
 import { actionFunc } from '../../../actions';
 
 // @ts-ignore - static hasn't been defined on seamless types yet.
@@ -13,7 +14,7 @@ interface LastMeasuredProps {
   plantIds: string[];
   plants: UiPlants;
   metricDates: MetricDate[];
-  dispatch: import('redux').Dispatch;
+  dispatch: Dispatch;
 }
 
 export default function lastMeasured(props: LastMeasuredProps) {

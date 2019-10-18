@@ -2,7 +2,9 @@ import _ from 'lodash';
 import { createStore } from 'redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { deepOrange500 } from 'material-ui/styles/colors';
+import { Request, Response } from 'express';
 
+import { StaticRouterContext } from 'react-router';
 import { ssrRenderPlant } from './plant-render';
 import appReducers from '../../app/reducers';
 import { singlePlant } from '../db/single-plant';
@@ -11,7 +13,7 @@ import { indexHtml } from '.';
 
 const moduleName = 'lib/render/plant';
 
-export const renderPlant = async (req: import('express').Request, res: import('express').Response): Promise<void> => {
+export const renderPlant = async (req: Request, res: Response): Promise<void> => {
   const { logger } = req;
   try {
     const {
@@ -72,7 +74,7 @@ export const renderPlant = async (req: import('express').Request, res: import('e
     //   replace: () => {},
     // };
 
-    const context: import('react-router').StaticRouterContext = {};
+    const context: StaticRouterContext = {};
 
     // Render the component to a string
     const html = ssrRenderPlant({

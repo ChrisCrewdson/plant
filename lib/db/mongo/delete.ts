@@ -1,5 +1,6 @@
+import { Db } from 'mongodb';
 
-export const remove = async (db: import('mongodb').Db, collection: DbCollectionName, query: object):
+export const remove = async (db: Db, collection: DbCollectionName, query: object):
  Promise<number | undefined> => {
   const coll = db.collection(collection);
   const results = await coll.deleteMany(query);

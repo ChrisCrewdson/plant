@@ -1,6 +1,7 @@
 import getIn from 'lodash/get';
+import { Store } from 'redux';
 
-export function isLoggedIn(store: import('redux').Store) {
+export function isLoggedIn(store: Store) {
   const { user } = store.getState();
   const { isLoggedIn: loggedIn = false } = user || {};
   return !!(user && loggedIn);

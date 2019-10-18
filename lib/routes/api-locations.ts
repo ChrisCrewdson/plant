@@ -1,6 +1,7 @@
 import { Application, Response, Request } from 'express';
 import _ from 'lodash';
 
+import { UpdateWriteOpResult } from 'mongodb';
 import { getDbInstance } from '../db/mongo';
 import { UiActionType, actionEnum } from '../../app/actions';
 import { requireToken } from '../auth/token-check';
@@ -92,7 +93,8 @@ export const locationsApi = (app: Application) => {
   /**
    * Add a new member to a location
    */
-  async function upsertLocationMember(action: string, data: UpsertLocationMember, logger: Logger): Promise<import('mongodb').UpdateWriteOpResult> {
+  async function upsertLocationMember(action: string, data: UpsertLocationMember,
+    logger: Logger): Promise<UpdateWriteOpResult> {
     const { body, user } = data;
     const { locationId, userId, role } = body;
     const { _id: loggedInUserId } = user;
@@ -130,7 +132,8 @@ export const locationsApi = (app: Application) => {
   /**
    * Add a new weather station to a location
    */
-  async function upsertLocationWeather(action: string, data: UpsertLocationWeather, logger: Logger): Promise<import('mongodb').UpdateWriteOpResult> {
+  async function upsertLocationWeather(action: string, data: UpsertLocationWeather,
+    logger: Logger): Promise<UpdateWriteOpResult> {
     const { body, user } = data;
     const { locationId, stationId, name } = body;
     const enabled = body.enabled === 'true';

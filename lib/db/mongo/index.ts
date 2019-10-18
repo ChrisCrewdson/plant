@@ -1,5 +1,5 @@
 import {
-  MongoClient, ObjectID, Db,
+  MongoClient, ObjectID, Db, UpdateWriteOpResult,
 } from 'mongodb';
 import _ from 'lodash';
 import { produce } from 'immer';
@@ -1174,7 +1174,7 @@ class MongoDb {
   // Location U: updateLocation
 
   async updateLocationById(location: BizLocation, loggedInUserId: string, logger: Logger):
-  Promise<import('mongodb').UpdateWriteOpResult> {
+  Promise<UpdateWriteOpResult> {
     const db = await this.GetDb(logger);
     return modelLocation.updateLocationById({
       db, location, loggedInUserId, logger,

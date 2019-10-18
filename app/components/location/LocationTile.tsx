@@ -12,7 +12,7 @@ const { makeSlug } = utils;
 
 interface LocationTileProps {
   _id: string;
-  dispatch: import('redux').Dispatch;
+  dispatch: Dispatch;
   numPlants: number;
   title: string;
 }

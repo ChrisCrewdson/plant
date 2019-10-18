@@ -36,7 +36,7 @@ describe('/app/middleware/ajax', () => {
   });
 
   test('should not change a native data type', (done) => {
-    const store: import('redux').Store = helper.getFakeStore();
+    const store: Store = helper.getFakeStore();
     const data = 'do not change me';
     const options = {
       url: '/something',

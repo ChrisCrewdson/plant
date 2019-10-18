@@ -1,4 +1,5 @@
 import marked from 'marked';
+import { Application } from 'express';
 import { getDbInstance } from '../db/mongo';
 import utils from '../../app/libs/utils';
 
@@ -76,7 +77,7 @@ style="max-width: 100%" />`;
 /**
  * Short Url alias for location - start off with hard coding a single one
  */
-export const rss = (app: import('express').Application) => {
+export const rss = (app: Application) => {
   // Set up the RSS route
   app.get('/rss', async (req, res) => {
     const { logger } = req;

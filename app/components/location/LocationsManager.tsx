@@ -3,6 +3,7 @@
 import Paper from 'material-ui/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Dispatch } from 'redux';
 import Grid, { GridPropsRow, GridRowValidate } from '../common/Grid';
 import { actionFunc, actionEnum } from '../../actions';
 import { GridCellInputType } from '../common/GridCell';
@@ -83,7 +84,7 @@ const getStations = (stations: Record<string, UiLocationsStation>) => Object.key
   });
 
 interface LocationsManagerProps {
-  dispatch: import('redux').Dispatch;
+  dispatch: Dispatch;
   locationIds: string[];
   locations: UiLocations;
   users: UiUsers;

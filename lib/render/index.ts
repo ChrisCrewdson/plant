@@ -1,9 +1,9 @@
 import _ from 'lodash';
-
+import { Request } from 'express';
 /**
  * Get user object
  */
-const getUser = (req: import('express').Request): UiUser | undefined => {
+const getUser = (req: Request): UiUser | undefined => {
   const { user, logger } = req;
   if (!user) {
     logger.trace({

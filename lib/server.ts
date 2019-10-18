@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import methodOverride from 'method-override';
 import path from 'path';
 
+import { Server } from 'net';
 import { getDbInstance } from './db/mongo';
 import { indexHtml } from './render';
 import * as routes from './routes';
@@ -43,7 +44,8 @@ process.on('uncaughtException', handleException);
 /**
  * Server
  */
-export const serverServer = async (portParam?: number, mongoConnection?: string): Promise<import('net').Server> => {
+export const serverServer = async (portParam?: number, mongoConnection?: string):
+Promise<Server> => {
   const port = portParam || parseInt(process.env.PLANT_PORT || '3001', 10);
   try {
     const app = express();
