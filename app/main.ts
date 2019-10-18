@@ -1,14 +1,14 @@
 import { renderMain } from './main-render';
 import { poly } from './poly';
 
-require('jquery');
-require('bootstrap');
+import 'jquery';
+import 'bootstrap';
 // @ts-ignore - because this is a css file
 // eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
-require('bootstrap/dist/css/bootstrap.css');
-require('konva');
+import 'bootstrap/dist/css/bootstrap.css';
+import 'konva';
 // @ts-ignore - because this is a css file
-require('./stylesheets/main.css');
+import './stylesheets/main.css';
 
 
 /**
