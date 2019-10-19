@@ -213,7 +213,6 @@ No plants added yet...
     const { _id: locationId } = location;
 
     if (createNote && userCanEdit) {
-      /** @type {React.CSSProperties} */
       const style: React.CSSProperties = {
         paddingTop: '30px',
         textAlign: 'center',

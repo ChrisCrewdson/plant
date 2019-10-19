@@ -78,7 +78,6 @@ export default class NoteRead extends React.PureComponent {
     this.checkDelete = this.checkDelete.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.editNote = this.editNote.bind(this);
-    /** @type {NoteReadState} */
     // eslint-disable-next-line react/state-in-constructor
     this.state = { showDeleteConfirmation: false };
   }

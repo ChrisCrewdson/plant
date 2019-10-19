@@ -121,8 +121,7 @@ class Plant extends React.Component {
   }
 
   initState(first: boolean, initProps?: PlantProps) {
-    const props: PlantProps = /** @type {PlantProps} */ (initProps
-      || this.props || {});
+    const props: PlantProps = initProps || this.props || {};
     const { store } = this.context;
     const { user, users, plants } = store.getState();
 

@@ -88,7 +88,7 @@ class Locations extends React.Component {
       return null;
     }
 
-    const { plantIds = /** @type string[] */ ([]), _id, title } = location;
+    const { plantIds = [], _id, title } = location;
     const { length: numPlants } = plantIds;
     const { store: { dispatch } } = this.context;
 

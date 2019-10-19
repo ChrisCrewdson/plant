@@ -204,14 +204,14 @@ export default class LayoutMap extends React.Component {
         return null;
       }
 
-      const userPlants = Object.keys(plants).reduce((acc, plantId) => {
+      const userPlants = Object.keys(plants).reduce((acc: UiPlants, plantId) => {
         const plant = plants[plantId];
         if (plant.userId === userId && plant.loc) {
           // @ts-ignore - fix this - file not in use right now
           acc[plantId] = plant;
         }
         return acc;
-      }, /** @type {UiPlants} */ ({}));
+      }, {});
 
       if (!Object.keys(userPlants).length) {
         return null;

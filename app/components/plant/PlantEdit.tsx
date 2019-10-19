@@ -135,9 +135,8 @@ class PlantEdit extends React.Component {
     const {
       interimPlant, user, dispatch, history,
     } = (this.props);
-    const plant: UiPlantsValue = /** @type {UiPlantsValue} */ (seamless.asMutable(interimPlant));
+    const plant: UiPlantsValue = seamless.asMutable(interimPlant);
     const { isNew = false } = plant;
-    /** @type {PlantDateFieldNames[]} */
     const dateFields: PlantDateFieldNames[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
       if (plant[dateField]) {
@@ -206,7 +205,6 @@ class PlantEdit extends React.Component {
       pageTitle = '',
     } = (this.state || {}) as PlantEditState;
 
-    /** @type {React.CSSProperties} */
     const paperStyle: React.CSSProperties = {
       padding: 20,
       width: '100%',
@@ -215,7 +213,6 @@ class PlantEdit extends React.Component {
       display: 'inline-block',
     };
 
-    /** @type {React.CSSProperties} */
     const textAreaStyle: React.CSSProperties = {
       textAlign: 'left',
     };

@@ -30,7 +30,7 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
     mini,
     showButtons,
     showDeleteConfirmation,
-  } = /** @type {EditDeleteButtonsProps} */ (props);
+  } = props;
 
   if (!showButtons) {
     return null;

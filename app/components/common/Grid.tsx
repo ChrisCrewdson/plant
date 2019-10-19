@@ -99,7 +99,6 @@ export default class Grid extends React.Component {
     this.saveEdit = this.saveEdit.bind(this);
     // We need to keep a reference of these rows because this component is going
     // to manager the editing and state of the rows from here onwards.
-    /** @type {GridState} */
     // eslint-disable-next-line react/state-in-constructor
     this.state = {
       rows: props.rows,
@@ -281,7 +280,7 @@ export default class Grid extends React.Component {
       rows,
       deleteId, // If has a value then in process of confirming delete of this row
       editId, // If has value then currently editing this row
-      errors = /** @type {string[]} */ ([]),
+      errors = [],
     } = this.state;
 
     return (

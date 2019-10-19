@@ -64,7 +64,7 @@ export default class NoteAssocPlant extends React.Component {
     const {
       plantIds: propPlantIds,
       dispatch,
-    } = /** @type {NoteAssocPlantProps} */ (this.props);
+    } = this.props;
     const plantIds = propPlantIds.indexOf(plantId) >= 0
       ? propPlantIds.filter((pId) => pId !== plantId)
       : propPlantIds.concat(plantId);

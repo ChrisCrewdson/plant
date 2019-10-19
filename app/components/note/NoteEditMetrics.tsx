@@ -72,7 +72,7 @@ export default class NoteEditMetrics extends React.PureComponent {
    * Handle multiple change value types
    */
   dispatchChange(name: string, value: string | boolean): void {
-    const { interimNote, dispatch } = /** @type {NoteEditMetricProps} */ (this.props);
+    const { interimNote, dispatch } = this.props;
     const interimMetrics = interimNote.metrics || {};
 
     const metrics = seamless.set(interimMetrics, name, value);
