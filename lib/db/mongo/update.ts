@@ -2,6 +2,7 @@ import {
   Db, UpdateWriteOpResult, UpdateQuery, FilterQuery,
 } from 'mongodb';
 import { Helper } from './helper';
+import { DbCollectionName } from './db-types';
 
 /*
 MongoDB Driver v3.x changes to:

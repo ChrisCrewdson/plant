@@ -1,4 +1,5 @@
 import { Db } from 'mongodb';
+import { DbCollectionName } from './db-types';
 
 export const remove = async (db: Db, collection: DbCollectionName, query: object):
  Promise<number | undefined> => {

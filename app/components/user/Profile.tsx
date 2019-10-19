@@ -9,6 +9,14 @@ import getIn from 'lodash/get';
 import LocationsManager from '../location/LocationsManager';
 import Base from '../base/Base';
 
+interface ProfilePropsUserSettings {
+  imperial: boolean;
+}
+
+interface ProfileProps {
+  userSettings: ProfilePropsUserSettings;
+}
+
 // Responsible for:
 // 1. Current user: /profile
 // 2. Other user: /profile/slug/<id>

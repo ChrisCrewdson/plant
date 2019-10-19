@@ -9,6 +9,10 @@ import Base from '../base/Base';
 
 const { makeSlug } = utils;
 
+interface UsersProps {
+
+}
+
 export default class Users extends React.Component {
   // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
   context!: PlantContext;

@@ -15,6 +15,7 @@ import { remove } from './delete';
 import { LocationData as modelLocation } from './model-location';
 
 import utils from '../../../app/libs/utils';
+import { DbCollectionName, DbShapes } from './db-types';
 
 const dbHelper = Helper;
 

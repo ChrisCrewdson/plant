@@ -1,5 +1,19 @@
 import _ from 'lodash';
 import { Request } from 'express';
+
+interface OpenGraphMeta {
+  property: string;
+  content: string;
+}
+
+interface ServerSideRenderData {
+  html?: string;
+  initialState?: PlantStateTree;
+  og?: OpenGraphMeta[]; // Facebook Open Graph
+  req: import('express').Request;
+  title?: string;
+}
+
 /**
  * Get user object
  */

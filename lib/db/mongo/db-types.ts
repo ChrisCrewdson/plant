@@ -5,8 +5,8 @@
 // for the DB are defined at the top, then the Biz layer and then the Ui layer.
 // Each shape will build on and change the previous shape.
 
-declare type DbShape = DbLocation | DbNote | DbPlant | DbUser | DbUserTiny;
+export type DbShape = DbLocation | DbNote | DbPlant | DbUser | DbUserTiny;
 
-declare type DbShapes = DbLocation[] | DbNote[] | DbPlant[] | DbUser[] | DbUserTiny[];
+export type DbShapes = DbLocation[] | DbNote[] | DbPlant[] | DbUser[] | DbUserTiny[];
 
-declare type DbCollectionName = 'user' | 'plant' | 'note' | 'location';
+export type DbCollectionName = 'user' | 'plant' | 'note' | 'location';
