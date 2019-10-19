@@ -8,10 +8,17 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
+import { Dispatch } from 'redux';
 import utils from '../../libs/utils';
 import { actionFunc } from '../../actions';
 
 const { makeSlug } = utils;
+
+interface PlantItemProps {
+  dispatch: Dispatch;
+  plant: UiPlantsValue;
+  userCanEdit: boolean;
+}
 
 export default class PlantItem extends React.PureComponent {
   props!: PlantItemProps;

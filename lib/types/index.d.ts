@@ -139,32 +139,6 @@ interface Global extends NodeJS.Global {
   // requestAnimationFrame?: (callback: Function) => void;
 }
 
-declare type MetaMetricType =
-  'length' |
-  'count' |
-  'toggle' |
-  'weight';
-
-declare type MetaMetricKey =
-  'height' |
-  'girth' |
-  'harvestCount' |
-  'harvestWeight' |
-  'firstBlossom' |
-  'lastBlossom' |
-  'firstBud' |
-  'harvestStart' |
-  'harvestEnd' |
-  'leafShedStart' |
-  'leafShedEnd';
-
-interface MetaMetric {
-  key: MetaMetricKey;
-  label: string;
-  placeholder: string;
-  type: MetaMetricType;
-}
-
 type Html5InputTypes =
   | 'button'
   | 'checkbox'

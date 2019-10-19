@@ -7,6 +7,7 @@ import Logger from 'lalog';
 import { getDbInstance } from '../db/mongo';
 
 import { SERVICE_NAME } from '../../app/libs/constants';
+import { UserDetails } from '../db/mongo/db-types';
 
 const mongoDb = getDbInstance();
 const moduleName = 'lib/auth/passport-google';

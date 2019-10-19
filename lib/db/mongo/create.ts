@@ -1,6 +1,6 @@
 import { Db } from 'mongodb';
 import { Helper } from './helper';
-import { DbCollectionName } from './db-types';
+import { DbCollectionName, UserDetails } from './db-types';
 
 // See https://stackoverflow.com/a/36794912/1463
 // for a description of insertOne/insertMany/bulkWrite

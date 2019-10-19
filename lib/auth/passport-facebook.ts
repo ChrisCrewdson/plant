@@ -9,6 +9,7 @@ import fb from '@passport-next/passport-facebook';
 import { getDbInstance } from '../db/mongo';
 
 import { SERVICE_NAME } from '../../app/libs/constants';
+import { UserDetails } from '../db/mongo/db-types';
 
 const FacebookStrategy = fb.Strategy;
 

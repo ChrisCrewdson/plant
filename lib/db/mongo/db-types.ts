@@ -10,3 +10,15 @@ export type DbShape = DbLocation | DbNote | DbPlant | DbUser | DbUserTiny;
 export type DbShapes = DbLocation[] | DbNote[] | DbPlant[] | DbUser[] | DbUserTiny[];
 
 export type DbCollectionName = 'user' | 'plant' | 'note' | 'location';
+
+export interface UserDetails {
+  // TODO: There will only ever be facebook or google set here so this show be a union
+  // type such as:
+  // socialJson: FacebookOAuthJson|GoogleOAuthJson;
+  facebook?: FacebookOAuthJson;
+  google?: GoogleOAuthJson;
+  name?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  email?: string;
+}

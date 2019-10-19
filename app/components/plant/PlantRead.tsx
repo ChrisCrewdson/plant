@@ -5,6 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import si from 'seamless-immutable';
+import { Dispatch } from 'redux';
+import { History } from 'history';
 import utils from '../../libs/utils';
 import NotesRead from '../note/NotesRead';
 import EditDeleteButtons from '../common/EditDeleteButtons';
@@ -19,7 +21,20 @@ interface PlantReadState {
   showDeleteConfirmation: boolean;
 }
 
+interface PlantReadProps {
+  dispatch: Dispatch;
+  history: History;
+  interim: UiInterim;
+  locations: UiLocations;
+  notes: UiNotes;
+  plant: UiPlantsValue;
+  plants: UiPlants;
+  userCanEdit: boolean;
+}
+
 class PlantRead extends React.PureComponent {
+  props!: PlantReadProps;
+
   static propTypes = {
     // dispatch: PropTypes.func.isRequired,
     history: PropTypes.shape({
@@ -66,7 +81,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
-    const { plant: { notesRequested, _id }, dispatch } = this.props as PlantReadProps;
+    const { plant: { notesRequested, _id }, dispatch } = this.props;
     if (!notesRequested) {
       if (_id) {
         dispatch(actionFunc.loadNotesRequest({
@@ -79,7 +94,7 @@ class PlantRead extends React.PureComponent {
   }
 
   edit() {
-    const { plant: propsPlant, dispatch } = this.props as PlantReadProps;
+    const { plant: propsPlant, dispatch } = this.props;
     const plant = seamless.asMutable(propsPlant);
     const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {
@@ -95,7 +110,7 @@ class PlantRead extends React.PureComponent {
   }
 
   showImages() {
-    const { plant, dispatch } = this.props as PlantReadProps;
+    const { plant, dispatch } = this.props;
     const noteIds = (plant && plant.notes) || [];
     dispatch(actionFunc.showNoteImages(noteIds));
   }
@@ -112,8 +127,8 @@ class PlantRead extends React.PureComponent {
           locationId,
         },
         dispatch,
-      } = this.props as PlantReadProps;
-      const { locations, history } = this.props as PlantReadProps;
+      } = this.props;
+      const { locations, history } = this.props;
       const payload = {
         locationId,
         plantId: _id,
@@ -134,7 +149,7 @@ class PlantRead extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this
   plantedDateTitle() {
-    const { plant: { plantedDate } } = this.props as PlantReadProps;
+    const { plant: { plantedDate } } = this.props;
     if (plantedDate) {
       const date = utils.intToMoment(plantedDate);
       const daysAgo = date.isSame(moment(), 'day')
@@ -146,7 +161,7 @@ class PlantRead extends React.PureComponent {
   }
 
   renderDetails() {
-    const { plant } = this.props as PlantReadProps;
+    const { plant } = this.props;
     if (!plant) {
       return null;
     }
@@ -229,7 +244,7 @@ class PlantRead extends React.PureComponent {
       notes,
       plant,
       plants,
-    } = this.props as PlantReadProps;
+    } = this.props;
 
     const {
       showDeleteConfirmation = false,

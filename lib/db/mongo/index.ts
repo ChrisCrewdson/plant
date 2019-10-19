@@ -15,7 +15,7 @@ import { remove } from './delete';
 import { LocationData as modelLocation } from './model-location';
 
 import utils from '../../../app/libs/utils';
-import { DbCollectionName, DbShapes } from './db-types';
+import { DbCollectionName, DbShapes, UserDetails } from './db-types';
 
 const dbHelper = Helper;
 
@@ -25,6 +25,11 @@ const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${
 
 // This stores a cache of the user's location
 const locationLocCache: LocationLocCache = {};
+
+interface QueryBySocialMedia {
+  'facebook.id'?: string;
+  'google.id'?: string;
+}
 
 /**
  * Given a collection of users and locations return a collection of users

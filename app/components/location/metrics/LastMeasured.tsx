@@ -11,6 +11,16 @@ const seamless = si.static;
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
 
+interface LastMetricDates {
+  plantId: string;
+  title: string;
+  lastDate?: Date;
+  height?: Date;
+  girth?: Date;
+  harvestCount?: Date;
+  harvestEnd?: Date;
+}
+
 interface LastMeasuredProps {
   plantIds: string[];
   plants: UiPlants;

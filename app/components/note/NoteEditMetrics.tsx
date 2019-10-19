@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 import { actionFunc } from '../../actions';
 import Errors from '../common/Errors';
 import InputCombo from '../common/InputCombo';
-import utils from '../../libs/utils';
+import utils, { MetaMetric } from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
 
 // @ts-ignore - static hasn't been defined on seamless types yet.

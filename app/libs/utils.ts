@@ -7,6 +7,33 @@ import si from 'seamless-immutable';
 
 import * as constants from './constants';
 
+
+declare type MetaMetricType =
+  'length' |
+  'count' |
+  'toggle' |
+  'weight';
+
+declare type MetaMetricKey =
+  'height' |
+  'girth' |
+  'harvestCount' |
+  'harvestWeight' |
+  'firstBlossom' |
+  'lastBlossom' |
+  'firstBud' |
+  'harvestStart' |
+  'harvestEnd' |
+  'leafShedStart' |
+  'leafShedEnd';
+
+export interface MetaMetric {
+  key: MetaMetricKey;
+  label: string;
+  placeholder: string;
+  type: MetaMetricType;
+}
+
 // @ts-ignore
 const seamless = si.static;
 

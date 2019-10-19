@@ -4,8 +4,14 @@ import Divider from 'material-ui/Divider';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 import PropTypes from 'prop-types';
+import { Dispatch } from 'redux';
 import InputComboText from '../common/InputComboText';
 import { actionFunc } from '../../actions';
+
+interface PlantEditTerminatedProps {
+  dispatch: Dispatch;
+  interimPlant: UiPlantsValue;
+}
 
 export default class PlantEditTerminated extends React.Component {
   props!: PlantEditTerminatedProps;

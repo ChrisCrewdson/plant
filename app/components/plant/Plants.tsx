@@ -7,9 +7,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import getIn from 'lodash/get';
+import { match } from 'react-router';
+import { History } from 'history';
 import utils from '../../libs/utils';
 
+interface PlantsProps {
+  history: History;
+  match: match<any>;
+}
+
 class Plants extends React.Component {
+  props!: PlantsProps
+
   unsubscribe!: Function;
 
   // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
@@ -67,8 +76,8 @@ class Plants extends React.Component {
 
   redirectIfReady() {
     const { store } = this.context;
-    const { match, history } = this.props as PlantsProps;
-    const { params } = match;
+    const { match: matcher, history } = this.props;
+    const { params } = matcher;
     const userId = params && params.id;
     let fwdUrl = '/';
     if (userId) {

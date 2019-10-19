@@ -72,40 +72,8 @@ interface BizPlantMap {
   [mongoId: string]: BizPlant;
 }
 
-interface UiPlantsNote {
-  date: number; // Is this right?
-  metrics?: LastMetricDates;
-}
-
 interface UiPlants {
   [mongoId: string]: UiPlantsValue;
-}
-
-interface PlantItemProps {
-  dispatch: import('redux').Dispatch;
-  plant: UiPlantsValue;
-  userCanEdit: boolean;
-}
-
-interface PlantEditTerminatedProps {
-  dispatch: import('redux').Dispatch;
-  interimPlant: UiPlantsValue;
-}
-
-interface PlantReadProps {
-  dispatch: import('redux').Dispatch;
-  history: import('history').History;
-  interim: UiInterim;
-  locations: UiLocations;
-  notes: UiNotes;
-  plant: UiPlantsValue;
-  plants: UiPlants;
-  userCanEdit: boolean;
-}
-
-interface PlantsProps {
-  history: import('history').History;
-  match: import('react-router').match<any>;
 }
 
 interface UiPlantLocation {
@@ -118,13 +86,4 @@ interface UiPlantLocation {
 interface UiPlantLocationCanvas {
   canvasHeight: number;
   plants: Record<string, UiPlantLocation>;
-}
-
-interface PlantEditProps {
-  dispatch: import('redux').Dispatch;
-  history: import('history').History;
-  interimPlant: UiPlantsValue;
-  locations: UiLocations;
-  user: UiUsersValue;
-  users: UiUsers;
 }

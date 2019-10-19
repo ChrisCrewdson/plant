@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import getIn from 'lodash/get';
 import si from 'seamless-immutable';
+import { Dispatch } from 'redux';
+import { History } from 'history';
 import PlantEditTerminated from './PlantEditTerminated';
 import utils from '../../libs/utils';
 import CancelSaveButtons from '../common/CancelSaveButtons';
@@ -28,6 +30,15 @@ const seamless = si.static;
 
 interface PlantEditState {
   pageTitle?: string;
+}
+
+interface PlantEditProps {
+  dispatch: Dispatch;
+  history: History;
+  interimPlant: UiPlantsValue;
+  locations: UiLocations;
+  user: UiUsersValue;
+  users: UiUsers;
 }
 
 class PlantEdit extends React.Component {
