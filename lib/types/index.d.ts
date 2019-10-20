@@ -1,5 +1,8 @@
 // Definitions file for Plant Project
 
+// Currently NonEmptyList is not used anywhere.
+// Plan to tag the plantIds in a Note with this as there
+// always has to be at least 1 plant for each note.
 type NonEmptyList<T> = T[] & { 0: T };
 
 // Now included with Typescript 3.5+
@@ -48,40 +51,6 @@ interface Geo {
   type: GeoType; // "Point" - is this the only value I know of that's valid
   coordinates: GeoCoords;
 }
-
-type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
-
-interface AwsKey {
-  Key: string;
-}
-
-interface UploadFile {
-  multerFile: Express.Multer.File;
-  noteFile: NoteImage;
-}
-
-interface UploadFileData {
-  files: DerivedMulterFile[];
-  noteid: string;
-  userid: string;
-}
-
-interface UploadedNoteFile {
-  id: string;
-  ext: string;
-  originalname: string;
-  size: number;
-  sizes?: NoteImageSize[];
-}
-
-interface DerivedMulterFile {
-  multerFile: Express.Multer.File;
-  noteFile: UploadedNoteFile;
-}
-
-type ServerFunc = (port?: number, mongoConnection?: string) => Promise<import('net').Server>;
-
-
 interface Window {
   [key: string]: any;
   // FormData: Function;

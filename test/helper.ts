@@ -14,6 +14,9 @@ import { getDbInstance } from '../lib/db/mongo';
 
 import { serverServer } from '../lib/server';
 
+
+type ServerFunc = (port?: number, mongoConnection?: string) => Promise<import('net').Server>;
+
 interface HelperData {
   port?: number;
   userId?: string;

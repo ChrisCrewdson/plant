@@ -4,6 +4,7 @@ import isArray from 'lodash/isArray';
 import validatejs from 'validate.js';
 import utils from '../libs/utils';
 import * as constants from '../libs/constants';
+import { UploadedNoteFile } from '../../lib/routes/api-note';
 
 const { makeMongoId } = utils;
 

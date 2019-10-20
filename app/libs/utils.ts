@@ -34,6 +34,8 @@ export interface MetaMetric {
   type: MetaMetricType;
 }
 
+type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
+
 // @ts-ignore
 const seamless = si.static;
 
