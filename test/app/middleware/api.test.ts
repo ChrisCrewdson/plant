@@ -3,6 +3,7 @@ import { Store } from 'redux';
 import { actionEnum } from '../../../app/actions';
 import * as helper from '../../helper';
 import { api, apis } from '../../../app/middleware/api';
+import { AjaxOptions } from '../../../app/middleware/ajax';
 
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 let ajaxer = (store: Store, options: AjaxOptions) => {};

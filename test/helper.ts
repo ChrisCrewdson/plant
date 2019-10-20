@@ -14,6 +14,31 @@ import { getDbInstance } from '../lib/db/mongo';
 
 import { serverServer } from '../lib/server';
 
+interface HelperData {
+  port?: number;
+  userId?: string;
+  user?: any; // TODO: Change this to the interface that the DB returns
+  server?: ServerFunc;
+  app?: import('net').Server;
+}
+
+/**
+ * Used by tests making HTTP requests to specify the options for the request
+ */
+export interface HelperMakeRequestOptions {
+  headers?: Record<string, string>;
+  authenticate: boolean;
+  followRedirect?: boolean;
+  url: string;
+  method?: string;
+  body?: object;
+  /**
+   * If this is true then the server request expects text back. If not then it
+   * expects a JSON object back and will (behind the scenes) do a JSON.parse()
+   */
+  text?: boolean;
+}
+
 const serverModule = serverServer;
 
 const mongo = getDbInstance();

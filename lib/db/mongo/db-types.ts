@@ -1,3 +1,6 @@
+import { FacebookOAuthJson } from '../../auth/passport-facebook';
+import { GoogleOAuthJson } from '../../auth/passport-google';
+
 // Generic definitions that apply to multiple models.
 // For specific models see the model-<name>.d.ts file.
 

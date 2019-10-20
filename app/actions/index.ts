@@ -55,7 +55,7 @@ export type UiActionType =
   'UPSERT_NOTE_REQUEST' |
   'UPSERT_NOTE_SUCCESS';
 
-declare type UiActionsEnum = { [key in UiActionType]: string; }
+type UiActionsEnum = { [key in UiActionType]: string; }
 
 /**
  * An ActionMethod has the "type" baked into it.
@@ -63,7 +63,7 @@ declare type UiActionsEnum = { [key in UiActionType]: string; }
  * It returns an object that has the "type" and "payload" props.
  * This is the PlantAction<T> object
  */
-declare type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
+type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
 
 interface UiActionsFunction {
   [key: string]: ActionMethod;

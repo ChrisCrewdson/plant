@@ -79,54 +79,8 @@ interface DerivedMulterFile {
   noteFile: UploadedNoteFile;
 }
 
-/**
- * Used by tests making HTTP requests to specify the options for the request
- */
-interface HelperMakeRequestOptions {
-  headers?: Record<string, string>;
-  authenticate: boolean;
-  followRedirect?: boolean;
-  url: string;
-  method?: string;
-  body?: object;
-  /**
-   * If this is true then the server request expects text back. If not then it
-   * expects a JSON object back and will (behind the scenes) do a JSON.parse()
-   */
-  text?: boolean;
-}
-
 type ServerFunc = (port?: number, mongoConnection?: string) => Promise<import('net').Server>;
 
-interface HelperData {
-  port?: number;
-  userId?: string;
-  user?: any; // TODO: Change this to the interface that the DB returns
-  server?: ServerFunc;
-  app?: import('net').Server;
-}
-
-interface AjaxOptions {
-  beforeSend? (jqXHR: JQueryXHR, settings: JQueryAjaxSettings): any;
-  contentType?: string;
-  data?: any;
-  error?: Function;
-  failure: Function;
-  fileUpload?: boolean;
-  progress?: Function;
-  success: Function;
-  type?: string;
-  url: string;
-  note?: any;
-}
-
-/**
- * An ActionMethod has the "type" baked into it.
- * Its single argument is the payload.
- * It returns an object that has the "type" and "payload" props.
- * This is the PlantAction<T> object
- */
-declare type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
 
 interface Window {
   [key: string]: any;

@@ -2,6 +2,21 @@ import { Store } from 'redux';
 import isFunction from 'lodash/isFunction';
 import $ from 'jquery';
 
+
+export interface AjaxOptions {
+  beforeSend? (jqXHR: JQueryXHR, settings: JQueryAjaxSettings): any;
+  contentType?: string;
+  data?: any;
+  error?: Function;
+  failure: Function;
+  fileUpload?: boolean;
+  progress?: Function;
+  success: Function;
+  type?: string;
+  url: string;
+  note?: any;
+}
+
 /**
  * Make the AJAX call to the server
  */

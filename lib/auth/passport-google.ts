@@ -20,6 +20,19 @@ const localLogger = Logger.create({
 
 const GoogleStrategy = passportGoogle.Strategy;
 
+export interface GoogleOAuthJson {
+  id: string;
+}
+
+interface GoogleOAuth {
+  _json: GoogleOAuthJson;
+  displayName: string;
+  /**
+   * Objects look like: { value: string ==> email address }
+   */
+  emails: object[];
+}
+
 export function googlePassport(passport: { use: Function }) {
   const { PLANT_GOOGLE_ID, PLANT_GOOGLE_SECRET } = process.env;
   if (!PLANT_GOOGLE_ID) {

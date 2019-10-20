@@ -46,7 +46,7 @@ describe('note-api', () => {
 
   describe('create failures', () => {
     test('should fail to create a note if user is not authenticated', async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: false,
         body: initialNote,
@@ -59,7 +59,7 @@ describe('note-api', () => {
     });
 
     test('should fail server validation if plantIds are missing', async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: true,
         body: { ...initialNote, plantIds: [] },
@@ -77,7 +77,7 @@ describe('note-api', () => {
 
   describe('note-api create/retrieve notes', () => {
     test('should create a note', async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: true,
         body: initialNote,
@@ -97,7 +97,7 @@ describe('note-api', () => {
     });
 
     test('should retrieve the just created noteId plant', async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'GET',
         authenticate: false,
         url: `/api/plant/${plantId}`,
@@ -139,7 +139,7 @@ describe('note-api', () => {
         },
       };
 
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: true,
         body: updatedNote,
@@ -165,7 +165,7 @@ describe('note-api', () => {
     test(
       'should retrieve the just updated noteId as part of a plant request',
       async () => {
-        const reqOptions: HelperMakeRequestOptions = {
+        const reqOptions: helper.HelperMakeRequestOptions = {
           method: 'GET',
           authenticate: false,
           url: `/api/plant/${plantId}`,
@@ -189,7 +189,7 @@ describe('note-api', () => {
     test(
       'should retrieve the noteId as part of a multiple note request',
       async () => {
-        const reqOptions: HelperMakeRequestOptions = {
+        const reqOptions: helper.HelperMakeRequestOptions = {
           method: 'POST',
           authenticate: true,
           body: { noteIds: [noteId] },
@@ -214,7 +214,7 @@ describe('note-api', () => {
     test(
       'should retrieve the noteId as part of a plantId note request',
       async () => {
-        const reqOptions: HelperMakeRequestOptions = {
+        const reqOptions: helper.HelperMakeRequestOptions = {
           method: 'POST',
           authenticate: true,
           body: { plantIds: [plantId] },
@@ -237,7 +237,7 @@ describe('note-api', () => {
     );
 
     test('should delete the note', async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'DELETE',
         authenticate: true,
         url: `/api/note/${noteId}`,
@@ -259,7 +259,7 @@ describe('note-api', () => {
     });
 
     test('should confirm that the note has been deleted', async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'GET',
         authenticate: false,
         url: `/api/plant/${plantId}`,
@@ -324,7 +324,7 @@ describe('note-api', () => {
           sizes,
         };
 
-        const reqOptions: HelperMakeRequestOptions = {
+        const reqOptions: helper.HelperMakeRequestOptions = {
           method: 'PUT',
           authenticate: false,
           body: putData,

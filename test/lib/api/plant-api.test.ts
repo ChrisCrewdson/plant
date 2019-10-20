@@ -21,7 +21,7 @@ describe('plant-api', () => {
   test(
     'should fail to create a plant record if user is not authenticated',
     async () => {
-      const reqOptions: HelperMakeRequestOptions = {
+      const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'POST',
         authenticate: false,
         body: initialPlant,
@@ -35,7 +35,7 @@ describe('plant-api', () => {
   );
 
   test('should fail server validation if title is missing', async () => {
-    const reqOptions: HelperMakeRequestOptions = {
+    const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'POST',
       authenticate: true,
       body: { ...initialPlant, title: '' },
@@ -51,7 +51,7 @@ describe('plant-api', () => {
   });
 
   test('should create a plant', async () => {
-    const reqOptions: HelperMakeRequestOptions = {
+    const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'POST',
       authenticate: true,
       body: initialPlant,
@@ -72,7 +72,7 @@ describe('plant-api', () => {
   });
 
   test('should retrieve the just created plant', async () => {
-    const reqOptions: HelperMakeRequestOptions = {
+    const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'GET',
       authenticate: false,
       url: `/api/plant/${plantId}`,
@@ -93,7 +93,7 @@ describe('plant-api', () => {
   });
 
   test('should fail to retrieve a plant if the id does not exist', async () => {
-    const reqOptions: HelperMakeRequestOptions = {
+    const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'GET',
       authenticate: false,
       url: '/api/plant/does-not-exist',
@@ -116,7 +116,7 @@ describe('plant-api', () => {
       _id: plantId,
     };
 
-    const reqOptions: HelperMakeRequestOptions = {
+    const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'PUT',
       authenticate: true,
       body: updatedPlant,
@@ -133,7 +133,7 @@ describe('plant-api', () => {
   });
 
   test('should retrieve the just updated plant', async () => {
-    const reqOptions: HelperMakeRequestOptions = {
+    const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'GET',
       authenticate: false,
       url: `/api/plant/${plantId}`,

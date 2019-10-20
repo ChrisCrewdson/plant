@@ -8,7 +8,7 @@ import {
   AnyAction,
 } from 'redux';
 import { actionEnum, actionFunc } from '../actions';
-import { ajax } from './ajax';
+import { ajax, AjaxOptions } from './ajax';
 
 function logoutRequest(store: Store /* , action */) {
   const options: AjaxOptions = {
