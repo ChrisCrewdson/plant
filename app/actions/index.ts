@@ -1,3 +1,5 @@
+import { PlantAction } from '../../lib/types/redux-payloads';
+
 // Redux Actions
 export type UiActionType =
   'CHANGE_ACTIVE_LOCATION_ID' |
@@ -63,7 +65,7 @@ type UiActionsEnum = { [key in UiActionType]: string; }
  * It returns an object that has the "type" and "payload" props.
  * This is the PlantAction<T> object
  */
-type ActionMethod = (payload?: Record<string, any> | string) => PlantRedux.PlantAction;
+type ActionMethod = (payload?: Record<string, any> | string) => PlantAction;
 
 interface UiActionsFunction {
   [key: string]: ActionMethod;

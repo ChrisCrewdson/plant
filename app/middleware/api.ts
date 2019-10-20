@@ -9,6 +9,7 @@ import {
 } from 'redux';
 import { actionEnum, actionFunc } from '../actions';
 import { ajax, AjaxOptions } from './ajax';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
 function logoutRequest(store: Store /* , action */) {
   const options: AjaxOptions = {
@@ -68,7 +69,7 @@ interface UpsertNoteRequestPayload {
  * type: "image/jpeg"
  * webkitRelativePath:""
  */
-function saveFilesRequest(store: Store, action: PlantRedux.PlantAction,
+function saveFilesRequest(store: Store, action: PlantAction,
   opts: SaveFilesRequestOptions, next: Function) {
   const { payload } = action as { payload: UpsertNoteRequestPayload};
 
@@ -102,7 +103,7 @@ function saveFilesRequest(store: Store, action: PlantRedux.PlantAction,
 // action.payload is an object with two properties
 // files: An optional array of files
 // note: The note being created
-function upsertNoteRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
+function upsertNoteRequest(store: Store, action: PlantAction, next: Function) {
   // eslint-disable-next-line prefer-destructuring
   const payload: UpsertNoteRequestPayload = action.payload;
 
@@ -137,7 +138,7 @@ function upsertNoteRequest(store: Store, action: PlantRedux.PlantAction, next: F
   }
 }
 
-function updatePlant(store: Store, action: PlantRedux.PlantAction, next: Function) {
+function updatePlant(store: Store, action: PlantAction, next: Function) {
   function success(ajaxResult: object) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
@@ -164,7 +165,7 @@ function updatePlant(store: Store, action: PlantRedux.PlantAction, next: Functio
   return next(action);
 }
 
-function deletePlantRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
+function deletePlantRequest(store: Store, action: PlantAction, next: Function) {
   const { plantId } = action.payload || {};
   if (plantId) {
     const options = {
@@ -178,7 +179,7 @@ function deletePlantRequest(store: Store, action: PlantRedux.PlantAction, next: 
   next(action);
 }
 
-function deleteNoteRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
+function deleteNoteRequest(store: Store, action: PlantAction, next: Function) {
   const options: AjaxOptions = {
     type: 'DELETE',
     url: `/api/note/${action.payload}`,
@@ -189,7 +190,7 @@ function deleteNoteRequest(store: Store, action: PlantRedux.PlantAction, next: F
   next(action);
 }
 
-function loadPlantRequest(store: Store, action: PlantRedux.PlantAction) {
+function loadPlantRequest(store: Store, action: PlantAction) {
   const { _id } = action.payload || {};
 
   if (_id) {
@@ -204,7 +205,7 @@ function loadPlantRequest(store: Store, action: PlantRedux.PlantAction) {
 
 // Get all the plants a user has created
 // action.payload is a locationId
-function loadPlantsRequest(store: Store, action: PlantRedux.PlantAction, next: Function) {
+function loadPlantsRequest(store: Store, action: PlantAction, next: Function) {
   const locationId = action.payload;
   const options: AjaxOptions = {
     url: `/api/plants/${locationId}`,
@@ -216,7 +217,7 @@ function loadPlantsRequest(store: Store, action: PlantRedux.PlantAction, next: F
 }
 
 // Get a specific user
-function loadUserRequest(store: Store, action: PlantRedux.PlantAction) {
+function loadUserRequest(store: Store, action: PlantAction) {
   const userId = action.payload;
   const options: AjaxOptions = {
     url: `/api/user/${userId}`,
@@ -259,7 +260,7 @@ interface LoadNotesRequestPayload {
 // action.payload is an object with one of 2 properties:
 // noteIds: an array of noteIds
 // plantIds: an array of plantIds
-function loadNotesRequest(store: Store, action: PlantRedux.PlantAction<LoadNotesRequestPayload>,
+function loadNotesRequest(store: Store, action: PlantAction<LoadNotesRequestPayload>,
   next: Function) {
   const { plantIds, noteIds } = action.payload || {};
 
@@ -283,7 +284,7 @@ function loadNotesRequest(store: Store, action: PlantRedux.PlantAction<LoadNotes
 
 // Get all the plants listed
 // action.payload is an array of plantIds
-function loadUnloadedPlantsRequest(store: Store, action: PlantRedux.PlantAction) {
+function loadUnloadedPlantsRequest(store: Store, action: PlantAction) {
   if (!action.payload || !action.payload.length) {
     // eslint-disable-next-line no-console
     console.error('No plantIds on payload, action:', action);

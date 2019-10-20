@@ -3,6 +3,7 @@ import si from 'seamless-immutable';
 import { actionEnum } from '../actions';
 
 import { initialState } from '../store/user';
+import { PlantAction, LoadLocationsSuccessAction } from '../../lib/types/redux-payloads';
 
 // @ts-ignore
 const seamless = si.static;
@@ -33,7 +34,7 @@ function logoutFailure(state: UiUser, action: AnyAction): UiUser {
 /**
  * Load Location Success is called after a response from server.
  */
-function loadLocationsSuccess(state: UiUser, action: PlantRedux.LoadLocationsSuccessAction):
+function loadLocationsSuccess(state: UiUser, action: LoadLocationsSuccessAction):
  UiUser {
   // const { payload: locations = [] } = action;
   const { payload: locations } = action;
@@ -76,7 +77,7 @@ export const reducers = {
 /**
  * The user reducer
  */
-export const user = (state: UiUser, action: PlantRedux.PlantAction): UiUser => {
+export const user = (state: UiUser, action: PlantAction): UiUser => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

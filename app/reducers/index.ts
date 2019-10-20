@@ -5,8 +5,9 @@ import { notes } from './notes';
 import { plants } from './plants';
 import { user } from './user';
 import { users } from './users';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
-const reducersMap: ReducersMapObject<any, PlantRedux.PlantAction> = {
+const reducersMap: ReducersMapObject<any, PlantAction> = {
   interim,
   locations,
   notes,

@@ -19,6 +19,7 @@ interface Logger {
   timeEnd: Function;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Express {
   export interface Request {
     body?: any;

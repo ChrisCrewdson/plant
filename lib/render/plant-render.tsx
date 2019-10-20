@@ -9,10 +9,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 import Plant from '../../app/components/plant/Plant';
 import App from '../../app/components/App';
+import { PlantAction } from '../types/redux-payloads';
 
 interface SsrRenderPlantOptions {
   muiTheme: MuiTheme;
-  store: Store<any, PlantRedux.PlantAction<any>>;
+  store: Store<any, PlantAction<any>>;
   context: StaticRouterContext;
   url: string;
   params: string;
