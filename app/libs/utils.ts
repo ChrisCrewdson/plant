@@ -8,13 +8,13 @@ import si from 'seamless-immutable';
 import * as constants from './constants';
 
 
-declare type MetaMetricType =
+type MetaMetricType =
   'length' |
   'count' |
   'toggle' |
   'weight';
 
-declare type MetaMetricKey =
+type MetaMetricKey =
   'height' |
   'girth' |
   'harvestCount' |

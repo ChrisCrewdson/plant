@@ -44,8 +44,3 @@ interface UiInterim {
   plant?: UiInterimPlantContainer;
   loadPlantRequest?: boolean;
 }
-
-interface UpsertNoteRequestPayload {
-  note: UiInterimNote;
-  files?: File[];
-}

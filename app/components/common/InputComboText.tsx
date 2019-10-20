@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
-declare type InputComboTextPropsType = 'text' | 'number';
+type InputComboTextPropsType = 'text' | 'number';
 
 interface InputComboTextProps {
   // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;

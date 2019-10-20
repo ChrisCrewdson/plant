@@ -3,7 +3,7 @@ import React from 'react';
 import Toggle from 'material-ui/Toggle';
 import inputComboText from './InputComboText';
 
-declare type InputComboPropsType = 'text' | 'number' | 'boolean';
+type InputComboPropsType = 'text' | 'number' | 'boolean';
 
 interface InputComboProps {
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;

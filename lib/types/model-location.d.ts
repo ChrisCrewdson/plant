@@ -3,7 +3,7 @@ interface DbLocationStationObj {
   enabled: boolean;
 }
 
-declare type Role =
+type Role =
   'owner' |
   'manager' |
   'member';

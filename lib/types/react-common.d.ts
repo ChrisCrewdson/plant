@@ -15,4 +15,4 @@ interface PlantStateTree {
   users: UiUsers;
 }
 
-declare type PlantStore = import('redux').Store<PlantStateTree>;
+type PlantStore = import('redux').Store<PlantStateTree>;

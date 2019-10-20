@@ -52,6 +52,11 @@ interface SaveFilesRequestOptions {
   success: Function;
 }
 
+interface UpsertNoteRequestPayload {
+  note: UiInterimNote;
+  files?: File[];
+}
+
 /**
  * Upload files
  * action.payload is an array of file objects:

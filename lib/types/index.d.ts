@@ -38,7 +38,7 @@ declare namespace Express {
   }
 }
 
-declare type GeoType = 'Point';
+type GeoType = 'Point';
 
 interface GeoCoords {
   /** Longitude */

@@ -1,4 +1,4 @@
-declare type ImageSizeName =
+type ImageSizeName =
   'orig' |
   'xl' |
   'lg' |
@@ -164,7 +164,7 @@ interface DbNoteWithPlants extends DbNote {
  * error = an error happened saving / validating etc.
  * deleted = ajax request to delete object not complete yet
  */
-declare type UiNotesMetaState =
+type UiNotesMetaState =
 'new' |
 'saved' |
 'error' |

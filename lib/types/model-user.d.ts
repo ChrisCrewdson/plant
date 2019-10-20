@@ -39,9 +39,9 @@ interface DbUser {
   updatedAt: Date;
 }
 
-declare type DbUserTiny = Pick<DbUser, '_id' | 'createdAt' | 'name'>;
+type DbUserTiny = Pick<DbUser, '_id' | 'createdAt' | 'name'>;
 
-declare type BizUserStatus = 'success';
+type BizUserStatus = 'success';
 
 interface BizUser {
   _id: string;
@@ -60,7 +60,7 @@ interface BizUser {
   status?: BizUserStatus;
 }
 
-declare type UiUserStatus =
+type UiUserStatus =
   'success' |
   'logout' |
   'failed';

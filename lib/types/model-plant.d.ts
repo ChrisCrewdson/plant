@@ -3,12 +3,12 @@
 // 2. Biz<Collection> - What is passed around on the server
 // 3. Ui<Collection> - What is passed around on the client
 
-declare type TerminatedReason =
+type TerminatedReason =
 'culled' |
 'died' |
 'transferred';
 
-declare type PlantDateFieldNames =
+type PlantDateFieldNames =
   'plantedDate' |
   'purchasedDate' |
   'terminatedDate';
