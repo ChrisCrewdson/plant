@@ -86,17 +86,12 @@ interface NoteSplit {
  * Note:
  *  _id, userId, plantIds[]
  */
-class MongoDb {
+export class MongoDb {
   connection: string;
 
-  // @ts-ignore - Property has no initializer. Not definitely assigned in the constructor.ts(2564)
-  client: MongoClient;
+  client!: MongoClient;
 
-  // @ts-ignore - Property has no initializer. Not definitely assigned in the constructor.ts(2564)
-  db: Db;
-  // static async convertPlantDataForRead: (plant: DbPlant | Array<DbPlant>,
-  //   loggedInUserId: string | undefined | null, logger: Logger) =>
-  //   Promise<BizPlant | Array<BizPlant>>;
+  db!: Db;
 
   /**
    * MongoDB Constructor
@@ -115,7 +110,7 @@ class MongoDb {
   /**
    * Returns the MongoDb client instance
    */
-  getDbClient(): MongoClient | undefined {
+  getDbClient(): MongoClient {
     return this.client;
   }
 

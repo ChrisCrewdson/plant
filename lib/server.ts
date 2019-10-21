@@ -76,10 +76,10 @@ Promise<Server> => {
     app.use(methodOverride());
 
     const mongo = mongoFn(mongoConnection);
-    const db = await mongo.GetDb(localLogger);
+    await mongo.GetDb(localLogger);
 
     // For passport authentication
-    authPassportSetup(app, db, localLogger);
+    authPassportSetup(app, mongo, localLogger);
 
     await routes.index(app);
 

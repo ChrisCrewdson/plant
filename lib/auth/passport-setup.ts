@@ -2,14 +2,13 @@
 import {
   Application,
 } from 'express';
-import { Db } from 'mongodb';
 
 // @ts-ignore - Types for @passport-next are not complete yet
 import passport from '@passport-next/passport';
 import connectMongo from 'connect-mongo';
 import session from 'express-session';
 
-import { getDbInstance } from '../db/mongo';
+import { getDbInstance, MongoDb } from '../db/mongo';
 
 import * as googleAuth from './passport-google';
 import * as facebookAuth from './passport-facebook';
@@ -19,10 +18,11 @@ import { sessionKey } from '../constants';
 const mongo = getDbInstance;
 const MongoStore = connectMongo(session);
 
-const setupSession = (db: Db, app: Application): void => {
-  // @ts-ignore - mongodb type library is referencing v3.x and the connect-mongo library has
-  // a reference to v2.x of the mongodb library.
-  const store = new MongoStore({ db });
+const setupSession = (db: MongoDb, app: Application): void => {
+  const client = db.getDbClient();
+  // @ts-ignore - seems to be a bug in @type definition
+  const mongoStoreOptions: NativeMongoOptions = { client };
+  const store = new MongoStore(mongoStoreOptions);
   const { PLANT_TOKEN_SECRET: secret } = process.env;
 
   if (!secret) {
@@ -44,7 +44,7 @@ const setupSession = (db: Db, app: Application): void => {
 /**
  * Init
  */
-const init = (app: Application, db: Db, logger: Logger): void => {
+const init = (app: Application, db: MongoDb, logger: Logger): void => {
   setupSession(db, app);
 
   app.use(passport.initialize());
