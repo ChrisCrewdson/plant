@@ -135,6 +135,12 @@ interface BizNoteNew extends Omit<BizNote, '_id' | 'showImages'> {
   _id?: string;
 }
 
+interface UiInterimUploadProgress {
+  value: number;
+  max: number;
+  note?: UiNotesValue;
+}
+
 interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
   /**
    * At the time of writing this I think that date is sometimes a string. In the note.test.js

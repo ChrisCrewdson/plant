@@ -93,12 +93,3 @@ interface UiUsersValue {
 interface UiUsers {
   [id: string]: UiUsersValue;
 }
-
-interface UiReduxState {
-  interim?: UiInterim;
-  locations?: UiLocations;
-  notes?: UiNotes;
-  plants?: UiPlants;
-  user?: UiUser;
-  users?: UiUsers;
-}

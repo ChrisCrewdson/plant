@@ -5,6 +5,7 @@ is treated as a script whose contents are available in the global scope (and the
 modules as well).
 */
 
+type PlantStore = import('redux').Store<PlantStateTree>;
 
 interface PlantContext {
   store: PlantStore;
@@ -21,5 +22,3 @@ interface PlantStateTree {
   user: UiUser;
   users: UiUsers;
 }
-
-type PlantStore = import('redux').Store<PlantStateTree>;

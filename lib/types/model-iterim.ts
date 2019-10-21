@@ -31,12 +31,6 @@ is treated as a script whose contents are available in the global scope (and the
 modules as well).
 */
 
-interface UiInterimUploadProgress {
-  value: number;
-  max: number;
-  note?: UiNotesValue;
-}
-
 interface UiInterimNoteContainer {
   note: UiInterimNote;
   plant: UiPlantsValue;
