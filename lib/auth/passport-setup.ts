@@ -8,6 +8,7 @@ import passport from '@passport-next/passport';
 import connectMongo from 'connect-mongo';
 import session from 'express-session';
 
+import Logger from 'lalog';
 import { getDbInstance, MongoDb } from '../db/mongo';
 
 import * as googleAuth from './passport-google';

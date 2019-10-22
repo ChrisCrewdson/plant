@@ -2,10 +2,15 @@ import { Application, Response, Request } from 'express';
 import _ from 'lodash';
 
 import { UpdateWriteOpResult } from 'mongodb';
+import Logger from 'lalog';
 import { getDbInstance } from '../db/mongo';
 import { UiActionType, actionEnum } from '../../app/actions';
 import { requireToken } from '../auth/token-check';
 import * as constants from '../../app/libs/constants';
+
+type UpsertLocationMemberFnBound = (data: UpsertLocationMember, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
+
+type UpsertLocationWeatherFnBound = (data: UpsertLocationWeather, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
 
 
 const mongo = getDbInstance();

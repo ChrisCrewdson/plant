@@ -3,6 +3,7 @@
     "allowJs": true,
     "checkJs": false,
     "esModuleInterop": true,
+    "incremental": true,
     "jsx": "react",
     "lib": ["esnext", "dom", "dom.iterable"],
     "module": "commonjs",                    

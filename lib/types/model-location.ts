@@ -63,12 +63,6 @@ interface UpsertLocationWeather {
   body: UpsertLocationWeatherBody;
 }
 
-type UpsertLocationMemberFn = (action: string, data: UpsertLocationMember, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
-type UpsertLocationMemberFnBound = (data: UpsertLocationMember, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
-
-type UpsertLocationWeatherFn = (action: string, data: UpsertLocationWeather, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
-type UpsertLocationWeatherFnBound = (data: UpsertLocationWeather, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
-
 // UpsertLocation structures End
 
 interface LocationLocCache {

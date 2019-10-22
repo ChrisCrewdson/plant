@@ -227,12 +227,6 @@ interface ImageCompleteBody {
   metadata: ImageCompleteMetadata;
 }
 
-interface ImageCompleteRequest {
-  logger: Logger;
-  body?: ImageCompleteBody;
-  query?: ImageCompleteQuery;
-}
-
 interface NoteImageUpdateData {
   /**
    * NoteId

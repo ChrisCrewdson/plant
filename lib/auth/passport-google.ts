@@ -1,7 +1,7 @@
 import _ from 'lodash';
 // @ts-ignore - Types for @passport-next are not complete yet
 import passportGoogle from '@passport-next/passport-google-oauth2';
-// @ts-ignore - Types for lalog are not complete yet
+
 import Logger from 'lalog';
 
 import { getDbInstance } from '../db/mongo';

@@ -1,3 +1,4 @@
+
 // Definitions file for Plant Project
 
 // Currently NonEmptyList is not used anywhere.
@@ -14,37 +15,6 @@ is considered a module. Conversely, a file without any top-level import or expor
 is treated as a script whose contents are available in the global scope (and therefore to
 modules as well).
 */
-
-interface Logger {
-  trace: Function;
-  info: Function;
-  warn: Function;
-  error: Function;
-  fatal: Function;
-  security: Function;
-  time: Function;
-  timeEnd: Function;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Express {
-  export interface Request {
-    body?: any;
-    /**
-     * I'm sure that this is not always available on the req object unless the Multer middleware
-     * always adds it?
-     * TODO: Need to test this. If it's not always available then work out how to type this.
-     */
-    files: {
-      [fieldname: string]: Multer.File[];
-    } | Multer.File[];
-    isAuthenticated?: Function;
-    logger: Logger;
-    logIn: Function;
-    logout: Function;
-    user?: BizUser;
-  }
-}
 
 type GeoType = 'Point';
 

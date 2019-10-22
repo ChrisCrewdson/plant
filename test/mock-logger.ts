@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Logger from 'lalog';
 
 export const mockLogger: Logger = {
   trace: jest.fn(),
@@ -9,7 +10,7 @@ export const mockLogger: Logger = {
   security: jest.fn(),
   timeEnd: jest.fn(),
   time: jest.fn(),
-};
+} as unknown as Logger;
 
 const isObject = (obj: object) => obj !== null && typeof obj === 'object';
 
@@ -52,18 +53,30 @@ const loggerTimeEndMockFunction = (label: string, extraLogData?: object) => {
   }
 };
 
+type LogFunction = (logData: any, response?: any) => Promise<any>;
+declare type TimeLogFunction = (label: string, extraLogDat?: any) => Promise<any>;
+interface TimeEndLog {
+  (label: string, extraLogDat?: any): Promise<any>;
+  trace?: TimeLogFunction;
+  info?: TimeLogFunction;
+  warn?: TimeLogFunction;
+  error?: TimeLogFunction;
+  fatal?: TimeLogFunction;
+  security?: TimeLogFunction;
+}
+
+const getLogMock = () => jest.fn(loggerMockFunction) as unknown as LogFunction;
+
 export const mockLoggerReset = () => {
   // const levels = ['trace', 'info', 'warn', 'error', 'fatal', 'security'];
-  mockLogger.trace = jest.fn(loggerMockFunction);
-  mockLogger.info = jest.fn(loggerMockFunction);
-  mockLogger.warn = jest.fn(loggerMockFunction);
-  mockLogger.error = jest.fn(loggerMockFunction);
-  mockLogger.fatal = jest.fn(loggerMockFunction);
-  mockLogger.security = jest.fn(loggerMockFunction);
-  mockLogger.timeEnd = jest.fn(loggerTimeEndMockFunction);
-  // TODO: Fix the ignore below
-  // @ts-ignore - [ts] Property 'error' does not exist on type 'Function'. [2339]
-  mockLogger.timeEnd.error = jest.fn(loggerTimeEndMockFunction);
+  mockLogger.trace = getLogMock();
+  mockLogger.info = getLogMock();
+  mockLogger.warn = getLogMock();
+  mockLogger.error = getLogMock();
+  mockLogger.fatal = getLogMock();
+  mockLogger.security = getLogMock();
+  mockLogger.timeEnd = jest.fn(loggerTimeEndMockFunction) as unknown as TimeEndLog;
+  mockLogger.timeEnd.error = jest.fn(loggerTimeEndMockFunction) as unknown as TimeLogFunction;
   mockLogger.time = jest.fn();
 };
 

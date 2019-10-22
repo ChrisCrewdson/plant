@@ -2,6 +2,7 @@ import mongodb, { Db, UpdateWriteOpResult } from 'mongodb';
 
 import _ from 'lodash';
 import { produce } from 'immer';
+import Logger from 'lalog';
 
 import {
   readLocation, readPlant,

@@ -3,11 +3,18 @@ import _ from 'lodash';
 import aws from 'aws-sdk';
 import multer from 'multer';
 
+import Logger from 'lalog';
 import { getDbInstance } from '../db/mongo';
 import { requireToken } from '../auth/token-check';
 import * as constants from '../../app/libs/constants';
 import { serverValidateNote } from '../validation/ssv-note';
 import utils from '../../app/libs/utils';
+
+interface ImageCompleteRequest {
+  logger: Logger;
+  body?: ImageCompleteBody;
+  query?: ImageCompleteQuery;
+}
 
 const mongo = getDbInstance();
 

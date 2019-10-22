@@ -1,3 +1,4 @@
+import Logger from 'lalog';
 import { getDbInstance } from './mongo';
 
 // Get all the data from the DB for a single plant to be able

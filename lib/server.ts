@@ -3,7 +3,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import http from 'http';
-// @ts-ignore
 import Logger from 'lalog';
 import morgan from 'morgan';
 import methodOverride from 'method-override';
@@ -19,6 +18,29 @@ import authPassportSetup from './auth/passport-setup';
 
 import UnhandledRejectionListener = NodeJS.UnhandledRejectionListener;
 import UncaughtExceptionListener = NodeJS.UncaughtExceptionListener;
+
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      body?: any;
+      /**
+       * I'm sure that this is not always available on the req object unless the Multer middleware
+       * always adds it?
+       * TODO: Need to test this. If it's not always available then work out how to type this.
+       */
+      // files: {
+      //   [fieldname: string]: Multer.File[];
+      // } | Multer.File[];
+      isAuthenticated?: Function;
+      logger: Logger;
+      logIn: Function;
+      logout: Function;
+      user?: BizUser;
+    }
+  }
+}
 
 const mongoFn = getDbInstance;
 
