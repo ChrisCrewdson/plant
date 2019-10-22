@@ -25,7 +25,7 @@ const moduleName = 'lib/db/mongo/index';
 const mongoConnection = `mongodb://${process.env.PLANT_DB_URL || '127.0.0.1'}/${process.env.PLANT_DB_NAME || 'plant'}`;
 
 // This stores a cache of the user's location
-const locationLocCache: LocationLocCache = {};
+const locationLocCache: Record<string, Geo> = {};
 
 interface QueryBySocialMedia {
   'facebook.id'?: string;

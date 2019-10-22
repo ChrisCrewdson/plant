@@ -33,43 +33,6 @@ interface BizLocation extends Omit<DbLocation, '_id' | 'createdBy'> {
   plantIds?: string[];
 }
 
-// UpsertLocation structures Start
-
-interface UpsertLocationBodyBase {
-  action: string;
-  locationId: string;
-}
-
-interface UpsertLocationMemberBody extends UpsertLocationBodyBase {
-  role: Role;
-  userId: string;
-}
-interface UpsertLocationWeatherBody extends UpsertLocationBodyBase {
-  stationId: string;
-  name: string;
-  enabled: string;
-}
-interface UpsertLocationUser {
-  _id: string;
-}
-
-interface UpsertLocationMember {
-  user: UpsertLocationUser;
-  body: UpsertLocationMemberBody;
-}
-
-interface UpsertLocationWeather {
-  user: UpsertLocationUser;
-  body: UpsertLocationWeatherBody;
-}
-
-// UpsertLocation structures End
-
-interface LocationLocCache {
-  [key: string]: Geo;
-}
-
-
 interface UiLocationsLoc {
   type: string;
   coordinates: object;

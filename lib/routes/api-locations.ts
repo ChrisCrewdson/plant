@@ -8,10 +8,38 @@ import { UiActionType, actionEnum } from '../../app/actions';
 import { requireToken } from '../auth/token-check';
 import * as constants from '../../app/libs/constants';
 
+
+interface UpsertLocationBodyBase {
+  action: string;
+  locationId: string;
+}
+
+interface UpsertLocationMemberBody extends UpsertLocationBodyBase {
+  role: Role;
+  userId: string;
+}
+interface UpsertLocationWeatherBody extends UpsertLocationBodyBase {
+  stationId: string;
+  name: string;
+  enabled: string;
+}
+interface UpsertLocationUser {
+  _id: string;
+}
+
+interface UpsertLocationMember {
+  user: UpsertLocationUser;
+  body: UpsertLocationMemberBody;
+}
+
+interface UpsertLocationWeather {
+  user: UpsertLocationUser;
+  body: UpsertLocationWeatherBody;
+}
+
 type UpsertLocationMemberFnBound = (data: UpsertLocationMember, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
 
 type UpsertLocationWeatherFnBound = (data: UpsertLocationWeather, logger: Logger) => Promise<import('mongodb').UpdateWriteOpResult>;
-
 
 const mongo = getDbInstance();
 
