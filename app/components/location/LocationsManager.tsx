@@ -17,7 +17,7 @@ interface LocationsManagerRowUpdateRow extends Partial<GridPropsRow> {
 interface LocationsManagerRowUpdateMetaLocation {
   _id: string;
   members: Record<string, Role>;
-  stations?: Record<string, UiLocationsStation>;
+  stations?: Record<string, LocationStation>;
 }
 
 interface LocationsManagerRowUpdateMeta {
@@ -75,7 +75,7 @@ const getMembers = (members: Record<string, Role>) => Object.keys(members || {})
   };
 });
 
-const getStations = (stations: Record<string, UiLocationsStation>) => Object.keys(stations || {})
+const getStations = (stations: Record<string, LocationStation>) => Object.keys(stations || {})
   .map((_id) => {
     const { name, enabled } = stations[_id];
     return {

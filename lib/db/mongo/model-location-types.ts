@@ -1,11 +1,5 @@
-/*
-In TypeScript, just as in ECMAScript 2015, any file containing a top-level import or export
-is considered a module. Conversely, a file without any top-level import or export declarations
-is treated as a script whose contents are available in the global scope (and therefore to
-modules as well).
-*/
 
-interface DbLocationStationObj {
+interface LocationStation {
   name: string;
   enabled: boolean;
 }
@@ -20,7 +14,7 @@ interface DbLocation {
   createdBy: import('mongodb').ObjectID;
   loc?: Geo;
   members: Record<string, Role>;
-  stations?: Record<string, DbLocationStationObj>;
+  stations?: Record<string, LocationStation>;
   title: string;
 }
 
@@ -33,22 +27,12 @@ interface BizLocation extends Omit<DbLocation, '_id' | 'createdBy'> {
   plantIds?: string[];
 }
 
-interface UiLocationsLoc {
-  type: string;
-  coordinates: object;
-}
-
-interface UiLocationsStation {
-  name: string;
-  enabled: boolean;
-}
-
 interface UiLocationsValue {
   _id: string;
-  loc: UiLocationsLoc;
+  loc: Geo;
   createdBy: string;
   members: Record<string, Role>;
-  stations: Record<string, UiLocationsStation>;
+  stations: Record<string, LocationStation>;
   title: string;
   plantIds: string[];
 }
@@ -56,6 +40,4 @@ interface UiLocationsValue {
 /**
  * The key is the MongoId and the value is the document
  */
-interface UiLocations {
-  [id: string]: UiLocationsValue;
-}
+type UiLocations = Record<string, UiLocationsValue>;
