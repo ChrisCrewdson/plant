@@ -181,11 +181,6 @@ export default class LayoutMap extends React.Component {
     );
   }
 
-  /**
-   * @param {number} width
-   * @returns
-   * @memberof LayoutMap
-   */
   renderPlantLocations(width: number) {
     if (width < 30) {
       // console.error('Width is less than 30');

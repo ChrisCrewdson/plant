@@ -115,10 +115,6 @@ class PlantRead extends React.PureComponent {
     dispatch(actionFunc.showNoteImages(noteIds));
   }
 
-  /**
-   * @param {boolean} yes
-   * @memberof PlantRead
-   */
   confirmDelete(yes: boolean) {
     if (yes) {
       const {

@@ -4,12 +4,12 @@
 import si from 'seamless-immutable';
 import { AnyAction } from 'redux';
 import { actionEnum } from '../actions';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
 // @ts-ignore
 const seamless = si.static;
 
-function editNoteOpen(state: UiInterim, action: AnyAction): UiInterim {
-//  * @param {UiNotesValue} action.payload
+function editNoteOpen(state: UiInterim, action: PlantAction<UiInterimNoteContainer>): UiInterim {
   return seamless.set(state, 'note', action.payload);
 }
 
@@ -28,18 +28,18 @@ function editNoteClose(state: UiInterim): UiInterim {
  *     note,
  *     plant
  */
-function editNoteChange(state: UiInterim, action: AnyAction): UiInterim {
-//  * @param {UiNotesValue} action.payload
+function editNoteChange(state: UiInterim, action: PlantAction<UiInterimNote>): UiInterim {
   return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
 }
 
 // action.payload:
 // {plant}
-function editPlantOpen(state: UiInterim, { payload }: AnyAction): UiInterim {
-  let { plant = {} } = payload;
+function editPlantOpen(state: UiInterim,
+  { payload }: PlantAction<UiInterimPlantContainer>): UiInterim {
+  let plant = payload.plant || {} as UiPlantsValue;
   if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
     plant = seamless.asMutable(plant, { deep: true });
-    plant.price = plant.price.toString();
+    plant.price = plant.price && plant.price.toString();
   }
 
   return seamless.set(state, 'plant', { plant });
@@ -92,7 +92,8 @@ export const reducers = {
   [actionEnum.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
-export const interim = (state: UiInterim = seamless({}), action: AnyAction): UiInterim => {
+export const interim = (state: UiInterim = seamless({}),
+  action: PlantAction<any>): UiInterim => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

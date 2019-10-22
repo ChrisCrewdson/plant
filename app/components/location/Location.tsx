@@ -123,12 +123,6 @@ class Location extends React.Component {
     store.dispatch(actionFunc.editNoteClose());
   }
 
-  /**
-   * @static
-   * @param {UiLocationsValue} location
-   * @returns
-   * @memberof Location
-   */
   static renderTitle(location: UiLocationsValue) {
     return (
       <h2 style={{ textAlign: 'center' }}>
@@ -137,12 +131,6 @@ class Location extends React.Component {
     );
   }
 
-  /**
-   * @static
-   * @param {UiLocationsValue} location
-   * @returns
-   * @memberof Location
-   */
   static renderWaiting(location: UiLocationsValue) {
     return (
       <Base>
@@ -156,13 +144,6 @@ class Location extends React.Component {
     );
   }
 
-  /**
-   * @static
-   * @param {UiLocationsValue} location
-   * @param {boolean} userCanEdit
-   * @returns
-   * @memberof Location
-   */
   static renderNoPlants(location: UiLocationsValue, userCanEdit: boolean) {
     return (
       <Base>

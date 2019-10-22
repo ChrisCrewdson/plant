@@ -143,7 +143,7 @@ export default class Grid extends React.Component {
 
   /**
      * Toggle a row from View (read-only) Mode to Edit Mode
-     * @param {object} editData - holds rowId of the row being switch to edit mode
+     * @param editData - holds rowId of the row being switch to edit mode
      */
   editRow(editData: {id: string}) {
     this.setState({

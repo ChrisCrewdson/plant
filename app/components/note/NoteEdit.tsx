@@ -112,7 +112,6 @@ export default class NoteEdit extends React.PureComponent {
 
   /**
    * Change Handler
-   * @param {React.ChangeEvent<HTMLInputElement>} e
    */
   onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { dispatch } = this.props;
