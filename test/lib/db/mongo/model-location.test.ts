@@ -24,7 +24,7 @@ describe('/lib/db/mongo/model-location', () => {
     test('should fail to create a location if members, title and createdBy are missing', async () => {
       expect.hasAssertions();
       try {
-        const loc = {};
+        const loc = {} as BizLocationNew;
         await mongo.createLocation(loc, mockLogger);
       } catch (e) {
         expect(e).toMatchSnapshot();
@@ -36,7 +36,7 @@ describe('/lib/db/mongo/model-location', () => {
       try {
         const loc = {
           createdBy: userId,
-        };
+        } as BizLocationNew;
         await mongo.createLocation(loc, mockLogger);
       } catch (e) {
         expect(e).toMatchSnapshot();
@@ -50,7 +50,7 @@ describe('/lib/db/mongo/model-location', () => {
         members: {
           [userId]: 'owner',
         },
-      };
+      } as BizLocationNew;
       const actual = await mongo.createLocation(loc, mockLogger);
       const expected = {
         _id: actual._id,

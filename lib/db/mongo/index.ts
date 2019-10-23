@@ -269,12 +269,12 @@ export class MongoDb {
       const dbUser = await Create.createUser(db, userDetails);
       const newUser = MongoDb.dbUserToBizUser(dbUser);
 
-      const location: BizLocation = {
+      const location: BizLocationNew = {
         createdBy: newUser._id,
         members: { [newUser._id]: 'owner' },
         stations: {},
         title: `${newUser.name || ''} Yard`,
-      };
+      } as const;
       await this.createLocation(location, logger);
       const locations = await this.getLocationsByUserId(newUser._id, {}, logger);
 
@@ -1086,7 +1086,7 @@ export class MongoDb {
 
   // Location C: createLocation
 
-  async createLocation(loc: any, logger: Logger): Promise<Readonly<BizLocation>> {
+  async createLocation(loc: BizLocationNew, logger: Logger): Promise<Readonly<BizLocation>> {
     const db = await this.GetDb(logger);
     return modelLocation.createLocation({ db, loc, logger });
   }

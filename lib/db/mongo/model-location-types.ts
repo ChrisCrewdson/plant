@@ -22,30 +22,17 @@ interface BizLocation extends Omit<DbLocation, '_id' | 'createdBy'> {
   /**
    * Needs to be optional for when we create a Location
    */
-  _id?: string;
+  _id: string;
   createdBy: string;
   plantIds?: string[];
 }
 
+interface BizLocationNew extends Omit<BizLocation, '_id'> {}
+
 interface UiLocationsValue extends BizLocation {
-  _id: string;
-  // loc: Geo;
-  // createdBy: string;
-  // members: Record<string, Role>;
   stations: Record<string, LocationStation>;
-  // title: string;
   plantIds: string[];
 }
-
-// interface UiLocationsValue {
-//   _id: string;
-//   loc: Geo;
-//   createdBy: string;
-//   members: Record<string, Role>;
-//   stations: Record<string, LocationStation>;
-//   title: string;
-//   plantIds: string[];
-// }
 
 /**
  * The key is the MongoId and the value is the document

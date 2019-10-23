@@ -16,7 +16,7 @@ import * as constants from '../../../app/libs/constants';
 const { ObjectID } = mongodb;
 interface CreateLocationOptions {
   db: Db;
-  loc: BizLocation;
+  loc: BizLocationNew;
   logger: Logger;
 }
 interface GetLocationByQueryOptions {
@@ -34,7 +34,8 @@ export class LocationData {
   /**
    * Change types for saving
    */
-  static convertLocationDataTypesForSaving(location: BizLocation): Readonly<DbLocation> {
+  static convertLocationDataTypesForSaving(
+    location: Readonly<BizLocation> | Readonly<BizLocationNew>): Readonly<DbLocation> {
     return produce(location,
       (draft: DbLocation) => {
         if (draft._id) {
