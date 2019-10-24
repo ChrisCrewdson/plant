@@ -1,11 +1,7 @@
-// To get around: Cannot redeclare block-scoped variable .ts(2451)
 
-import si from 'seamless-immutable';
+import { produce } from 'immer';
+import { ObjectID } from 'bson';
 import { Helper } from '../../../../lib/db/mongo/helper';
-
-// @ts-ignore
-const seamless = si.static;
-
 
 describe('/lib/db/mongo/helper', () => {
   describe('removeEmpty', () => {
@@ -58,10 +54,10 @@ describe('/lib/db/mongo/helper', () => {
   });
 
   describe('convertIdToString', () => {
-    test('should return object if no _id prop', () => {
-      const obj = seamless.from({});
+    test('should return object if immutable', () => {
+      const obj = produce({ _id: new ObjectID() } as DbUser, (draft) => draft);
       const actual = Helper.convertIdToString(obj);
-      expect(actual).toBe(obj);
+      expect(actual._id).toBe(obj._id.toString());
     });
   });
 });

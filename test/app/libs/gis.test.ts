@@ -1,16 +1,12 @@
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import * as gis from '../../../app/libs/gis';
-
-// @ts-ignore
-const seamless = si.static;
 
 describe('/app/libs/gis', () => {
   describe('scaling to canvas', () => {
     test('should scale zero plants', () => {
       const width = 700;
-      const immutablePlants = seamless.from({});
+      const immutablePlants = produce({}, (draft) => draft);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
       expect(scaledPlants).toMatchSnapshot();
     });
 
@@ -23,11 +19,10 @@ describe('/app/libs/gis', () => {
             coordinates: [10, 20],
           },
         },
-      };
+      } as unknown as UiPlants;
       const width = 700;
-      const immutablePlants = seamless.from(plants);
+      const immutablePlants = produce(plants, (draft) => draft);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
       expect(scaledPlants).toMatchSnapshot();
     });
 
@@ -47,11 +42,10 @@ describe('/app/libs/gis', () => {
             coordinates: [11, 20],
           },
         },
-      };
+      } as unknown as UiPlants;
       const width = 700;
-      const immutablePlants = seamless.from(plants);
+      const immutablePlants = produce(plants, (draft) => draft);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
       expect(scaledPlants).toMatchSnapshot();
     });
 
@@ -71,11 +65,10 @@ describe('/app/libs/gis', () => {
             coordinates: [10, 21],
           },
         },
-      };
+      } as unknown as UiPlants;
       const width = 700;
-      const immutablePlants = seamless.from(plants);
+      const immutablePlants = produce(plants, (draft) => draft);
       const scaledPlants = gis.scaleToCanvas(immutablePlants, width);
-      expect(seamless.isImmutable(scaledPlants.plants)).toBe(true);
       expect(scaledPlants).toMatchSnapshot();
     });
   });

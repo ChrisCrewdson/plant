@@ -1,4 +1,3 @@
-// To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 import {
   BrowserRouter, Route, Redirect, Switch,

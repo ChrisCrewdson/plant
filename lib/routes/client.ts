@@ -1,6 +1,4 @@
 // These are routes that the client will handle
-// To get around: Cannot redeclare block-scoped variable .ts(2451)
-// To get around: Cannot redeclare block-scoped variable .ts(2451)
 
 import { Application, Request, Response } from 'express';
 

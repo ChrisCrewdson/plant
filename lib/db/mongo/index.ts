@@ -233,7 +233,7 @@ export class MongoDb {
         return dbUser && dbUser.length > 0 && dbHelper.convertIdToString(dbUser[0]);
       };
 
-      const user = await userFromSocialMedia() || await userFromEmail();
+      const user: Readonly<BizUser> = await userFromSocialMedia() || await userFromEmail();
 
       // 5. Update the user's details
       //    If they had previously signed in with Facebook and now with
@@ -262,8 +262,9 @@ export class MongoDb {
         // method below returns an "over populated" object from which a single prop is
         // extracted.
         const locations = await this.getLocationsByUserId(user._id, {}, logger);
-        user.locationIds = locations.map((location) => location._id || '');
-        return user;
+        return produce(user, (draft) => {
+          draft.locationIds = locations.map((location) => location._id || '');
+        });
       }
 
       const dbUser = await Create.createUser(db, userDetails);

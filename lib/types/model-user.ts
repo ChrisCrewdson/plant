@@ -36,23 +36,30 @@ interface DbUserGoogle {
   verified: boolean;
 }
 
-interface DbUser {
+// TODO: Make all Db interfaces extend this DbBase interface
+interface DbBase {
   _id: import('mongodb').ObjectID;
   createdAt: Date;
+  updatedAt: Date;
+}
+
+interface BizBase {
+  _id: string;
+  createdAt: Date;
+}
+
+interface DbUser extends DbBase {
   email?: string;
   facebook?: DbUserFacebook;
   google?: DbUserGoogle;
   name?: string;
-  updatedAt: Date;
 }
 
 type DbUserTiny = Pick<DbUser, '_id' | 'createdAt' | 'name'>;
 
 type BizUserStatus = 'success';
 
-interface BizUser {
-  _id: string;
-  createdAt: Date;
+interface BizUser extends BizBase {
   email?: string;
   facebook?: DbUserFacebook;
   google?: DbUserGoogle;

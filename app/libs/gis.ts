@@ -11,7 +11,8 @@ const { gisMultiplier } = constants;
  * @param immutablePlants - keyed off plantId
  * @param width - the width of the canvas in pixels?
  */
-export function scaleToCanvas(immutablePlants: UiPlants, width: number): UiPlantLocationCanvas {
+export function scaleToCanvas(immutablePlants: Readonly<UiPlants>,
+  width: number): Readonly<UiPlantLocationCanvas> {
   const plantIds = Object.keys(immutablePlants);
 
   if (!plantIds.length) {

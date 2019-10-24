@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import produce from 'immer';
 
 export class Helper {
   /**
@@ -20,14 +21,9 @@ export class Helper {
    * @param obj - Object that might have an _id
    * @returns - the same object with a converted _id
    */
-  static convertIdToString(obj: any): object {
-    if (_.isArray(obj)) {
-      return (obj as Array<any>).map(Helper.convertIdToString);
-    }
-    if (obj && obj._id) {
-      // eslint-disable-next-line no-param-reassign
-      obj._id = obj._id.toString();
-    }
-    return obj;
+  static convertIdToString<T extends BizBase>(obj: Readonly<DbBase>): Readonly<any> {
+    return produce(obj, (draft: T) => {
+      draft._id = draft._id.toString();
+    });
   }
 }

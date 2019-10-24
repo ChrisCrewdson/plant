@@ -1,5 +1,6 @@
 import si from 'seamless-immutable';
 import { Store } from 'redux';
+import { produce } from 'immer';
 import { PlantAction } from '../../lib/types/redux-payloads';
 
 // Purpose: Keep localStorage up-to-date with changes in the user object.
@@ -16,7 +17,7 @@ let user: UiUser;
  * setup the subscription
  */
 export function setupSubscribe(store: Store<PlantStateTree, PlantAction>) {
-  let currentValue = user || seamless.from({});
+  let currentValue = user || produce({}, (draft) => draft);
 
   function handleChange() {
     const previousValue = currentValue;

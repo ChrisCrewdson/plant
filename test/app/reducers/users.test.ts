@@ -1,9 +1,7 @@
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { users } from '../../../app/reducers/users';
 import { actionFunc } from '../../../app/actions';
 
-// @ts-ignore
-const seamless = si.static;
 function checkReducer(actionName: string, state: any, payload?: object) {
   const action = actionFunc[actionName](payload);
   const actual = users(state, action);
@@ -13,35 +11,35 @@ function checkReducer(actionName: string, state: any, payload?: object) {
 
 describe('/app/reducers/users', () => {
   test('should reduce loadUserSuccess action', () => {
-    const state = seamless.from({});
+    const state = produce({}, (draft) => draft);
     const payload = { _id: '1', name: 'john' };
 
     checkReducer('loadUserSuccess', state, payload);
   });
 
   test('should reduce loadUsersSuccess action', () => {
-    const state = seamless.from({});
+    const state = produce({}, (draft) => draft);
     const payload = [{ _id: '1', name: 'john' }];
 
     checkReducer('loadUsersSuccess', state, payload);
   });
 
   test('should reduce loadUsersSuccess with undefined payload', () => {
-    const state = seamless.from({});
+    const state = produce({}, (draft) => draft);
     const payload = undefined;
 
     checkReducer('loadUsersSuccess', state, payload);
   });
 
   test('should reduce createPlantRequest action', () => {
-    const state = seamless.from({ u1: { _id: 'u1', name: 'john', locationIds: ['p1'] } });
+    const state = produce({ u1: { _id: 'u1', name: 'john', locationIds: ['p1'] } }, (draft) => draft);
     const payload = { _id: 'p2', title: 'pt', userId: 'u1' };
 
     checkReducer('createPlantRequest', state, payload);
   });
 
   test('should reduce loadPlantsSuccess action', () => {
-    const state = seamless.from({
+    const state = produce({
       u1: {
         _id: 'u1',
         name: 'john',
@@ -52,7 +50,7 @@ describe('/app/reducers/users', () => {
         name: 'jane',
         locationIds: ['p2.1', 'p2.2'],
       },
-    });
+    }, (draft) => draft);
     const payload = [
       { _id: 'p1.1', userId: 'u1' },
       { _id: 'p1.2', userId: 'u1' },
@@ -65,7 +63,7 @@ describe('/app/reducers/users', () => {
   });
 
   test('should delete a plant', () => {
-    const state = seamless.from({
+    const state = produce({
       l1: {
         _id: 'l1',
         name: 'john',
@@ -76,7 +74,7 @@ describe('/app/reducers/users', () => {
         name: 'jane',
         locationIds: ['p2.1', 'p2.2', 'p2.3'],
       },
-    });
+    }, (draft) => draft);
     const payload = { locationId: 'l2', plantId: 'p2.1' };
 
     checkReducer('deletePlantRequest', state, payload);

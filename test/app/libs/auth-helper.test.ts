@@ -1,9 +1,6 @@
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import * as helper from '../../helper';
 import * as authHelper from '../../../app/libs/auth-helper';
-
-// @ts-ignore
-const seamless = si.static;
 
 describe('/app/libs/auth-helper', () => {
   describe('canEdit', () => {
@@ -18,34 +15,34 @@ describe('/app/libs/auth-helper', () => {
     });
 
     test('should return false if location does not have member', () => {
-      const location = seamless.from({});
+      const location = produce({}, (draft) => draft) as UiLocationsValue;
       expect(authHelper.canEdit('fake-user-id', location)).toBe(false);
     });
 
     test('should return false if member is not owner/manager', () => {
-      const location = seamless.from({
+      const location = produce({
         members: {
           'fake-user-id': 'not-owner-manager',
         },
-      });
+      }, (draft) => draft) as unknown as UiLocationsValue;
       expect(authHelper.canEdit('fake-user-id', location)).toBe(false);
     });
 
     test('should return true if member is owner', () => {
-      const location = seamless.from({
+      const location = produce({
         members: {
           'fake-user-id': 'owner',
         },
-      });
+      }, (draft) => draft) as unknown as UiLocationsValue;
       expect(authHelper.canEdit('fake-user-id', location)).toBe(true);
     });
 
     test('should return true if member is manager', () => {
-      const location = seamless.from({
+      const location = produce({
         members: {
           'fake-user-id': 'manager',
         },
-      });
+      }, (draft) => draft) as unknown as UiLocationsValue;
       expect(authHelper.canEdit('fake-user-id', location)).toBe(true);
     });
   });
@@ -53,15 +50,15 @@ describe('/app/libs/auth-helper', () => {
   describe('isLoggedIn', () => {
     test('should return false if user is not logged in', () => {
       const store = helper.getFakeStore();
-      store.getState = () => seamless.from({
+      store.getState = () => produce({
         user: {},
-      });
+      }, (draft) => draft);
       expect(authHelper.isLoggedIn(store)).toBe(false);
     });
 
     test('should return false if user is missing from state', () => {
       const store = helper.getFakeStore();
-      store.getState = () => seamless.from({});
+      store.getState = () => produce({}, (draft) => draft);
       expect(authHelper.isLoggedIn(store)).toBe(false);
     });
   });

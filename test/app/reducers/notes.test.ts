@@ -1,4 +1,5 @@
 import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { notes } from '../../../app/reducers/notes';
 import { actionFunc } from '../../../app/actions';
 
@@ -44,7 +45,7 @@ describe('/app/reducers/notes', () => {
     test('should delete note', () => {
       const state = seamless.from({ id1: { _id: 'id1', date: 20160101, plantIds: ['p1', 'p2'] } });
       const payload = 'id1';
-      const expected = seamless.from({});
+      const expected = produce({}, (draft) => draft);
       checkReducer('deleteNoteRequest', state, payload, expected);
     });
 
