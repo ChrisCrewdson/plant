@@ -1,4 +1,3 @@
-import si from 'seamless-immutable';
 import { Store } from 'redux';
 import { produce } from 'immer';
 import { PlantAction } from '../../lib/types/redux-payloads';
@@ -7,9 +6,6 @@ import { PlantAction } from '../../lib/types/redux-payloads';
 
 // 1. Listen to state changes.
 // 2. If the user object has changed then write to localStorage
-// @ts-ignore - static hasn't been defined on seamless types yet.
-// @ts-ignore
-const seamless = si.static;
 
 let user: UiUser;
 
@@ -43,7 +39,7 @@ export function initialState() {
     // eslint-disable-next-line no-empty
     } catch (e) {
     }
-    user = seamless.from(user || {});
+    user = produce({}, () => (user || {}));
   }
 
   return user;

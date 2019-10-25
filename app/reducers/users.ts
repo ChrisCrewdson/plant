@@ -1,9 +1,6 @@
 import { AnyAction } from 'redux';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { actionEnum } from '../actions';
-
-// @ts-ignore
-const seamless = si.static;
 
 /**
  * Called after users received back from server request
@@ -11,17 +8,11 @@ const seamless = si.static;
  */
 function loadUsersSuccess(state: UiUsers, action: AnyAction): UiUsers {
   const users: UiUsersValue[] = action.payload || [];
-  const usersSet = users.reduce((acc, user) => {
-    acc[user._id] = { ...user, locationIds: user.locationIds || [] };
-    return acc;
-  }, {} as UiUsers);
-
-  if (!Object.keys(usersSet).length) {
-    return state;
-  }
-
-  const newState = seamless.merge(state, usersSet, { deep: true });
-  return newState;
+  return produce(state, (draft) => {
+    users.forEach((user) => {
+      draft[user._id] = { ...user, locationIds: user.locationIds || [] };
+    });
+  });
 }
 
 /**
@@ -114,10 +105,12 @@ export const reducers = {
   [actionEnum.LOAD_USERS_SUCCESS]: loadUsersSuccess,
 };
 
+const defaultState = produce({}, () => ({}));
+
 /**
  * The action.payload is the returned user from the server.
  */
-export const users = (state: UiUsers = seamless.from({}), action: AnyAction): UiUsers => {
+export const users = (state: UiUsers = defaultState, action: AnyAction): UiUsers => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

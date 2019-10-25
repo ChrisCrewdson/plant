@@ -1,15 +1,12 @@
-import si from 'seamless-immutable';
 import { Request, Response } from 'express';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { deepOrange500 } from 'material-ui/styles/colors';
 import { createStore } from 'redux';
+import { produce } from 'immer';
 
 import { indexHtml } from '.';
 import { ssrRenderArticle } from './article-render';
 import appReducers from '../../app/reducers';
-
-// @ts-ignore
-const seamless = si.static;
 
 export const renderArticle = (req: Request, res: Response): void => {
   const muiTheme = getMuiTheme({
@@ -19,7 +16,7 @@ export const renderArticle = (req: Request, res: Response): void => {
     userAgent: req.headers['user-agent'],
   });
 
-  const store = createStore(appReducers, seamless.from({}));
+  const store = createStore(appReducers, produce({}, () => ({})));
 
   // Render the component to a string
   const html = ssrRenderArticle({
