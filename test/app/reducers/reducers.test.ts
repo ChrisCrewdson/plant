@@ -20,19 +20,19 @@ const reducerModules = [
 
 describe('/app/reducers', () => {
   test('should reduce a logout success', () => {
-    const input = produce({}, (draft) => draft);
+    const input = produce({ user: {} }, (draft) => draft);
     const actual = rootReducer(input, actionFunc.logoutSuccess());
     expect(actual).toMatchSnapshot();
   });
 
   test('should reduce a logout request', () => {
-    const input = produce({}, (draft) => draft);
+    const input = produce({ user: {} }, (draft) => draft);
     const actual = rootReducer(input, actionFunc.logoutRequest());
     expect(actual).toMatchSnapshot();
   });
 
   test('should reduce a logout failure', () => {
-    const input = produce({}, (draft) => draft);
+    const input = produce({ user: {} }, (draft) => draft);
     const actual = rootReducer(input, actionFunc.logoutFailure());
     expect(actual).toMatchSnapshot();
   });

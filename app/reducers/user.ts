@@ -1,41 +1,36 @@
 import { AnyAction } from 'redux';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { actionEnum } from '../actions';
 
 import { initialState } from '../store/user';
 import { PlantAction, LoadLocationsSuccessAction } from '../../lib/types/redux-payloads';
 
-// @ts-ignore
-const seamless = si.static;
-
-function logoutRequest() {
-  return seamless.from({
-    status: 'logout',
-    isLoggedIn: false,
+function logoutRequest(state: UiUser) {
+  return produce(state, (draft) => {
+    draft.status = 'logout';
+    draft.isLoggedIn = false;
   });
 }
 
-function logoutSuccess(state: UiUser, action: AnyAction): UiUser {
-  return seamless.from({
-    status: 'logout',
-    isLoggedIn: false,
-    ...action.payload,
+function logoutSuccess(state: UiUser): UiUser {
+  return produce(state, (draft) => {
+    draft.status = 'logout';
+    draft.isLoggedIn = false;
   });
 }
 
-function logoutFailure(state: UiUser, action: AnyAction): UiUser {
-  return seamless.from({
-    status: 'failed',
-    isLoggedIn: false,
-    ...action.payload,
+function logoutFailure(state: UiUser): UiUser {
+  return produce(state, (draft) => {
+    draft.status = 'failed';
+    draft.isLoggedIn = false;
   });
 }
 
 /**
  * Load Location Success is called after a response from server.
  */
-function loadLocationsSuccess(state: UiUser, action: LoadLocationsSuccessAction):
- UiUser {
+function loadLocationsSuccess(state: UiUser,
+  action: LoadLocationsSuccessAction): UiUser {
   // const { payload: locations = [] } = action;
   const { payload: locations } = action;
   if (state.isLoggedIn && !state.activeLocationId) {
@@ -46,7 +41,9 @@ function loadLocationsSuccess(state: UiUser, action: LoadLocationsSuccessAction)
 
     if (location) {
       // console.log('found location');
-      return seamless.set(state, 'activeLocationId', location._id);
+      return produce(state, (draft) => {
+        draft.activeLocationId = location._id;
+      });
     }
     // console.log('no location found');
   }
@@ -62,7 +59,9 @@ function changeActiveLocationId(state: UiUser, { payload }: AnyAction): UiUser {
   if (!_id) {
     return state; // should we remove activeLocationId?
   }
-  return seamless.set(state, 'activeLocationId', _id);
+  return produce(state, (draft) => {
+    draft.activeLocationId = _id;
+  });
 }
 
 // This is only exported for testing
