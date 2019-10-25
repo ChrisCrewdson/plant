@@ -35,6 +35,7 @@
         "polyfill",
         "resave",
         "rssxml",
+        "showable",
         "sinensis",
         "slugify",
         "stylelint",

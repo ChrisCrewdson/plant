@@ -1,9 +1,6 @@
 import { AnyAction } from 'redux';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { actionEnum } from '../actions';
-
-// @ts-ignore
-const seamless = si.static;
 
 /**
  * Raised when a save event is triggered for a note.
@@ -13,7 +10,10 @@ function upsertNoteRequestSuccess(state: UiNotes, action: AnyAction): UiNotes {
   if (!_id) {
     return state;
   }
-  return seamless.set(state, _id, action.payload.note);
+
+  return produce(state, (draft) => {
+    draft[_id] = action.payload.note;
+  });
 }
 
 /**
@@ -21,7 +21,9 @@ function upsertNoteRequestSuccess(state: UiNotes, action: AnyAction): UiNotes {
  */
 function deleteNoteRequest(state: UiNotes, action: AnyAction): UiNotes {
   const { payload: _id } = action;
-  return seamless.without(state, _id);
+  return produce(state, (draft) => {
+    delete draft[_id];
+  });
 }
 
 
@@ -30,13 +32,11 @@ function deleteNoteRequest(state: UiNotes, action: AnyAction): UiNotes {
  */
 function loadNotesSuccess(state: UiNotes, { payload: notes }: AnyAction): UiNotes {
   if (notes && notes.length) {
-    const newNotes = notes.reduce(
-      (acc: UiNotes, note: UiNotesValue) => {
-        acc[note._id] = note;
-        return acc;
-      }, {});
-
-    return seamless.merge(state, newNotes);
+    return produce(state, (draft) => {
+      notes.forEach((note: UiNotesValue) => {
+        draft[note._id] = note;
+      });
+    });
   }
 
   return state;
@@ -61,17 +61,15 @@ function showNoteImages(state: UiNotes, { payload: _id }: AnyAction): UiNotes {
     return state;
   }
 
-  const updatedNotes = notes.reduce(
-    (acc: UiNotes, note: UiNotesValue) => {
-      acc[note._id] = { ...note, showImages: true };
-      return acc;
-    }, {});
-
-  return seamless.merge(state, updatedNotes);
+  return produce(state, (draft) => {
+    notes.forEach((note: UiNotesValue) => {
+      draft[note._id].showImages = true;
+    });
+  });
 }
 
 // This is only exported for testing
-export const reducers = seamless.from({
+export const reducers = {
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
   [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
 
@@ -81,7 +79,7 @@ export const reducers = seamless.from({
 
   [actionEnum.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
 
-}) as Record<string, (state: UiNotes, action: AnyAction) => UiNotes>;
+} as Readonly<Record<string, (state: UiNotes, action: AnyAction) => UiNotes>>;
 
 export const notes = (state: UiNotes = {}, action: AnyAction): UiNotes => {
   if (reducers[action.type]) {
