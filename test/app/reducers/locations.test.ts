@@ -1,12 +1,9 @@
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { locations } from '../../../app/reducers/locations';
 import { actionFunc } from '../../../app/actions';
 
-// @ts-ignore
-const seamless = si.static;
-
 describe('/app/reducers/locations', () => {
-  const stateA = seamless.from({
+  const stateA = produce({}, () => ({
     1: {
       _id: '1',
       plantIds: ['one'],
@@ -19,7 +16,7 @@ describe('/app/reducers/locations', () => {
     3: {
       _id: '3',
     },
-  });
+  })) as unknown as Record<string, UiLocationsValue>;
 
   test('should load locations', () => {
     const payload = {
@@ -41,7 +38,6 @@ describe('/app/reducers/locations', () => {
 
     const actual = locations(stateA, actionFunc.loadLocationsSuccess(payload));
     expect(actual).toMatchSnapshot();
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should load locations with undefined payload', () => {
@@ -49,7 +45,6 @@ describe('/app/reducers/locations', () => {
     expect(actual).toMatchSnapshot();
     // The same object should be returned
     expect(actual).toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a createPlantRequest for an existing plant at location', () => {
@@ -60,7 +55,6 @@ describe('/app/reducers/locations', () => {
     const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
     expect(actual).not.toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a createPlantRequest for a missing plant at location', () => {
@@ -71,7 +65,6 @@ describe('/app/reducers/locations', () => {
     const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a createPlantRequest when location does not have plantIds', () => {
@@ -82,7 +75,6 @@ describe('/app/reducers/locations', () => {
     const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
     expect(actual).not.toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a loadPlantsSuccess for an array of plants', () => {
@@ -101,7 +93,6 @@ describe('/app/reducers/locations', () => {
     }];
     const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a loadPlantsSuccess for an empty array of plants', () => {
@@ -109,7 +100,6 @@ describe('/app/reducers/locations', () => {
     const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a deletePlantRequest', () => {
@@ -119,7 +109,6 @@ describe('/app/reducers/locations', () => {
     };
     const actual = locations(stateA, actionFunc.deletePlantRequest(deletePlant));
     expect(actual).toMatchSnapshot();
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 
   test('should handle a deletePlantRequest when locationId is missing', () => {
@@ -130,6 +119,5 @@ describe('/app/reducers/locations', () => {
     const actual = locations(stateA, actionFunc.deletePlantRequest(deletePlant));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);
-    expect(seamless.isImmutable(actual)).toBe(true);
   });
 });

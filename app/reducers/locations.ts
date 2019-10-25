@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { actionEnum } from '../actions';
 
 // @ts-ignore
@@ -55,19 +56,16 @@ function loadPlantsSuccess(state: UiLocations, action: AnyAction): UiLocations {
   if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}
-    const locations = plants.reduce(
-      (acc: UiLocations, { locationId, _id: plantId }: UiPlantsValue) => {
-        if (state[locationId]) {
-          acc[locationId] = acc[locationId]
-            || seamless.asMutable(state[locationId], { deep: true });
-          if (plantId && !acc[locationId].plantIds.includes(plantId)) {
-            acc[locationId].plantIds.push(plantId);
+    return produce(state, (draft) => {
+      plants.forEach(
+        ({ locationId, _id: plantId }: UiPlantsValue) => {
+          if (draft[locationId]) {
+            if (plantId && !draft[locationId].plantIds.includes(plantId)) {
+              draft[locationId].plantIds.push(plantId);
+            }
           }
-        }
-        return acc;
-      }, {});
-
-    return seamless.merge(state, locations, { deep: true });
+        });
+    });
   }
   return state;
 }
