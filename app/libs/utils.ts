@@ -14,19 +14,6 @@ type MetaMetricType =
   'toggle' |
   'weight';
 
-type MetaMetricKey =
-  'height' |
-  'girth' |
-  'harvestCount' |
-  'harvestWeight' |
-  'firstBlossom' |
-  'lastBlossom' |
-  'firstBud' |
-  'harvestStart' |
-  'harvestEnd' |
-  'leafShedStart' |
-  'leafShedEnd';
-
 export interface MetaMetric {
   key: MetaMetricKey;
   label: string;

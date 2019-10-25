@@ -1,7 +1,7 @@
-import si from 'seamless-immutable';
+import { produce } from 'immer';
+
 import rootReducer from '../../../app/reducers';
 import { actionFunc } from '../../../app/actions';
-
 import { reducers as interimReducers } from '../../../app/reducers/interim';
 import { reducers as locationsReducers } from '../../../app/reducers/locations';
 import { reducers as notesReducers } from '../../../app/reducers/notes';
@@ -18,22 +18,22 @@ const reducerModules = [
   usersReducers,
 ];
 
-// @ts-ignore
-const seamless = si.static;
-
 describe('/app/reducers', () => {
   test('should reduce a logout success', () => {
-    const actual = rootReducer(seamless({}), actionFunc.logoutSuccess());
+    const input = produce({}, (draft) => draft);
+    const actual = rootReducer(input, actionFunc.logoutSuccess());
     expect(actual).toMatchSnapshot();
   });
 
   test('should reduce a logout request', () => {
-    const actual = rootReducer(seamless({}), actionFunc.logoutRequest());
+    const input = produce({}, (draft) => draft);
+    const actual = rootReducer(input, actionFunc.logoutRequest());
     expect(actual).toMatchSnapshot();
   });
 
   test('should reduce a logout failure', () => {
-    const actual = rootReducer(seamless({}), actionFunc.logoutFailure());
+    const input = produce({}, (draft) => draft);
+    const actual = rootReducer(input, actionFunc.logoutFailure());
     expect(actual).toMatchSnapshot();
   });
 

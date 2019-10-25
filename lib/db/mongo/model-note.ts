@@ -47,11 +47,6 @@ interface NoteImage {
   sizes: NoteImageSize[];
 }
 
-/**
- * An object with key/value pairs. Values are numbers or boolean.
- */
-// type NoteMetric = { [key in MetaMetricKey]: number|boolean }
-
 interface NoteMetric {
   height: number;
   girth: number;
@@ -65,6 +60,8 @@ interface NoteMetric {
   leafShedStart: boolean;
   leafShedEnd: boolean;
 }
+
+type MetaMetricKey = keyof NoteMetric;
 
 type MetricNoteTypes = 'since' | 'unfound' | 'note' | 'metric';
 
