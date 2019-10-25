@@ -98,7 +98,7 @@ export default class NoteAssocPlant extends React.Component {
     );
   }
 
-  renderPlantButtons(plantIds: string[], plants: Record<string, UiPlantsValue>,
+  renderPlantButtons(plantIds: ReadonlyArray<string>, plants: Record<string, UiPlantsValue>,
     selected: boolean) {
     return plantIds.map((plantId) => {
       const plant = plants[plantId];

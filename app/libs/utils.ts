@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 import isDate from 'lodash/isDate';
 import isNumber from 'lodash/isNumber';
 import slug from 'slugify';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 
 import * as constants from './constants';
 
@@ -22,9 +22,6 @@ export interface MetaMetric {
 }
 
 type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
-
-// @ts-ignore
-const seamless = si.static;
 
 const { gisMultiplier } = constants;
 
@@ -157,7 +154,8 @@ function plantFromBody(body: PlantFromBodyPayload): UiPlantsValue {
  * @param filter - optional text to filter title of plant
  * @returns - an array of filtered plantIds
  */
-function filterPlants(plantIds: string[], plants: object, filter?: string): Array<any> {
+function filterPlants(plantIds: ReadonlyArray<string>,
+  plants: object, filter?: string): ReadonlyArray<string> {
   const lowerFilter = (filter || '').toLowerCase();
   return lowerFilter
     ? plantIds.filter((plantId) => {
@@ -178,7 +176,8 @@ function filterPlants(plantIds: string[], plants: object, filter?: string): Arra
  * @param items - a object that has ids as props
  * @returns - true if already sorted otherwise false
  */
-function alreadySorted(prop: string, itemIds: string[], items: Record<string, any>): boolean {
+function alreadySorted(prop: string, itemIds: ReadonlyArray<string>,
+  items: Record<string, any>): boolean {
   return itemIds.every((itemId, index) => {
     if (index === 0) {
       return true;
@@ -205,7 +204,8 @@ function alreadySorted(prop: string, itemIds: string[], items: Record<string, an
  * @param items - an object with MongoIds as keys. The values are objects.
  * @returns - an immutable array of sorted itemIds
  */
-function sortItems(prop: string, itemIds: string[], items: Record<string, any>): Array<any> {
+function sortItems(prop: string, itemIds: ReadonlyArray<string>,
+  items: Record<string, any>): ReadonlyArray<string> {
   // TODO: Memoize this method.
   if (!itemIds || !itemIds.length) {
     return itemIds || [];
@@ -236,7 +236,9 @@ function sortItems(prop: string, itemIds: string[], items: Record<string, any>):
     return 1;
   };
 
-  return seamless.from(seamless.asMutable(itemIds).sort(sorter));
+  return produce(itemIds, (draft) => {
+    draft.sort(sorter);
+  });
 }
 
 /**
@@ -245,7 +247,8 @@ function sortItems(prop: string, itemIds: string[], items: Record<string, any>):
  * @param notes - an object with MongoIds as keys. The values are note objects.
  * @returns - an immutable array of sorted noteIds
  */
-function sortNotes(noteIds: string[], notes: Record<string, any>): string[] {
+function sortNotes(noteIds: ReadonlyArray<string>,
+  notes: Record<string, any>): ReadonlyArray<string> {
   // TODO: Memoize this method
   return sortItems('date', noteIds, notes);
 }
@@ -256,7 +259,8 @@ function sortNotes(noteIds: string[], notes: Record<string, any>): string[] {
  * @param plants - all the plants available to sort
  * @returns - an immutable array of sorted plantIds
  */
-function sortPlants(plantIds: string[], plants: Record<string, any>): string[] {
+function sortPlants(plantIds: ReadonlyArray<string>,
+  plants: Record<string, any>): ReadonlyArray<string> {
   // TODO: Memoize this method
   return sortItems('title', plantIds, plants);
 }
@@ -268,8 +272,9 @@ function sortPlants(plantIds: string[], plants: Record<string, any>): string[] {
  * @param filter - optional text to filter title of plant
  * @returns - an array of sorted and filtered plantIds
  */
-function filterSortPlants(plantIds: string[], plants: Record<string, any>, filter: string):
-string[] {
+function filterSortPlants(plantIds: ReadonlyArray<string>,
+  plants: Record<string, any>, filter: string):
+ReadonlyArray<string> {
   const filteredPlantIds = filterPlants(plantIds, plants, filter);
 
   return sortPlants(filteredPlantIds, plants);
@@ -468,7 +473,7 @@ const metaMetricsRaw: MetaMetric[] = [{
   type: 'toggle',
 }];
 
-const metaMetrics: MetaMetric[] = seamless.from(metaMetricsRaw);
+const metaMetrics: MetaMetric[] = produce({}, () => metaMetricsRaw);
 
 /**
  * Converts the body from a POST (Upsert) operation from a client into a BizNote
