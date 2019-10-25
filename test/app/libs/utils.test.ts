@@ -1,10 +1,7 @@
-import si from 'seamless-immutable';
 import moment from 'moment';
+import { produce } from 'immer';
 import utils, { PlantFromBodyPayload } from '../../../app/libs/utils';
 import * as constants from '../../../app/libs/constants';
-
-// @ts-ignore
-const seamless = si.static;
 
 describe('/app/libs/utils', () => {
   describe('slugs', () => {
@@ -137,7 +134,7 @@ describe('/app/libs/utils', () => {
 
   describe('filterPlants', () => {
     test('that plants are filtered', () => {
-      const plantIds = seamless.from(['p-1', 'p-2', 'p-3']);
+      const plantIds = produce({}, () => (['p-1', 'p-2', 'p-3']));
       const plants = {
         'p-1': {
           title: 'GoLden',
@@ -150,7 +147,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('that plants are not filtered if no filter text', () => {
-      const plantIds = seamless.from(['p-1', 'p-2', 'p-3']);
+      const plantIds = produce({}, () => (['p-1', 'p-2', 'p-3']));
       const plants = {
         'p-1': {
           title: 'GoLden',
@@ -288,7 +285,7 @@ describe('/app/libs/utils', () => {
     };
 
     test('should return plantIds if array is empty', () => {
-      const plantIds = seamless.from([]);
+      const plantIds = produce({}, () => ([]));
       // @ts-ignore - intentional mistyping for testing
       expect(utils.sortPlants(plantIds)).toBe(plantIds);
     });
@@ -299,14 +296,14 @@ describe('/app/libs/utils', () => {
     });
 
     test('should sort plants', () => {
-      const plantIds = seamless.from(['4', '1', '3', '2']);
+      const plantIds = produce({}, () => (['4', '1', '3', '2']));
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       expect(sortedPlantIds).not.toBe(plantIds);
     });
 
     test('should not need to sort plants', () => {
-      const plantIds = seamless.from(['1', '2', '3', '4']);
+      const plantIds = produce({}, () => (['1', '2', '3', '4']));
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -315,7 +312,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should not need to sort plants with missing plants at end', () => {
-      const plantIds = seamless.from(['1', '2', '3', '4', '5', '5', '5']);
+      const plantIds = produce({}, () => (['1', '2', '3', '4', '5', '5', '5']));
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -324,7 +321,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should sort plants with missing plants', () => {
-      const plantIds = seamless.from(['4', '7', '6', '2', '6', '3', '1', '9']);
+      const plantIds = produce({}, () => (['4', '7', '6', '2', '6', '3', '1', '9']));
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       const expectedOrder = ['1', '2', '3', '4', '7', '6', '6', '9'];
@@ -352,7 +349,7 @@ describe('/app/libs/utils', () => {
     };
 
     test('should return noteIds if array is empty', () => {
-      const noteIds = seamless.from([]);
+      const noteIds = produce({}, () => ([]));
       // @ts-ignore - intentional mistyping for testing
       expect(utils.sortNotes(noteIds)).toBe(noteIds);
     });
@@ -363,14 +360,14 @@ describe('/app/libs/utils', () => {
     });
 
     test('should sort notes', () => {
-      const noteIds = seamless.from(['4', '1', '3', '2']);
+      const noteIds = produce({}, () => (['4', '1', '3', '2']));
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       expect(sortedNoteIds).not.toBe(noteIds);
     });
 
     test('should not need to sort notes', () => {
-      const noteIds = seamless.from(['1', '2', '3', '4']);
+      const noteIds = produce({}, () => (['1', '2', '3', '4']));
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -379,7 +376,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should not need to sort notes with missing notes at end', () => {
-      const noteIds = seamless.from(['1', '2', '3', '4', '5', '5', '5']);
+      const noteIds = produce({}, () => (['1', '2', '3', '4', '5', '5', '5']));
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -388,7 +385,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should sort notes with missing notes', () => {
-      const noteIds = seamless.from(['4', '7', '6', '2', '6', '3', '1', '9']);
+      const noteIds = produce({}, () => (['4', '7', '6', '2', '6', '3', '1', '9']));
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
