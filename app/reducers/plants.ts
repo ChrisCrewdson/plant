@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import uniq from 'lodash/uniq';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { actionEnum } from '../actions';
 
 // An array of plants loaded from the server.
@@ -8,15 +8,14 @@ import { actionEnum } from '../actions';
 // If a user is logged in then some of the items in the array
 // might be plants belonging to the user.
 
-// @ts-ignore
-const seamless = si.static;
-
 /**
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
  */
 function replaceInPlace(state: UiPlants, { payload }: AnyAction): UiPlants {
-  return seamless.set(state, payload._id, payload);
+  return produce(state, (draft) => {
+    draft[payload._id] = payload;
+  });
 }
 
 /**
@@ -43,7 +42,9 @@ function updatePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
  * @param action - action.payload: <plant-id>
  */
 function deletePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
-  return seamless.without(state, action.payload.plantId);
+  return produce(state, (draft) => {
+    delete draft[action.payload.plantId];
+  });
 }
 
 /**
@@ -52,17 +53,14 @@ function deletePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
  * @param action - action.payload: <noteId>
  */
 function deleteNoteRequest(state: UiPlants, { payload: noteId }: AnyAction): UiPlants {
-  const initPlants: UiPlants = {};
-
-  return seamless.from(Object.keys(state).reduce((acc, plantId) => {
-    const plant = state[plantId];
-    if ((plant.notes || []).includes(noteId)) {
-      acc[plantId] = seamless.set(plant, 'notes', (plant.notes || []).filter((nId) => nId !== noteId));
-    } else {
-      acc[plantId] = plant;
-    }
-    return acc;
-  }, initPlants));
+  return produce(state, (draft) => {
+    Object.keys(draft).forEach((plantId) => {
+      const plant = draft[plantId];
+      if (plant.notes && plant.notes.length && plant.notes.includes(noteId)) {
+        plant.notes = plant.notes.filter((nId) => nId !== noteId);
+      }
+    });
+  });
 }
 
 
@@ -82,13 +80,13 @@ function loadPlantFailure(state: UiPlants, action: AnyAction): UiPlants {
  */
 function loadPlantsSuccess(state: UiPlants, { payload: plants }: AnyAction): UiPlants {
   if (plants && plants.length > 0) {
-    return seamless.merge(state, plants.reduce(
-      (acc: UiPlants, plant: UiPlantsValue) => {
+    return produce(state, (draft) => {
+      plants.forEach((plant: UiPlantsValue) => {
         if (plant._id) {
-          acc[plant._id] = plant;
+          draft[plant._id] = plant;
         }
-        return acc;
-      }, {}));
+      });
+    });
   }
   return state;
 }
@@ -120,39 +118,30 @@ function upsertNoteSuccess(state: UiPlants, { payload: { note } }: AnyAction): U
 
   // Iterate through all the plants in the state object and get from
   // that a new object of plants that have to be updated.
-  const updatedPlants = Object.keys(state).reduce(
-    (acc: UiPlants, plantId: string) => {
-      const plant = state[plantId];
-      const plantNotes = plant.notes || [];
+  return produce(state, (draft) => {
+    Object.keys(draft).forEach(
+      (plantId: string) => {
+        const plant = draft[plantId];
+        const plantNotes = plant.notes || [];
 
-      // Should this plant have this note?
-      const shouldHaveNote = plantIds.includes(plantId);
-      // Does this plant have this note?
-      const hasNote = plantNotes.includes(_id);
+        // Should this plant have this note?
+        const shouldHaveNote = plantIds.includes(plantId);
+        // Does this plant have this note?
+        const hasNote = plantNotes.includes(_id);
 
-      // If should have and has, do nothing
-      // If should not have and does not have, do nothing
-      // If should have and does not have, then add it.
-      if (shouldHaveNote && !hasNote) {
-        acc[plantId] = seamless.merge(plant, {
-          notes: plantNotes.concat(_id),
-        });
-      }
+        // If should have and has, do nothing
+        // If should not have and does not have, do nothing
+        // If should have and does not have, then add it.
+        if (shouldHaveNote && !hasNote) {
+          plant.notes = plantNotes.concat(_id);
+        }
 
-      // If should not have and has, then remove it
-      if (!shouldHaveNote && hasNote) {
-        acc[plantId] = seamless.set(plant, 'notes', plantNotes.filter((noteId) => noteId !== _id));
-      }
-
-      return acc;
-    }, {});
-
-  // if no changes then return the original state.
-  if (!Object.keys(updatedPlants).length) {
-    return state;
-  }
-
-  return seamless.merge(state, updatedPlants);
+        // If should not have and has, then remove it
+        if (!shouldHaveNote && hasNote) {
+          plant.notes = plantNotes.filter((noteId) => noteId !== _id);
+        }
+      });
+  });
 }
 
 function loadNotesRequest(state: UiPlants, action: AnyAction): UiPlants {
@@ -171,18 +160,16 @@ function loadNotesRequest(state: UiPlants, action: AnyAction): UiPlants {
     return state;
   }
 
-  const requestedPlants = plantIds.reduce(
-    (acc: UiPlants, plantId: string) => {
-      const plant = state[plantId];
-      if (!plant) {
-      // console.error('No plant in state for plantId:', plantId);
-        return acc;
-      }
-      acc[plantId] = seamless.set(plant, 'notesRequested', true);
-      return acc;
-    }, {});
-
-  return seamless.merge(state, requestedPlants);
+  return produce(state, (draft) => {
+    plantIds.forEach(
+      (plantId: string) => {
+        const plant = draft[plantId];
+        if (plant) {
+          plant.notesRequested = true;
+        }
+      });
+  });
+  // return seamless.merge(state, requestedPlants);
 }
 
 /**
@@ -193,7 +180,7 @@ function loadNotesSuccess(state: UiPlants, { payload: notes }: AnyAction): UiPla
     return state;
   }
 
-  const plants = notes.reduce(
+  const plants: Record<string, string[]> = notes.reduce(
     (acc: Record<string, string[]>, note: UiNotesValue) => {
       (note.plantIds || []).forEach((plantId) => {
         if (acc[plantId]) {
@@ -209,19 +196,15 @@ function loadNotesSuccess(state: UiPlants, { payload: notes }: AnyAction): UiPla
     return state;
   }
 
-  return seamless.from(Object.keys(state).reduce(
-    (acc: UiPlants, plantId: string) => {
-      const plant = state[plantId];
-
-      if (!plants[plantId]) {
-        acc[plantId] = plant;
-        return acc;
+  return produce(state, (draft) => {
+    Object.keys(draft).forEach((plantId: string) => {
+      if (plants[plantId]) {
+        const plant = draft[plantId];
+        const plantNotes = uniq((plant.notes || []).concat(plants[plantId]));
+        plant.notes = plantNotes;
       }
-
-      const plantNotes = uniq((plant.notes || []).concat(plants[plantId]));
-      acc[plantId] = seamless.set(plant, 'notes', plantNotes);
-      return acc;
-    }, {}));
+    });
+  });
 }
 
 // This is only exported for testing
@@ -242,10 +225,12 @@ export const reducers = {
   [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteSuccess,
 };
 
+const defaultState = produce({}, () => ({}));
+
 /**
  * The plants reducer
  */
-export const plants = (state: UiPlants = seamless.from({}), action: AnyAction): UiPlants => {
+export const plants = (state: UiPlants = defaultState, action: AnyAction): UiPlants => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
