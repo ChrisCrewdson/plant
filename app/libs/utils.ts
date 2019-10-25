@@ -106,14 +106,20 @@ function intToDate(date: number): Date {
 /**
  * Convert number to a Moment object
  */
-function intToMoment(date: number): Moment {
-  return moment(intToDate(date));
+function intToMoment(date: number | string): Moment {
+  const intDate = typeof date === 'string'
+    ? dateToInt(date)
+    : date;
+  return moment(intToDate(intDate));
 }
 
 /**
  * Convert number date to string date
  */
-function intToString(date: number): string {
+function intToString(date: number | string): string {
+  if (typeof date === 'string') {
+    return date;
+  }
   return intToMoment(date).format('MM/DD/YYYY');
 }
 

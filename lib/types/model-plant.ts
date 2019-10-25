@@ -60,7 +60,7 @@ interface BizPlant extends Omit<DbPlant, '_id' | 'locationId' | 'userId'> {
   userId: string;
 }
 
-interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId'> {
+interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId' | 'purchasedDate' | 'terminatedDate' | 'plantedDate'> {
   _id?: string;
   errors?: Record<string, string>;
   isNew?: boolean;
@@ -73,7 +73,13 @@ interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId'> {
    */
   notesRequested?: boolean;
   userId?: string;
+  purchasedDate?: number | string;
+  terminatedDate?: number | string;
+  plantedDate?: number | string;
 }
+
+type UiPlantsValueDateKeys = keyof Pick<UiPlantsValue,
+'plantedDate' | 'purchasedDate' | 'terminatedDate'>;
 
 interface BizPlantMap {
   [mongoId: string]: BizPlant;

@@ -4,7 +4,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { History } from 'history';
 import utils from '../../libs/utils';
@@ -14,8 +14,6 @@ import { actionFunc } from '../../actions';
 import Markdown from '../common/Markdown';
 
 const dateFormat = 'DD-MMM-YYYY';
-// @ts-ignore
-const seamless = si.static;
 
 interface PlantReadState {
   showDeleteConfirmation: boolean;
@@ -95,12 +93,14 @@ class PlantRead extends React.PureComponent {
 
   edit() {
     const { plant: propsPlant, dispatch } = this.props;
-    const plant = seamless.asMutable(propsPlant);
-    const dateFields = ['plantedDate', 'purchasedDate', 'terminatedDate'];
-    dateFields.forEach((dateField) => {
-      if (plant[dateField]) {
-        plant[dateField] = utils.intToString(plant[dateField]);
-      }
+    const dateFields: UiPlantsValueDateKeys[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
+    const plant = produce(propsPlant, (draft) => {
+      dateFields.forEach((dateField) => {
+        const date = draft[dateField];
+        if (date) {
+          draft[dateField] = utils.intToString(date);
+        }
+      });
     });
     dispatch(actionFunc.editPlantOpen({ plant, meta: { isNew: false } }));
   }

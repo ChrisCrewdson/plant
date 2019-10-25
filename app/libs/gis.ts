@@ -1,9 +1,7 @@
 import getIn from 'lodash/get';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import * as constants from './constants';
 
-// @ts-ignore
-const seamless = si.static;
 const { gisMultiplier } = constants;
 
 /**
@@ -16,10 +14,10 @@ export function scaleToCanvas(immutablePlants: Readonly<UiPlants>,
   const plantIds = Object.keys(immutablePlants);
 
   if (!plantIds.length) {
-    return seamless.from({
+    return produce({}, () => ({
       plants: {},
       canvasHeight: 0,
-    });
+    }));
   }
 
   const minMax = plantIds.reduce((acc, plantId) => {
@@ -83,8 +81,8 @@ export function scaleToCanvas(immutablePlants: Readonly<UiPlants>,
     }
     return acc;
   }, {} as Record<string, UiPlantLocation>);
-  return seamless.from({
+  return produce({}, () => ({
     plants,
     canvasHeight,
-  });
+  }));
 }
