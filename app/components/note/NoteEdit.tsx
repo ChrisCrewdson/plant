@@ -6,9 +6,9 @@ import Dropzone from 'react-dropzone';
 import LinearProgress from 'material-ui/LinearProgress';
 import CircularProgress from 'material-ui/CircularProgress';
 import PropTypes from 'prop-types';
-import si from 'seamless-immutable';
-
+import { produce } from 'immer';
 import { Dispatch } from 'redux';
+
 import CancelSaveButtons from '../common/CancelSaveButtons';
 import InputComboText from '../common/InputComboText';
 import { actionFunc } from '../../actions';
@@ -18,8 +18,6 @@ import NoteEditMetrics from './NoteEditMetrics';
 import * as validators from '../../models';
 import { PlantAction } from '../../../lib/types/redux-payloads';
 
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = si.static;
 const { note: noteValidator } = validators;
 
 const paperStyle: React.CSSProperties = {
@@ -145,12 +143,10 @@ export default class NoteEdit extends React.PureComponent {
     const {
       dispatch, interimNote: propInterimNote, postSaveSuccess,
     } = this.props;
-    const interimNote: UiInterimNote = (seamless.asMutable(propInterimNote, {
-      deep: true,
-    }));
-
-    interimNote._id = interimNote._id || utils.makeMongoId();
-    interimNote.date = utils.dateToInt(interimNote.date);
+    const interimNote: Readonly<UiInterimNote> = produce(propInterimNote, (draft) => {
+      draft._id = draft._id || utils.makeMongoId();
+      draft.date = utils.dateToInt(draft.date);
+    });
 
     try {
       const note = noteValidator(interimNote);

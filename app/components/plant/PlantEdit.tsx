@@ -11,7 +11,7 @@ import MapsAddLocation from 'material-ui/svg-icons/maps/add-location';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import getIn from 'lodash/get';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { History } from 'history';
 import PlantEditTerminated from './PlantEditTerminated';
@@ -25,8 +25,6 @@ import * as validators from '../../models';
 const { makeSlug } = utils;
 
 const { plant: plantValidator } = validators;
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = si.static;
 
 interface PlantEditState {
   pageTitle?: string;
@@ -146,7 +144,7 @@ class PlantEdit extends React.Component {
     const {
       interimPlant, user, dispatch, history,
     } = (this.props);
-    const plant: UiPlantsValue = seamless.asMutable(interimPlant);
+    const plant: UiPlantsValue = produce({}, () => interimPlant);
     const { isNew = false } = plant;
     const dateFields: PlantDateFieldNames[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     dateFields.forEach((dateField) => {

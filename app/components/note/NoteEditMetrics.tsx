@@ -1,4 +1,4 @@
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import React from 'react';
 import Toggle from 'material-ui/Toggle';
 import PropTypes from 'prop-types';
@@ -9,9 +9,6 @@ import Errors from '../common/Errors';
 import InputCombo from '../common/InputCombo';
 import utils, { MetaMetric } from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
-
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = si.static;
 
 interface NoteEditMetricProps {
   dispatch: Dispatch<PlantAction<any>>;
@@ -59,26 +56,30 @@ export default class NoteEditMetrics extends React.PureComponent {
    * Change Handler for InputCombo
    */
   onChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = e.target;
+    const { name, value } = e.target as { name: MetaMetricKey; value: string };
     this.dispatchChange(name, value);
   }
 
   booleanHandler = (e: React.MouseEvent<HTMLInputElement>, isInputChecked: boolean): void => {
-    const { name } = e.currentTarget;
+    const { name } = e.currentTarget as { name: MetaMetricKey };
     this.dispatchChange(name, isInputChecked);
   };
 
   /**
    * Handle multiple change value types
    */
-  dispatchChange(name: string, value: string | boolean): void {
+  dispatchChange(name: MetaMetricKey, value: string | boolean): void {
     const { interimNote, dispatch } = this.props;
-    const interimMetrics = interimNote.metrics || {};
+    const interimMetrics = interimNote.metrics || {} as NoteMetric;
 
-    const metrics = seamless.set(interimMetrics, name, value);
+    // @ts-ignore - TODO - fix types here
+    const metrics = produce(interimMetrics, (draft) => {
+      // @ts-ignore - TODO - fix types here
+      draft[name] = value;
+    });
 
     // The change will be something like:
-    // {metrics: { height: 23.4, blossom: true }}
+    // {metrics: { height: 23.4 }} or {metrics: { blossom: true }}
     dispatch(actionFunc.editNoteChange({ metrics }));
   }
 
