@@ -1,10 +1,6 @@
 import { AnyAction } from 'redux';
-import si from 'seamless-immutable';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
-
-// @ts-ignore
-const seamless = si.static;
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.
@@ -15,14 +11,13 @@ const seamless = si.static;
 // The action.payload are the returned locations from the server.
 
 function loadLocationsSuccess(state: UiLocations, { payload }: AnyAction): UiLocations {
-  const locations = Object.keys(payload || {}).reduce(
-    (acc: UiLocations, locationId: string) => {
+  return produce(state, (draft) => {
+    Object.keys(payload || {}).forEach((locationId: string) => {
       const location = payload[locationId];
-      acc[location._id] = { ...location, plantIds: location.plantIds || [] };
-      return acc;
-    }, {});
-  const newState = seamless.merge(state, locations, { deep: true });
-  return newState;
+      draft[location._id] = location;
+      draft[location._id].plantIds = location.plantIds || [];
+    });
+  });
 }
 
 // User clicks save after creating a new plant, we need to
@@ -42,7 +37,9 @@ function createPlantRequest(state: UiLocations, action: AnyAction): UiLocations 
     const plantIds = (location.plantIds || []).concat(plant._id);
     location = { ...location, plantIds };
     // Update the location object with the new list of plantIds
-    return seamless.set(state, plant.locationId, location);
+    return produce(state, (draft) => {
+      draft[plant.locationId] = location;
+    });
   }
   // console.warn(`No location found in locations createPlantRequest reducer ${plant.locationId}`);
   return state;
@@ -79,7 +76,9 @@ function deletePlantRequest(state: UiLocations, { payload: { locationId, plantId
   const plantIds = (state[locationId] && state[locationId].plantIds) || [];
   if (plantIds.includes(plantId)) {
     const pIds = plantIds.filter((pId) => pId !== plantId);
-    return seamless.setIn(state, [locationId, 'plantIds'], pIds);
+    return produce(state, (draft) => {
+      draft[locationId].plantIds = pIds;
+    });
   }
   return state;
 }
@@ -103,7 +102,9 @@ export const reducers = {
   // [actionEnum.MODIFY_LOCATION_SUCCESS]: modifyLocationSuccess,
 };
 
-export const locations = (state: UiLocations = seamless({}), action: AnyAction): UiLocations => {
+const defaultState = produce({}, () => ({}));
+
+export const locations = (state: UiLocations = defaultState, action: AnyAction): UiLocations => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

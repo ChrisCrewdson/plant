@@ -1,22 +1,25 @@
 // The most difficult part of creating this module was naming it.
 // "interim" is the least worst of all the bad names I came up with.
 
-import si from 'seamless-immutable';
+import { produce } from 'immer';
+import { isNumber } from 'lodash';
 import { AnyAction } from 'redux';
 import { actionEnum } from '../actions';
 import { PlantAction } from '../../lib/types/redux-payloads';
 
-// @ts-ignore
-const seamless = si.static;
-
-function editNoteOpen(state: UiInterim, action: PlantAction<UiInterimNoteContainer>): UiInterim {
-  return seamless.set(state, 'note', action.payload);
+function editNoteOpen(state: Readonly<UiInterim>,
+  action: PlantAction<UiInterimNoteContainer>): UiInterim {
+  return produce(state, (draft) => {
+    draft.note = action.payload;
+  });
 }
 
-function editNoteClose(state: UiInterim): UiInterim {
+function editNoteClose(state: Readonly<UiInterim>): UiInterim {
   // Just remove note element if editing is canceled
   // or if the note has been saved
-  return seamless.without(state, 'note');
+  return produce(state, (draft) => {
+    delete draft.note;
+  });
 }
 
 /**
@@ -28,30 +31,39 @@ function editNoteClose(state: UiInterim): UiInterim {
  *     note,
  *     plant
  */
-function editNoteChange(state: UiInterim, action: PlantAction<UiInterimNote>): UiInterim {
-  return seamless.merge(state, { note: { note: action.payload } }, { deep: true });
+function editNoteChange(state: Readonly<UiInterim>, action: PlantAction<UiInterimNote>): UiInterim {
+  return produce(state, (draft) => {
+    const note = {
+      ...(draft.note || {}).note,
+      ...action.payload,
+    };
+    // @ts-ignore
+    draft.note = { ...draft.note, note };
+  });
 }
 
 // action.payload:
 // {plant}
-function editPlantOpen(state: UiInterim,
+function editPlantOpen(state: Readonly<UiInterim>,
   { payload }: PlantAction<UiInterimPlantContainer>): UiInterim {
-  let plant = payload.plant || {} as UiPlantsValue;
-  if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
-    plant = seamless.asMutable(plant, { deep: true });
-    plant.price = plant.price && plant.price.toString();
-  }
-
-  return seamless.set(state, 'plant', { plant });
+  const plant = payload.plant || {} as UiPlantsValue;
+  return produce(state, (draft) => {
+    draft.plant = { plant };
+    if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
+      draft.plant.plant.price = isNumber(plant.price) ? plant.price.toString() : plant.price;
+    }
+  });
 }
 
 /**
  * action.payload is empty
  */
-function editPlantClose(state: UiInterim): UiInterim {
+function editPlantClose(state: Readonly<UiInterim>): UiInterim {
   // Just remove plant element if editing is canceled
   // or if the plant has been saved
-  return seamless.without(state, 'plant');
+  return produce(state, (draft) => {
+    delete draft.plant;
+  });
 }
 
 /**
@@ -61,20 +73,35 @@ function editPlantClose(state: UiInterim): UiInterim {
  *   plant:
  *     plant
  */
-function editPlantChange(state: UiInterim, action: AnyAction): UiInterim {
-  return seamless.merge(state, { plant: { plant: action.payload } }, { deep: true });
+function editPlantChange(state: Readonly<UiInterim>, action: AnyAction): UiInterim {
+  return produce(state, (draft) => {
+    const plant = {
+      ...(draft.plant || {}).plant,
+      ...action.payload,
+    };
+    draft.plant = {
+      ...draft.plant,
+      plant,
+    };
+  });
 }
 
-function loadPlantsRequest(state: UiInterim, action: AnyAction): UiInterim {
-  return seamless.set(state, 'loadPlantRequest', action.payload);
+function loadPlantsRequest(state: Readonly<UiInterim>, action: AnyAction): UiInterim {
+  return produce(state, (draft) => {
+    draft.loadPlantRequest = action.payload;
+  });
 }
 
-function loadPlantsSuccess(state: UiInterim): UiInterim {
-  return seamless.without(state, 'loadPlantRequest');
+function loadPlantsSuccess(state: Readonly<UiInterim>): UiInterim {
+  return produce(state, (draft) => {
+    delete draft.loadPlantRequest;
+  });
 }
 
-function loadPlantsFailure(state: UiInterim): UiInterim {
-  return seamless.without(state, 'loadPlantRequest');
+function loadPlantsFailure(state: Readonly<UiInterim>): UiInterim {
+  return produce(state, (draft) => {
+    delete draft.loadPlantRequest;
+  });
 }
 
 // This is only exported for testing
@@ -92,7 +119,9 @@ export const reducers = {
   [actionEnum.LOAD_PLANTS_FAILURE]: loadPlantsFailure,
 };
 
-export const interim = (state: UiInterim = seamless({}),
+const defaultState = produce({}, () => ({}));
+
+export const interim = (state: Readonly<UiInterim> = defaultState,
   action: PlantAction<any>): UiInterim => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
