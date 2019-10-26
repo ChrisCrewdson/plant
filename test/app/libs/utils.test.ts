@@ -82,8 +82,8 @@ describe('/app/libs/utils', () => {
 
     test('should throw and Error for an unknown type', (done) => {
       try {
-        // @ts-ignore - intentionally mistyping for testing
-        utils.dateToInt({});
+        const date = {} as string;
+        utils.dateToInt(date);
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
         expect(e.message).toBe('dateToInt([object Object]) for typeof date: object');
@@ -171,8 +171,7 @@ describe('/app/libs/utils', () => {
       }, {
         _id: '3',
         loc: { coordinates: [10.1, 4.4] },
-      }];
-      // @ts-ignore - intentional mistyping for testing
+      }] as unknown as BizPlant[];
       const rebased = utils.rebaseLocations(plants);
       if (!rebased[0].loc || !rebased[1].loc || !rebased[2].loc) {
         throw new Error(`rebased loc is falsy ${rebased}`);
@@ -192,8 +191,8 @@ describe('/app/libs/utils', () => {
     });
 
     test('should return undefined if plants is undefined', () => {
-      // @ts-ignore - intentional mistyping for testing
-      const actual = utils.rebaseLocations();
+      const plants = undefined as unknown as BizPlant[];
+      const actual = utils.rebaseLocations(plants);
       expect(actual).toBeUndefined();
     });
   });
@@ -250,12 +249,12 @@ describe('/app/libs/utils', () => {
       expect(utils.constantEquals('12', '123')).toBe(false);
     });
     test('should fail if 1st param is not a string', () => {
-      // @ts-ignore - intentional mistyping for testing
-      expect(utils.constantEquals(123, '123')).toBe(false);
+      const userSuppliedValue = 123 as unknown as string;
+      expect(utils.constantEquals(userSuppliedValue, '123')).toBe(false);
     });
     test('should fail if 2nd param is not a string', () => {
-      // @ts-ignore - intentional mistyping for testing
-      expect(utils.constantEquals('123', 123)).toBe(false);
+      const internalValue = 123 as unknown as string;
+      expect(utils.constantEquals('123', internalValue)).toBe(false);
     });
     test(
       'should fail if 1st and 2nd params are equal length and not the same',
@@ -286,13 +285,14 @@ describe('/app/libs/utils', () => {
 
     test('should return plantIds if array is empty', () => {
       const plantIds = produce({}, () => ([]));
-      // @ts-ignore - intentional mistyping for testing
-      expect(utils.sortPlants(plantIds)).toBe(plantIds);
+      const p = {} as Record<string, any>;
+      expect(utils.sortPlants(plantIds, p)).toBe(plantIds);
     });
 
     test('should return an array if param is falsy', () => {
-      // @ts-ignore - intentional mistyping for testing
-      expect(utils.sortPlants()).toEqual([]);
+      const plantIds = null as unknown as ReadonlyArray<string>;
+      const p = {} as Record<string, any>;
+      expect(utils.sortPlants(plantIds, p)).toEqual([]);
     });
 
     test('should sort plants', () => {
@@ -350,13 +350,14 @@ describe('/app/libs/utils', () => {
 
     test('should return noteIds if array is empty', () => {
       const noteIds = produce({}, () => ([]));
-      // @ts-ignore - intentional mistyping for testing
-      expect(utils.sortNotes(noteIds)).toBe(noteIds);
+      const n = undefined as unknown as Record<string, any>;
+      expect(utils.sortNotes(noteIds, n)).toBe(noteIds);
     });
 
     test('should return an array if param is falsy', () => {
-      // @ts-ignore - intentional mistyping for testing
-      expect(utils.sortNotes()).toEqual([]);
+      const noteIds = undefined as unknown as ReadonlyArray<string>;
+      const n = undefined as unknown as Record<string, any>;
+      expect(utils.sortNotes(noteIds, n)).toEqual([]);
     });
 
     test('should sort notes', () => {

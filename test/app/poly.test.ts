@@ -4,8 +4,7 @@ describe('/app/poly', () => {
   test('should have not have all features by default', (done) => {
     // Fake the call to document.createElement
     const docCreateElement = document.createElement;
-    const docElement = {};
-    // @ts-ignore - faking for testing
+    const docElement = {} as HTMLElement;
     document.createElement = () => docElement;
 
     const headAppendChild = document.head.appendChild;
@@ -32,8 +31,7 @@ describe('/app/poly', () => {
   test('should handle an onError', (done) => {
     // Fake the call to document.createElement
     const docCreateElement = document.createElement;
-    const docElement = {};
-    // @ts-ignore - faking for testing
+    const docElement = {} as HTMLElement;
     document.createElement = () => docElement;
 
     const headAppendChild = document.head.appendChild;

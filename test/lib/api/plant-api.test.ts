@@ -4,7 +4,7 @@ import * as constants from '../../../app/libs/constants';
 describe('plant-api', () => {
   let user: BizUser;
   let plantId: string;
-  let initialPlant: Partial<DbPlant>;
+  let initialPlant: UiPlantsValue;
 
   beforeAll(async () => {
     const data = await helper.startServerAuthenticated();
@@ -104,15 +104,11 @@ describe('plant-api', () => {
     expect(httpMsg.error).toBe('missing');
   });
 
-  let updatedPlant: Partial<DbPlant>;
+  let updatedPlant: UiPlantsValue;
   test('should update the just created plant', async () => {
     updatedPlant = {
-
       ...initialPlant,
       title: 'A New Title',
-      // TODO: _id should be undefined or MongoId - research if okay to be a string here.
-      //       See disable message on next line
-      // @ts-ignore - disabled this warning during a dependency upgrade - may need to revisit
       _id: plantId,
     };
 

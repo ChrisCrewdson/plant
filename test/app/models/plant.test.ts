@@ -55,23 +55,18 @@ describe('/app/models/plant', () => {
 
   test('should fail validation', () => {
     // All items in plant should be invalid
-    const plant: UiPlantsValue = {
+    const plant = {
       _id: '0e55d91cb33d42', // Not a MongoId
       botanicalName: _.repeat('Botanical Name is too long', 50),
-      // @ts-ignore - intentionally mistyping for testing
       commonName: true, // Not a string
-      // @ts-ignore - intentionally mistyping for testing
       description: 500, // Not a string
       plantedDate: 121212, // Year is not 4 digits
       price: 'Not a number',
       purchasedDate: 20161313, // Invalid month
-      // @ts-ignore - intentionally mistyping for testing
       title: {}, // Not a string
-      // @ts-ignore - intentionally mistyping for testing
       userId: 123, // Not a MongoId
-      // @ts-ignore - intentionally mistyping for testing
       locationId: 789, // Not a MongoId
-    };
+    } as unknown as UiPlantsValue;
     const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
@@ -159,12 +154,11 @@ describe('/app/models/plant', () => {
   });
 
   test('should fail if locationId is missing', (done) => {
-    // @ts-ignore - intentionally missing locationId for this test
-    const plant: UiPlantsValue = {
+    const plant = {
       _id: 'b33d420024432d67a3c7fb36',
       userId: 'cf885bf372488977ae0d6475',
       title: 'Title is required',
-    };
+    } as UiPlantsValue;
     const plantCopy = _.cloneDeep(plant);
 
     const isNew = false;
