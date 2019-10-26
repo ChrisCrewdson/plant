@@ -5,6 +5,7 @@ import { requests } from '../../../fixtures/google-oauth';
 import * as helper from '../../../helper';
 import * as constants from '../../../../app/libs/constants';
 import { mockLogger } from '../../../mock-logger';
+import { UserDetails } from '../../../../lib/db/mongo/db-types';
 
 const mongo = getDbInstance();
 const googleOAuth = requests;
@@ -33,8 +34,8 @@ describe('/lib/db/mongo/', () => {
       'should fail to create a user account if there is no object',
       async () => {
         try {
-          // @ts-ignore - intentional badly typed param to test exception
-          await mongo.findOrCreateUser(null, mockLogger);
+          const userDetails = null as unknown as UserDetails;
+          await mongo.findOrCreateUser(userDetails, mockLogger);
         } catch (err) {
           expect(err).toBeTruthy();
           expect(err.message).toBe('No facebook.id or google.id:\nnull');
@@ -139,13 +140,12 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should update an existing plant with "Set"', async () => {
-      const plantUpdate: BizPlant = {
+      const plantUpdate = {
         title: 'New Name',
-        // @ts-ignore - intentionally mistyping for testing
         other: 'Other Text',
         _id: plantId,
         userId,
-      };
+      } as unknown as BizPlant;
 
       const result = await mongo.updatePlant(plantUpdate, userId, mockLogger);
       expect(result).toEqual(plantUpdate);

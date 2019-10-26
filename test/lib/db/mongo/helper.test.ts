@@ -47,8 +47,8 @@ describe('/lib/db/mongo/helper', () => {
     });
 
     test('should do nothing if param is falsy', () => {
-      // @ts-ignore - intentionally mistyped for testing
-      const rDoc = Helper.removeEmpty();
+      let doc: any;
+      const rDoc = Helper.removeEmpty(doc);
       expect(rDoc).toBeUndefined();
     });
   });

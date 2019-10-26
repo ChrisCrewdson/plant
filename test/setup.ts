@@ -60,7 +60,6 @@ beforeAll(async () => {
  * warning(false, 'React depends on requestAnimationFrame. Make sure that you load a ' +
  * 'polyfill in older browsers. http://fb.me/react-polyfills');
  */
-// @ts-ignore - requestAnimationFrame no on global
 globalAny.requestAnimationFrame = (callback: Function) => {
   setTimeout(callback, 0);
 };
@@ -77,9 +76,7 @@ process.env.PLANT_IMAGE_COMPLETE = 'fake-image-token';
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
 function propagateToGlobal(win: { [x: string]: any }) {
   Object.keys(win).forEach((key) => {
-    // @ts-ignore No index signature with a parameter of type 'string' was found on type 'Global'.
     if (!globalAny[key]) {
-      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'Global'.
       globalAny[key] = win[key];
     }
   });
@@ -90,11 +87,8 @@ function propagateToGlobal(win: { [x: string]: any }) {
 // Store this DOM and the window in global scope ready for React to access
 document.body.innerHTML = '<!doctype html><html><body></body></html>';
 
-// global.window = document.parentWindow;
-// @ts-ignore - window not on global
 globalAny.window = document.defaultView as Window;
 
-// @ts-ignore - window not on global
 globalAny.window.FormData = function appender() {
   this.append = () => {};
 };
@@ -104,9 +98,7 @@ globalAny.window.FormData = function appender() {
 //     'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
 //      Chrome/49.0.2454.85 Safari/537.36'
 // };
-// @ts-ignore - not on global
 globalAny.navigator = globalAny.window.navigator;
-// @ts-ignore - window not on global
 propagateToGlobal(globalAny.window);
 
 afterAll(async () => {

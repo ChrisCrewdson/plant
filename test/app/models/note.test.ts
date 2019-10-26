@@ -25,14 +25,12 @@ describe('/app/models/note', () => {
 
     test('should fail validation', () => {
     // All items in note should be invalid
-      const note: UiInterimNote = {
+      const note = {
         _id: '0e55d91cb33d42', // Not a MongoId
-        // @ts-ignore - intentionally mistyping for testing
         date: 'Not a Number',
         plantIds: ['9ec5c8ffcf885bf'], // Not a MongoId in array
-        // @ts-ignore - intentionally mistyping for testing
         note: {}, // not a string
-      };
+      } as unknown as UiInterimNote;
 
       const noteCopy = _.cloneDeep(note);
 
@@ -46,16 +44,16 @@ describe('/app/models/note', () => {
     });
 
     test('should strip out props not in the schema', () => {
-      const note: UiInterimNote = {
+      const note = {
         _id: '5c2aefa2da47a52adc1c4651',
         date: 20160101,
         plantIds: ['5c2aefa687358b2af50246d6'],
         note: 'some text',
-        // @ts-ignore - intentionally mistyped for testing
         fakeName1: 'Common Name',
         fakeName2: 'Description',
         plantId: 'fake plant id',
-      };
+      } as UiInterimNote;
+
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
@@ -104,12 +102,11 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is missing', (done) => {
-      // @ts-ignore - intentionally mistyped for testing
-      const note: UiInterimNote = {
+      const note = {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -127,9 +124,8 @@ describe('/app/models/note', () => {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
-        // @ts-ignore - intentionally mistyped for testing
         plantIds: makeMongoId(),
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -228,14 +224,13 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images is not an array', (done) => {
-      const note: UiInterimNote = {
+      const note = {
         _id: makeMongoId(),
         date: 20160101,
-        // @ts-ignore - intentionally mistyped for testing
         images: makeMongoId(),
         note: 'some text',
         plantIds: [makeMongoId()],
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -249,14 +244,13 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images id is not a mongoId', (done) => {
-      const note: UiInterimNote = {
+      const note = {
         _id: makeMongoId(),
         date: 20160101,
-        // @ts-ignore - intentionally setting id as number instead of string for testing
         images: [{ ...image, id: 123 }],
         note: 'some text',
         plantIds: [makeMongoId()],
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -290,14 +284,13 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images originalname is not a string', (done) => {
-      const note: UiInterimNote = {
+      const note = {
         _id: makeMongoId(),
         date: 20160101,
-        // @ts-ignore - intentionally setting originalName as number instead of string for testing
         images: [{ ...image, originalname: 123 }],
         note: 'some text',
         plantIds: [makeMongoId()],
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -311,14 +304,13 @@ describe('/app/models/note', () => {
     });
 
     test('should convert image size if it is a string number', () => {
-      const note: UiInterimNote = {
+      const note = {
         _id: '5c2af2b712d4132fa1e69d39',
         date: 20160101,
-        // @ts-ignore - intentionally setting size as string instead of number for testing
         images: [{ ...image, size: '123' }],
         note: 'some text',
         plantIds: ['5c2af2b712d4132fa1e69d38'],
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
@@ -351,11 +343,10 @@ describe('/app/models/note', () => {
       const note: UiInterimNote = {
         _id: makeMongoId(),
         date: 20160101,
-        // @ts-ignore - intentionally setting an unknown prop "extra" for testing
         images: [{ ...image, extra: 'jpg' }],
         note: 'some text',
         plantIds: [makeMongoId()],
-      };
+      } as unknown as UiInterimNote;
       const noteCopy = _.cloneDeep(note);
 
       try {

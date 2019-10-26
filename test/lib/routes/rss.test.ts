@@ -47,12 +47,11 @@ describe('rss', () => {
       expect(builtXml).toMatchSnapshot();
       done();
     };
-    const app: Application = {
-      // @ts-ignore - ignore for testing
-      get: (_, routeAction) => {
+    const app = {
+      get: (_: any, routeAction: any) => {
         routeAction(req, res);
       },
-    };
+    } as Application;
     rss(app);
   });
 
@@ -80,12 +79,11 @@ describe('rss', () => {
       done();
     };
 
-    const app: Application = {
-      // @ts-ignore - ignore for testing
-      get: (_, routeAction) => {
+    const app = {
+      get: (_: any, routeAction: any) => {
         routeAction(req, res);
       },
-    };
+    } as unknown as Application;
     rss(app);
   });
 });
