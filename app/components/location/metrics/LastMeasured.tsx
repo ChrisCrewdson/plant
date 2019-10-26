@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import si from 'seamless-immutable';
+import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { actionFunc } from '../../../actions';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
-
-// @ts-ignore - static hasn't been defined on seamless types yet.
-const seamless = si.static;
 
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export type MetricDate = 'height' | 'girth' | 'harvestCount' | 'harvestEnd';
@@ -115,27 +112,28 @@ export default function lastMeasured(props: LastMeasuredProps) {
       return acc;
     }, []);
 
-  const sortedMetrics: LastMetricDates[] = seamless.asMutable(plantsWithLatestMetrics).sort(
-    (a: LastMetricDates, b: LastMetricDates) => {
+  const sortedMetrics: ReadonlyArray<LastMetricDates> = produce(
+    plantsWithLatestMetrics, (draft) => {
+      draft.sort((a: LastMetricDates, b: LastMetricDates) => {
       // TODO: Move to utils module and write tests around this.
-      if (a.lastDate && b.lastDate) {
-        if (a.lastDate.valueOf() === b.lastDate.valueOf()) {
+        if (a.lastDate && b.lastDate) {
+          if (a.lastDate.valueOf() === b.lastDate.valueOf()) {
+            return 0;
+          }
+          return a.lastDate.valueOf() > b.lastDate.valueOf() ? 1 : -1;
+        }
+
+        if (!a.lastDate && !b.lastDate) {
           return 0;
         }
-        return a.lastDate.valueOf() > b.lastDate.valueOf() ? 1 : -1;
-      }
-
-      if (!a.lastDate && !b.lastDate) {
-        return 0;
-      }
-      if (!a.lastDate && b.lastDate) {
-        return -1;
-      }
-      // if (a.lastDate && !b.lastDate) {
-      return 1;
+        if (!a.lastDate && b.lastDate) {
+          return -1;
+        }
+        // if (a.lastDate && !b.lastDate) {
+        return 1;
       // }
-    },
-  );
+      });
+    });
 
   return (
     <div>
