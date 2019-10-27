@@ -33,12 +33,22 @@ function editNoteClose(state: Readonly<UiInterim>): UiInterim {
  */
 function editNoteChange(state: Readonly<UiInterim>, action: PlantAction<UiInterimNote>): UiInterim {
   return produce(state, (draft) => {
+    const noteNoteUpdate = action.payload;
+
+    if (!draft.note) {
+      draft.note = {
+        note: noteNoteUpdate,
+        plant: {} as UiPlantsValue,
+      };
+      return;
+    }
+
     const note = {
       ...(draft.note || {}).note,
       ...action.payload,
     };
-    // @ts-ignore
-    draft.note = { ...draft.note, note };
+
+    draft.note.note = note;
   });
 }
 
