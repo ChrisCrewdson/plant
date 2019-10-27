@@ -25,8 +25,6 @@ describe('plants-api', () => {
   });
 
   describe('plants by locationId', () => {
-    // it('should return an empty list if locationId exists and has no plants');
-
     test('should retrieve the just created plants by locationId', async () => {
       const reqOptions: helper.HelperMakeRequestOptions = {
         method: 'GET',

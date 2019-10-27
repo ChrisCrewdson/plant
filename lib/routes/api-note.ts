@@ -309,7 +309,6 @@ export const noteApi = (app: Application) => {
         msg: 'imageNote',
         user,
         req_body: req.body,
-        // @ts-ignore
         req_files: multerFiles.map((file: any) => _.omit(file, ['buffer'])),
       });
       const userId = user && user._id;
@@ -332,7 +331,6 @@ export const noteApi = (app: Application) => {
       note.userId = userId;
       const noteid = note._id.toString();
 
-      // @ts-ignore
       const files = multerFiles.map(createFileFromMulterObject);
       note.images = (note.images || []).concat(files.map((file: any) => file.noteFile));
 

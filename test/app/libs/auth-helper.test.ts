@@ -5,13 +5,11 @@ import * as authHelper from '../../../app/libs/auth-helper';
 describe('/app/libs/auth-helper', () => {
   describe('canEdit', () => {
     test('should return false if loggedInUserId is falsy', () => {
-      // @ts-ignore - intentionally mistyping for testing
-      expect(authHelper.canEdit()).toBe(false);
+      expect(authHelper.canEdit(undefined, null)).toBe(false);
     });
 
     test('should return false if location is falsy', () => {
-      // @ts-ignore - intentionally mistyping for testing
-      expect(authHelper.canEdit('fake-user-id')).toBe(false);
+      expect(authHelper.canEdit('fake-user-id', null)).toBe(false);
     });
 
     test('should return false if location does not have member', () => {

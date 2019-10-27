@@ -429,13 +429,13 @@ describe('/app/libs/utils', () => {
 
   describe('hasGeo', () => {
     test('that window.navigator.geolocation exists', () => {
-      // @ts-ignore - intentional mistyping for testing
+      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
       window.navigator.geolocation = true;
       expect(utils.hasGeo()).toBe(true);
     });
 
     test('that window.navigator.geolocation does not exists', () => {
-      // @ts-ignore - intentional mistyping for testing
+      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
       window.navigator.geolocation = undefined;
       expect(utils.hasGeo()).toBe(false);
     });
@@ -473,7 +473,7 @@ describe('/app/libs/utils', () => {
         timestamp: 1,
       };
 
-      // @ts-ignore - intentional mistyping for testing
+      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
       window.navigator.geolocation = {
         getCurrentPosition:
         (cb: PositionCallback) => {
@@ -498,7 +498,7 @@ describe('/app/libs/utils', () => {
         TIMEOUT: 3,
       };
 
-      // @ts-ignore - intentional assignment to readonly for testing
+      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
       window.navigator.geolocation = {
         getCurrentPosition: (cb: PositionCallback, errCb: PositionErrorCallback) => {
           errCb(positionError);
@@ -523,13 +523,13 @@ describe('/app/libs/utils', () => {
 
   describe('showFeature', () => {
     test('should not show feature if no user', () => {
-      // @ts-ignore - intentionally omitting showFeature() param for testing
-      expect(utils.showFeature()).toBe(false);
+      const user = undefined as unknown as { _id: string };
+      expect(utils.showFeature(user)).toBe(false);
     });
 
     test('should not show feature if user._id is missing', () => {
-      // @ts-ignore - intentionally omitting object's prop for testing
-      expect(utils.showFeature({})).toBe(false);
+      const user = {} as unknown as { _id: string };
+      expect(utils.showFeature(user)).toBe(false);
     });
 
     test('should not show feature if user._id is not listed', () => {
