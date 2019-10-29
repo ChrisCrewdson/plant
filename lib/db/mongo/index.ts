@@ -784,7 +784,7 @@ export class MongoDb {
 
       const createdNote = await Create.createNote(db, note);
       logger.trace({ moduleName, msg: 'createdNote', createdNote });
-      return convertNoteDataForRead(createdNote, logger);
+      return convertNoteDataForRead(createdNote);
     } catch (error) {
       logger.error({
         moduleName, msg: 'createNote', error, note,
@@ -804,7 +804,7 @@ export class MongoDb {
       const notes = await readNote(db, query, noteOptions);
 
       if (notes && notes.length > 0) {
-        return convertNotesDataForRead(notes, logger);
+        return convertNotesDataForRead(notes);
       }
       // This is okay - will happen during an upsert
       logger.trace({ moduleName, msg: 'getNotesByQuery nothing found', query });
@@ -951,7 +951,7 @@ export class MongoDb {
       await Update.updateNote(db, query, set);
       // results => {n:1, nModified:1, ok:1}
 
-      return convertNoteDataForRead(note as unknown as DbNote, logger);
+      return convertNoteDataForRead(note as unknown as DbNote);
     } catch (error) {
       logger.error({
         moduleName, msg: 'updateNote', error, note,

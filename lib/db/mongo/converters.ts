@@ -1,9 +1,6 @@
 import { ObjectID } from 'mongodb';
 import { produce } from 'immer';
-import Logger from 'lalog';
 import utils from '../../../app/libs/utils';
-
-const moduleName = 'lib/db/mongo/converters';
 
 export const convertPlantDataTypesForSaving = (
   plantIn: Readonly<BizPlant> | Readonly<UiPlantsValue>):
@@ -63,31 +60,26 @@ export const convertNoteDataTypesForSaving = (
   return note;
 };
 
-export const convertNoteDataForRead = (note: Readonly<DbNote>,
-  logger: Logger): Readonly<BizNote> => {
+export const convertNoteDataForRead = (note: Readonly<DbNote>): Readonly<BizNote> => {
   const { _id, userId, plantIds } = note;
+  if (!userId) {
+    throw new Error('No userId in convertNoteDataForRead');
+  }
   const convertedNote = note as unknown as BizNote;
 
   if (_id) {
     convertedNote._id = _id.toString();
   }
-  if (userId) {
-    convertedNote.userId = userId.toString();
-  } else {
-    logger.error({
-      moduleName, msg: 'In convertNoteDataForRead() there is no userId', note, convertedNote,
-    });
-  }
+  convertedNote.userId = userId.toString();
   if (plantIds && plantIds.length) {
     convertedNote.plantIds = (plantIds || []).map((plantId) => plantId.toString());
   }
   return convertedNote;
 };
 
-export const convertNotesDataForRead = (note: ReadonlyArray<DbNote>,
-  logger: Logger): ReadonlyArray<BizNote> => {
+export const convertNotesDataForRead = (note: ReadonlyArray<DbNote>): ReadonlyArray<BizNote> => {
   if (!note || !note.length) {
     return [];
   }
-  return note.map((n) => convertNoteDataForRead(n, logger));
+  return note.map((n) => convertNoteDataForRead(n));
 };
