@@ -41,39 +41,45 @@ export const convertPlantDataTypesForSaving = (
 
 export const convertNoteDataTypesForSaving = (
   noteParam: Readonly<BizNote> | Readonly<BizNoteNew>): Readonly<DbNote> => {
+  const {
+    _id, date, plantIds, userId,
+  } = noteParam;
+  if (!userId) {
+    throw new Error('userId is missing in convertNoteDataTypesForSaving');
+  }
+
   const note: DbNote = noteParam as unknown as DbNote;
-  if (note._id) {
-    // eslint-disable-next-line no-param-reassign
-    note._id = new ObjectID(note._id);
+
+  if (_id) {
+    note._id = new ObjectID(_id);
   }
-  if (note.date) {
-    // eslint-disable-next-line no-param-reassign
-    note.date = utils.dateToInt(note.date);
+  if (date) {
+    note.date = utils.dateToInt(date);
   }
-  if (note.plantIds && note.plantIds.length > 0) {
-    // eslint-disable-next-line no-param-reassign
-    note.plantIds = note.plantIds.map((plantId) => new ObjectID(plantId));
+  if (plantIds && plantIds.length > 0) {
+    note.plantIds = plantIds.map((plantId) => new ObjectID(plantId));
   }
-  // eslint-disable-next-line no-param-reassign
-  note.userId = new ObjectID(note.userId);
+  note.userId = new ObjectID(userId);
   return note;
 };
 
 export const convertNoteDataForRead = (note: Readonly<DbNote>,
   logger: Logger): Readonly<BizNote> => {
+  const { _id, userId, plantIds } = note;
   const convertedNote = note as unknown as BizNote;
-  if (convertedNote._id) {
-    convertedNote._id = convertedNote._id.toString();
+
+  if (_id) {
+    convertedNote._id = _id.toString();
   }
-  if (convertedNote.userId) {
-    convertedNote.userId = convertedNote.userId.toString();
+  if (userId) {
+    convertedNote.userId = userId.toString();
   } else {
     logger.error({
       moduleName, msg: 'In convertNoteDataForRead() there is no userId', note, convertedNote,
     });
   }
-  if (convertedNote.plantIds && convertedNote.plantIds.length) {
-    convertedNote.plantIds = (convertedNote.plantIds || []).map((plantId) => plantId.toString());
+  if (plantIds && plantIds.length) {
+    convertedNote.plantIds = (plantIds || []).map((plantId) => plantId.toString());
   }
   return convertedNote;
 };
