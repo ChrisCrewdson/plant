@@ -107,7 +107,7 @@ interface DbNote {
   note?: string;
   /**
    * These are the IDs of the plants that this note refers to
-   * Change the type to a NonEmtpyList<> type if we ever switch to Typescript
+   * TODO: Change the type to a NonEmptyList<> type if we ever switch to Typescript
    */
   plantIds: import('mongodb').ObjectID[];
   /**

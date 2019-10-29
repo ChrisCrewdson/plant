@@ -5,7 +5,7 @@ import {
 
 // @ts-ignore - Types for @passport-next are not complete yet
 import passport from '@passport-next/passport';
-import connectMongo from 'connect-mongo';
+import connectMongo, { NativeMongoOptions } from 'connect-mongo';
 import session from 'express-session';
 
 import Logger from 'lalog';
@@ -21,7 +21,6 @@ const MongoStore = connectMongo(session);
 
 const setupSession = (db: MongoDb, app: Application): void => {
   const client = db.getDbClient();
-  // @ts-ignore - seems to be a bug in @type definition
   const mongoStoreOptions: NativeMongoOptions = { client };
   const store = new MongoStore(mongoStoreOptions);
   const { PLANT_TOKEN_SECRET: secret } = process.env;
