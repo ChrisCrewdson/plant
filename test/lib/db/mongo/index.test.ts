@@ -106,7 +106,7 @@ describe('/lib/db/mongo/', () => {
       expect(body._id).toBeTruthy();
       expect(typeof body._id).toBe('string');
       expect(typeof body.userId).toBe('string');
-      expect(typeof plant.userId).toBe('object');
+      expect(typeof plant.userId).toBe('string');
       expect(typeof plant.plantedOn).toBe('number');
 
       // To be used in next test...
@@ -149,7 +149,7 @@ describe('/lib/db/mongo/', () => {
       } as BizPlant;
 
       const result = await mongo.updatePlant(plantUpdate, userId, mockLogger);
-      expect(result).toEqual(plantUpdate);
+      expect(result).toEqual({ ...plantUpdate, notes: [] });
     });
   });
 });

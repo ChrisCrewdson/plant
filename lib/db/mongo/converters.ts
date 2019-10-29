@@ -1,31 +1,37 @@
 import { ObjectID } from 'mongodb';
+import { produce } from 'immer';
 import utils from '../../../app/libs/utils';
 
 export const convertPlantDataTypesForSaving = (
   plantIn: Readonly<BizPlant> | Readonly<UiPlantsValue>):
   Readonly<DbPlant> => {
-  const plant: DbPlant = plantIn as unknown as DbPlant;
-  if (plant._id) {
-    plant._id = new ObjectID(plant._id);
-  }
-  if (!plant.userId) {
+  const {
+    userId, locationId, _id, plantedDate, purchasedDate, terminatedDate,
+  } = plantIn;
+
+  if (!userId) {
     throw new Error('Missing userId in convertPlantDataTypesForSaving');
   }
-  if (!plant.locationId) {
+  if (!locationId) {
     throw new Error('Missing locationId in convertPlantDataTypesForSaving');
   }
-  plant.userId = new ObjectID(plant.userId);
-  plant.locationId = new ObjectID(plant.locationId);
 
-  if (plant.plantedDate) {
-    plant.plantedDate = utils.dateToInt(plant.plantedDate);
-  }
-  if (plant.purchasedDate) {
-    plant.purchasedDate = utils.dateToInt(plant.purchasedDate);
-  }
-  if (plant.terminatedDate) {
-    plant.terminatedDate = utils.dateToInt(plant.terminatedDate);
-  }
+  const plant: DbPlant = plantIn as unknown as DbPlant;
+  return produce(plant, (draft) => {
+    if (_id) {
+      draft._id = new ObjectID(_id);
+    }
+    draft.userId = new ObjectID(userId);
+    draft.locationId = new ObjectID(locationId);
 
-  return plant;
+    if (plantedDate) {
+      draft.plantedDate = utils.dateToInt(plantedDate);
+    }
+    if (purchasedDate) {
+      draft.purchasedDate = utils.dateToInt(purchasedDate);
+    }
+    if (terminatedDate) {
+      draft.terminatedDate = utils.dateToInt(terminatedDate);
+    }
+  });
 };

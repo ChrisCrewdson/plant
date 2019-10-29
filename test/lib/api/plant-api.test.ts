@@ -1,3 +1,4 @@
+import { produce } from 'immer';
 import * as helper from '../../helper';
 import * as constants from '../../../app/libs/constants';
 
@@ -106,11 +107,11 @@ describe('plant-api', () => {
 
   let updatedPlant: UiPlantsValue;
   test('should update the just created plant', async () => {
-    updatedPlant = {
+    updatedPlant = produce({}, () => ({
       ...initialPlant,
       title: 'A New Title',
       _id: plantId,
-    };
+    }));
 
     const reqOptions: helper.HelperMakeRequestOptions = {
       method: 'PUT',

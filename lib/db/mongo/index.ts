@@ -391,15 +391,16 @@ export class MongoDb {
    * @returns - the rebased plant object.
    */
   // eslint-disable-next-line class-methods-use-this
-  rebasePlant(plant: BizPlant, loc: Geo): BizPlant {
+  rebasePlant(plant: Readonly<BizPlant>, loc: Geo): Readonly<BizPlant> {
     if (!plant.loc) {
       return plant;
     }
-    // eslint-disable-next-line no-param-reassign
-    plant.loc.coordinates[0] = loc.coordinates[0] - plant.loc.coordinates[0];
-    // eslint-disable-next-line no-param-reassign
-    plant.loc.coordinates[1] = loc.coordinates[1] - plant.loc.coordinates[1];
-    return plant;
+    return produce(plant, (draft) => {
+      if (draft.loc) { // already gated above by TS doesn't know this
+        draft.loc.coordinates[0] = loc.coordinates[0] - draft.loc.coordinates[0];
+        draft.loc.coordinates[1] = loc.coordinates[1] - draft.loc.coordinates[1];
+      }
+    });
   }
 
   /**
@@ -409,7 +410,7 @@ export class MongoDb {
    * @param plant - the plant which needs the loc rebased
    * @param logger
    */
-  async rebasePlantByLoc(plant: BizPlant, logger: Logger): Promise<Readonly<BizPlant>> {
+  async rebasePlantByLoc(plant: Readonly<BizPlant>, logger: Logger): Promise<Readonly<BizPlant>> {
     if (!plant.loc) {
       return plant;
     }
@@ -444,8 +445,6 @@ export class MongoDb {
       logger.error({
         moduleName, msg: 'rebasePlantByLoc readLocationError:', readLocationError, locationQuery,
       });
-      // eslint-disable-next-line no-param-reassign
-      delete plant.loc;
       throw readLocationError;
     }
   }
@@ -466,21 +465,24 @@ export class MongoDb {
   async convertPlantDataForReadOne(plant: Readonly<DbPlant>,
     loggedInUserId: string | undefined | null, logger: Logger,
     notes?: DbNote[] | null): Promise<Readonly<BizPlant>> {
+    const { _id, userId, locationId } = plant;
     const convertedPlant = plant as unknown as BizPlant;
 
-    if (convertedPlant._id) {
-      convertedPlant._id = convertedPlant._id.toString();
-    }
+    const nextPlant = produce(convertedPlant, (draft) => {
+      if (_id) {
+        draft._id = _id.toString();
+      }
 
-    convertedPlant.notes = (notes || []).map((note) => note._id.toString());
+      draft.notes = (notes || []).map((note) => note._id.toString());
 
-    if (convertedPlant.userId) {
-      convertedPlant.userId = convertedPlant.userId.toString();
-    }
+      if (userId) {
+        draft.userId = userId.toString();
+      }
 
-    if (convertedPlant.locationId) {
-      convertedPlant.locationId = convertedPlant.locationId.toString();
-    }
+      if (locationId) {
+        draft.locationId = locationId.toString();
+      }
+    });
 
     // Only return the geoLocation of the plant if it's the
     // logged in user requesting their own plant
@@ -488,10 +490,10 @@ export class MongoDb {
     //       'owner', 'manager', 'member'
     //       Do this by adding another param to the convertPlantDataForRead
     //       method to include location or locationMembers.
-    if (convertedPlant.loc && convertedPlant.userId !== loggedInUserId) {
-      return this.rebasePlantByLoc(convertedPlant, logger);
+    if (nextPlant.loc && nextPlant.userId !== loggedInUserId) {
+      return this.rebasePlantByLoc(nextPlant, logger);
     }
-    return convertedPlant;
+    return nextPlant;
   }
 
   async createPlant(plantIn: UiPlantsValue, loggedInUserId: string, logger: Logger):
