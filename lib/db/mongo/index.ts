@@ -15,9 +15,13 @@ import { Update } from './update';
 import { remove } from './delete';
 import { LocationData as modelLocation } from './model-location';
 
-import utils from '../../../app/libs/utils';
 import { DbCollectionName, DbShapes, UserDetails } from './db-types';
-import { convertPlantDataTypesForSaving } from './converters';
+import {
+  convertNoteDataForRead,
+  convertNoteDataTypesForSaving,
+  convertNotesDataForRead,
+  convertPlantDataTypesForSaving,
+} from './converters';
 
 const dbHelper = Helper;
 
@@ -765,51 +769,8 @@ export class MongoDb {
    * Convert Note Data Types for Saving
    */
   // eslint-disable-next-line class-methods-use-this
-  convertNoteDataTypesForSaving(
-    noteParam: Readonly<BizNote> | Readonly<BizNoteNew>): Readonly<DbNote> {
-    const note: DbNote = noteParam as unknown as DbNote;
-    if (note._id) {
-      // eslint-disable-next-line no-param-reassign
-      note._id = new ObjectID(note._id);
-    }
-    if (note.date) {
-      // eslint-disable-next-line no-param-reassign
-      note.date = utils.dateToInt(note.date);
-    }
-    if (note.plantIds && note.plantIds.length > 0) {
-      // eslint-disable-next-line no-param-reassign
-      note.plantIds = note.plantIds.map((plantId) => new ObjectID(plantId));
-    }
-    // eslint-disable-next-line no-param-reassign
-    note.userId = new ObjectID(note.userId);
-    return note;
-  }
 
   // eslint-disable-next-line class-methods-use-this
-  convertNoteDataForRead(note: Readonly<DbNote>, logger: Logger): Readonly<BizNote> {
-    const convertedNote = note as unknown as BizNote;
-    if (convertedNote._id) {
-      convertedNote._id = convertedNote._id.toString();
-    }
-    if (convertedNote.userId) {
-      convertedNote.userId = convertedNote.userId.toString();
-    } else {
-      logger.error({
-        moduleName, msg: 'In convertNoteDataForRead() there is no userId', note, convertedNote,
-      });
-    }
-    if (convertedNote.plantIds && convertedNote.plantIds.length) {
-      convertedNote.plantIds = (convertedNote.plantIds || []).map((plantId) => plantId.toString());
-    }
-    return convertedNote;
-  }
-
-  convertNotesDataForRead(note: ReadonlyArray<DbNote>, logger: Logger): ReadonlyArray<BizNote> {
-    if (!note || !note.length) {
-      return [];
-    }
-    return note.map((n) => this.convertNoteDataForRead(n, logger));
-  }
 
   async createNote(note: BizNoteNew, logger: Logger): Promise<BizNote> {
     try {
@@ -817,13 +778,13 @@ export class MongoDb {
       if (!note.userId) {
         throw new Error('userId must be specified as part of note when creating a note');
       }
-      this.convertNoteDataTypesForSaving(note);
+      convertNoteDataTypesForSaving(note);
       // eslint-disable-next-line no-param-reassign
       note.plantIds = note.plantIds || [];
 
       const createdNote = await Create.createNote(db, note);
       logger.trace({ moduleName, msg: 'createdNote', createdNote });
-      return this.convertNoteDataForRead(createdNote, logger);
+      return convertNoteDataForRead(createdNote, logger);
     } catch (error) {
       logger.error({
         moduleName, msg: 'createNote', error, note,
@@ -843,7 +804,7 @@ export class MongoDb {
       const notes = await readNote(db, query, noteOptions);
 
       if (notes && notes.length > 0) {
-        return this.convertNotesDataForRead(notes, logger);
+        return convertNotesDataForRead(notes, logger);
       }
       // This is okay - will happen during an upsert
       logger.trace({ moduleName, msg: 'getNotesByQuery nothing found', query });
@@ -984,13 +945,13 @@ export class MongoDb {
       if (!note.userId) {
         throw new Error('userId must be specified as part of note when updating a note');
       }
-      const convertedNote = this.convertNoteDataTypesForSaving(note);
+      const convertedNote = convertNoteDataTypesForSaving(note);
       const query = _.pick(note, ['_id', 'userId']);
       const set = _.omit(convertedNote, ['_id']) as DbNote;
       await Update.updateNote(db, query, set);
       // results => {n:1, nModified:1, ok:1}
 
-      return this.convertNoteDataForRead(note as unknown as DbNote, logger);
+      return convertNoteDataForRead(note as unknown as DbNote, logger);
     } catch (error) {
       logger.error({
         moduleName, msg: 'updateNote', error, note,
@@ -1006,7 +967,7 @@ export class MongoDb {
         throw new Error('userId must be specified as part of note when updating a note');
       }
       // @ts-ignore - TODO: DataType Converters to Type at end
-      this.convertNoteDataTypesForSaving(noteUpdate);
+      convertNoteDataTypesForSaving(noteUpdate);
       const { _id, userId } = noteUpdate;
       const query = {
         _id,
