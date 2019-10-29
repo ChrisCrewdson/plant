@@ -17,6 +17,7 @@ import { LocationData as modelLocation } from './model-location';
 
 import utils from '../../../app/libs/utils';
 import { DbCollectionName, DbShapes, UserDetails } from './db-types';
+import { convertPlantDataTypesForSaving } from './converters';
 
 const dbHelper = Helper;
 
@@ -381,30 +382,7 @@ export class MongoDb {
 
   // CRUD operations for Plant collection
 
-  // Plant C: cratePlant
-
-  // eslint-disable-next-line class-methods-use-this
-  convertPlantDataTypesForSaving(plantIn: Readonly<BizPlant> | Readonly<UiPlantsValue>):
-   Readonly<DbPlant> {
-    const plant: DbPlant = plantIn as unknown as DbPlant;
-    if (plant._id) {
-      plant._id = new ObjectID(plant._id);
-    }
-    plant.userId = new ObjectID(plant.userId);
-    plant.locationId = new ObjectID(plant.locationId);
-
-    if (plant.plantedDate) {
-      plant.plantedDate = utils.dateToInt(plant.plantedDate);
-    }
-    if (plant.purchasedDate) {
-      plant.purchasedDate = utils.dateToInt(plant.purchasedDate);
-    }
-    if (plant.terminatedDate) {
-      plant.terminatedDate = utils.dateToInt(plant.terminatedDate);
-    }
-
-    return plant;
-  }
+  // Plant C: createPlant
 
   /**
    * Rebases a plant based on the location's loc value
@@ -526,7 +504,7 @@ export class MongoDb {
       }
       const isAuthorized = await this.roleAtLocation(plantIn.locationId, loggedInUserId, ['owner', 'manager'], logger);
       if (isAuthorized) {
-        const plant = this.convertPlantDataTypesForSaving(plantIn);
+        const plant = convertPlantDataTypesForSaving(plantIn);
         const createdPlant: DbPlant = await Create.createPlant(db, plant);
         const convertedPlant = await this
           .convertPlantDataForReadOne(createdPlant, loggedInUserId, logger, null);
@@ -659,7 +637,7 @@ export class MongoDb {
       if (!plantIn._id || !plantIn.userId) {
         throw new Error(`Must supply _id (${plantIn._id}) and userId (${plantIn.userId}) when updating a plant`);
       }
-      const plant = this.convertPlantDataTypesForSaving(plantIn);
+      const plant = convertPlantDataTypesForSaving(plantIn);
       const db = await this.GetDb(logger);
       const query = _.pick(plant, ['_id', 'userId']);
       const set = _.omit(plant, ['_id']) as DbPlant;
