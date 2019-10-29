@@ -384,7 +384,8 @@ export class MongoDb {
   // Plant C: cratePlant
 
   // eslint-disable-next-line class-methods-use-this
-  convertPlantDataTypesForSaving(plantIn: BizPlant | UiPlantsValue): Readonly<DbPlant> {
+  convertPlantDataTypesForSaving(plantIn: Readonly<BizPlant> | Readonly<UiPlantsValue>):
+   Readonly<DbPlant> {
     const plant: DbPlant = plantIn as unknown as DbPlant;
     if (plant._id) {
       plant._id = new ObjectID(plant._id);
@@ -471,7 +472,7 @@ export class MongoDb {
     }
   }
 
-  async convertPlantDataForRead(plant: DbPlant | Array<DbPlant>,
+  async convertPlantDataForRead(plant: Readonly<DbPlant> | ReadonlyArray<DbPlant>,
     loggedInUserId: string | undefined | null, logger: Logger):
     Promise<BizPlant | Array<BizPlant>> {
     if (_.isArray(plant)) {
@@ -784,7 +785,8 @@ export class MongoDb {
    * Convert Note Data Types for Saving
    */
   // eslint-disable-next-line class-methods-use-this
-  convertNoteDataTypesForSaving(noteParam: BizNote | BizNoteNew): DbNote {
+  convertNoteDataTypesForSaving(
+    noteParam: Readonly<BizNote> | Readonly<BizNoteNew>): Readonly<DbNote> {
     const note: DbNote = noteParam as unknown as DbNote;
     if (note._id) {
       // eslint-disable-next-line no-param-reassign
@@ -804,7 +806,7 @@ export class MongoDb {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  convertNoteDataForRead(note: DbNote, logger: Logger): Readonly<BizNote> {
+  convertNoteDataForRead(note: Readonly<DbNote>, logger: Logger): Readonly<BizNote> {
     const convertedNote = note as unknown as BizNote;
     if (convertedNote._id) {
       convertedNote._id = convertedNote._id.toString();
@@ -822,7 +824,7 @@ export class MongoDb {
     return convertedNote;
   }
 
-  convertNotesDataForRead(note: DbNote[], logger: Logger): BizNote[] {
+  convertNotesDataForRead(note: ReadonlyArray<DbNote>, logger: Logger): ReadonlyArray<BizNote> {
     if (!note || !note.length) {
       return [];
     }
@@ -852,7 +854,8 @@ export class MongoDb {
 
   // Note R: getNoteById
 
-  async getNotesByQuery(query: object, logger: Logger): Promise<BizNote[] | undefined> {
+  async getNotesByQuery(query: object, logger: Logger):
+   Promise<ReadonlyArray<BizNote> | undefined> {
     try {
       const db = await this.GetDb(logger);
       const noteOptions = { sort: [['date', 'asc']] };
@@ -904,7 +907,7 @@ export class MongoDb {
     return this.getNoteByQuery(query, logger);
   }
 
-  async getNotesByIds(ids: string[], logger: Logger): Promise<BizNote[] | undefined> {
+  async getNotesByIds(ids: string[], logger: Logger): Promise<ReadonlyArray<BizNote> | undefined> {
     const query = {
       _id: { $in: ids.map((id) => new ObjectID(id)) },
     };
@@ -978,12 +981,13 @@ export class MongoDb {
     }
   }
 
-  getNotesByPlantId(plantId: string, logger: Logger): Promise<BizNote[] | undefined> {
+  getNotesByPlantId(plantId: string, logger: Logger): Promise<ReadonlyArray<BizNote> | undefined> {
     const query = { plantIds: new ObjectID(plantId) };
     return this.getNotesByQuery(query, logger);
   }
 
-  getNotesByPlantIds(plantIds: string[], logger: Logger): Promise<BizNote[] | undefined> {
+  getNotesByPlantIds(plantIds: string[], logger: Logger):
+   Promise<ReadonlyArray<BizNote> | undefined> {
     const query = {
       plantIds: {
         $in: plantIds.map((plantId) => new ObjectID(plantId)),

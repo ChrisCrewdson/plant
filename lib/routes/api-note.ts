@@ -106,7 +106,7 @@ export const noteApi = (app: Application) => {
     /**
      * Send the notes to the client
      */
-    const okay = (notes?: BizNote[]) => {
+    const okay = (notes?: ReadonlyArray<BizNote>) => {
       logger.trace({ moduleName, msg: 'responding with notes:', notes });
       return res.send(notes);
     };

@@ -7,7 +7,7 @@ import { getDbInstance } from './mongo';
 const db = getDbInstance();
 
 async function getNotes(plantId: string, logger: Logger): Promise<BizNoteMap> {
-  const retrievedNotes: BizNote[]|undefined = await db.getNotesByPlantId(plantId, logger);
+  const retrievedNotes = await db.getNotesByPlantId(plantId, logger);
 
   const bizNoteMap: BizNoteMap = {};
   if (!retrievedNotes || !retrievedNotes.length) {
