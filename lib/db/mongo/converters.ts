@@ -8,6 +8,12 @@ export const convertPlantDataTypesForSaving = (
   if (plant._id) {
     plant._id = new ObjectID(plant._id);
   }
+  if (!plant.userId) {
+    throw new Error('Missing userId in convertPlantDataTypesForSaving');
+  }
+  if (!plant.locationId) {
+    throw new Error('Missing locationId in convertPlantDataTypesForSaving');
+  }
   plant.userId = new ObjectID(plant.userId);
   plant.locationId = new ObjectID(plant.locationId);
 

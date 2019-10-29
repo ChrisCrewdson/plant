@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/lib/db/mongo/converters convertPlantDataTypesForSaving should convert dates as well 1`] = `
+Object {
+  "_id": "5db7bc3796e0526dfa41c6e0",
+  "locationId": "5db7bc3796e0526dfa41c6e0",
+  "plantedDate": 20190101,
+  "purchasedDate": 20191215,
+  "terminatedDate": 20200229,
+  "title": "Plant Title",
+  "userId": "5db7bc3796e0526dfa41c6e0",
+}
+`;
+
+exports[`/lib/db/mongo/converters convertPlantDataTypesForSaving should do basic conversion 1`] = `
+Object {
+  "_id": "5db7bc3796e0526dfa41c6e0",
+  "locationId": "5db7bc3796e0526dfa41c6e0",
+  "title": "Plant Title",
+  "userId": "5db7bc3796e0526dfa41c6e0",
+}
+`;
+
+exports[`/lib/db/mongo/converters convertPlantDataTypesForSaving should throw if no locationId 1`] = `"Missing locationId in convertPlantDataTypesForSaving"`;
+
+exports[`/lib/db/mongo/converters convertPlantDataTypesForSaving should throw if no userId 1`] = `"Missing userId in convertPlantDataTypesForSaving"`;

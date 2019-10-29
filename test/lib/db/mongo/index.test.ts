@@ -141,11 +141,12 @@ describe('/lib/db/mongo/', () => {
 
     test('should update an existing plant with "Set"', async () => {
       const plantUpdate = {
-        title: 'New Name',
-        other: 'Other Text',
         _id: plantId,
+        locationId,
+        other: 'Other Text',
+        title: 'New Name',
         userId,
-      } as unknown as BizPlant;
+      } as BizPlant;
 
       const result = await mongo.updatePlant(plantUpdate, userId, mockLogger);
       expect(result).toEqual(plantUpdate);
