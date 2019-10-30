@@ -144,16 +144,18 @@ class PlantEdit extends React.Component {
     const {
       interimPlant, user, dispatch, history,
     } = (this.props);
-    const plant: UiPlantsValue = produce({}, () => interimPlant);
-    const { isNew = false } = plant;
-    const dateFields: PlantDateFieldNames[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
-    dateFields.forEach((dateField) => {
-      if (plant[dateField]) {
-        plant[dateField] = utils.dateToInt(plant[dateField]);
-      }
-    });
+    const { isNew = false } = interimPlant;
 
-    plant.userId = user._id;
+    const plant: Readonly<UiPlantsValue> = produce(interimPlant, (draft) => {
+      const dateFields: PlantDateFieldNames[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
+      dateFields.forEach((dateField) => {
+        if (draft[dateField]) {
+          draft[dateField] = utils.dateToInt(draft[dateField]);
+        }
+      });
+
+      draft.userId = user._id;
+    });
 
     try {
       const transformed = plantValidator(plant, { isNew });

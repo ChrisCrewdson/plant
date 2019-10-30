@@ -1,6 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 import trim from 'lodash/trim';
 import validatejs from 'validate.js';
+import produce from 'immer';
 import utils from '../libs/utils';
 import * as constants from '../libs/constants';
 
@@ -31,26 +32,22 @@ const floatParser = (value: string | number): number => {
  * 1. Lowercase elements of array
  * 2. Apply unique to array which might reduce length of array
  */
-function transform(attributes: UiPlantsValue): UiPlantsValue {
-  if (attributes.price === '') {
-    // eslint-disable-next-line no-param-reassign
-    delete attributes.price;
-  }
+function transform(attributes: Readonly<UiPlantsValue>): UiPlantsValue {
+  return produce(attributes, (draft) => {
+    if (draft.price === '') {
+      delete draft.price;
+    }
 
-  // If any amounts are preceded by a $ sign then trim that.
-  if (attributes.price && typeof attributes.price === 'string') {
-    // eslint-disable-next-line no-param-reassign
-    attributes.price = parseFloat(trim(attributes.price, '$'));
-  }
+    // If any amounts are preceded by a $ sign then trim that.
+    if (draft.price && typeof draft.price === 'string') {
+      draft.price = parseFloat(trim(draft.price, '$'));
+    }
 
-  if (attributes.loc) {
-    // eslint-disable-next-line no-param-reassign
-    attributes.loc.coordinates[0] = floatParser(attributes.loc.coordinates[0]);
-    // eslint-disable-next-line no-param-reassign
-    attributes.loc.coordinates[1] = floatParser(attributes.loc.coordinates[1]);
-  }
-
-  return attributes;
+    if (draft.loc) {
+      draft.loc.coordinates[0] = floatParser(draft.loc.coordinates[0]);
+      draft.loc.coordinates[1] = floatParser(draft.loc.coordinates[1]);
+    }
+  });
 }
 
 interface ValidateOptions {
@@ -62,7 +59,8 @@ interface ValidateOptions {
  * Don't need a userId if we're in the client, this will get added on the server
  * to prevent tampering with the logged in user.
  */
-export const plant = (attributes: UiPlantsValue, { isNew }: ValidateOptions): UiPlantsValue => {
+export const plant = (attributes: Readonly<UiPlantsValue>,
+  { isNew }: ValidateOptions): UiPlantsValue => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     botanicalName: { length: { maximum: 100 } },
@@ -92,7 +90,8 @@ export const plant = (attributes: UiPlantsValue, { isNew }: ValidateOptions): Ui
     attributes = { ...attributes, _id: makeMongoId() };
   }
 
-  const cleaned: UiPlantsValue = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
+  const cleaned: Readonly<UiPlantsValue> = validatejs.cleanAttributes(
+    cloneDeep(attributes), constraints);
   const transformed = transform(cleaned);
   const errors = validatejs.validate(transformed, constraints);
   const flatErrors = utils.transformErrors(errors);
