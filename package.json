@@ -27,7 +27,7 @@
     "file-loader": "4.2.0",
     "history": "4.10.1",
     "html-webpack-plugin": "3.2.0",
-    "immer": "4.0.2",
+    "immer": "5.0.0",
     "jquery": "2.x",
     "konva": "4.0.16",
     "lalog": "0.7.0",
