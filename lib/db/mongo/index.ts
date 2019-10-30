@@ -1,5 +1,5 @@
 import {
-  MongoClient, ObjectID, Db, UpdateWriteOpResult,
+  MongoClient, ObjectID, Db, UpdateWriteOpResult, FilterQuery,
 } from 'mongodb';
 import _ from 'lodash';
 import { produce } from 'immer';
@@ -768,21 +768,19 @@ export class MongoDb {
   /**
    * Convert Note Data Types for Saving
    */
-  // eslint-disable-next-line class-methods-use-this
-
-  // eslint-disable-next-line class-methods-use-this
 
   async createNote(note: BizNoteNew, logger: Logger): Promise<BizNote> {
     try {
-      const db = await this.GetDb(logger);
+      if (!note.plantIds || !note.plantIds.length) {
+        throw new Error('plantIds must be a non-zero array as part of note when creating a note');
+      }
       if (!note.userId) {
         throw new Error('userId must be specified as part of note when creating a note');
       }
-      convertNoteDataTypesForSaving(note);
-      // eslint-disable-next-line no-param-reassign
-      note.plantIds = note.plantIds || [];
+      const db = await this.GetDb(logger);
+      const convertedNote = convertNoteDataTypesForSaving(note);
 
-      const createdNote = await Create.createNote(db, note);
+      const createdNote = await Create.createNote(db, convertedNote);
       logger.trace({ moduleName, msg: 'createdNote', createdNote });
       return convertNoteDataForRead(createdNote);
     } catch (error) {
@@ -939,19 +937,20 @@ export class MongoDb {
 
   // Note U: updateNote
 
-  async updateNote(note: BizNote, logger: Logger): Promise<BizNote> {
+  async updateNote(note: Readonly<BizNote>, logger: Logger): Promise<BizNote> {
     try {
-      const db = await this.GetDb(logger);
       if (!note.userId) {
         throw new Error('userId must be specified as part of note when updating a note');
       }
+      const db = await this.GetDb(logger);
       const convertedNote = convertNoteDataTypesForSaving(note);
-      const query = _.pick(note, ['_id', 'userId']);
-      const set = _.omit(convertedNote, ['_id']) as DbNote;
+      const query: FilterQuery<DbNote> = _.pick(convertedNote, ['_id', 'userId']);
+      const set: Partial<Readonly<DbNote>> = produce(convertedNote,
+        (draft) => { delete draft._id; });
       await Update.updateNote(db, query, set);
       // results => {n:1, nModified:1, ok:1}
 
-      return convertNoteDataForRead(note as unknown as DbNote);
+      return convertNoteDataForRead(convertedNote as unknown as DbNote);
     } catch (error) {
       logger.error({
         moduleName, msg: 'updateNote', error, note,
@@ -981,7 +980,7 @@ export class MongoDb {
       logger.trace({
         moduleName, msg: 'mongo.addSizesToNoteImage', query, set,
       });
-      await Update.updateOne(db, 'note', query, set);
+      await Update.addSizesToNoteImage(db, query, set);
     } catch (error) {
       logger.error({
         moduleName, msg: 'mongo.addSizesToNoteImage', error, noteUpdate,

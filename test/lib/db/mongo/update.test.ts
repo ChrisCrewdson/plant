@@ -10,7 +10,7 @@ describe('/lib/db/mongo/update', () => {
       const note: BizNote = {
         _id: utils.makeMongoIdObject().toString(),
         date: 20180101,
-        plantIds: [],
+        plantIds: [utils.makeMongoIdObject().toString()],
         userId: utils.makeMongoIdObject().toString(),
         images: [{
           ext: 'jpg',

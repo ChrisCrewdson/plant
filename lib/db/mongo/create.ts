@@ -1,6 +1,6 @@
 import { Db } from 'mongodb';
 import { Helper } from './helper';
-import { DbCollectionName, UserDetails } from './db-types';
+import { DbCollectionName, UserDetails, DbShape } from './db-types';
 
 // See https://stackoverflow.com/a/36794912/1463
 // for a description of insertOne/insertMany/bulkWrite
@@ -13,7 +13,8 @@ export class Create {
     return body && body.ops;
   }
 
-  static async createOne(db: Db, collection: DbCollectionName, doc: object):
+  // TODO: Fix - remove UserDetails
+  static async createOne(db: Db, collection: DbCollectionName, doc: DbShape | UserDetails):
    Promise<any> {
     const body = await Create.create(db, collection, doc);
     return body && body[0];
@@ -24,7 +25,7 @@ export class Create {
     return Create.createOne(db, 'location', doc);
   }
 
-  static async createNote(db: Db, doc: BizNoteNew): Promise<DbNote> {
+  static async createNote(db: Db, doc: DbNote): Promise<DbNote> {
     return Create.createOne(db, 'note', doc);
   }
 

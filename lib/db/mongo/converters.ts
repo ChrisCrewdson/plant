@@ -47,17 +47,18 @@ export const convertNoteDataTypesForSaving = (
 
   const note: DbNote = noteParam as unknown as DbNote;
 
-  if (_id) {
-    note._id = new ObjectID(_id);
-  }
-  if (date) {
-    note.date = utils.dateToInt(date);
-  }
-  if (plantIds && plantIds.length > 0) {
-    note.plantIds = plantIds.map((plantId) => new ObjectID(plantId));
-  }
-  note.userId = new ObjectID(userId);
-  return note;
+  return produce(note, (draft) => {
+    if (_id) {
+      draft._id = new ObjectID(_id);
+    }
+    if (date) {
+      draft.date = utils.dateToInt(date);
+    }
+    if (plantIds && plantIds.length > 0) {
+      draft.plantIds = plantIds.map((plantId) => new ObjectID(plantId));
+    }
+    draft.userId = new ObjectID(userId);
+  });
 };
 
 export const convertNoteDataForRead = (note: Readonly<DbNote>): Readonly<BizNote> => {
@@ -67,14 +68,15 @@ export const convertNoteDataForRead = (note: Readonly<DbNote>): Readonly<BizNote
   }
   const convertedNote = note as unknown as BizNote;
 
-  if (_id) {
-    convertedNote._id = _id.toString();
-  }
-  convertedNote.userId = userId.toString();
-  if (plantIds && plantIds.length) {
-    convertedNote.plantIds = (plantIds || []).map((plantId) => plantId.toString());
-  }
-  return convertedNote;
+  return produce(convertedNote, (draft) => {
+    if (_id) {
+      draft._id = _id.toString();
+    }
+    draft.userId = userId.toString();
+    if (plantIds && plantIds.length) {
+      draft.plantIds = (plantIds || []).map((plantId) => plantId.toString());
+    }
+  });
 };
 
 export const convertNotesDataForRead = (note: ReadonlyArray<DbNote>): ReadonlyArray<BizNote> => {

@@ -28,7 +28,7 @@ describe('note-api', () => {
   const initialNote = {
     note: 'This is a note',
     date: 20160101,
-    plantIds: [],
+    plantIds: [utils.makeMongoIdObject().toString()],
   } as {
     note: string;
     date: number;
@@ -284,7 +284,7 @@ describe('note-api', () => {
       const note: BizNote = {
         _id: utils.makeMongoIdObject().toString(),
         date: 20180101,
-        plantIds: [],
+        plantIds: [utils.makeMongoIdObject().toString()],
         userId: utils.makeMongoIdObject().toString(),
         images: [{
           ext: 'jpg',
