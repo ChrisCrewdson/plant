@@ -962,19 +962,22 @@ export class MongoDb {
 
   async addSizesToNoteImage(noteUpdate: NoteImageUpdateData, logger: Logger): Promise<void> {
     try {
-      const db = await this.GetDb(logger);
-      if (!noteUpdate.userId) {
-        throw new Error('userId must be specified as part of note when updating a note');
+      const {
+        _id, userId, imageId, sizes,
+      } = noteUpdate;
+      if (!userId) {
+        throw new Error('userId not set in addSizesToNoteImage()');
       }
-      // @ts-ignore - TODO: DataType Converters to Type at end
-      convertNoteDataTypesForSaving(noteUpdate);
-      const { _id, userId } = noteUpdate;
+      if (!_id) {
+        throw new Error('_id not set in addSizesToNoteImage()');
+      }
+      const db = await this.GetDb(logger);
       const query = {
-        _id,
-        images: { $elemMatch: { id: noteUpdate.imageId } },
-        userId,
+        _id: new ObjectID(_id),
+        images: { $elemMatch: { id: imageId } },
+        userId: new ObjectID(userId),
       };
-      const set = { $set: { 'images.$.sizes': noteUpdate.sizes } };
+      const set = { $set: { 'images.$.sizes': sizes } };
       logger.trace({
         moduleName, msg: 'mongo.addSizesToNoteImage', query, set,
       });
