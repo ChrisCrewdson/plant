@@ -82,15 +82,12 @@ class PlantEdit extends React.Component {
     this.onChangeLocation = this.onChangeLocation.bind(this);
     this.save = this.save.bind(this);
     this.addGeo = this.addGeo.bind(this);
-  }
 
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
     const { interimPlant } = this.props;
     const pageTitle = interimPlant.isNew
       ? 'Add New Plant'
       : `Edit ${interimPlant.title}`;
-    this.setState({ pageTitle });
+    this.state = { pageTitle };
   }
 
   componentWillUnmount() {
