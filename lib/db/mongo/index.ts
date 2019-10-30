@@ -21,6 +21,9 @@ import {
   convertNoteDataTypesForSaving,
   convertNotesDataForRead,
   convertPlantDataTypesForSaving,
+  rebasePlant,
+  dbUserToBizUser,
+  dbUsersToBizUsers,
 } from './converters';
 
 const dbHelper = Helper;
@@ -273,7 +276,7 @@ export class MongoDb {
       }
 
       const dbUser = await Create.createUser(db, userDetails);
-      const newUser = MongoDb.dbUserToBizUser(dbUser);
+      const newUser = dbUserToBizUser(dbUser);
 
       const location: BizLocationNew = {
         createdBy: newUser._id,
@@ -293,26 +296,6 @@ export class MongoDb {
       logger.error({ moduleName, msg: 'findOrCreateUser Error', error });
       throw error;
     }
-  }
-
-  static dbUserToBizUser(dbUser: Readonly<Partial<DbUser>>): Readonly<BizUser> {
-    return produce(dbUser,
-      (draft: BizUser) => {
-        if (draft._id) {
-          draft._id = draft._id.toString();
-        }
-        return draft;
-      });
-  }
-
-  static dbUsersToBizUsers(dbUsers: Readonly<DbUser>[]): ReadonlyArray<Readonly<BizUser>> {
-    return produce(dbUsers,
-      (draft: BizUser[]) => {
-        draft.forEach((bizUser) => {
-          bizUser._id = bizUser._id.toString();
-        });
-        return draft;
-      });
   }
 
   /**
@@ -362,7 +345,7 @@ export class MongoDb {
         }, logger);
 
         // Convert Mongo ObjectIds to strings
-        const user = MongoDb.dbUserToBizUser(
+        const user = dbUserToBizUser(
           _.pick(users[0], ['_id', 'name', 'createdAt']),
         );
         return {
@@ -389,25 +372,6 @@ export class MongoDb {
   // Plant C: createPlant
 
   /**
-   * Rebases a plant based on the location's loc value
-   * @param plant - plant object with a loc property that needs rebasing
-   * @param loc - the location's loc object
-   * @returns - the rebased plant object.
-   */
-  // eslint-disable-next-line class-methods-use-this
-  rebasePlant(plant: Readonly<BizPlant>, loc: Geo): Readonly<BizPlant> {
-    if (!plant.loc) {
-      return plant;
-    }
-    return produce(plant, (draft) => {
-      if (draft.loc) { // already gated above by TS doesn't know this
-        draft.loc.coordinates[0] = loc.coordinates[0] - draft.loc.coordinates[0];
-        draft.loc.coordinates[1] = loc.coordinates[1] - draft.loc.coordinates[1];
-      }
-    });
-  }
-
-  /**
    * Rebase the plant's location by the location's "loc" location
    * If the location document does not have a loc property then assign
    * the loc property from the plant as the location's loc value.
@@ -419,7 +383,7 @@ export class MongoDb {
       return plant;
     }
     if (locationLocCache[plant.locationId]) {
-      return this.rebasePlant(plant, locationLocCache[plant.locationId]);
+      return rebasePlant(plant, locationLocCache[plant.locationId]);
     }
     const db = await this.GetDb(logger);
     const locationQuery = {
@@ -433,18 +397,18 @@ export class MongoDb {
       }
       // Might have been cached by a parallel async call so check again
       if (locationLocCache[plant.locationId]) {
-        return this.rebasePlant(plant, locationLocCache[plant.locationId]);
+        return rebasePlant(plant, locationLocCache[plant.locationId]);
       }
       const locat = locations[0];
       if (locat.loc) {
         locationLocCache[plant.locationId] = locat.loc;
-        return this.rebasePlant(plant, locationLocCache[plant.locationId]);
+        return rebasePlant(plant, locationLocCache[plant.locationId]);
       }
       locationLocCache[plant.locationId] = plant.loc;
       locat.loc = plant.loc;
 
       await Update.updateLocation(db, locationQuery, locat);
-      return this.rebasePlant(plant, locationLocCache[plant.locationId]);
+      return rebasePlant(plant, locationLocCache[plant.locationId]);
     } catch (readLocationError) {
       logger.error({
         moduleName, msg: 'rebasePlantByLoc readLocationError:', readLocationError, locationQuery,
@@ -1053,7 +1017,7 @@ export class MongoDb {
       if (!dbUsers) {
         return [];
       }
-      const users = MongoDb.dbUsersToBizUsers(dbUsers);
+      const users = dbUsersToBizUsers(dbUsers);
 
       const locationQuery = {};
       const locationOptions = {

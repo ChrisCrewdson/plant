@@ -85,3 +85,40 @@ export const convertNotesDataForRead = (note: ReadonlyArray<DbNote>): ReadonlyAr
   }
   return note.map((n) => convertNoteDataForRead(n));
 };
+
+/**
+ * Rebases a plant based on the location's loc value
+ * @param plant - plant object with a loc property that needs rebasing
+ * @param loc - the location's loc object
+ * @returns - the rebased plant object.
+ */
+// eslint-disable-next-line class-methods-use-this
+export const rebasePlant = (plant: Readonly<BizPlant>, loc: Geo): Readonly<BizPlant> => {
+  if (!plant.loc) {
+    return plant;
+  }
+  return produce(plant, (draft) => {
+    if (draft.loc) { // already gated above by TS doesn't know this
+      draft.loc.coordinates[0] = loc.coordinates[0] - draft.loc.coordinates[0];
+      draft.loc.coordinates[1] = loc.coordinates[1] - draft.loc.coordinates[1];
+    }
+  });
+};
+
+export const dbUserToBizUser = (
+  dbUser: Readonly<Partial<DbUser>>): Readonly<BizUser> => produce(dbUser,
+  (draft: BizUser) => {
+    if (draft._id) {
+      draft._id = draft._id.toString();
+    }
+    return draft;
+  });
+
+export const dbUsersToBizUsers = (
+  dbUsers: Readonly<DbUser>[]): ReadonlyArray<Readonly<BizUser>> => produce(dbUsers,
+  (draft: BizUser[]) => {
+    draft.forEach((bizUser) => {
+      bizUser._id = bizUser._id.toString();
+    });
+    return draft;
+  });
