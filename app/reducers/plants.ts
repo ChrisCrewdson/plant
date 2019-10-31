@@ -1,7 +1,7 @@
-import { AnyAction } from 'redux';
 import uniq from 'lodash/uniq';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
 // An array of plants loaded from the server.
 // Plants could be for any user.
@@ -12,7 +12,7 @@ import { actionEnum } from '../actions';
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
  */
-function replaceInPlace(state: UiPlants, { payload }: AnyAction): UiPlants {
+function replaceInPlace(state: UiPlants, { payload }: PlantAction<any>): UiPlants {
   return produce(state, (draft) => {
     draft[payload._id] = payload;
   });
@@ -21,27 +21,27 @@ function replaceInPlace(state: UiPlants, { payload }: AnyAction): UiPlants {
 /**
  * User clicks save after creating a new plant
  */
-function createPlantRequest(state: UiPlants, action: AnyAction): UiPlants {
+function createPlantRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
   // payload is an object of new plant being POSTed to server
   // an id has already been assigned to this object
   return replaceInPlace(state, action);
 }
 
-function ajaxPlantFailure(state: UiPlants, action: AnyAction): UiPlants {
+function ajaxPlantFailure(state: UiPlants, action: PlantAction<any>): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
  * @param action - payload is an object of plant being PUT to server
  */
-function updatePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
+function updatePlantRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
  * @param action - action.payload: <plant-id>
  */
-function deletePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
+function deletePlantRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
   return produce(state, (draft) => {
     delete draft[action.payload.plantId];
   });
@@ -52,7 +52,7 @@ function deletePlantRequest(state: UiPlants, action: AnyAction): UiPlants {
  * Need to remove this note from the notes array in all plants
  * @param action - action.payload: <noteId>
  */
-function deleteNoteRequest(state: UiPlants, { payload: noteId }: AnyAction): UiPlants {
+function deleteNoteRequest(state: UiPlants, { payload: noteId }: PlantAction<any>): UiPlants {
   return produce(state, (draft) => {
     Object.keys(draft).forEach((plantId) => {
       const plant = draft[plantId];
@@ -67,18 +67,18 @@ function deleteNoteRequest(state: UiPlants, { payload: noteId }: AnyAction): UiP
 /**
  * @param action - action.payload is a plant object
  */
-function loadPlantSuccess(state: UiPlants, action: AnyAction): UiPlants {
+function loadPlantSuccess(state: UiPlants, action: PlantAction<any>): UiPlants {
   return replaceInPlace(state, action);
 }
 
-function loadPlantFailure(state: UiPlants, action: AnyAction): UiPlants {
+function loadPlantFailure(state: UiPlants, action: PlantAction<any>): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
  * @param action - action.payload is an array of plant objects
  */
-function loadPlantsSuccess(state: UiPlants, { payload: plants }: AnyAction): UiPlants {
+function loadPlantsSuccess(state: UiPlants, { payload: plants }: PlantAction<any>): UiPlants {
   if (plants && plants.length > 0) {
     return produce(state, (draft) => {
       plants.forEach((plant: UiPlantsValue) => {
@@ -94,7 +94,7 @@ function loadPlantsSuccess(state: UiPlants, { payload: plants }: AnyAction): UiP
 /**
  * The action.payload.note is the returned note from the server.
  */
-function upsertNoteSuccess(state: UiPlants, { payload: { note } }: AnyAction): UiPlants {
+function upsertNoteSuccess(state: UiPlants, { payload: { note } }: PlantAction<any>): UiPlants {
   const {
     _id, // The id of the note
     plantIds = [], // The plants that this note applies to
@@ -144,7 +144,7 @@ function upsertNoteSuccess(state: UiPlants, { payload: { note } }: AnyAction): U
   });
 }
 
-function loadNotesRequest(state: UiPlants, action: AnyAction): UiPlants {
+function loadNotesRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
 // action.payload is {
 //   noteIds: [<note-id>, <note-id>, ...]
 // OR
@@ -175,7 +175,7 @@ function loadNotesRequest(state: UiPlants, action: AnyAction): UiPlants {
 /**
  * action.payload is an array of notes from the server
  */
-function loadNotesSuccess(state: UiPlants, { payload: notes }: AnyAction): UiPlants {
+function loadNotesSuccess(state: UiPlants, { payload: notes }: PlantAction<any>): UiPlants {
   if (!notes || !notes.length) {
     return state;
   }
@@ -230,7 +230,7 @@ const defaultState = produce({}, () => ({}));
 /**
  * The plants reducer
  */
-export const plants = (state: UiPlants = defaultState, action: AnyAction): UiPlants => {
+export const plants = (state: UiPlants = defaultState, action: PlantAction<any>): UiPlants => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

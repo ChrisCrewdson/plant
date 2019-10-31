@@ -90,18 +90,9 @@ export const noteApi = (app: Application) => {
   // Note Read Multiple
   app.post('/api/notes', async (req, res) => {
     const { logger } = req;
-    logger.trace({ moduleName, msg: 'POST /api/notes', body: req.body });
-    const { noteIds, plantIds } = req.body;
-    if ((!noteIds || !noteIds.length) && (!plantIds || !plantIds.length)) {
-      logger.error({
-        moduleName,
-        msg: 'No noteIds or plantIds in POST /api/notes',
-        noteIds,
-        plantIds,
-        'req.body': req.body,
-      });
-      return res.status(404).send('No noteIds/plantIds in body request');
-    }
+    const { body }: { body: LoadNotesRequestPayload } = req;
+    const { noteIds, plantIds } = body;
+    logger.trace({ moduleName, msg: 'POST /api/notes', body });
 
     /**
      * Send the notes to the client
@@ -111,7 +102,7 @@ export const noteApi = (app: Application) => {
       return res.send(notes);
     };
 
-    if (plantIds) {
+    if (plantIds && plantIds.length) {
       try {
         const notes = await mongo.getNotesByPlantIds(plantIds, logger);
         return okay(notes);
@@ -120,12 +111,23 @@ export const noteApi = (app: Application) => {
       }
     }
 
-    try {
-      const notes = await mongo.getNotesByIds(noteIds, logger);
-      return okay(notes);
-    } catch (e) {
-      return res.status(500).send('Error getting notes by noteIds');
+    if (noteIds && noteIds.length) {
+      try {
+        const notes = await mongo.getNotesByIds(noteIds, logger);
+        return okay(notes);
+      } catch (e) {
+        return res.status(500).send('Error getting notes by noteIds');
+      }
     }
+
+    logger.error({
+      moduleName,
+      msg: 'No noteIds or plantIds in POST /api/notes',
+      noteIds,
+      plantIds,
+      body,
+    });
+    return res.status(404).send('No noteIds/plantIds in body request');
   });
 
   const firstDirectory = process.env.NODE_ENV === 'production' ? 'up' : 'test';

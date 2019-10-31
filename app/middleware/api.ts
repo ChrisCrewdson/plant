@@ -251,10 +251,6 @@ function loadLocationsRequest(store: Store) {
   ajax(store, options);
 }
 
-interface LoadNotesRequestPayload {
-  plantIds?: string[];
-  noteIds?: string[];
-}
 
 // Get all the notes listed
 // action.payload is an object with one of 2 properties:
