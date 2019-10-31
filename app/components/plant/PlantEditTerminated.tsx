@@ -32,10 +32,7 @@ export default class PlantEditTerminated extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.booleanHandler = this.booleanHandler.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
-  }
 
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
     const { dispatch } = this.props;
     const { interimPlant } = this.props;
     let { terminatedReason } = interimPlant;
