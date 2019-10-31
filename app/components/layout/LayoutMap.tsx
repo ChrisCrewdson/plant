@@ -43,10 +43,6 @@ export default class LayoutMap extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this);
     this.renderPlantLocation = this.renderPlantLocation.bind(this);
-  }
-
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
     const { store } = this.context;
     const {
       plants,
@@ -59,7 +55,7 @@ export default class LayoutMap extends React.Component {
       users,
     });
 
-    const { match } = this.props;
+    const { match } = props;
     // @ts-ignore - fix this - file not in use right now
     if (match.params && match.params.id) {
     // @ts-ignore - fix this - file not in use right now
@@ -73,11 +69,10 @@ export default class LayoutMap extends React.Component {
         store.dispatch(actionFunc.loadPlantsRequest(userId));
       }
     }
-    const state = {
+    this.state = {
       plants,
       users,
     };
-    this.setState(state);
     this.unsubscribe = store.subscribe(this.onChange);
   }
 

@@ -53,10 +53,7 @@ class Metrics extends React.Component {
     this.postSaveSuccessCreateNote = this.postSaveSuccessCreateNote.bind(this);
     // eslint-disable-next-line react/state-in-constructor
     this.state = { filter: '' };
-  }
 
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
     const { store } = this.context;
     const { locations = {} } = store.getState();
     // @ts-ignore - This file is a copy of the Location file and needs to be finished
