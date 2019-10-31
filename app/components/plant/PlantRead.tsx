@@ -75,11 +75,8 @@ class PlantRead extends React.PureComponent {
     this.checkDelete = this.checkDelete.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.showImages = this.showImages.bind(this);
-  }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
-    const { plant: { notesRequested, _id }, dispatch } = this.props;
+    const { plant: { notesRequested, _id }, dispatch } = props;
     if (!notesRequested) {
       if (_id) {
         dispatch(actionFunc.loadNotesRequest({
