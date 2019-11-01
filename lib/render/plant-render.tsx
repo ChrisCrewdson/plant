@@ -16,7 +16,7 @@ interface SsrRenderPlantOptions {
   store: Store<any, PlantAction<any>>;
   context: StaticRouterContext;
   url: string;
-  params: string;
+  params: Record<string, string>;
   searchParams: Map<string, any>;
 }
 
