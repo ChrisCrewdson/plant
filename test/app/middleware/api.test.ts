@@ -5,8 +5,8 @@ import * as helper from '../../helper';
 import { api, apis } from '../../../app/middleware/api';
 import { AjaxOptions } from '../../../app/middleware/ajax';
 
-// eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-let ajaxer = (store: Store, options: AjaxOptions) => {};
+type AjaxerFunction = (store: Store, options: AjaxOptions) => void;
+let ajaxer = (() => {}) as AjaxerFunction;
 
 jest.mock('../../../app/middleware/ajax', () => ({
   ajax: (store: Store, options: AjaxOptions) => {

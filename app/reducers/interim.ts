@@ -76,6 +76,8 @@ function editPlantClose(state: Readonly<UiInterim>): UiInterim {
   });
 }
 
+type UiPlantsValueKeys = keyof UiPlantsValue;
+
 /**
  * action.payload:
  * {plant-key: plant-value, ...}
@@ -83,16 +85,27 @@ function editPlantClose(state: Readonly<UiInterim>): UiInterim {
  *   plant:
  *     plant
  */
-function editPlantChange(state: Readonly<UiInterim>, action: AnyAction): UiInterim {
+function editPlantChange(state: Readonly<UiInterim>,
+  action: PlantAction<UiPlantsValue>): UiInterim {
+  const { payload } = action;
   return produce(state, (draft) => {
-    const plant = {
-      ...(draft.plant || {}).plant,
-      ...action.payload,
-    };
-    draft.plant = {
-      ...draft.plant,
-      plant,
-    };
+    if (!draft.plant) {
+      draft.plant = {
+        plant: {} as UiPlantsValue,
+      };
+    }
+
+    if (!draft.plant.plant) {
+      draft.plant.plant = {} as UiPlantsValue;
+    }
+
+    const { plant } = draft.plant;
+
+    Object.entries(payload).forEach((pair) => {
+      const [k, v] = pair as [UiPlantsValueKeys, any];
+      // @ts-ignore Type 'any' is not assignable to type 'never'.ts(2322)
+      plant[k] = v;
+    });
   });
 }
 
