@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Toggle from 'material-ui/Toggle';
-import inputComboText, { InputComboTextProps } from './InputComboText';
 
-type InputComboPropsType = 'text' | 'number' | 'boolean';
+type InputComboPropsType = 'boolean';
 
 interface InputComboProps {
-  changeHandler?: (name: string, newValue: string) => void;
-  booleanChangeHandler?: (name: string, isInputChecked: boolean) => void;
+  booleanChangeHandler: (name: string, isInputChecked: boolean) => void;
   disabled?: boolean;
   error: React.ReactNode;
   fullWidth?: boolean;
@@ -17,7 +15,7 @@ interface InputComboProps {
   name: string;
   placeholder?: string;
   style?: React.CSSProperties;
-  type?: InputComboPropsType;
+  type: InputComboPropsType;
   value: string | number | boolean;
   options?: Record<string, string>;
 }
@@ -49,20 +47,6 @@ export default function inputCombo(props: InputComboProps) {
       />
     );
   };
-
-  if (type === 'text' || type === 'number') {
-    if (typeof value === 'boolean') {
-      throw new Error('Invalid value type of boolean when type is text or number');
-    }
-    const v = value;
-    const t = type === 'text' ? 'text' : 'number';
-    const comboTextProps: InputComboTextProps = {
-      ...props,
-      type: t,
-      value: v,
-    };
-    return inputComboText(comboTextProps);
-  }
 
   if (type === 'boolean') {
     return boolean();

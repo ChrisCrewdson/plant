@@ -5,6 +5,7 @@ import React from 'react';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import CheckBoxOutlineBlank from 'material-ui/svg-icons/toggle/check-box-outline-blank';
 import InputCombo from './InputCombo';
+import InputComboText from './InputComboText';
 import SelectCombo from './SelectCombo';
 
 export type GridCellInputType = 'select' | 'boolean' | 'text';
@@ -97,20 +98,37 @@ export default class GridCell extends React.Component {
           />
         );
       }
-      return (
-        <InputCombo
-          changeHandler={this.onChangeText}
-          booleanChangeHandler={this.onChangeBoolean}
-          error={error}
-          id={htmlId}
-          name={title}
-          options={options}
-          placeholder={title}
-          style={{}}
-          type={type}
-          value={value}
-        />
-      );
+      if (type === 'text' && typeof value === 'string') {
+        return (
+          <InputComboText
+            changeHandler={this.onChangeText}
+            error={error}
+            id={htmlId}
+            name={title}
+            placeholder={title}
+            style={{}}
+            type={type}
+            value={value}
+          />
+        );
+      }
+      if (type === 'boolean') {
+        return (
+          <InputCombo
+            changeHandler={this.onChangeText}
+            booleanChangeHandler={this.onChangeBoolean}
+            error={error}
+            id={htmlId}
+            name={title}
+            options={options}
+            placeholder={title}
+            style={{}}
+            type={type}
+            value={value}
+          />
+        );
+      }
+      return null;
     }
 
     // We're in read-only mode for this cell

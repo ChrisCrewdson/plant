@@ -17,7 +17,7 @@ import { History } from 'history';
 import PlantEditTerminated from './PlantEditTerminated';
 import utils from '../../libs/utils';
 import CancelSaveButtons from '../common/CancelSaveButtons';
-import InputCombo from '../common/InputCombo';
+import InputComboText from '../common/InputComboText';
 import SelectCombo from '../common/SelectCombo';
 import { actionFunc } from '../../actions';
 import * as validators from '../../models';
@@ -241,7 +241,7 @@ class PlantEdit extends React.Component {
           {pageTitle}
         </h2>
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.title}
           id="title"
@@ -264,7 +264,7 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.botanicalName}
           id="botanical-name"
@@ -275,7 +275,7 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.commonName}
           id="common-name"
@@ -286,7 +286,7 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.description}
           id="description"
@@ -299,7 +299,7 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.purchasedDate}
           id="acquire-date"
@@ -310,7 +310,7 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.plantedDate}
           id="planted-date"
@@ -321,7 +321,7 @@ class PlantEdit extends React.Component {
         />
         <Divider />
 
-        <InputCombo
+        <InputComboText
           changeHandler={this.onChange}
           error={errors.price}
           id="price"
@@ -347,7 +347,7 @@ class PlantEdit extends React.Component {
             >
               <MapsAddLocation />
             </FloatingActionButton>
-            <InputCombo
+            <InputComboText
               changeHandler={this.onChange}
               disabled
               error={errors.geoPosition}

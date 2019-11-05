@@ -6,7 +6,7 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Dispatch } from 'redux';
-import InputCombo from '../../../../app/components/common/InputCombo';
+import InputComboText from '../../../../app/components/common/InputComboText';
 import SelectCombo from '../../../../app/components/common/SelectCombo';
 import store from '../../../../app/store';
 import App from '../../../../app/components/App';
@@ -14,7 +14,7 @@ import { PlantAction } from '../../../../lib/types/redux-payloads';
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-describe('InputCombo and SelectCombo', () => {
+describe('InputComboText and SelectCombo', () => {
   const storeDispatch = store.dispatch;
 
   beforeAll(() => {
@@ -32,7 +32,7 @@ describe('InputCombo and SelectCombo', () => {
         <Provider store={store}>
           <App>
             <MemoryRouter>
-              <InputCombo
+              <InputComboText
                 changeHandler={changeHandler}
                 id="test-id"
                 name="test-name"

@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 type InputComboTextPropsType = 'text' | 'number';
 
 export interface InputComboTextProps {
-  changeHandler?: (name: string, newValue: string) => void;
+  changeHandler: (name: string, newValue: string) => void;
   disabled?: boolean;
   error: React.ReactNode;
   fullWidth?: boolean;

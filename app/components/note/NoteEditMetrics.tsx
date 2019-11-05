@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
 import { actionFunc } from '../../actions';
 import Errors from '../common/Errors';
-import InputCombo from '../common/InputCombo';
+import InputComboText from '../common/InputComboText';
 import utils, { MetaMetric } from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
 
@@ -53,7 +53,7 @@ export default class NoteEditMetrics extends React.PureComponent {
   }
 
   /**
-   * Change Handler for InputCombo
+   * Change Handler for InputComboText
    */
   onChange(namo: string, value: string): void {
     const name = namo as MetaMetricKey;
@@ -86,7 +86,7 @@ export default class NoteEditMetrics extends React.PureComponent {
   renderLength(metaMetric: MetaMetric, value: any) {
     const renderValue = (value || value === 0) ? value.toString() : '';
     return (
-      <InputCombo
+      <InputComboText
         changeHandler={this.onChange}
         id={metaMetric.key}
         key={metaMetric.key}
