@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
+    "allowJs": false,
     "esModuleInterop": true,
     "incremental": true,
     "jsx": "react",
     "lib": ["esnext", "dom", "dom.iterable"],
     "module": "commonjs",                    
-    "noEmit": false,
     "outDir": "./dist",
     "resolveJsonModule": true,
     "sourceMap": true,
