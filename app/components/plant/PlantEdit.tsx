@@ -109,8 +109,7 @@ class PlantEdit extends React.Component {
     }));
   }
 
-  onChange(e: React.ChangeEvent<HTMLInputElement>, value: string) {
-    const { name } = e.target;
+  onChange(name: string, value: string) {
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
       [name]: value,

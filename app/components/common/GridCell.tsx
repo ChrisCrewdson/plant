@@ -46,7 +46,8 @@ export default class GridCell extends React.Component {
 
   constructor(props: GridCellProps) {
     super(props);
-    this.onChange = this.onChange.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
+    this.onChangeBoolean = this.onChangeBoolean.bind(this);
     this.onChangeSelect = this.onChangeSelect.bind(this);
   }
 
@@ -60,24 +61,18 @@ export default class GridCell extends React.Component {
     editCell(rowId, index, val);
   }
 
-  onChange(e: React.ChangeEvent<HTMLInputElement>, val: string | boolean) {
+  onChangeText(name: string, val: string) {
     const {
-      type, editCell, rowId, index,
+      editCell, rowId, index,
     } = this.props;
-    let value;
-    switch (type) {
-      case 'boolean':
-        value = val;
-        break;
-      case 'text':
-        ({ value } = e.target);
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.error(`unknown type ${type} with e.target ${e.target} val ${val}`);
-        value = '';
-    }
-    editCell(rowId, index, value);
+    editCell(rowId, index, val);
+  }
+
+  onChangeBoolean(name: string, val: boolean) {
+    const {
+      editCell, rowId, index,
+    } = this.props;
+    editCell(rowId, index, val);
   }
 
   render() {
@@ -104,7 +99,8 @@ export default class GridCell extends React.Component {
       }
       return (
         <InputCombo
-          changeHandler={this.onChange}
+          changeHandler={this.onChangeText}
+          booleanChangeHandler={this.onChangeBoolean}
           error={error}
           id={htmlId}
           name={title}

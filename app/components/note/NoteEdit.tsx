@@ -111,10 +111,10 @@ export default class NoteEdit extends React.PureComponent {
   /**
    * Change Handler
    */
-  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+  onChange(name: string, value: string) {
     const { dispatch } = this.props;
     dispatch(actionFunc.editNoteChange({
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   }
 

@@ -258,7 +258,7 @@ No plants added yet...
 
     const filterInput = (
       <InputComboText
-        changeHandler={(e) => this.setState({ filter: e.target.value.toLowerCase() })}
+        changeHandler={(_, value) => this.setState({ filter: value.toLowerCase() })}
         id="plant-title-filter"
         label="Filter"
         name="filter"

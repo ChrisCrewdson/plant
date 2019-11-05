@@ -55,8 +55,8 @@ export default class NoteEditMetrics extends React.PureComponent {
   /**
    * Change Handler for InputCombo
    */
-  onChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = e.target as { name: MetaMetricKey; value: string };
+  onChange(namo: string, value: string): void {
+    const name = namo as MetaMetricKey;
     this.dispatchChange(name, value);
   }
 

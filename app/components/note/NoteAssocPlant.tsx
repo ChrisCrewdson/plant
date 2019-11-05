@@ -53,8 +53,8 @@ export default class NoteAssocPlant extends React.Component {
     this.changeHandler = this.changeHandler.bind(this);
   }
 
-  changeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    return this.setState({ filter: e.target.value.toLowerCase() });
+  changeHandler(_: string, value: string) {
+    return this.setState({ filter: value.toLowerCase() });
   }
 
   /**

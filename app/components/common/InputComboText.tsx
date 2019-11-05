@@ -4,9 +4,8 @@ import TextField from 'material-ui/TextField';
 
 type InputComboTextPropsType = 'text' | 'number';
 
-interface InputComboTextProps {
-  // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
-  changeHandler: (e: React.ChangeEvent<HTMLInputElement>, newValue: string) => void;
+export interface InputComboTextProps {
+  changeHandler?: (name: string, newValue: string) => void;
   disabled?: boolean;
   error: React.ReactNode;
   fullWidth?: boolean;
@@ -19,6 +18,7 @@ interface InputComboTextProps {
   type?: InputComboTextPropsType;
   value: string | number;
 }
+
 
 /**
  * A very light wrapper around the MaterialUI TextField component
@@ -43,6 +43,12 @@ export default function inputComboText(props: InputComboTextProps) {
     display: 'none',
   };
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>, newValue: string): void => {
+    if (changeHandler) {
+      changeHandler(e.target.name, newValue);
+    }
+  };
+
   const styler = { marginLeft: 20, ...style };
 
   return (
@@ -55,7 +61,7 @@ export default function inputComboText(props: InputComboTextProps) {
       id={id}
       multiLine={multiLine}
       name={namo}
-      onChange={changeHandler}
+      onChange={onChange}
       style={styler}
       type={type}
       underlineStyle={underlineStyle}

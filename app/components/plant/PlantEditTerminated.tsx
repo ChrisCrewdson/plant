@@ -30,6 +30,7 @@ export default class PlantEditTerminated extends React.Component {
   constructor(props: PlantEditTerminatedProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.onChangeRadio = this.onChangeRadio.bind(this);
     this.booleanHandler = this.booleanHandler.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
 
@@ -44,11 +45,15 @@ export default class PlantEditTerminated extends React.Component {
     }
   }
 
+  onChangeRadio(e: React.ChangeEvent<HTMLInputElement>): void {
+    const { name, value } = e.target;
+    this.dispatchChange(name, value);
+  }
+
   /**
    * Change Handler for InputCombo
    */
-  onChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = e.target;
+  onChange(name: string, value: string): void {
     this.dispatchChange(name, value);
   }
 
@@ -110,7 +115,7 @@ export default class PlantEditTerminated extends React.Component {
             <RadioButtonGroup
               defaultSelected={terminatedReason}
               name="terminatedReason"
-              onChange={this.onChange}
+              onChange={this.onChangeRadio}
               style={styles.radioGroup}
             >
               <RadioButton
