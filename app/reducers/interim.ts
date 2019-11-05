@@ -76,8 +76,6 @@ function editPlantClose(state: Readonly<UiInterim>): UiInterim {
   });
 }
 
-type UiPlantsValueKeys = keyof UiPlantsValue;
-
 /**
  * action.payload:
  * {plant-key: plant-value, ...}
@@ -99,13 +97,12 @@ function editPlantChange(state: Readonly<UiInterim>,
       draft.plant.plant = {} as UiPlantsValue;
     }
 
-    const { plant } = draft.plant;
+    const plant = draft.plant.plant as UiPlantsValue;
 
-    Object.entries(payload).forEach((pair) => {
-      const [k, v] = pair as [UiPlantsValueKeys, any];
-      // @ts-ignore Type 'any' is not assignable to type 'never'.ts(2322)
-      plant[k] = v;
-    });
+    draft.plant.plant = {
+      ...plant,
+      ...payload,
+    };
   });
 }
 
