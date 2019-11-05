@@ -112,18 +112,11 @@ export default class GridCell extends React.Component {
           />
         );
       }
-      if (type === 'boolean') {
+      if (type === 'boolean' && typeof value === 'boolean') {
         return (
           <InputCombo
-            changeHandler={this.onChangeText}
             booleanChangeHandler={this.onChangeBoolean}
-            error={error}
-            id={htmlId}
             name={title}
-            options={options}
-            placeholder={title}
-            style={{}}
-            type={type}
             value={value}
           />
         );

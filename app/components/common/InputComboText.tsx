@@ -44,9 +44,7 @@ export default function inputComboText(props: InputComboTextProps) {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>, newValue: string): void => {
-    if (changeHandler) {
-      changeHandler(e.target.name, newValue);
-    }
+    changeHandler(e.target.name, newValue);
   };
 
   const styler = { marginLeft: 20, ...style };
