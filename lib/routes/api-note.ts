@@ -9,6 +9,7 @@ import { requireToken } from '../auth/token-check';
 import * as constants from '../../app/libs/constants';
 import { serverValidateNote } from '../validation/ssv-note';
 import utils from '../../app/libs/utils';
+import { makeS3KeyFromImage } from '../utils';
 
 interface ImageCompleteRequest {
   logger: Logger;
@@ -131,15 +132,6 @@ export const noteApi = (app: Application) => {
     });
     return res.status(404).send('No noteIds/plantIds in body request');
   });
-
-  const firstDirectory = process.env.NODE_ENV === 'production' ? 'up' : 'test';
-
-  /**
-   * The image is the object stored in the images array in the note.
-   */
-  function makeS3KeyFromImage(image: UploadedNoteFile, size: ImageSizeName = 'orig') {
-    return `${firstDirectory}/${size}/${image.id}${image.ext && '.'}${image.ext}`;
-  }
 
   /**
    * Make S3 Keys from Image objects
