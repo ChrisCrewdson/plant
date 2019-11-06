@@ -147,7 +147,7 @@
     "url": "https://github.com/guyellis/plant.git"
   },
   "scripts": {
-    "build": "TARGET=build webpack --bail && tsc --incremental",
+    "build": ". ./devops/build.sh",
     "cover": "jest --coverage && google-chrome coverage/lcov-report/index.html",
     "coverage": "jest --coverage",
     "coverage-fast": "jest --coverage --onlyChanged",

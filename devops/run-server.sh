@@ -30,12 +30,13 @@ export NODE_ENV=development
 # You can comment out the DEBUG line below if you want fewer terminal messages
 export DEBUG=plant:*
 
-# Do this from the root of the project
-tsc
-# Copy public/ and any other non-transpiled files to the dist/ folder
-./devops/copy-to-dist.sh
+# Build, transpile and copy public/static foldres to dist/ etc.
+./devops/build.sh
+
 # CD to dist so we can run the transpiled code
-cd dist/
+# cd dist/
+
 pwd
-nodemon server.js
+
+nodemon dist/server.js
 # nodemon server.js --exec babel-node --presets es2015,stage-1

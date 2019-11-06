@@ -106,6 +106,10 @@ Promise<Server> => {
     await routes.index(app);
 
     const tenMinutes = 10 * 60 * 1000; // 10 minutes * 60 seconds * 1000 milliseconds
+    // These are the two public folders. All files in these folders are sent as static
+    // files to the client.
+    // For TypeScript compiled files living in dist/ these folders need to be copied
+    // into there.
     app.use(express.static(path.join(__dirname, '../build'), { maxAge: tenMinutes }));
     app.use(express.static(path.join(__dirname, '../public'), { maxAge: tenMinutes }));
 
