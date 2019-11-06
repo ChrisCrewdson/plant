@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
+import { LoadLocationsSuccessAction, PlantAction } from '../../lib/types/redux-payloads';
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.
@@ -10,10 +11,10 @@ import { actionEnum } from '../actions';
 
 // The action.payload are the returned locations from the server.
 
-function loadLocationsSuccess(state: UiLocations, { payload }: AnyAction): UiLocations {
+function loadLocationsSuccess(state: UiLocations, action: LoadLocationsSuccessAction): UiLocations {
+  const { payload } = action;
   return produce(state, (draft) => {
-    Object.keys(payload || {}).forEach((locationId: string) => {
-      const location = payload[locationId];
+    (payload || []).forEach((location) => {
       draft[location._id] = location;
       draft[location._id].plantIds = location.plantIds || [];
     });
@@ -104,7 +105,8 @@ export const reducers = {
 
 const defaultState = produce({}, () => ({}));
 
-export const locations = (state: UiLocations = defaultState, action: AnyAction): UiLocations => {
+export const locations = (
+  state: UiLocations = defaultState, action: PlantAction<any>): UiLocations => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

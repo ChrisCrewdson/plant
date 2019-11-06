@@ -19,22 +19,18 @@ describe('/app/reducers/locations', () => {
   })) as unknown as Record<string, UiLocationsValue>;
 
   test('should load locations', () => {
-    const payload = {
-      2: {
-        _id: '2',
-        name: 'twenty-two',
-        plantIds: ['two', 'twenty'],
-      },
-      3: {
-        _id: '3',
-        name: 'thirty-three',
-        plantIds: ['three', 'thirty'],
-      },
-      4: {
-        _id: '4',
-        name: 'four',
-      },
-    };
+    const payload = [{
+      _id: '2',
+      name: 'twenty-two',
+      plantIds: ['two', 'twenty'],
+    }, {
+      _id: '3',
+      name: 'thirty-three',
+      plantIds: ['three', 'thirty'],
+    }, {
+      _id: '4',
+      name: 'four',
+    }];
 
     const actual = locations(stateA, actionFunc.loadLocationsSuccess(payload));
     expect(actual).toMatchSnapshot();
