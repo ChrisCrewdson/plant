@@ -191,7 +191,11 @@ export class MongoDb {
    */
   async findOrCreateUser(userDetails: UserDetails, logger: Logger): Promise<Readonly<BizUser>> {
     try {
-      if (!_.get(userDetails, 'facebook.id') && !_.get(userDetails, 'google.id')) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define, no-undef
+      const facebookId = userDetails?.facebook?.id;
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define, no-undef
+      const googleId = userDetails?.google?.id;
+      if (!facebookId && !googleId) {
         throw new Error(`No facebook.id or google.id:\n${JSON.stringify(userDetails, null, 2)}`);
       }
       // 1. Get the DB

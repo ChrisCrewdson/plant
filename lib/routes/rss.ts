@@ -33,7 +33,8 @@ function buildXml(notes: DbNoteWithPlants[], httpHost: string) {
     //       Need to move this to the utils or other module to DRY up the code.
     const uri = `${httpHost}/plant/${slug}/${currNote.plantIds[0]}?noteid=${currNote._id}#${currNote._id}`; // just the first
 
-    const noteImages = currNote.images && currNote.images.length ? currNote.images : [];
+    // eslint-disable-next-line no-restricted-globals
+    const noteImages = currNote.images?.length ? currNote.images : [];
 
     // Append images. RSS spec wants a full https|http given.
     // TODO: Can we inspect the headers of the requester to determine image size?

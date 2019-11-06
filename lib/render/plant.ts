@@ -40,7 +40,8 @@ export const renderPlant = async (req: Request, res: Response): Promise<void> =>
 
     const initialState = await singlePlant(user, plantId, noteId, logger) || {};
 
-    if (user && user.locationIds && user.locationIds.length && !user.activeLocationId) {
+    // eslint-disable-next-line no-restricted-globals, no-undef
+    if (user?.locationIds?.length && !user.activeLocationId) {
       // TODO: This is a hack but probably okay for now. We should store the user's
       // activeLocationId on the server. At the time of writing this it was in
       // localStorage on the client.

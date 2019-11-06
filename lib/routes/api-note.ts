@@ -102,7 +102,8 @@ export const noteApi = (app: Application) => {
       return res.send(notes);
     };
 
-    if (plantIds && plantIds.length) {
+    // eslint-disable-next-line no-restricted-globals
+    if (plantIds?.length) {
       try {
         const notes = await mongo.getNotesByPlantIds(plantIds, logger);
         return okay(notes);
@@ -111,7 +112,8 @@ export const noteApi = (app: Application) => {
       }
     }
 
-    if (noteIds && noteIds.length) {
+    // eslint-disable-next-line no-restricted-globals
+    if (noteIds?.length) {
       try {
         const notes = await mongo.getNotesByIds(noteIds, logger);
         return okay(notes);
@@ -158,7 +160,7 @@ export const noteApi = (app: Application) => {
   app.delete('/api/note/:noteId', requireToken, async (req, res) => {
     const { params = {}, user, logger } = req;
     const { noteId } = params;
-    const userId = user && user._id;
+    const userId = user?._id; // eslint-disable-line no-undef
 
     if (!noteId) {
       logger.error({ moduleName, msg: 'DELETE /api/note/:noteId missing noteId', params });
@@ -174,7 +176,7 @@ export const noteApi = (app: Application) => {
         throw new Error('Non-owner trying to delete note');
       }
 
-      if (note && note.images && note.images.length) {
+      if (note?.images?.length) { // eslint-disable-line no-undef, no-restricted-globals
         const s3 = new aws.S3();
 
         const options = {
@@ -313,7 +315,7 @@ export const noteApi = (app: Application) => {
         req_body: req.body,
         req_files: multerFiles.map((file: any) => _.omit(file, ['buffer'])),
       });
-      const userId = user && user._id;
+      const userId = user?._id; // eslint-disable-line no-undef
       if (!userId) {
         throw new Error('userId is falsy in imageNote()');
       }
@@ -379,17 +381,21 @@ export const noteApi = (app: Application) => {
       return res.send({ success: false, message });
     }
 
-    const token = query && query.token;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    const token = query?.token;
     if (!utils.constantEquals(token, imageCompleteToken)) {
       const message = `Token mismatch: PLANT_IMAGE_COMPLETE=${imageCompleteToken} and token=${token}`;
       logger.error({ moduleName, msg: message });
       return res.send({ success: false });
     }
-    const sizes = body && body.sizes;
-    const metadata = body && body.metadata;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    const sizes = body?.sizes;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    const metadata = body?.metadata;
 
     if (!metadata || !sizes || !sizes.length) {
-      const message = `Unexpected metadata ${metadata} and/or length of sizes ${sizes && sizes.length}`;
+      // eslint-disable-next-line no-restricted-globals
+      const message = `Unexpected metadata ${metadata} and/or length of sizes ${sizes?.length}`;
       logger.error({
         moduleName, msg: message, metadata, sizes,
       });
