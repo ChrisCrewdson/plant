@@ -37,35 +37,42 @@ interface GridColumn {
   width: number;
 }
 
-const userColumns: GridColumn[] = [{
-  title: 'Name',
-  type: 'select',
-  width: 50,
-}, {
-  options: {
-    '<select>': '<select>',
-    owner: 'Owner',
-    manager: 'Manager',
-    member: 'Member',
+const userColumns: GridColumn[] = [
+  {
+    title: 'Name',
+    type: 'select',
+    width: 50,
   },
-  title: 'Role',
-  type: 'select',
-  width: 50,
-}];
+  {
+    options: {
+      '<select>': '<select>',
+      owner: 'Owner',
+      manager: 'Manager',
+      member: 'Member',
+    },
+    title: 'Role',
+    type: 'select',
+    width: 50,
+  },
+];
 
-const weatherColumns: GridColumn[] = [{
-  title: 'Station ID',
-  type: 'text',
-  width: 33,
-}, {
-  title: 'Name',
-  type: 'text',
-  width: 33,
-}, {
-  title: 'Enabled',
-  type: 'boolean',
-  width: 33,
-}];
+const weatherColumns: GridColumn[] = [
+  {
+    title: 'Station ID',
+    type: 'text',
+    width: 33,
+  },
+  {
+    title: 'Name',
+    type: 'text',
+    width: 33,
+  },
+  {
+    title: 'Enabled',
+    type: 'boolean',
+    width: 33,
+  },
+];
 
 const getMembers = (members: Record<string, Role>) => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
@@ -75,8 +82,8 @@ const getMembers = (members: Record<string, Role>) => Object.keys(members || {})
   };
 });
 
-const getStations = (stations: Record<string, LocationStation>) => Object.keys(stations || {})
-  .map((_id) => {
+const getStations = (stations: Record<string, LocationStation>) => Object
+  .keys(stations || {}).map((_id) => {
     const { name, enabled } = stations[_id];
     return {
       _id,
@@ -91,9 +98,9 @@ interface LocationsManagerProps {
   users: UiUsers;
 }
 
-function isStringArray(item: (string|boolean)[]): item is string[] {
-  if ((item as string[]).push) {
-    return true;
+function isStringArray(item: (string | boolean)[]): item is string[] {
+  if (item) {
+    return item.every((i) => typeof i === 'string');
   }
   return false;
 }
@@ -108,7 +115,8 @@ function validateLocationMember(data: LocationsManagerRowUpdate): string[] {
   const { values, _id } = row;
 
   // Check that each of the Select components has a value selected
-  const errors: string[] = values.map((value) => (value === '<select>' ? 'You must select a value' : ''));
+  const errors: string[] = values.map((value) => (value === '<select>' ? 'You must select a value' : ''),
+  );
 
   // For an insert, check that the user is not already listed at the location
   if (isNew && meta) {
@@ -122,7 +130,8 @@ function validateLocationMember(data: LocationsManagerRowUpdate): string[] {
 }
 
 function gridRowValidateToLocationsManagerRowUpdate(
-  data: GridRowValidate): LocationsManagerRowUpdate {
+  data: GridRowValidate,
+): LocationsManagerRowUpdate {
   const { isNew, meta, row } = data;
   if (!meta || !row) {
     throw new Error('No meta or row');
@@ -156,9 +165,7 @@ function validateLocationWeather(data: LocationsManagerRowUpdate) {
   errors[0] = (stationId || '').length < 1
     ? 'Station ID must be at least 1 character'
     : '';
-  errors[1] = (name || '').length < 1
-    ? 'Station Name must be at least 1 character'
-    : '';
+  errors[1] = (name || '').length < 1 ? 'Station Name must be at least 1 character' : '';
   errors[2] = '';
 
   // For an insert, check that the stationId is not already listed at the location
@@ -205,7 +212,9 @@ export default class LocationsManager extends React.Component {
         const { _id, name } = props.users[userId];
         acc[_id] = name;
         return acc;
-      }, {});
+      },
+      {},
+    );
     userColumns[0].options['<select>'] = '<select>';
   }
 
@@ -222,7 +231,10 @@ export default class LocationsManager extends React.Component {
     const action = actionEnum.UPSERT_LOCATION_MEMBER;
 
     const payload = {
-      locationId, userId, role, action,
+      locationId,
+      userId,
+      role,
+      action,
     };
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
@@ -234,7 +246,11 @@ export default class LocationsManager extends React.Component {
     const action = actionEnum.UPSERT_LOCATION_WEATHER;
 
     const payload = {
-      locationId, stationId, name, enabled, action,
+      locationId,
+      stationId,
+      name,
+      enabled,
+      action,
     };
     dispatch(actionFunc.modifyLocationRequest(payload));
   }
@@ -271,42 +287,34 @@ export default class LocationsManager extends React.Component {
 
     return (
       <div>
-        {
-          locationIds.map((locationId) => {
-            const location = locations[locationId];
-            return (
-              <Paper
-                key={location._id}
-                style={paperStyle}
-                zDepth={5}
-              >
-                <h3>
-                  {`${location.title}`}
-                </h3>
-                <Grid
-                  columns={userColumns}
-                  delete={this.deleteLocationMember}
-                  insert={this.upsertLocationMember}
-                  meta={{ location }}
-                  rows={getMembers(location.members)}
-                  title="Users"
-                  update={this.upsertLocationMember}
-                  validate={wrapValidateLocationMember}
-                />
-                <Grid
-                  columns={weatherColumns}
-                  delete={this.deleteLocationWeather}
-                  insert={this.upsertLocationWeather}
-                  meta={{ location }}
-                  rows={getStations(location.stations)}
-                  title="Weather Stations"
-                  update={this.upsertLocationWeather}
-                  validate={wrapValidateLocationWeather}
-                />
-              </Paper>
-            );
-          })
-        }
+        {locationIds.map((locationId) => {
+          const location = locations[locationId];
+          return (
+            <Paper key={location._id} style={paperStyle} zDepth={5}>
+              <h3>{`${location.title}`}</h3>
+              <Grid
+                columns={userColumns}
+                delete={this.deleteLocationMember}
+                insert={this.upsertLocationMember}
+                meta={{ location }}
+                rows={getMembers(location.members)}
+                title="Users"
+                update={this.upsertLocationMember}
+                validate={wrapValidateLocationMember}
+              />
+              <Grid
+                columns={weatherColumns}
+                delete={this.deleteLocationWeather}
+                insert={this.upsertLocationWeather}
+                meta={{ location }}
+                rows={getStations(location.stations)}
+                title="Weather Stations"
+                update={this.upsertLocationWeather}
+                validate={wrapValidateLocationWeather}
+              />
+            </Paper>
+          );
+        })}
       </div>
     );
   }
