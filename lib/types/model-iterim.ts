@@ -43,5 +43,12 @@ interface UiInterimPlantContainer {
 interface UiInterim {
   note?: UiInterimNoteContainer;
   plant?: UiInterimPlantContainer;
+  /**
+   * This is a flag that is set to true when a request is sent from the client
+   * to the server for a collection of plants at a location. Once a success/fail
+   * is received back this prop is deleted. i.e.:
+   * true: request to server pending
+   * undefined: no request pending
+   */
   loadPlantRequest?: boolean;
 }

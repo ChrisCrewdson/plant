@@ -112,17 +112,17 @@ function loadPlantsRequest(state: Readonly<UiInterim>, action: AnyAction): UiInt
   });
 }
 
-function loadPlantsSuccess(state: Readonly<UiInterim>): UiInterim {
-  return produce(state, (draft) => {
-    delete draft.loadPlantRequest;
-  });
-}
-
-function loadPlantsFailure(state: Readonly<UiInterim>): UiInterim {
-  return produce(state, (draft) => {
-    delete draft.loadPlantRequest;
-  });
-}
+/**
+ * After client receives a success/fail response from the load-plants request we can
+ * delete the loadPlantRequest flag that indicates that this request is pending.
+ * @param state - current/previous state
+ */
+const removePlantLoadPending = (
+  state: Readonly<UiInterim>): Readonly<UiInterim> => produce(state, (draft) => {
+  delete draft.loadPlantRequest;
+});
+const loadPlantsSuccess = removePlantLoadPending;
+const loadPlantsFailure = removePlantLoadPending;
 
 // This is only exported for testing
 export const reducers = {

@@ -209,7 +209,7 @@ function loadPlantsRequest(store: Store, action: PlantAction, next: Function) {
   const locationId = action.payload;
   const options: AjaxOptions = {
     url: `/api/plants/${locationId}`,
-    success: actionFunc.loadPlantsSuccess,
+    success: actionFunc.loadPlantsSuccess, // gets BizPlant[] back from server
     failure: actionFunc.loadPlantsFailure,
   };
   ajax(store, options);

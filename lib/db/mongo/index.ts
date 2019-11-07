@@ -421,17 +421,21 @@ export class MongoDb {
     }
   }
 
-  async convertPlantDataForRead(plant: Readonly<DbPlant> | ReadonlyArray<DbPlant>,
+  async convertPlantDataForRead(plant: ReadonlyArray<DbPlant>,
     loggedInUserId: string | undefined | null, logger: Logger):
-    Promise<BizPlant | Array<BizPlant>> {
-    if (_.isArray(plant)) {
-      const _this = this; // eslint-disable-line @typescript-eslint/no-this-alias
-      const promises = (plant as DbPlant[]).map(
-        (p) => _this.convertPlantDataForReadOne(p, loggedInUserId, logger, null));
-      return Promise.all(promises);
+    Promise<ReadonlyArray<BizPlant>> {
+    if (!_.isArray(plant)) {
+      logger.error({
+        loggedInUserId,
+        moduleName,
+        msg: `plant param is not an array ${typeof plant}`,
+        plant,
+      });
     }
-
-    return this.convertPlantDataForReadOne(plant as DbPlant, loggedInUserId, logger, null);
+    const _this = this; // eslint-disable-line @typescript-eslint/no-this-alias
+    const promises = (plant as DbPlant[]).map(
+      (p) => _this.convertPlantDataForReadOne(p, loggedInUserId, logger, null));
+    return Promise.all(promises);
   }
 
   async convertPlantDataForReadOne(plant: Readonly<DbPlant>,
@@ -556,7 +560,7 @@ export class MongoDb {
    * @param loggedInUserId - the id of the user currently logged in or falsy if anonymous request
    */
   async getPlantsByLocationId(locationId: string, loggedInUserId: string | undefined,
-    logger: Logger): Promise<BizPlant | BizPlant[] | undefined> {
+    logger: Logger): Promise<ReadonlyArray<BizPlant> | undefined> {
     if (!constants.mongoIdRE.test(locationId)) {
       return undefined;
     }
@@ -587,7 +591,7 @@ export class MongoDb {
   }
 
   async getPlantsByIds(ids: string[], loggedInUserId: string | undefined | null, logger: Logger):
-   Promise<BizPlant | BizPlant[]> {
+   Promise<ReadonlyArray<BizPlant>> {
     try {
       const plantQuery = {
         _id: { $in: ids.map((id) => new ObjectID(id)) },

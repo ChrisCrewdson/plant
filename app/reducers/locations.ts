@@ -1,4 +1,3 @@
-import { AnyAction } from 'redux';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
 import { PlantAction } from '../../lib/types/redux-payloads';
@@ -50,8 +49,9 @@ function createPlantRequest(state: UiLocations, action: PlantAction<UiPlantsValu
 // If a bunch of plants are loaded then check that the plant
 // is on the locations' plantIds list
 // action.payload is an array of plant objects
-function loadPlantsSuccess(state: UiLocations, action: AnyAction): UiLocations {
-  const plants: UiPlantsValue[] = action.payload;
+function loadPlantsSuccess(
+  state: UiLocations, action: PlantAction<ReadonlyArray<BizPlant>>): UiLocations {
+  const plants: ReadonlyArray<UiPlantsValue> = action.payload;
   if (plants && plants.length) {
     // Create an object with locations:
     // {'l1': {plantIds: ['p1', p2]}, 'l2': {...}}
@@ -70,11 +70,10 @@ function loadPlantsSuccess(state: UiLocations, action: AnyAction): UiLocations {
 }
 
 /**
- * @param action - payload:
- *                             {plantId: <plant-id>, locationId: <location-id>}
+ * @param action - payload: {plantId: <plant-id>, locationId: <location-id>}
  */
-function deletePlantRequest(state: UiLocations, { payload: { locationId, plantId } }: AnyAction):
- UiLocations {
+function deletePlantRequest(state: UiLocations, action: PlantAction<any>): UiLocations {
+  const { payload: { locationId, plantId } } = action;
   const plantIds = (state[locationId] && state[locationId].plantIds) || [];
   if (plantIds.includes(plantId)) {
     const pIds = plantIds.filter((pId) => pId !== plantId);
