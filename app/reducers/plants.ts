@@ -12,29 +12,34 @@ import { PlantAction } from '../../lib/types/redux-payloads';
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
  */
-function replaceInPlace(state: UiPlants, { payload }: PlantAction<any>): UiPlants {
+function replaceInPlace(state: UiPlants, { payload }: PlantAction<UiPlantsValue>): UiPlants {
+  // eslint-disable-next-line no-undef
+  const id = payload?._id;
+  if (!id) {
+    return state;
+  }
   return produce(state, (draft) => {
-    draft[payload._id] = payload;
+    draft[id] = payload;
   });
 }
 
 /**
  * User clicks save after creating a new plant
  */
-function createPlantRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
+function createPlantRequest(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
   // payload is an object of new plant being POSTed to server
   // an id has already been assigned to this object
   return replaceInPlace(state, action);
 }
 
-function ajaxPlantFailure(state: UiPlants, action: PlantAction<any>): UiPlants {
+function ajaxPlantFailure(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
   return replaceInPlace(state, action);
 }
 
 /**
  * @param action - payload is an object of plant being PUT to server
  */
-function updatePlantRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
+function updatePlantRequest(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
   return replaceInPlace(state, action);
 }
 

@@ -33,7 +33,12 @@ describe('/app/reducers/users', () => {
 
   test('should reduce createPlantRequest action', () => {
     const state = produce({ u1: { _id: 'u1', name: 'john', locationIds: ['p1'] } }, (draft) => draft);
-    const payload = { _id: 'p2', title: 'pt', userId: 'u1' };
+    const payload: UiPlantsValue = {
+      _id: 'p2',
+      locationId: 'l-1',
+      title: 'pt',
+      userId: 'u1',
+    };
 
     checkReducer('createPlantRequest', state, payload);
   });

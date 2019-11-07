@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
-import { LoadLocationsSuccessAction, PlantAction } from '../../lib/types/redux-payloads';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.
@@ -11,7 +11,8 @@ import { LoadLocationsSuccessAction, PlantAction } from '../../lib/types/redux-p
 
 // The action.payload are the returned locations from the server.
 
-function loadLocationsSuccess(state: UiLocations, action: LoadLocationsSuccessAction): UiLocations {
+function loadLocationsSuccess(
+  state: UiLocations, action: PlantAction<UiLocationsValue[]>): UiLocations {
   const { payload } = action;
   return produce(state, (draft) => {
     (payload || []).forEach((location) => {
@@ -28,12 +29,12 @@ function loadLocationsSuccess(state: UiLocations, action: LoadLocationsSuccessAc
 // _id
 // title
 // createdBy
-function createPlantRequest(state: UiLocations, action: AnyAction): UiLocations {
+function createPlantRequest(state: UiLocations, action: PlantAction<UiPlantsValue>): UiLocations {
   // payload is an object of new plant being POSTed to server
   // an _id has already been assigned to this object
   const plant = action.payload;
   let location = state[plant.locationId];
-  if (location) {
+  if (location && plant._id) {
     // Add the new plantId to the existing list of plantIds at this location
     const plantIds = (location.plantIds || []).concat(plant._id);
     location = { ...location, plantIds };

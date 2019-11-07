@@ -44,9 +44,10 @@ describe('/app/reducers/locations', () => {
   });
 
   test('should handle a createPlantRequest for an existing plant at location', () => {
-    const plant = {
-      locationId: '1',
+    const plant: UiPlantsValue = {
       _id: 'plant-1',
+      locationId: '1',
+      title: 'title',
     };
     const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
@@ -54,9 +55,10 @@ describe('/app/reducers/locations', () => {
   });
 
   test('should handle a createPlantRequest for a missing plant at location', () => {
-    const plant = {
-      locationId: '7',
+    const plant: UiPlantsValue = {
       _id: 'plant-1',
+      locationId: '7',
+      title: 'title',
     };
     const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
@@ -64,9 +66,10 @@ describe('/app/reducers/locations', () => {
   });
 
   test('should handle a createPlantRequest when location does not have plantIds', () => {
-    const plant = {
-      locationId: '3',
+    const plant: UiPlantsValue = {
       _id: 'plant-1',
+      locationId: '3',
+      title: 'title',
     };
     const actual = locations(stateA, actionFunc.createPlantRequest(plant));
     expect(actual).toMatchSnapshot();
