@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
-import { PlantAction } from '../../lib/types/redux-payloads';
+import { PlantAction, DeletePlantRequestPayload } from '../../lib/types/redux-payloads';
 
 // TODO: If we can keep the plantIds at each location sorted by Title then
 // this will save us sorting later which will improve performance.
@@ -11,7 +11,7 @@ import { PlantAction } from '../../lib/types/redux-payloads';
 // The action.payload are the returned locations from the server.
 
 function loadLocationsSuccess(
-  state: UiLocations, action: PlantAction<UiLocationsValue[]>): UiLocations {
+  state: UiLocations, action: PlantAction<ReadonlyArray<UiLocationsValue>>): UiLocations {
   const { payload } = action;
   return produce(state, (draft) => {
     (payload || []).forEach((location) => {
@@ -28,7 +28,8 @@ function loadLocationsSuccess(
 // _id
 // title
 // createdBy
-function createPlantRequest(state: UiLocations, action: PlantAction<UiPlantsValue>): UiLocations {
+function createPlantRequest(
+  state: UiLocations, action: PlantAction<Readonly<UiPlantsValue>>): UiLocations {
   // payload is an object of new plant being POSTed to server
   // an _id has already been assigned to this object
   const plant = action.payload;
@@ -72,9 +73,11 @@ function loadPlantsSuccess(
 /**
  * @param action - payload: {plantId: <plant-id>, locationId: <location-id>}
  */
-function deletePlantRequest(state: UiLocations, action: PlantAction<any>): UiLocations {
+function deletePlantRequest(
+  state: UiLocations, action: PlantAction<Readonly<DeletePlantRequestPayload>>): UiLocations {
   const { payload: { locationId, plantId } } = action;
-  const plantIds = (state[locationId] && state[locationId].plantIds) || [];
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const plantIds = state[locationId]?.plantIds ?? [];
   if (plantIds.includes(plantId)) {
     const pIds = plantIds.filter((pId) => pId !== plantId);
     return produce(state, (draft) => {

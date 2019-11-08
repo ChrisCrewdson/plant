@@ -116,15 +116,18 @@ class PlantRead extends React.PureComponent {
     if (yes) {
       const {
         plant: {
-          _id,
+          _id: plantId,
           locationId,
         },
         dispatch,
       } = this.props;
+      if (!plantId) {
+        throw new Error(`plantId missing in confirmDelete ${JSON.stringify(this.props)}`);
+      }
       const { locations, history } = this.props;
       const payload = {
         locationId,
-        plantId: _id,
+        plantId,
       };
       const location = locations[locationId];
       dispatch(actionFunc.deletePlantRequest(payload));

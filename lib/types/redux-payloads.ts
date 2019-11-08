@@ -14,3 +14,8 @@ export interface PlantAction<T = any> extends Action<string> {
   }
 
 export interface LoadLocationsSuccessAction extends PlantAction<UiLocationsValue[]> {}
+
+export interface DeletePlantRequestPayload {
+  locationId: string;
+  plantId: string;
+}

@@ -1,7 +1,7 @@
 import uniq from 'lodash/uniq';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
-import { PlantAction } from '../../lib/types/redux-payloads';
+import { PlantAction, DeletePlantRequestPayload } from '../../lib/types/redux-payloads';
 
 // An array of plants loaded from the server.
 // Plants could be for any user.
@@ -43,10 +43,8 @@ function updatePlantRequest(state: UiPlants, action: PlantAction<UiPlantsValue>)
   return replaceInPlace(state, action);
 }
 
-/**
- * @param action - action.payload: <plant-id>
- */
-function deletePlantRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
+function deletePlantRequest(
+  state: UiPlants, action: PlantAction<DeletePlantRequestPayload>): UiPlants {
   return produce(state, (draft) => {
     delete draft[action.payload.plantId];
   });
