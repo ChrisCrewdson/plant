@@ -100,7 +100,7 @@ export const noteApi = (app: Application) => {
      */
     const okay = (notes?: ReadonlyArray<BizNote>) => {
       logger.trace({ moduleName, msg: 'responding with notes:', notes });
-      return res.send(notes);
+      return res.send(notes || []);
     };
 
     if (plantIds?.length) {

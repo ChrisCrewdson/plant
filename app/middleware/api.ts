@@ -174,7 +174,7 @@ function deletePlantRequest(store: Store, action: PlantAction, next: Function) {
   next(action);
 }
 
-function deleteNoteRequest(store: Store, action: PlantAction, next: Function) {
+function deleteNoteRequest(store: Store, action: PlantAction<string>, next: Function) {
   const options: AjaxOptions = {
     type: 'DELETE',
     url: `/api/note/${action.payload}`,

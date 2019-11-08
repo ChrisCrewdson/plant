@@ -54,8 +54,13 @@ describe('/app/reducers/notes', () => {
     });
 
     test('should loadNotesSuccess', () => {
-      const state = produce({}, () => ({ id1: { _id: 'id1', date: 20160101 } }));
-      const payload = [{ _id: 'id2', date: 20160202 }, { _id: 'id3', date: 20160303 }];
+      const state = produce({}, () => ({
+        id1: { _id: 'id1', date: 20160101 },
+      }));
+      const payload: ReadonlyArray<BizNote> = [
+        { _id: 'id2', date: 20160202 },
+        { _id: 'id3', date: 20160303 },
+      ] as any;
       const expected = produce({}, () => ({
         id1: { _id: 'id1', date: 20160101 },
         id2: { _id: 'id2', date: 20160202 },

@@ -54,7 +54,7 @@ function deletePlantRequest(
  * Need to remove this note from the notes array in all plants
  * @param action - action.payload: <noteId>
  */
-function deleteNoteRequest(state: UiPlants, { payload: noteId }: PlantAction<any>): UiPlants {
+function deleteNoteRequest(state: UiPlants, { payload: noteId }: PlantAction<string>): UiPlants {
   return produce(state, (draft) => {
     Object.keys(draft).forEach((plantId) => {
       const plant = draft[plantId];
@@ -179,13 +179,14 @@ function loadNotesRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
 /**
  * action.payload is an array of notes from the server
  */
-function loadNotesSuccess(state: UiPlants, { payload: notes }: PlantAction<any>): UiPlants {
+function loadNotesSuccess(state: UiPlants, action: PlantAction<ReadonlyArray<BizNote>>): UiPlants {
+  const { payload: notes } = action;
   if (!notes || !notes.length) {
     return state;
   }
 
   const plants: Record<string, string[]> = notes.reduce(
-    (acc: Record<string, string[]>, note: UiNotesValue) => {
+    (acc: Record<string, string[]>, note) => {
       (note.plantIds || []).forEach((plantId) => {
         if (acc[plantId]) {
           acc[plantId].push(note._id);

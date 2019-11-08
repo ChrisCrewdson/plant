@@ -31,7 +31,7 @@ const upsertNoteSuccess = upsertNoteRequestSuccess;
 /**
  * @param action - action.payload holds _id of note being deleted
  */
-function deleteNoteRequest(state: RoNotes, action: PlantAction<any>): UiNotes {
+function deleteNoteRequest(state: RoNotes, action: PlantAction<string>): UiNotes {
   const { payload: _id } = action;
   return produce(state, (draft) => {
     delete draft[_id];
@@ -42,11 +42,11 @@ function deleteNoteRequest(state: RoNotes, action: PlantAction<any>): UiNotes {
 /**
  * @param action - action.payload is an array of notes from the server
  */
-function loadNotesSuccess(state: RoNotes, action: PlantAction<any>): UiNotes {
+function loadNotesSuccess(state: RoNotes, action: PlantAction<ReadonlyArray<BizNote>>): UiNotes {
   const { payload: notes } = action;
   if (notes && notes.length) {
     return produce(state, (draft) => {
-      notes.forEach((note: UiNotesValue) => {
+      notes.forEach((note) => {
         draft[note._id] = note;
       });
     });
