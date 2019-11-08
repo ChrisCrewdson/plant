@@ -3,34 +3,34 @@ import { locations } from '../../../app/reducers/locations';
 import { actionFunc } from '../../../app/actions';
 
 describe('/app/reducers/locations', () => {
-  const stateA = produce({}, () => ({
+  const stateA: Record<string, UiLocationsValue> = produce({}, () => ({
     1: {
       _id: '1',
       plantIds: ['one'],
     },
     2: {
       _id: '2',
-      name: 'xxx',
+      title: 'xxx',
       plantIds: ['xxx'],
     },
     3: {
       _id: '3',
     },
-  })) as unknown as Record<string, UiLocationsValue>;
+  })) as any;
 
   test('should load locations', () => {
-    const payload = [{
+    const payload: ReadonlyArray<UiLocationsValue> = [{
       _id: '2',
-      name: 'twenty-two',
+      title: 'twenty-two',
       plantIds: ['two', 'twenty'],
     }, {
       _id: '3',
-      name: 'thirty-three',
+      title: 'thirty-three',
       plantIds: ['three', 'thirty'],
     }, {
       _id: '4',
-      name: 'four',
-    }];
+      title: 'four',
+    }] as any;
 
     const actual = locations(stateA, actionFunc.loadLocationsSuccess(payload));
     expect(actual).toMatchSnapshot();
