@@ -199,7 +199,8 @@ function loadPlantRequest(store: Store, action: PlantAction) {
 
 // Get all the plants a user has created
 // action.payload is a locationId
-function loadPlantsRequest(store: Store, action: PlantAction, next: Function) {
+function loadPlantsRequest(
+  store: Store, action: PlantAction<ReadonlyArray<BizPlant>>, next: Function) {
   const locationId = action.payload;
   const options: AjaxOptions = {
     url: `/api/plants/${locationId}`,

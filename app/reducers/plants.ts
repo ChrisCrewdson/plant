@@ -71,10 +71,12 @@ const loadPlantFailure = replaceInPlace;
 /**
  * @param action - action.payload is an array of plant objects
  */
-function loadPlantsSuccess(state: UiPlants, { payload: plants }: PlantAction<any>): UiPlants {
+function loadPlantsSuccess(
+  state: UiPlants, action: PlantAction<ReadonlyArray<BizPlant>>): UiPlants {
+  const { payload: plants } = action;
   if (plants && plants.length > 0) {
     return produce(state, (draft) => {
-      plants.forEach((plant: UiPlantsValue) => {
+      plants.forEach((plant) => {
         if (plant._id) {
           draft[plant._id] = plant;
         }

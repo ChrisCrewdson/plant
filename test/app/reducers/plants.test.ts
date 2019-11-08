@@ -161,18 +161,18 @@ describe('/app/reducers/plants', () => {
       },
     }, (draft) => draft) as unknown as UiPlants;
 
-    const p3 = {
+    const p3: Readonly<BizPlant> = {
       _id: 'p3',
-      name: 'three',
+      title: 'three',
       notes: ['n1', 'n2'],
-    } as unknown as UiPlants;
+    } as any;
 
     const expected = produce(current, (draft) => {
       Object.assign(draft, { p3: _.cloneDeep(p3) });
       draft.p3.notes = ['n1', 'n2'];
     });
 
-    const payload = [p3];
+    const payload: ReadonlyArray<BizPlant> = [p3];
 
     const actual = plants(current, actionFunc.loadPlantsSuccess(payload));
     expect(actual).toEqual(expected);
@@ -191,7 +191,7 @@ describe('/app/reducers/plants', () => {
         notes: ['n1', 'n2', 'n3'],
       },
     } as unknown as UiPlants;
-    const payload: any = [];
+    const payload: ReadonlyArray<BizPlant> = [];
     const current = produce(expected, (draft) => draft);
 
     const actual = plants(current, actionFunc.loadPlantsSuccess(payload));

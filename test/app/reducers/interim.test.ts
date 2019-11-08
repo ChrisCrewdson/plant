@@ -173,7 +173,7 @@ describe('/app/reducers/interim', () => {
 
     test('should reduce from existing state and populated payload', () => {
       const state = produce({}, () => ({ loadPlantRequest: true }));
-      const payload = { };
+      const payload: ReadonlyArray<BizPlant> = { } as any;
       const expected = produce({}, () => ({ }));
       checkReducer('loadPlantsSuccess', state, payload, expected);
     });

@@ -56,13 +56,13 @@ describe('/app/reducers/users', () => {
         locationIds: ['p2.1', 'p2.2'],
       },
     }, (draft) => draft);
-    const payload = [
+    const payload: ReadonlyArray<BizPlant> = [
       { _id: 'p1.1', userId: 'u1' },
       { _id: 'p1.2', userId: 'u1' },
       { _id: 'p2.2', userId: 'u2' },
       { _id: 'p2.3', userId: 'u2' },
       { _id: 'p3.1', userId: 'u3' },
-    ];
+    ] as any;
 
     checkReducer('loadPlantsSuccess', state, payload);
   });

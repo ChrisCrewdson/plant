@@ -77,7 +77,7 @@ describe('/app/reducers/locations', () => {
   });
 
   test('should handle a loadPlantsSuccess for an array of plants', () => {
-    const plants = [{
+    const plants: ReadonlyArray<BizPlant> = [{
       locationId: '1',
       _id: 'plant-1',
     }, { // include a duplicate to make sure it doesn't end up in state
@@ -89,13 +89,13 @@ describe('/app/reducers/locations', () => {
     }, {
       locationId: '1',
       _id: 'one', // a duplicate from stateA
-    }];
+    }] as any;
     const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
   });
 
   test('should handle a loadPlantsSuccess for an empty array of plants', () => {
-    const plants: UiPlantsValue[] = [];
+    const plants: ReadonlyArray<BizPlant> = [];
     const actual = locations(stateA, actionFunc.loadPlantsSuccess(plants));
     expect(actual).toMatchSnapshot();
     expect(actual).toBe(stateA);

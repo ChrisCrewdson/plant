@@ -93,9 +93,9 @@ export const reducers = {
 
   [actionEnum.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
 
-} as Readonly<Record<string, (state: RoNotes, action: PlantAction<any>) => UiNotes>>;
+} as Readonly<Record<string, (state: RoNotes, action: PlantAction<any>) => RoNotes>>;
 
-export const notes = (state: RoNotes = {}, action: PlantAction<any>): UiNotes => {
+export const notes = (state: RoNotes = {}, action: PlantAction<any>): RoNotes => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
