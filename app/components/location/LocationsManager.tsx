@@ -226,7 +226,7 @@ export default class LocationsManager extends React.Component {
    */
   upsertLocationMember({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const locationId = meta && meta.location && meta.location._id;
+    const locationId = meta?.location?._id;
     const [userId, role] = row.values;
     const action = actionEnum.UPSERT_LOCATION_MEMBER;
 
@@ -241,7 +241,7 @@ export default class LocationsManager extends React.Component {
 
   upsertLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const locationId = meta && meta.location && meta.location._id;
+    const locationId = meta?.location?._id;
     const [stationId, name, enabled] = row.values;
     const action = actionEnum.UPSERT_LOCATION_WEATHER;
 
@@ -257,7 +257,7 @@ export default class LocationsManager extends React.Component {
 
   deleteLocationMember({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const locationId = meta && meta.location && meta.location._id;
+    const locationId = meta?.location?._id;
     const [userId] = row.values;
     const action = actionEnum.DELETE_LOCATION_MEMBER;
 
@@ -267,7 +267,7 @@ export default class LocationsManager extends React.Component {
 
   deleteLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
     const { dispatch } = this.props;
-    const locationId = meta && meta.location && meta.location._id;
+    const locationId = meta?.location?._id;
     const [stationId] = row.values;
     const action = actionEnum.DELETE_LOCATION_WEATHER;
 

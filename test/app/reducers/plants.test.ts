@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { plants } from '../../../app/reducers/plants';
 import { actionFunc } from '../../../app/actions';
+import { UpsertNoteRequestPayload } from '../../../lib/types/redux-payloads';
 
 describe('/app/reducers/plants', () => {
   describe('similar methods', () => {
@@ -210,7 +211,7 @@ describe('/app/reducers/plants', () => {
       },
     }, (draft) => draft) as unknown as UiPlants;
 
-    const payload = {
+    const payload: UpsertNoteRequestPayload = {
       note: {
         _id: 'n5',
         plantIds: ['p1', 'p2'],
@@ -243,7 +244,7 @@ describe('/app/reducers/plants', () => {
       },
     }, (draft) => draft) as unknown as UiPlants;
 
-    const payload = {
+    const payload: UpsertNoteRequestPayload = {
       note: {
         _id: 'n5',
         plantIds: ['p2'],
@@ -272,9 +273,9 @@ describe('/app/reducers/plants', () => {
         notes: ['n1', 'n2'],
       },
     } as unknown as UiPlants;
-    const payload = {
+    const payload: UpsertNoteRequestPayload = {
       note: { },
-    };
+    } as any;
     const current = produce(expected, (draft) => draft);
 
     const actual = plants(current, actionFunc.upsertNoteSuccess(payload));
@@ -289,7 +290,7 @@ describe('/app/reducers/plants', () => {
         notes: ['n1', 'n2', 'n3', 'n5'],
       },
     } as unknown as UiPlants;
-    const payload = {
+    const payload: UpsertNoteRequestPayload = {
       note: {
         _id: 'n5',
         plantIds: ['p1'],

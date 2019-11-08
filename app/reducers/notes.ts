@@ -1,25 +1,37 @@
-import { AnyAction } from 'redux';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
+import { PlantAction, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
+
+type RoNotes = Readonly<UiNotes>;
 
 /**
  * Raised when a save event is triggered for a note.
  */
-function upsertNoteRequestSuccess(state: UiNotes, action: AnyAction): UiNotes {
-  const { _id = '' } = action.payload.note || {};
-  if (!_id) {
+function upsertNoteRequestSuccess(
+  state: RoNotes, action: PlantAction<UpsertNoteRequestPayload>): UiNotes {
+  const { note = {} as UiInterimNote } = action.payload;
+  const { _id, date, userId } = note;
+  if (!_id || !date || !userId) {
     return state;
   }
 
   return produce(state, (draft) => {
-    draft[_id] = action.payload.note;
+    draft[_id] = {
+      ...note,
+      _id,
+      date,
+      userId,
+    };
   });
 }
+
+const upsertNoteRequest = upsertNoteRequestSuccess;
+const upsertNoteSuccess = upsertNoteRequestSuccess;
 
 /**
  * @param action - action.payload holds _id of note being deleted
  */
-function deleteNoteRequest(state: UiNotes, action: AnyAction): UiNotes {
+function deleteNoteRequest(state: RoNotes, action: PlantAction<any>): UiNotes {
   const { payload: _id } = action;
   return produce(state, (draft) => {
     delete draft[_id];
@@ -30,7 +42,8 @@ function deleteNoteRequest(state: UiNotes, action: AnyAction): UiNotes {
 /**
  * @param action - action.payload is an array of notes from the server
  */
-function loadNotesSuccess(state: UiNotes, { payload: notes }: AnyAction): UiNotes {
+function loadNotesSuccess(state: RoNotes, action: PlantAction<any>): UiNotes {
+  const { payload: notes } = action;
   if (notes && notes.length) {
     return produce(state, (draft) => {
       notes.forEach((note: UiNotesValue) => {
@@ -47,7 +60,8 @@ function loadNotesSuccess(state: UiNotes, { payload: notes }: AnyAction): UiNote
  * @param action - action.payload is the _id of the note whose
  *                 images we are going to tag as showable
  */
-function showNoteImages(state: UiNotes, { payload: _id }: AnyAction): UiNotes {
+function showNoteImages(state: RoNotes, action: PlantAction<any>): UiNotes {
+  const { payload: _id } = action;
   const noteIds = Array.isArray(_id) ? _id : [_id];
   const notes = noteIds.reduce((acc, noteId) => {
     const note = state[noteId];
@@ -70,8 +84,8 @@ function showNoteImages(state: UiNotes, { payload: _id }: AnyAction): UiNotes {
 
 // This is only exported for testing
 export const reducers = {
-  [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequestSuccess,
-  [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteRequestSuccess,
+  [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
+  [actionEnum.UPSERT_NOTE_SUCCESS]: upsertNoteSuccess,
 
   [actionEnum.SHOW_NOTE_IMAGES]: showNoteImages,
 
@@ -79,9 +93,9 @@ export const reducers = {
 
   [actionEnum.LOAD_NOTES_SUCCESS]: loadNotesSuccess,
 
-} as Readonly<Record<string, (state: UiNotes, action: AnyAction) => UiNotes>>;
+} as Readonly<Record<string, (state: RoNotes, action: PlantAction<any>) => UiNotes>>;
 
-export const notes = (state: UiNotes = {}, action: AnyAction): UiNotes => {
+export const notes = (state: RoNotes = {}, action: PlantAction<any>): UiNotes => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

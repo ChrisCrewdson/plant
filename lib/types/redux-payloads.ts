@@ -19,3 +19,8 @@ export interface DeletePlantRequestPayload {
   locationId: string;
   plantId: string;
 }
+
+export interface UpsertNoteRequestPayload {
+  note: UiInterimNote;
+  files?: File[];
+}

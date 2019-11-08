@@ -37,6 +37,9 @@ module.exports = {
       'ignorePropertyModificationsFor': ['draft']
     }],
     'no-shadow': [2, {'allow': ['Location']}],
+    'no-restricted-globals': 0, // Bug with tsc 3.7 null chaining and coalescing
+    'no-undef': 0, // Bug with tsc 3.7 null chaining and coalescing
+    '@typescript-eslint/no-use-before-define': 0, // Bug with tsc 3.7 null chaining and coalescing
     'no-underscore-dangle': 0,
     'react/jsx-curly-brace-presence': 0, // TODO: Enable this once 2883 conversion done
     'react/jsx-filename-extension': 0,

@@ -21,7 +21,7 @@ export const plantApi = (app: Application) => {
     logger.trace({ moduleName, msg: 'POST /api/plant:', 'req.body': req.body });
 
     try {
-      const userId = user?._id; // eslint-disable-line no-undef
+      const userId = user?._id;
       if (!userId) {
         // shouldn't happen because requireToken() makes sure user is logged in
         // this makes tsc happy

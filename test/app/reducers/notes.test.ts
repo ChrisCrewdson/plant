@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 import { notes } from '../../../app/reducers/notes';
 import { actionFunc } from '../../../app/actions';
+import { UpsertNoteRequestPayload } from '../../../lib/types/redux-payloads';
 
 function checkReducer(
   actionName: string, state: any, payload: string | object | undefined | any[], expected: any) {
@@ -12,28 +13,35 @@ function checkReducer(
 describe('/app/reducers/notes', () => {
   describe('reduction', () => {
     test('should upsertNoteRequestSuccess', () => {
-      const state = produce({}, () => ({ id1: { _id: 'id1', date: 20160101 } }));
-      const payload = { note: { _id: 'id2', date: 20160202 } };
+      const state = produce({}, () => ({ id1: { _id: 'id1', date: 20160101, userId: 'u-1' } }));
+      const payload = { note: { _id: 'id2', date: 20160202, userId: 'u-1' } };
       const expected = produce({}, () => ({
-        id1: { _id: 'id1', date: 20160101 },
-        id2: { _id: 'id2', date: 20160202 },
+        id1: { _id: 'id1', date: 20160101, userId: 'u-1' },
+        id2: { _id: 'id2', date: 20160202, userId: 'u-1' },
       }));
       checkReducer('upsertNoteSuccess', state, payload, expected);
       checkReducer('upsertNoteRequest', state, payload, expected);
     });
 
-    test('should upsertNoteRequestSuccess with plantIds', () => {
+    test('should upsertNoteSuccess with plantIds', () => {
       const state = produce({}, () => ({ id1: { _id: 'id1', date: 20160101, plantIds: ['p1', 'p2'] } }));
-      const payload = { note: { _id: 'id1', date: 20160202, plantIds: ['p2', 'p3'] } };
+      const payload: UpsertNoteRequestPayload = {
+        note: {
+          _id: 'id1',
+          date: 20160202,
+          plantIds: ['p2', 'p3'],
+          userId: 'u-1',
+        },
+      };
       const expected = produce({}, () => ({
         id1: payload.note,
       }));
       checkReducer('upsertNoteSuccess', state, payload, expected);
     });
 
-    test('should upsertNoteRequestSuccess with missing note in action', () => {
+    test('should upsertNoteSuccess with missing note in action', () => {
       const state = produce({}, () => ({ id1: { _id: 'id1', date: 20160101, plantIds: ['p1', 'p2'] } }));
-      const payload = { };
+      const payload: UpsertNoteRequestPayload = { } as any;
       const expected = state;
       checkReducer('upsertNoteSuccess', state, payload, expected);
     });

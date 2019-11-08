@@ -16,7 +16,7 @@ import utils from '../../libs/utils';
 import NoteAssocPlant from './NoteAssocPlant';
 import NoteEditMetrics from './NoteEditMetrics';
 import * as validators from '../../models';
-import { PlantAction } from '../../../lib/types/redux-payloads';
+import { PlantAction, UpsertNoteRequestPayload } from '../../../lib/types/redux-payloads';
 
 const { note: noteValidator } = validators;
 
@@ -149,7 +149,8 @@ export default class NoteEdit extends React.PureComponent {
 
     try {
       const note = noteValidator(interimNote);
-      dispatch(actionFunc.upsertNoteRequest({ note, files }));
+      const payload: UpsertNoteRequestPayload = { note, files };
+      dispatch(actionFunc.upsertNoteRequest(payload));
       postSaveSuccess();
     } catch (errors) {
       dispatch(actionFunc.editNoteChange({ errors }));

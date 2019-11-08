@@ -1,7 +1,7 @@
 import uniq from 'lodash/uniq';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
-import { PlantAction, DeletePlantRequestPayload } from '../../lib/types/redux-payloads';
+import { PlantAction, DeletePlantRequestPayload, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
 
 // An array of plants loaded from the server.
 // Plants could be for any user.
@@ -13,7 +13,6 @@ import { PlantAction, DeletePlantRequestPayload } from '../../lib/types/redux-pa
  * that needs to replace an existing plant in the state object.
  */
 function replaceInPlace(state: UiPlants, { payload }: PlantAction<UiPlantsValue>): UiPlants {
-  // eslint-disable-next-line no-undef
   const id = payload?._id;
   if (!id) {
     return state;
@@ -97,13 +96,15 @@ function loadPlantsSuccess(state: UiPlants, { payload: plants }: PlantAction<any
 /**
  * The action.payload.note is the returned note from the server.
  */
-function upsertNoteSuccess(state: UiPlants, { payload: { note } }: PlantAction<any>): UiPlants {
+function upsertNoteSuccess(
+  state: UiPlants, action: PlantAction<UpsertNoteRequestPayload>): UiPlants {
+  const { payload: { note } } = action;
   const {
     _id, // The id of the note
     plantIds = [], // The plants that this note applies to
   } = note;
 
-  if (!plantIds.length) {
+  if (!plantIds.length || !_id) {
     // console.error('No plantIds in upsertNoteSuccess:', action);
     return state;
   }

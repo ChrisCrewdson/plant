@@ -174,21 +174,21 @@ interface DbNoteWithPlants extends DbNote {
  * error = an error happened saving / validating etc.
  * deleted = ajax request to delete object not complete yet
  */
-type UiNotesMetaState =
-'new' |
-'saved' |
-'error' |
-'deleted';
+// type UiNotesMetaState =
+// 'new' |
+// 'saved' |
+// 'error' |
+// 'deleted';
 
-interface UiNotesMeta {
-  state: UiNotesMetaState;
-  errors: string[];
-}
+// interface UiNotesMeta {
+//   state: UiNotesMetaState;
+//   errors: string[];
+// }
 
 interface UiNotesValue {
   _id: string;
   date: number;
-  meta: UiNotesMeta;
+  // meta: UiNotesMeta;
   note?: string;
   plantIds: string[];
   showImages?: boolean;

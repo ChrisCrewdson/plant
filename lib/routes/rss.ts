@@ -33,7 +33,6 @@ function buildXml(notes: DbNoteWithPlants[], httpHost: string) {
     //       Need to move this to the utils or other module to DRY up the code.
     const uri = `${httpHost}/plant/${slug}/${currNote.plantIds[0]}?noteid=${currNote._id}#${currNote._id}`; // just the first
 
-    // eslint-disable-next-line no-restricted-globals
     const noteImages = currNote.images?.length ? currNote.images : [];
 
     // Append images. RSS spec wants a full https|http given.

@@ -103,7 +103,6 @@ export const noteApi = (app: Application) => {
       return res.send(notes);
     };
 
-    // eslint-disable-next-line no-restricted-globals
     if (plantIds?.length) {
       try {
         const notes = await mongo.getNotesByPlantIds(plantIds, logger);
@@ -113,7 +112,6 @@ export const noteApi = (app: Application) => {
       }
     }
 
-    // eslint-disable-next-line no-restricted-globals
     if (noteIds?.length) {
       try {
         const notes = await mongo.getNotesByIds(noteIds, logger);
@@ -152,7 +150,7 @@ export const noteApi = (app: Application) => {
   app.delete('/api/note/:noteId', requireToken, async (req, res) => {
     const { params = {}, user, logger } = req;
     const { noteId } = params;
-    const userId = user?._id; // eslint-disable-line no-undef
+    const userId = user?._id;
 
     if (!noteId) {
       logger.error({ moduleName, msg: 'DELETE /api/note/:noteId missing noteId', params });
@@ -168,7 +166,7 @@ export const noteApi = (app: Application) => {
         throw new Error('Non-owner trying to delete note');
       }
 
-      if (note?.images?.length) { // eslint-disable-line no-undef, no-restricted-globals
+      if (note?.images?.length) {
         const s3 = new aws.S3();
 
         const options = {
@@ -307,7 +305,7 @@ export const noteApi = (app: Application) => {
         req_body: req.body,
         req_files: multerFiles.map((file: any) => _.omit(file, ['buffer'])),
       });
-      const userId = user?._id; // eslint-disable-line no-undef
+      const userId = user?._id;
       if (!userId) {
         throw new Error('userId is falsy in imageNote()');
       }
@@ -386,7 +384,6 @@ export const noteApi = (app: Application) => {
     const metadata = body?.metadata;
 
     if (!metadata || !sizes || !sizes.length) {
-      // eslint-disable-next-line no-restricted-globals
       const message = `Unexpected metadata ${metadata} and/or length of sizes ${sizes?.length}`;
       logger.error({
         moduleName, msg: message, metadata, sizes,

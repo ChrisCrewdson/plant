@@ -9,7 +9,7 @@ import {
 } from 'redux';
 import { actionEnum, actionFunc } from '../actions';
 import { ajax, AjaxOptions } from './ajax';
-import { PlantAction } from '../../lib/types/redux-payloads';
+import { PlantAction, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
 
 function logoutRequest(store: Store /* , action */) {
   const options: AjaxOptions = {
@@ -53,11 +53,6 @@ interface SaveFilesRequestOptions {
   success: Function;
 }
 
-interface UpsertNoteRequestPayload {
-  note: UiInterimNote;
-  files?: File[];
-}
-
 /**
  * Upload files
  * action.payload is an array of file objects:
@@ -69,9 +64,9 @@ interface UpsertNoteRequestPayload {
  * type: "image/jpeg"
  * webkitRelativePath:""
  */
-function saveFilesRequest(store: Store, action: PlantAction,
+function saveFilesRequest(store: Store, action: PlantAction<UpsertNoteRequestPayload>,
   opts: SaveFilesRequestOptions, next: Function) {
-  const { payload } = action as { payload: UpsertNoteRequestPayload};
+  const { payload } = action;
 
   const data = new FormData();
   // @ts-ignore - TODO: Come back and fix this
@@ -103,11 +98,11 @@ function saveFilesRequest(store: Store, action: PlantAction,
 // action.payload is an object with two properties
 // files: An optional array of files
 // note: The note being created
-function upsertNoteRequest(store: Store, action: PlantAction, next: Function) {
-  // eslint-disable-next-line prefer-destructuring
-  const payload: UpsertNoteRequestPayload = action.payload;
+function upsertNoteRequest(
+  store: Store, action: PlantAction<UpsertNoteRequestPayload>, next: Function) {
+  const { payload } = action;
 
-  function success(ajaxResult: object) {
+  function success(ajaxResult: UpsertNoteRequestPayload) {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editNoteClose());
     return actionFunc.upsertNoteSuccess(ajaxResult);

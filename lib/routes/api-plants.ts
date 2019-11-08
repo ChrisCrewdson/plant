@@ -42,7 +42,7 @@ export const plantsApi = (app: Application) => {
       return res.status(404).send('No plantIds in body request');
     }
 
-    const loggedInUserId = req.user?._id; // eslint-disable-line no-undef
+    const loggedInUserId = req.user?._id;
 
     try {
       const plants = await mongo.getPlantsByIds(plantIds, loggedInUserId, logger);
