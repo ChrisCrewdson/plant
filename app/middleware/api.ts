@@ -2,7 +2,6 @@
 // the server as part of the store's dispatch(action) call.
 
 import {
-  Action,
   Dispatch,
   Store,
   AnyAction,
@@ -340,7 +339,7 @@ export const apis: Record<string, Function> = {
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
 };
 
-export const api = (store: Store): Function => (next: Dispatch) => (action: Action) => {
+export const api = (store: Store): Function => (next: Dispatch) => (action: PlantAction<any>) => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);
   }

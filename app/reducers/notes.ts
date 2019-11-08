@@ -60,7 +60,7 @@ function loadNotesSuccess(state: RoNotes, action: PlantAction<ReadonlyArray<BizN
  * @param action - action.payload is the _id of the note whose
  *                 images we are going to tag as showable
  */
-function showNoteImages(state: RoNotes, action: PlantAction<any>): UiNotes {
+function showNoteImages(state: RoNotes, action: PlantAction<string | string[]>): UiNotes {
   const { payload: _id } = action;
   const noteIds = Array.isArray(_id) ? _id : [_id];
   const notes = noteIds.reduce((acc, noteId) => {
@@ -69,7 +69,7 @@ function showNoteImages(state: RoNotes, action: PlantAction<any>): UiNotes {
       acc.push(note);
     }
     return acc;
-  }, []);
+  }, [] as UiNotesValue[]);
 
   if (!notes.length) {
     return state;

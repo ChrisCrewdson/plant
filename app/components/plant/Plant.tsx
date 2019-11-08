@@ -136,7 +136,7 @@ class Plant extends React.Component {
     const search = (location && location.search) || '';
     // TODO: This is not available on server:
     const paramsMap = searchParams || new URLSearchParams(search);
-    const noteId = paramsMap.get('noteid');
+    const noteId: string | undefined = paramsMap.get('noteid');
 
     if (noteId) {
       // If there's a noteid on the query params then this is a link

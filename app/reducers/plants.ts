@@ -12,7 +12,8 @@ import { PlantAction, DeletePlantRequestPayload, UpsertNoteRequestPayload } from
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
  */
-function replaceInPlace(state: UiPlants, { payload }: PlantAction<UiPlantsValue>): UiPlants {
+function replaceInPlace(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
+  const { payload } = action;
   const id = payload?._id;
   if (!id) {
     return state;
@@ -24,23 +25,17 @@ function replaceInPlace(state: UiPlants, { payload }: PlantAction<UiPlantsValue>
 
 /**
  * User clicks save after creating a new plant
+ * payload is an object of new plant being POSTed to server
+ * an id has already been assigned to this object
  */
-function createPlantRequest(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
-  // payload is an object of new plant being POSTed to server
-  // an id has already been assigned to this object
-  return replaceInPlace(state, action);
-}
+const createPlantRequest = replaceInPlace;
 
-function ajaxPlantFailure(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
-  return replaceInPlace(state, action);
-}
+const ajaxPlantFailure = replaceInPlace;
 
 /**
  * @param action - payload is an object of plant being PUT to server
  */
-function updatePlantRequest(state: UiPlants, action: PlantAction<UiPlantsValue>): UiPlants {
-  return replaceInPlace(state, action);
-}
+const updatePlantRequest = replaceInPlace;
 
 function deletePlantRequest(
   state: UiPlants, action: PlantAction<DeletePlantRequestPayload>): UiPlants {
@@ -69,13 +64,9 @@ function deleteNoteRequest(state: UiPlants, { payload: noteId }: PlantAction<str
 /**
  * @param action - action.payload is a plant object
  */
-function loadPlantSuccess(state: UiPlants, action: PlantAction<any>): UiPlants {
-  return replaceInPlace(state, action);
-}
+const loadPlantSuccess = replaceInPlace;
 
-function loadPlantFailure(state: UiPlants, action: PlantAction<any>): UiPlants {
-  return replaceInPlace(state, action);
-}
+const loadPlantFailure = replaceInPlace;
 
 /**
  * @param action - action.payload is an array of plant objects

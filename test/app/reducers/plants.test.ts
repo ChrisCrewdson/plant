@@ -129,10 +129,12 @@ describe('/app/reducers/plants', () => {
       },
     }, (draft) => draft) as unknown as UiPlants;
 
-    const payload = {
+    const payload: Readonly<BizPlant> = {
       _id: '3',
-      name: 'three',
+      title: 'three',
       notes: ['n1', 'n2'],
+      locationId: 'l-1',
+      userId: 'u-1',
     };
 
     const expected = produce(current, (draft) => {
