@@ -1,25 +1,26 @@
-import { AnyAction } from 'redux';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
 
 import { initialState } from '../store/user';
-import { PlantAction, LoadLocationsSuccessAction } from '../../lib/types/redux-payloads';
+import { PlantAction, LoadLocationsSuccessAction, ChangeActiveLocationIdPayload } from '../../lib/types/redux-payloads';
 
-function logoutRequest(state: UiUser) {
+type RoUiUser = Readonly<UiUser>;
+
+function logoutRequest(state: RoUiUser) {
   return produce(state, (draft) => {
     draft.status = 'logout';
     draft.isLoggedIn = false;
   });
 }
 
-function logoutSuccess(state: UiUser): UiUser {
+function logoutSuccess(state: RoUiUser): RoUiUser {
   return produce(state, (draft) => {
     draft.status = 'logout';
     draft.isLoggedIn = false;
   });
 }
 
-function logoutFailure(state: UiUser): UiUser {
+function logoutFailure(state: RoUiUser): RoUiUser {
   return produce(state, (draft) => {
     draft.status = 'failed';
     draft.isLoggedIn = false;
@@ -29,8 +30,8 @@ function logoutFailure(state: UiUser): UiUser {
 /**
  * Load Location Success is called after a response from server.
  */
-function loadLocationsSuccess(state: UiUser,
-  action: LoadLocationsSuccessAction): UiUser {
+function loadLocationsSuccess(state: RoUiUser,
+  action: LoadLocationsSuccessAction): RoUiUser {
   // const { payload: locations = [] } = action;
   const { payload: locations } = action;
   if (state.isLoggedIn && !state.activeLocationId) {
@@ -54,7 +55,9 @@ function loadLocationsSuccess(state: UiUser,
 /**
  * Change the active location id
  */
-function changeActiveLocationId(state: UiUser, { payload }: AnyAction): UiUser {
+function changeActiveLocationId(
+  state: RoUiUser, action: PlantAction<ChangeActiveLocationIdPayload>): RoUiUser {
+  const { payload } = action;
   const { _id = '' } = payload || {};
   if (!_id) {
     return state; // should we remove activeLocationId?
@@ -76,7 +79,7 @@ export const reducers = {
 /**
  * The user reducer
  */
-export const user = (state: UiUser, action: PlantAction): UiUser => {
+export const user = (state: RoUiUser, action: PlantAction): RoUiUser => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

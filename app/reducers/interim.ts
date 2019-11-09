@@ -142,7 +142,7 @@ export const reducers = {
 const defaultState = produce({}, () => ({}));
 
 export const interim = (state: Readonly<UiInterim> = defaultState,
-  action: PlantAction<any>): UiInterim => {
+  action: PlantAction): UiInterim => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

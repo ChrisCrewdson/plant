@@ -307,8 +307,8 @@ describe('/app/reducers/plants', () => {
   describe('loadNotesRequest', () => {
     test('should return original state if noteIds present in payload', () => {
       const expected = {};
-      const payload = {
-        noteIds: true,
+      const payload: LoadNotesRequestPayload = {
+        noteIds: [],
       };
       const current = produce(expected, (draft) => draft);
 
@@ -318,7 +318,7 @@ describe('/app/reducers/plants', () => {
 
     test('should return original state if plantIds not present in payload', () => {
       const expected = {};
-      const payload = {
+      const payload: LoadNotesRequestPayload = {
       };
       const current = produce(expected, (draft) => draft);
 
@@ -328,7 +328,7 @@ describe('/app/reducers/plants', () => {
 
     test('should return original state if plant not found in state', () => {
       const expected = {};
-      const payload = {
+      const payload: LoadNotesRequestPayload = {
         plantIds: ['not in state'],
       };
       const current = produce(expected, (draft) => draft);
@@ -342,7 +342,7 @@ describe('/app/reducers/plants', () => {
         1: { },
       }, (draft) => draft) as unknown as UiPlants;
 
-      const payload = {
+      const payload: LoadNotesRequestPayload = {
         plantIds: ['1'],
       };
 

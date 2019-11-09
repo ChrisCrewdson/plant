@@ -24,3 +24,7 @@ export interface UpsertNoteRequestPayload {
   note: UiInterimNote;
   files?: File[];
 }
+
+export interface ChangeActiveLocationIdPayload {
+  _id: string;
+}

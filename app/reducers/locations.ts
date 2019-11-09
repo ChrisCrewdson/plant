@@ -109,7 +109,7 @@ export const reducers = {
 const defaultState = produce({}, () => ({}));
 
 export const locations = (
-  state: UiLocations = defaultState, action: PlantAction<any>): UiLocations => {
+  state: UiLocations = defaultState, action: PlantAction): UiLocations => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }

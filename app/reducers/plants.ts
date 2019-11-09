@@ -3,11 +3,6 @@ import { produce } from 'immer';
 import { actionEnum } from '../actions';
 import { PlantAction, DeletePlantRequestPayload, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
 
-// An array of plants loaded from the server.
-// Plants could be for any user.
-// If a user is logged in then some of the items in the array
-// might be plants belonging to the user.
-
 /**
  * This is a helper function for when the action.payload holds a new plant
  * that needs to replace an existing plant in the state object.
@@ -141,7 +136,7 @@ function upsertNoteSuccess(
   });
 }
 
-function loadNotesRequest(state: UiPlants, action: PlantAction<any>): UiPlants {
+function loadNotesRequest(state: UiPlants, action: PlantAction<LoadNotesRequestPayload>): UiPlants {
 // action.payload is {
 //   noteIds: [<note-id>, <note-id>, ...]
 // OR
@@ -228,7 +223,7 @@ const defaultState = produce({}, () => ({}));
 /**
  * The plants reducer
  */
-export const plants = (state: UiPlants = defaultState, action: PlantAction<any>): UiPlants => {
+export const plants = (state: UiPlants = defaultState, action: PlantAction): UiPlants => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
