@@ -108,7 +108,7 @@
     "nodemon": "1.19.4",
     "oauth": "0.9.15",
     "pre-commit": "1.2.2",
-    "prettier": "1.18.2",
+    "prettier": "1.19.0",
     "react-hot-loader": "4.12.16",
     "react-test-renderer": "16.11.0",
     "redux-devtools": "3.5.0",
