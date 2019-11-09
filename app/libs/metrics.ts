@@ -1,7 +1,7 @@
 // A helper module for doing metric calculations
+import { isNumber } from 'lodash';
 import { Moment } from 'moment';
 import utils from './utils';
-
 /**
  * Create the object that represents the component that goes between notes describing
  * what has happened between the notes.
@@ -49,7 +49,8 @@ function getChange(metrics: MetricItem[], prop: MetricItemMetricTypes): MetricCh
   while (index > -1) {
     const prev = metrics[index];
     index -= 1;
-    if (prev[prop]) {
+    const hasValue = isNumber(prev[prop]);
+    if (hasValue) {
       // console.log('diff obj:', { prev, last });
       return { prev, last };
     }
@@ -87,13 +88,15 @@ function calculateMetrics(acc: MetricNote[], note: UiNotesValue, noteId: string,
   const { metrics: noteMetrics } = note;
   if (noteMetrics) {
     const { height, girth } = noteMetrics;
-    if (height || girth) {
+    const hasHeight = isNumber(height);
+    const hasGirth = isNumber(girth);
+    if (hasHeight || hasGirth) {
       const date = utils.intToMoment(note.date);
       const metric: MetricItem = { date };
-      if (height) {
+      if (hasHeight) {
         metric.height = height;
       }
-      if (girth) {
+      if (hasGirth) {
         metric.girth = girth;
       }
       metrics.push(metric);
@@ -112,7 +115,11 @@ function calculateMetrics(acc: MetricNote[], note: UiNotesValue, noteId: string,
           changes.push(change);
         }
       }
-      acc.push({ noteId, change: changes.join(' '), type: 'metric' });
+      if (changes.length) {
+        // Make it into a markdown list
+        const change = changes.map((item) => `- ${item}`).join('\n');
+        acc.push({ noteId, change, type: 'metric' });
+      }
     }
   }
 }

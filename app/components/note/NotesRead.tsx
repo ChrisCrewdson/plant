@@ -9,6 +9,7 @@ import NoteRead from './NoteRead';
 import { notesToMetricNotes } from '../../libs/metrics';
 import utils from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
+import Markdown from '../common/Markdown';
 
 interface NotesReadProps {
   dispatch: Dispatch<PlantAction<any>>;
@@ -118,15 +119,11 @@ export default class NotesRead extends React.PureComponent {
     const metricNotes = notesToMetricNotes(sortedIds, notes);
     const renderedNotes = metricNotes.map((metricNote) => {
       const {
-        noteId, note, sinceLast, change,
+        noteId, note, sinceLast, change, type: noteType,
       } = metricNote;
 
-      if (!note) {
-        return null;
-      }
-
-      switch (metricNote.type) {
-        case 'note':
+      if (noteType === 'note') {
+        if (note) {
           return (
             <NoteRead
               dispatch={dispatch}
@@ -136,6 +133,11 @@ export default class NotesRead extends React.PureComponent {
               plant={plant}
             />
           );
+        }
+        return null;
+      }
+
+      switch (metricNote.type) {
         case 'since':
           return (
             <Paper key={`${noteId}-sincelast`} style={paperStyle} zDepth={1}>
@@ -145,7 +147,7 @@ export default class NotesRead extends React.PureComponent {
         case 'metric':
           return (
             <Paper key={`${noteId}-change`} style={paperStyle} zDepth={1}>
-              {change}
+              <Markdown markdown={change} />
             </Paper>
           );
         case 'unfound':

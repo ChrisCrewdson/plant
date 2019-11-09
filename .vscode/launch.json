@@ -1,7 +1,6 @@
 {
   "version": "0.2.0",
-  "configurations": [
-    {
+  "configurations": [{
       "name": "Server",
       "type": "node",
       "request": "launch",
@@ -44,74 +43,82 @@
       },
       "console": "internalConsole",
       "sourceMaps": true
-      }, {
-        "name": "Unit Test",
-        "type": "node",
-        "request": "launch",
-        "program": "${workspaceRoot}/node_modules/.bin/jest",
-        "args": ["-i"],
-        "env": {
-          "NODE_ENV": "development",
-          "PLANT_TOKEN_SECRET": "json-web-token-secret",
-          "PLANT_DB_URL": "127.0.0.1:27017",
-          "PLANT_DB_NAME": "plant-test",
-          "PLANT_FB_ID": "facebook-app-id",
-          "PLANT_FB_SECRET": "facebook-app-secret",
-          "PLANT_GOOGLE_ID": "google-app-id",
-          "PLANT_GOOGLE_SECRET": "google-app-secret"
-        },
-        "cwd": "${workspaceRoot}"
-      }, {
-        "name": "Jest (this file)",
-        "type": "node",
-        "request": "launch",
-        "env": {
-          "SKIP_COVERAGE": "1",
-          "NODE_ENV": "development",
-          "DEFAULT_TIMEOUT_INTERVAL": "999000",
-          "PLANT_TOKEN_SECRET": "json-web-token-secret",
-          "PLANT_DB_URL": "127.0.0.1:27017",
-          "PLANT_DB_NAME": "plant-test",
-          "PLANT_FB_ID": "facebook-app-id",
-          "PLANT_FB_SECRET": "facebook-app-secret",
-          "PLANT_GOOGLE_ID": "google-app-id",
-          "PLANT_GOOGLE_SECRET": "google-app-secret"
-        },
-        "runtimeArgs": [
-          "--inspect-brk",
-          "${workspaceFolder}/node_modules/.bin/jest",
-          "${relativeFile}"
-        ],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
-        "port": 9229,
-        "skipFiles": ["<node_internals>/**/*.js"]
-      }, {
-        "name": "Debug Jest Tests",
-        "type": "node",
-        "request": "launch",
-        "env": {
-          "SKIP_COVERAGE": "1",
-          "NODE_ENV": "development",
-          "DEFAULT_TIMEOUT_INTERVAL": "999000",
-          "PLANT_TOKEN_SECRET": "json-web-token-secret",
-          "PLANT_DB_URL": "127.0.0.1:27017",
-          "PLANT_DB_NAME": "plant-test",
-          "PLANT_FB_ID": "facebook-app-id",
-          "PLANT_FB_SECRET": "facebook-app-secret",
-          "PLANT_GOOGLE_ID": "google-app-id",
-          "PLANT_GOOGLE_SECRET": "google-app-secret"
-        },
-        "runtimeArgs": [
-          "--inspect-brk",
-          "${workspaceRoot}/node_modules/.bin/jest",
-          "--runInBand",
-          "--forceExit"
-        ],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
-        "port": 9229,
-        "skipFiles": ["<node_internals>/**/*.js"]
+    }, {
+      "name": "Unit Test",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/.bin/jest",
+      "args": ["-i"],
+      "env": {
+        "NODE_ENV": "development",
+        "PLANT_TOKEN_SECRET": "json-web-token-secret",
+        "PLANT_DB_URL": "127.0.0.1:27017",
+        "PLANT_DB_NAME": "plant-test",
+        "PLANT_FB_ID": "facebook-app-id",
+        "PLANT_FB_SECRET": "facebook-app-secret",
+        "PLANT_GOOGLE_ID": "google-app-id",
+        "PLANT_GOOGLE_SECRET": "google-app-secret"
+      },
+      "cwd": "${workspaceRoot}"
+    }, {
+      "name": "Jest (this file)",
+      "type": "node",
+      "request": "launch",
+      "env": {
+        "SKIP_COVERAGE": "1",
+        "NODE_ENV": "development",
+        "DEFAULT_TIMEOUT_INTERVAL": "999000",
+        "PLANT_TOKEN_SECRET": "json-web-token-secret",
+        "PLANT_DB_URL": "127.0.0.1:27017",
+        "PLANT_DB_NAME": "plant-test",
+        "PLANT_FB_ID": "facebook-app-id",
+        "PLANT_FB_SECRET": "facebook-app-secret",
+        "PLANT_GOOGLE_ID": "google-app-id",
+        "PLANT_GOOGLE_SECRET": "google-app-secret"
+      },
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/node_modules/.bin/jest",
+        "${relativeFile}"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "skipFiles": ["<node_internals>/**/*.js"]
+    }, {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "env": {
+        "SKIP_COVERAGE": "1",
+        "NODE_ENV": "development",
+        "DEFAULT_TIMEOUT_INTERVAL": "999000",
+        "PLANT_TOKEN_SECRET": "json-web-token-secret",
+        "PLANT_DB_URL": "127.0.0.1:27017",
+        "PLANT_DB_NAME": "plant-test",
+        "PLANT_FB_ID": "facebook-app-id",
+        "PLANT_FB_SECRET": "facebook-app-secret",
+        "PLANT_GOOGLE_ID": "google-app-id",
+        "PLANT_GOOGLE_SECRET": "google-app-secret"
+      },
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand",
+        "--forceExit"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "skipFiles": ["<node_internals>/**/*.js"]
+    }, {
+      "name": "Launch Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:9090",
+      "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "webpack:///*": "${webRoot}/*"
       }
-      ]
+    }]
 }
