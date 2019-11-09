@@ -1,16 +1,21 @@
-import { AnyAction } from 'redux';
 import { produce } from 'immer';
+
 import { actionEnum } from '../actions';
+import { PlantAction } from '../../lib/types/redux-payloads';
 
 /**
  * Called after users received back from server request
  * The action.payload are the users returned users from the server.
  */
-function loadUsersSuccess(state: UiUsers, action: AnyAction): UiUsers {
-  const users: UiUsersValue[] = action.payload || [];
+function loadUsersSuccess(
+  state: UiUsers, action: PlantAction<ReadonlyArray<UiUsersValue>>): UiUsers {
+  const users = action.payload || [];
   return produce(state, (draft) => {
     users.forEach((user) => {
-      draft[user._id] = { ...user, locationIds: user.locationIds || [] };
+      draft[user._id] = user;
+      if (!user.locationIds) {
+        draft[user._id].locationIds = [];
+      }
     });
   });
 }
@@ -18,7 +23,7 @@ function loadUsersSuccess(state: UiUsers, action: AnyAction): UiUsers {
 /**
  * The action.payload is the returned user from the server.
  */
-function loadUserSuccess(state: UiUsers, action: AnyAction): UiUsers {
+function loadUserSuccess(state: UiUsers, action: PlantAction<Readonly<UiUsersValue>>): UiUsers {
   return loadUsersSuccess(state, {
     payload: [action.payload],
     type: action.type,
@@ -110,7 +115,7 @@ const defaultState = produce({}, () => ({}));
 /**
  * The action.payload is the returned user from the server.
  */
-export const users = (state: UiUsers = defaultState, action: AnyAction): UiUsers => {
+export const users = (state: UiUsers = defaultState, action: PlantAction): UiUsers => {
   if (reducers[action.type]) {
     return reducers[action.type](state, action);
   }
