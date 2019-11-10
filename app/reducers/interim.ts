@@ -55,13 +55,18 @@ function editNoteChange(state: Readonly<UiInterim>, action: PlantAction<UiInteri
 // action.payload:
 // {plant}
 function editPlantOpen(state: Readonly<UiInterim>,
-  { payload }: PlantAction<UiInterimPlantContainer>): UiInterim {
-  const plant = payload.plant || {} as UiPlantsValue;
+  { payload }: PlantAction<Readonly<UiInterimPlantContainer>>): UiInterim {
+  let plant = (payload.plant || {}) as Readonly<UiPlantsValue>;
   return produce(state, (draft) => {
-    draft.plant = { plant };
     if (Object.prototype.hasOwnProperty.call(plant, 'price')) {
-      draft.plant.plant.price = isNumber(plant.price) ? plant.price.toString() : plant.price;
+      if (isNumber(plant.price)) {
+        plant = {
+          ...plant,
+          price: plant.price.toString(),
+        };
+      }
     }
+    draft.plant = { plant };
   });
 }
 
