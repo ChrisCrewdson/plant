@@ -76,6 +76,8 @@ export const indexHtml = (data: ServerSideRenderData, ssr: boolean): string => {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     ${ogMeta.join('\n')}
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">

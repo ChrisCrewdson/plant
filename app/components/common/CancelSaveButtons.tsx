@@ -1,9 +1,9 @@
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ClearIcon from 'material-ui/svg-icons/content/clear';
-import DoneIcon from 'material-ui/svg-icons/action/done';
-import AddPhotoIcon from 'material-ui/svg-icons/image/add-a-photo';
 import PropTypes from 'prop-types';
+import ClearIcon from '@material-ui/icons/Clear';
+import DoneIcon from '@material-ui/icons/Done';
+import AddPhotoIcon from '@material-ui/icons/AddAPhoto';
+import Fab from '@material-ui/core/Fab';
 
 interface CancelSaveButtonsProps {
   clickAddPhoto: React.MouseEventHandler<{}>;
@@ -29,39 +29,43 @@ export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
     mini,
   } = props;
 
+  const size = mini ? 'small' : 'medium';
+  const iconStyle = { fontSize: '3em' };
+
   return (
     <h2 className="vcenter">
       <div style={{ textAlign: 'right' }}>
         {clickAddPhoto
           && (
-          <FloatingActionButton
+          <Fab
+            color="secondary"
             onClick={clickAddPhoto}
-            secondary
+            size={size}
             title="Upload Photo"
-            mini={mini}
           >
-            <AddPhotoIcon />
-          </FloatingActionButton>
+            <AddPhotoIcon style={iconStyle} />
+          </Fab>
           )}
 
-        <FloatingActionButton
+        <Fab
+          color="secondary"
           onClick={clickCancel}
-          secondary
+          size={size}
           style={{ marginLeft: '10px' }}
           title="Cancel"
-          mini={mini}
         >
-          <ClearIcon />
-        </FloatingActionButton>
+          <ClearIcon style={iconStyle} />
+        </Fab>
 
-        <FloatingActionButton
+        <Fab
+          color="primary"
           onClick={clickSave}
+          size={size}
           style={{ marginLeft: '10px' }}
           title="Save"
-          mini={mini}
         >
-          <DoneIcon />
-        </FloatingActionButton>
+          <DoneIcon style={iconStyle} />
+        </Fab>
       </div>
     </h2>
   );
