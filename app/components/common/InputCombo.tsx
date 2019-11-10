@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import Toggle from 'material-ui/Toggle';
+import React, { ChangeEvent } from 'react';
+import Switch from '@material-ui/core/Switch';
 
 interface InputComboProps {
   booleanChangeHandler: (name: string, isInputChecked: boolean) => void;
@@ -15,8 +15,9 @@ export default function inputCombo(props: InputComboProps) {
     value,
   } = props;
 
-  const booleanHandler = (e: React.MouseEvent<{}>, isInputChecked: boolean): void => {
-    booleanChangeHandler(namo, isInputChecked);
+  // event: ChangeEvent<HTMLInputElement>, checked: boolean) => void
+  const booleanHandler = (_: ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+    booleanChangeHandler(namo, checked);
   };
 
   if (typeof value !== 'boolean') {
@@ -24,10 +25,11 @@ export default function inputCombo(props: InputComboProps) {
   }
 
   return (
-    <Toggle
+    <Switch
+      color="primary"
       name={namo}
-      onToggle={booleanHandler}
-      toggled={value}
+      onChange={booleanHandler}
+      value={value}
     />
   );
 }

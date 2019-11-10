@@ -1,9 +1,8 @@
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import AddIcon from 'material-ui/svg-icons/content/add';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 
 /**
  * Also using this for AddLocationButtonProps
@@ -25,15 +24,19 @@ export default function addPlantButton(props: AddPlantButtonProps) {
     return null;
   }
 
+  const size = mini ? 'small' : 'medium';
+  const iconStyle = { fontSize: '3em' };
+
   return (
     <Link to="/plant">
-      <FloatingActionButton
-        title="Add Plant"
-        mini={mini}
+      <Fab
+        color="primary"
+        size={size}
         style={style}
+        title="Add Plant"
       >
-        <AddIcon />
-      </FloatingActionButton>
+        <AddIcon style={iconStyle} />
+      </Fab>
     </Link>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
-import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import RemoveConfirm from './RemoveConfirm';
 
@@ -44,6 +44,9 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
     clickEdit(deleteData);
   }
 
+  const size = mini ? 'small' : 'medium';
+  const iconStyle = { fontSize: '3em' };
+
   return (
     <h2 className="vcenter">
       { showDeleteConfirmation
@@ -58,24 +61,25 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
         )
         : (
           <div style={{ textAlign: 'right' }}>
-            <FloatingActionButton
+            <Fab
+              color="primary"
               disabled={disabled}
-              mini={mini}
               onClick={onClickEdit}
+              size={size}
               title="Edit"
             >
-              <EditIcon />
-            </FloatingActionButton>
-            <FloatingActionButton
+              <EditIcon style={iconStyle} />
+            </Fab>
+            <Fab
+              color="secondary"
               disabled={disabled}
-              mini={mini}
               onClick={onClickDelete}
-              secondary
+              size={size}
               style={{ marginLeft: '10px' }}
               title="Delete"
             >
-              <DeleteIcon />
-            </FloatingActionButton>
+              <DeleteIcon style={iconStyle} />
+            </Fab>
           </div>
         )}
     </h2>
