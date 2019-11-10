@@ -14,6 +14,11 @@ interface LocationsManagerRowUpdateRow extends Partial<GridPropsRow> {
   values: string[];
 }
 
+interface LocationsWeatherRowUpdateRow extends Partial<GridPropsRow> {
+  _id: string;
+  values: [string, string, boolean];
+}
+
 interface LocationsManagerRowUpdateMetaLocation {
   _id: string;
   members: Record<string, Role>;
@@ -28,6 +33,10 @@ export interface LocationsManagerRowUpdate extends Partial<GridRowValidate> {
   isNew?: boolean;
   meta?: LocationsManagerRowUpdateMeta;
   row: LocationsManagerRowUpdateRow;
+}
+
+export interface LocationsWeatherRowUpdate extends Omit<LocationsManagerRowUpdate, 'row'> {
+  row: LocationsWeatherRowUpdateRow;
 }
 
 interface GridColumn {
@@ -134,7 +143,7 @@ function gridRowValidateToLocationsManagerRowUpdate(
 ): LocationsManagerRowUpdate {
   const { isNew, meta, row } = data;
   if (!meta || !row) {
-    throw new Error('No meta or row');
+    throw new Error('No meta or row in gridRowValidateToLocationsManagerRowUpdate');
   }
 
   const locationRow: LocationsManagerRowUpdateRow = {
@@ -151,13 +160,37 @@ function gridRowValidateToLocationsManagerRowUpdate(
   return transformedData;
 }
 
+function gridRowValidateToLocationsWeatherRowUpdate(
+  data: GridRowValidate,
+): LocationsWeatherRowUpdate {
+  const { isNew, meta, row } = data;
+  if (!meta || !row) {
+    throw new Error('No meta or row in gridRowValidateToLocationsWeatherRowUpdate');
+  }
+
+  const [stationId, name, enabled] = row.values;
+
+  const locationRow: LocationsWeatherRowUpdateRow = {
+    _id: row._id,
+    values: [stationId as string, name as string, enabled as boolean],
+  };
+
+  const transformedData: LocationsWeatherRowUpdate = {
+    meta,
+    row: locationRow,
+    isNew: !!isNew,
+  };
+
+  return transformedData;
+}
+
 function wrapValidateLocationMember(data: GridRowValidate): string[] {
   return validateLocationMember(
     gridRowValidateToLocationsManagerRowUpdate(data),
   );
 }
 
-function validateLocationWeather(data: LocationsManagerRowUpdate) {
+function validateLocationWeather(data: LocationsWeatherRowUpdate) {
   const { row, meta, isNew } = data;
   const { values } = row;
   const [stationId, name] = values;
@@ -185,7 +218,7 @@ function validateLocationWeather(data: LocationsManagerRowUpdate) {
 
 function wrapValidateLocationWeather(data: GridRowValidate): string[] {
   return validateLocationWeather(
-    gridRowValidateToLocationsManagerRowUpdate(data),
+    gridRowValidateToLocationsWeatherRowUpdate(data),
   );
 }
 
