@@ -1,10 +1,10 @@
 // User grid editor
 
+import PropTypes from 'prop-types';
+import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
-import PropTypes from 'prop-types';
-import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';

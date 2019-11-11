@@ -2,8 +2,8 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import CheckBox from 'material-ui/svg-icons/toggle/check-box';
-import CheckBoxOutlineBlank from 'material-ui/svg-icons/toggle/check-box-outline-blank';
+import Switch from '@material-ui/core/Switch';
+
 import InputCombo from './InputCombo';
 import InputComboText from './InputComboText';
 import SelectCombo from './SelectCombo';
@@ -129,9 +129,13 @@ export default class GridCell extends React.Component {
     // If the type is boolean then show a checkbox div.
     // value will be typeof boolean
     if (type === 'boolean' || typeof value === 'boolean') {
-      return value
-        ? <CheckBox />
-        : <CheckBoxOutlineBlank />;
+      const checked = !!value;
+      return (
+        <Switch
+          disabled
+          checked={checked}
+        />
+      );
     }
 
     // Assume that the text to show will be the value
