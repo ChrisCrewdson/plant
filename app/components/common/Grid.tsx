@@ -1,8 +1,8 @@
 // User grid editor
 
-import AddIcon from 'material-ui/svg-icons/content/add';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import Paper from 'material-ui/Paper';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -267,13 +267,17 @@ export default class Grid extends React.Component {
   render() {
     const paperStyle = {
       padding: 20,
-      width: '100%',
-      margin: 20,
-      display: 'inline-block',
+      // width: '100%',
+      // margin: 20,
+      // display: 'inline-block',
+      marginBottom: 25,
     };
 
     // TODO: Shouldn't this value be pulled from somewhere?
     const userCanEdit = true;
+
+    const size = 'medium';
+    const iconStyle = { fontSize: '3em' };
 
     const { columns, title } = this.props;
     const {
@@ -285,8 +289,8 @@ export default class Grid extends React.Component {
 
     return (
       <Paper
+        elevation={24}
         style={paperStyle}
-        zDepth={5}
       >
         <h5>
           {title}
@@ -360,14 +364,15 @@ export default class Grid extends React.Component {
           </TableBody>
         </Table>
         <div style={{ textAlign: 'right' }}>
-          <FloatingActionButton
+          <Fab
+            color="primary"
             disabled={!!editId}
-            mini
             onClick={this.addNewRow}
+            size={size}
             title={`Add ${title}`}
           >
-            <AddIcon />
-          </FloatingActionButton>
+            <AddIcon style={iconStyle} />
+          </Fab>
         </div>
       </Paper>
     );
