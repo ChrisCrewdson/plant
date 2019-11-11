@@ -3,13 +3,10 @@ import { poly } from './poly';
 
 import 'jquery';
 import 'bootstrap';
-// @ts-ignore - because this is a css file
-// eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
 import 'bootstrap/dist/css/bootstrap.css';
 import 'konva';
-// @ts-ignore - because this is a css file
+import 'typeface-roboto';
 import './stylesheets/main.css';
-
 
 /**
  * Check if local storage needs updating or not based on version.
