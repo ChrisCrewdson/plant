@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import TextField from 'material-ui/TextField';
+import React, { ChangeEvent } from 'react';
+import TextField from '@material-ui/core/TextField';
+import { InputLabelProps } from '@material-ui/core/InputLabel';
+import { FormHelperTextProps } from '@material-ui/core/FormHelperText';
+import { InputProps } from '@material-ui/core/Input';
 
 type InputComboTextPropsType = 'text' | 'number';
 
@@ -27,7 +30,7 @@ export default function inputComboText(props: InputComboTextProps) {
   const {
     changeHandler,
     disabled = false,
-    error,
+    error: errorText,
     fullWidth = true,
     id,
     label,
@@ -39,31 +42,47 @@ export default function inputComboText(props: InputComboTextProps) {
     value,
   } = props;
 
-  const underlineStyle = {
-    display: 'none',
+  // const underlineStyle = {
+  //   display: 'none',
+  // };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    changeHandler(e.target.name, e.target.value);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>, newValue: string): void => {
-    changeHandler(e.target.name, newValue);
-  };
-
+  const fontSize = '14px';
   const styler = { marginLeft: 20, ...style };
+  const error = !!errorText;
+
+  // These "sub" styles are for the sub-components that are wrapped
+  // inside the TextField component and will be pushed down to their
+  // respective components.
+  const subStyle = {
+    style: { fontSize },
+  };
+  const subInputLabelProps: InputLabelProps = subStyle;
+  const subFormHelperTextProps: FormHelperTextProps = subStyle;
+  const subInputProps: InputProps = subStyle;
 
   return (
     <TextField
       disabled={disabled}
-      errorText={error}
-      floatingLabelText={label}
+      error={error}
+      FormHelperTextProps={subFormHelperTextProps}
       fullWidth={fullWidth}
-      hintText={placeholder}
+      helperText={errorText}
       id={id}
-      multiLine={multiLine}
+      InputLabelProps={subInputLabelProps}
+      InputProps={subInputProps}
+      label={label}
+      multiline={multiLine}
       name={namo}
       onChange={onChange}
+      placeholder={placeholder}
       style={styler}
       type={type}
-      underlineStyle={underlineStyle}
       value={value}
+      variant="standard"
     />
   );
 }
