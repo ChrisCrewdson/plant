@@ -5,14 +5,11 @@ import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 import utils from '../../libs/utils';
 import GridCell, { GridCellInputType } from './GridCell';
@@ -267,9 +264,6 @@ export default class Grid extends React.Component {
   render() {
     const paperStyle = {
       padding: 20,
-      // width: '100%',
-      // margin: 20,
-      // display: 'inline-block',
       marginBottom: 25,
     };
 
@@ -287,6 +281,9 @@ export default class Grid extends React.Component {
       errors = [],
     } = this.state;
 
+    const headerCellStyle = { fontSize: 16 };
+    const bodyCellStyle = { fontSize: 14 };
+
     return (
       <Paper
         elevation={24}
@@ -296,30 +293,27 @@ export default class Grid extends React.Component {
           {title}
         </h5>
         <Table>
-          <TableHeader
-            adjustForCheckbox={false}
-            displaySelectAll={false}
-          >
+          <TableHead>
             <TableRow>
               {
                   columns.map((column) => (
-                    <TableHeaderColumn key={column.title}>
+                    <TableCell key={column.title} style={headerCellStyle}>
                       {column.title}
-                    </TableHeaderColumn>
+                    </TableCell>
                   ))
                 }
-              <TableHeaderColumn key="action">
+              <TableCell key="action" style={headerCellStyle}>
   Action
-              </TableHeaderColumn>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
+          </TableHead>
+          <TableBody>
             {rows
                 && rows.map((row) => (
                   <TableRow key={row._id}>
                     {
                       row.values.map((value, index) => (
-                        <TableRowColumn key={columns[index].title}>
+                        <TableCell key={columns[index].title} style={bodyCellStyle}>
                           <GridCell
                             editCell={this.editCell}
                             editId={editId}
@@ -331,10 +325,10 @@ export default class Grid extends React.Component {
                             type={columns[index].type}
                             value={value}
                           />
-                        </TableRowColumn>
+                        </TableCell>
                       ))
                     }
-                    <TableRowColumn key="action">
+                    <TableCell key="action" style={bodyCellStyle}>
                       {editId === row._id
                         ? (
                           <CancelSaveButtons
@@ -358,7 +352,7 @@ export default class Grid extends React.Component {
                             showDeleteConfirmation={deleteId === row._id}
                           />
                         )}
-                    </TableRowColumn>
+                    </TableCell>
                   </TableRow>
                 ))}
           </TableBody>
