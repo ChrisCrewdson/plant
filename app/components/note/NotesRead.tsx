@@ -1,5 +1,5 @@
 import CircularProgress from 'material-ui/CircularProgress';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dispatch } from 'redux';
@@ -140,13 +140,13 @@ export default class NotesRead extends React.PureComponent {
       switch (metricNote.type) {
         case 'since':
           return (
-            <Paper key={`${noteId}-sincelast`} style={paperStyle} zDepth={1}>
+            <Paper key={`${noteId}-sincelast`} style={paperStyle} elevation={5}>
               {sinceLast}
             </Paper>
           );
         case 'metric':
           return (
-            <Paper key={`${noteId}-change`} style={paperStyle} zDepth={1}>
+            <Paper key={`${noteId}-change`} style={paperStyle} elevation={5}>
               <Markdown markdown={change} />
             </Paper>
           );

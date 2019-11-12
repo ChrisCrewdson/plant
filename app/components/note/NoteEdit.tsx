@@ -1,6 +1,6 @@
 // Used to add a note to a plant
 
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import LinearProgress from 'material-ui/LinearProgress';
@@ -186,7 +186,7 @@ export default class NoteEdit extends React.PureComponent {
       return (
         <Paper
           style={paperStyle}
-          zDepth={1}
+          elevation={5}
         >
           {value !== max
             && (
@@ -238,7 +238,7 @@ Upload complete... Finishing up... Hang on...
     return (
       <Paper
         style={paperStyle}
-        zDepth={1}
+        elevation={5}
       >
 
         <InputComboText

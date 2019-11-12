@@ -1,6 +1,6 @@
 // For the user to manage their Locations (Orchards/Yards)
 
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dispatch } from 'redux';
@@ -323,7 +323,7 @@ export default class LocationsManager extends React.Component {
         {locationIds.map((locationId) => {
           const location = locations[locationId];
           return (
-            <Paper key={location._id} style={paperStyle} zDepth={5}>
+            <Paper key={location._id} style={paperStyle} elevation={24}>
               <h3>{`${location.title}`}</h3>
               <Grid
                 columns={userColumns}

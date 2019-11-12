@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
@@ -255,7 +255,7 @@ class PlantRead extends React.PureComponent {
         {plant
           ? (
             <div className="plant">
-              <Paper style={paperStyle} zDepth={1}>
+              <Paper style={paperStyle} elevation={5}>
                 <h2 className="vcenter" style={{ textAlign: 'center' }}>
                   {title}
                 </h2>

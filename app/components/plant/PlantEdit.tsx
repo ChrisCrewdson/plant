@@ -4,7 +4,7 @@
 
 import isEmpty from 'lodash/isEmpty';
 import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MapsAddLocation from 'material-ui/svg-icons/maps/add-location';
@@ -234,7 +234,7 @@ class PlantEdit extends React.Component {
       ));
 
     return (
-      <Paper style={paperStyle} zDepth={1}>
+      <Paper style={paperStyle} elevation={5}>
         <h2 style={{ textAlign: 'center' }}>
           {pageTitle}
         </h2>

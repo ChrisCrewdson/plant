@@ -1,5 +1,5 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import Base from '../base/Base';
 import Markdown from '../common/Markdown';
 
@@ -181,7 +181,7 @@ export default function privacy() {
 
   return (
     <Base>
-      <Paper style={paperStyle} zDepth={5}>
+      <Paper style={paperStyle} elevation={24}>
         <Markdown markdown={markdown} />
       </Paper>
     </Base>

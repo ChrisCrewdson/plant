@@ -2,7 +2,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import LinkIcon from 'material-ui/svg-icons/content/link';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 
@@ -180,7 +180,7 @@ export default class NoteRead extends React.PureComponent {
     const { _id: noteId } = note;
 
     return (
-      <Paper key={noteId} style={paperStyle} zDepth={1}>
+      <Paper key={noteId} style={paperStyle} elevation={5}>
         <div id={noteId}>
           <a href={`?noteid=${noteId}#${noteId}`}>
             <LinkIcon />
