@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux';
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import Fab from '@material-ui/core/Fab';
+import ArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import PropTypes from 'prop-types';
 
 import InputComboText from '../common/InputComboText';
@@ -128,18 +128,19 @@ export default class NoteAssocPlant extends React.Component {
       uncheckedPlants = this.renderPlantButtons(uncheckedPlantIds, plants, false);
     }
 
+    const iconStyle = { fontSize: '3em' };
     const title = `${expanded ? 'Hide' : 'Show'} Unchecked Plants`;
     const arrow = (
-      <FloatingActionButton
-        mini
+      <Fab
+        size="medium"
         onClick={this.expand}
-        secondary
+        color="secondary"
         title={title}
       >
         {expanded
-          ? <ArrowLeft />
-          : <ArrowRight />}
-      </FloatingActionButton>
+          ? <ArrowLeft style={iconStyle} />
+          : <ArrowRight style={iconStyle} />}
+      </Fab>
     );
 
     const filterInput = (

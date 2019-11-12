@@ -3,12 +3,13 @@
 
 import { Link } from 'react-router-dom';
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import AddIcon from 'material-ui/svg-icons/content/add';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-
 import { Dispatch } from 'redux';
+
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 import utils from '../../libs/utils';
 import { actionFunc } from '../../actions';
 
@@ -107,18 +108,20 @@ export default class PlantItem extends React.PureComponent {
       </Link>
     );
 
+    const iconStyle = { fontSize: '3em' };
+
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {userCanEdit
           && (
           <div style={floatingActionButtonStyle}>
-            <FloatingActionButton
-              mini
+            <Fab
+              size="medium"
               onClick={this.createNote}
               title="Add Note"
             >
-              <AddIcon />
-            </FloatingActionButton>
+              <AddIcon style={iconStyle} />
+            </Fab>
           </div>
           )}
         {renderLink}

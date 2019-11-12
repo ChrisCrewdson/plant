@@ -12,108 +12,49 @@ exports[`NoteCreate should render a NoteCreate 1`] = `
         }
       }
     >
-      <div
-        style={
-          Object {
-            "WebkitTapHighlightColor": "rgba(0,0,0,0)",
-            "backgroundColor": "transparent",
-            "borderRadius": "50%",
-            "boxShadow": "0 3px 10px rgba(0, 0, 0, 0.16),
-         0 3px 10px rgba(0, 0, 0, 0.23)",
-            "boxSizing": "border-box",
-            "color": "rgba(0, 0, 0, 0.87)",
-            "display": "inline-block",
-            "fontFamily": "Roboto, sans-serif",
-            "muiPrepared": true,
-            "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-          }
-        }
+      <button
+        className="MuiButtonBase-root MuiFab-root MuiFab-secondary"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        title="Create Note"
+        type="button"
       >
-        <button
-          disabled={false}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
-          onMouseUp={[Function]}
-          onTouchEnd={[Function]}
-          onTouchStart={[Function]}
-          style={
-            Object {
-              "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
-              "backgroundColor": "#ff4081",
-              "border": 10,
-              "borderRadius": "50%",
-              "boxSizing": "border-box",
-              "cursor": "pointer",
-              "display": "inline-block",
-              "fontFamily": "Roboto, sans-serif",
-              "fontSize": "inherit",
-              "fontWeight": "inherit",
-              "height": 56,
-              "margin": 0,
-              "muiPrepared": true,
-              "outline": "none",
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "relative",
-              "textAlign": "center",
-              "textDecoration": "none",
-              "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-              "verticalAlign": "bottom",
-              "width": 56,
-            }
-          }
-          tabIndex={0}
-          title="Create Note"
-          type="button"
+        <span
+          className="MuiFab-label"
         >
-          <div
-            onMouseDown={[Function]}
-            onMouseLeave={[Function]}
-            onMouseUp={[Function]}
-            onTouchEnd={[Function]}
-            onTouchStart={[Function]}
-          >
-            <div
-              style={
-                Object {
-                  "muiPrepared": true,
-                  "top": 0,
-                  "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-                }
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "fontSize": "3em",
               }
-            >
-              <svg
-                onMouseEnter={[Function]}
-                onMouseLeave={[Function]}
-                style={
-                  Object {
-                    "color": "#ffffff",
-                    "display": "inline-block",
-                    "fill": "#ffffff",
-                    "height": 56,
-                    "lineHeight": "56px",
-                    "muiPrepared": true,
-                    "transition": "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-                    "userSelect": "none",
-                    "width": 24,
-                  }
-                }
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-                />
-              </svg>
-            </div>
-          </div>
-        </button>
-      </div>
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+        <span
+          className="MuiTouchRipple-root"
+        />
+      </button>
     </div>
   </div>
 </div>

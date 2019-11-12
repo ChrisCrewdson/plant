@@ -1,8 +1,8 @@
 // Used to add a note to a plant
 
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import AddIcon from 'material-ui/svg-icons/content/add';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
@@ -84,6 +84,7 @@ export default class NoteCreate extends React.PureComponent {
     }
 
     const { isNew: createNote } = interimNote;
+    const iconStyle = { fontSize: '3em' };
 
     return (
       <div>
@@ -98,13 +99,13 @@ export default class NoteCreate extends React.PureComponent {
           )
           : (
             <div style={{ textAlign: 'right' }}>
-              <FloatingActionButton
+              <Fab
                 onClick={this.createNote}
-                secondary
+                color="secondary"
                 title="Create Note"
               >
-                <AddIcon />
-              </FloatingActionButton>
+                <AddIcon style={iconStyle} />
+              </Fab>
             </div>
           )}
       </div>

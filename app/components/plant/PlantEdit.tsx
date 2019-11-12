@@ -3,17 +3,19 @@
 // Url Update: /plant/<slug>/<plant-id>
 
 import isEmpty from 'lodash/isEmpty';
-import Divider from 'material-ui/Divider';
-import Paper from '@material-ui/core/Paper';
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import MapsAddLocation from 'material-ui/svg-icons/maps/add-location';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import getIn from 'lodash/get';
 import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { History } from 'history';
+
+import Divider from 'material-ui/Divider';
+import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+
 import PlantEditTerminated from './PlantEditTerminated';
 import utils from '../../libs/utils';
 import CancelSaveButtons from '../common/CancelSaveButtons';
@@ -232,6 +234,7 @@ class PlantEdit extends React.Component {
           {`${key} - ${errors[key]}`}
         </div>
       ));
+    const iconStyle = { fontSize: '3em' };
 
     return (
       <Paper style={paperStyle} elevation={5}>
@@ -339,12 +342,12 @@ class PlantEdit extends React.Component {
         {hasGeo
           && (
           <div>
-            <FloatingActionButton
+            <Fab
               onClick={this.addGeo}
               title="Add Location"
             >
-              <MapsAddLocation />
-            </FloatingActionButton>
+              <AddLocationIcon style={iconStyle} />
+            </Fab>
             <InputComboText
               changeHandler={this.onChange}
               disabled
