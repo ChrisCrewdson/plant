@@ -98,14 +98,12 @@ class PlantEdit extends React.Component {
   /**
    * Called when the Location dropdown (a Select component) changes
    * its value
-   * @param e - event - unused
-   * @param index - positional index of new value - unused
-   * @param value - new value - MongoId of new value
+   * @param locationId - MongoId of new value
    */
-  onChangeLocation(e: React.SyntheticEvent<{}>, index: number, value: any) {
+  onChangeLocation(locationId: string) {
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
-      locationId: value,
+      locationId,
     }));
   }
 

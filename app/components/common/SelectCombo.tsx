@@ -1,10 +1,10 @@
-import MenuItem from 'material-ui/MenuItem';
-import PropTypes from 'prop-types';
 import React from 'react';
-import SelectField from 'material-ui/SelectField';
+import PropTypes from 'prop-types';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 interface SelectComboProps {
-  changeHandler: (e: React.SyntheticEvent<{}>, index: number, menuItemValue: any) => void;
+  changeHandler: (menuItemValue: string) => void;
   // changeHandler: (e: React.FormEvent<{}>, newValue: string) => void;
   disabled?: boolean;
   error: React.ReactNode;
@@ -21,9 +21,9 @@ interface SelectComboProps {
 export default function selectCombo(props: SelectComboProps) {
   const {
     changeHandler,
-    error,
+    // error,
     id,
-    label,
+    // label,
     options,
     style = {},
     value,
@@ -31,19 +31,22 @@ export default function selectCombo(props: SelectComboProps) {
 
   const styler = { marginLeft: 20, ...style };
 
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    changeHandler(event.target.value as string);
+  };
+
   const select = () => {
     if (!options) {
       // eslint-disable-next-line no-console
       console.error(`No options were passed in for the select: ${options}`);
       return null;
     }
+
     return (
-      <SelectField
-        errorText={error}
-        floatingLabelText={label}
+      <Select
         id={id}
         value={value}
-        onChange={changeHandler}
+        onChange={handleChange}
         style={styler}
       >
         {
@@ -51,11 +54,12 @@ export default function selectCombo(props: SelectComboProps) {
           <MenuItem
             key={key}
             value={key}
-            primaryText={options[key]}
-          />
+          >
+            {options[key]}
+          </MenuItem>
         ))
       }
-      </SelectField>
+      </Select>
     );
   };
 

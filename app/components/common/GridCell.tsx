@@ -55,7 +55,7 @@ export default class GridCell extends React.Component {
   /**
    * Change Handler for Select
    */
-  onChangeSelect(_e: React.SyntheticEvent<{}>, _index: number, val: any) {
+  onChangeSelect(val: string) {
     const {
       editCell, rowId, index,
     } = this.props;
