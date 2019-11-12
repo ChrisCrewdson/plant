@@ -1,8 +1,8 @@
 import React from 'react';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ClearIcon from 'material-ui/svg-icons/content/clear';
-import DeleteForeverIcon from 'material-ui/svg-icons/action/delete-forever';
 import PropTypes from 'prop-types';
+import Fab from '@material-ui/core/Fab';
+import ClearIcon from '@material-ui/icons/Clear';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 interface RemoveConfirmProps {
   confirmFn: Function;
@@ -47,28 +47,32 @@ export default class RemoveConfirm extends React.Component {
   render() {
     const { title, mini, confirmMsg } = this.props;
 
+    const size = mini ? 'small' : 'medium';
+    const iconStyle = { fontSize: '3em' };
+
     return (
       <div style={{ textAlign: 'right' }}>
         <strong className="lead">
           {confirmMsg}
         </strong>
-        <FloatingActionButton
-          mini={mini}
+        <Fab
+          color="secondary"
           onClick={this.cancelDelete}
-          secondary
+          size={size}
           style={{ marginLeft: '10px' }}
           title="Cancel"
         >
-          <ClearIcon />
-        </FloatingActionButton>
-        <FloatingActionButton
-          mini={mini}
+          <ClearIcon style={iconStyle} />
+        </Fab>
+        <Fab
+          color="primary"
           onClick={this.reallyDelete}
+          size={size}
           style={{ marginLeft: '10px' }}
           title={`Delete ${title}`}
         >
-          <DeleteForeverIcon />
-        </FloatingActionButton>
+          <DeleteForeverIcon style={iconStyle} />
+        </Fab>
       </div>
     );
   }
