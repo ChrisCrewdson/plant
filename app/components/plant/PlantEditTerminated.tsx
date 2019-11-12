@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
 
 import Toggle from 'material-ui/Toggle';
-import Divider from 'material-ui/Divider';
+import Divider from '@material-ui/core/Divider';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 import InputComboText from '../common/InputComboText';

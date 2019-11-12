@@ -11,7 +11,7 @@ import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { History } from 'history';
 
-import Divider from 'material-ui/Divider';
+import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
