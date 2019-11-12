@@ -3,7 +3,7 @@
 // Url: /plant/slug/<plant-id>
 // Unless Create then Url: /plant
 
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';

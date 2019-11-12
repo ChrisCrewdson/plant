@@ -1,7 +1,7 @@
 // Used to show a list of plants for a location.
 // Url: /location/<location-name>/_location_id
 
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
