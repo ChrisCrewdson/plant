@@ -3,8 +3,8 @@ import React from 'react';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import LinkIcon from 'material-ui/svg-icons/content/link';
+import Button from '@material-ui/core/Button';
+import LinkIcon from '@material-ui/icons/Link';
 import Paper from '@material-ui/core/Paper';
 
 import { actionFunc } from '../../actions';
@@ -139,14 +139,18 @@ export default class NoteRead extends React.PureComponent {
       const label = `Show ${images.length} image${images.length > 1 ? 's' : ''}`;
 
       const { dispatch } = this.props;
+      const buttonStyle = { fontSize: 'medium' };
 
       return (
         <div>
-          <RaisedButton
-            label={label}
+          <Button
+            color="primary"
             onMouseUp={() => dispatch(actionFunc.showNoteImages(_id))}
-            primary
-          />
+            style={buttonStyle}
+            variant="contained"
+          >
+            {label}
+          </Button>
         </div>
       );
     }

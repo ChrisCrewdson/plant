@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 import { History } from 'history';
 
 import Paper from '@material-ui/core/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 
 import utils from '../../libs/utils';
 import NotesRead from '../note/NotesRead';
@@ -229,19 +229,19 @@ class PlantRead extends React.PureComponent {
 
   render() {
     const paperStyle = {
+      display: 'inline-block',
+      margin: 20,
       padding: 20,
       width: '100%',
-      margin: 20,
-      display: 'inline-block',
     };
 
     const {
-      userCanEdit,
       dispatch,
       interim,
       notes,
       plant,
       plants,
+      userCanEdit,
     } = this.props;
 
     const {
@@ -251,6 +251,10 @@ class PlantRead extends React.PureComponent {
     const { locationId, title } = plant;
 
     const label = 'Show All Images';
+    const buttonStyle = {
+      fontSize: 'medium',
+      marginTop: '40px',
+    };
 
     return (
       <div>
@@ -262,31 +266,33 @@ class PlantRead extends React.PureComponent {
                   {title}
                 </h2>
                 {this.renderDetails()}
-                <RaisedButton
-                  label={label}
-                  style={{ marginTop: '40px' }}
+                <Button
+                  color="primary"
                   onMouseUp={this.showImages}
-                  primary
-                />
+                  style={buttonStyle}
+                  variant="contained"
+                >
+                  {label}
+                </Button>
                 <div style={{ width: '50%', float: 'right' }}>
                   <EditDeleteButtons
-                    clickEdit={this.edit}
                     clickDelete={this.checkDelete}
+                    clickEdit={this.edit}
                     confirmDelete={this.confirmDelete}
-                    showDeleteConfirmation={showDeleteConfirmation}
-                    showButtons={userCanEdit}
                     deleteTitle={title || ''}
+                    showButtons={userCanEdit}
+                    showDeleteConfirmation={showDeleteConfirmation}
                   />
                 </div>
               </Paper>
               <NotesRead
                 dispatch={dispatch}
                 interim={interim}
-                userCanEdit={userCanEdit}
+                locationId={locationId}
                 notes={notes}
                 plant={plant}
                 plants={plants}
-                locationId={locationId}
+                userCanEdit={userCanEdit}
               />
             </div>
           )
