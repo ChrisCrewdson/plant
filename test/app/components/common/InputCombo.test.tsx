@@ -1,11 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Dispatch } from 'redux';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+
 import InputComboText from '../../../../app/components/common/InputComboText';
 import SelectCombo from '../../../../app/components/common/SelectCombo';
 import store from '../../../../app/store';

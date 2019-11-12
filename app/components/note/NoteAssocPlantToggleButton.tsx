@@ -3,8 +3,9 @@
 // TODO: Make this a generic ToggleRaisedButton component
 //       and move it to the common folder.
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
+
+import RaisedButton from 'material-ui/RaisedButton';
 
 interface NoteAssocPlantToggleButtonProps {
   _id: string;

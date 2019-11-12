@@ -1,13 +1,14 @@
 // Used to add a note to a plant
 
-import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import LinearProgress from 'material-ui/LinearProgress';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
 import { produce } from 'immer';
 import { Dispatch } from 'redux';
+
+import Paper from '@material-ui/core/Paper';
+import LinearProgress from 'material-ui/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import CancelSaveButtons from '../common/CancelSaveButtons';
 import InputComboText from '../common/InputComboText';

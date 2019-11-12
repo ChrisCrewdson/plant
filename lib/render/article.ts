@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { deepOrange500 } from 'material-ui/styles/colors';
 import { createStore } from 'redux';
 import { produce } from 'immer';
+
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { deepOrange500 } from 'material-ui/styles/colors';
 
 import { indexHtml } from '.';
 import { ssrRenderArticle } from './article-render';

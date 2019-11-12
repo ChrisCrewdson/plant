@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import Switch from '@material-ui/core/Switch';
 
 import InputCombo from './InputCombo';

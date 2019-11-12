@@ -2,12 +2,14 @@
 import {
   BrowserRouter, Route, Redirect, Switch,
 } from 'react-router-dom';
-import { deepOrange500 } from 'material-ui/styles/colors';
 import { Provider } from 'react-redux';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { deepOrange500 } from 'material-ui/styles/colors';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import App from './components/App';
 import Help from './components/base/Help';
 import Home from './components/base/Home';

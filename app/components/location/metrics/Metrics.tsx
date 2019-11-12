@@ -1,10 +1,12 @@
 // Used to show a collection of metrics for a location.
 // Url: /metrics/<location-name>/_location_id
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Base from '../../base/Base';
 import PlantItem from '../../plant/PlantItem';
 import { canEdit } from '../../../libs/auth-helper';

@@ -1,10 +1,11 @@
-import RaisedButton from 'material-ui/RaisedButton';
-import LinkIcon from 'material-ui/svg-icons/content/link';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 import { Dispatch } from 'redux';
+
+import RaisedButton from 'material-ui/RaisedButton';
+import LinkIcon from 'material-ui/svg-icons/content/link';
+import Paper from '@material-ui/core/Paper';
 
 import { actionFunc } from '../../actions';
 import EditDeleteButtons from '../common/EditDeleteButtons';

@@ -1,8 +1,10 @@
 import React from 'react';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 import { AddPlantButtonProps } from '../common/AddPlantButton';
 
 export default function addLocationButton(props: AddPlantButtonProps) {

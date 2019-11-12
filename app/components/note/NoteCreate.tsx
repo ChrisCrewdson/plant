@@ -1,11 +1,12 @@
 // Used to add a note to a plant
 
 import React from 'react';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
+
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 import utils from '../../libs/utils';
 import NoteEdit from './NoteEdit';

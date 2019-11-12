@@ -1,8 +1,9 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dispatch } from 'redux';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
 
 import NoteEdit from './NoteEdit';
 import NoteRead from './NoteRead';

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import Paper from '@material-ui/core/Paper';
+
 import Base from '../base/Base';
 import Markdown from '../common/Markdown';
 

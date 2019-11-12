@@ -1,9 +1,11 @@
 // For the user to manage their Locations (Orchards/Yards)
 
-import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dispatch } from 'redux';
+
+import Paper from '@material-ui/core/Paper';
+
 import Grid, { GridPropsRow, GridRowValidate } from '../common/Grid';
 import { actionFunc, actionEnum } from '../../actions';
 import { GridCellInputType } from '../common/GridCell';

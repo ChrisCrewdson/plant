@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { ChangeEvent } from 'react';
+
 import Switch from '@material-ui/core/Switch';
 
 interface InputComboProps {

@@ -1,10 +1,11 @@
-import { MuiTheme } from 'material-ui/styles';
 import { Store } from 'redux';
-
 import React from 'react';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
+
+import { MuiTheme } from 'material-ui/styles';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import { PlantAction } from '../types/redux-payloads';
 import Article from '../../app/components/article/Article';
 

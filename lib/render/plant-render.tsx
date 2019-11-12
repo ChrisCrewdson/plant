@@ -1,12 +1,13 @@
 import { StaticRouterContext } from 'react-router';
-import { MuiTheme } from 'material-ui/styles';
 import { Store } from 'redux';
-
 import React from 'react';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
+
+import { MuiTheme } from 'material-ui/styles';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import Plant from '../../app/components/plant/Plant';
 import App from '../../app/components/App';
 import { PlantAction } from '../types/redux-payloads';

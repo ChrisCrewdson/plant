@@ -1,9 +1,10 @@
 import { produce } from 'immer';
 import React from 'react';
-import Toggle from 'material-ui/Toggle';
 import PropTypes from 'prop-types';
-
 import { Dispatch } from 'redux';
+
+import Toggle from 'material-ui/Toggle';
+
 import { actionFunc } from '../../actions';
 import Errors from '../common/Errors';
 import InputComboText from '../common/InputComboText';

@@ -1,9 +1,10 @@
 import { Dispatch } from 'redux';
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Fab from '@material-ui/core/Fab';
 import ArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import PropTypes from 'prop-types';
 
 import InputComboText from '../common/InputComboText';
 import Errors from '../common/Errors';

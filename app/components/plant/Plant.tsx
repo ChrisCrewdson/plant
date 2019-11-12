@@ -3,13 +3,14 @@
 // Url: /plant/slug/<plant-id>
 // Unless Create then Url: /plant
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import getIn from 'lodash/get';
 import { Location } from 'history';
 import { match as matcher } from 'react-router';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { canEdit } from '../../libs/auth-helper';
 import utils from '../../libs/utils';

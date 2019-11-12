@@ -2,10 +2,11 @@
 // Only the logged in user can get to their profile page.
 
 import PropTypes from 'prop-types';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-
 import React from 'react';
 import getIn from 'lodash/get';
+
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+
 import LocationsManager from '../location/LocationsManager';
 import Base from '../base/Base';
 

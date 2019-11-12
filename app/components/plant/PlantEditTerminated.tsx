@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Dispatch } from 'redux';
+
 import Toggle from 'material-ui/Toggle';
 import Divider from 'material-ui/Divider';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
-import PropTypes from 'prop-types';
-import { Dispatch } from 'redux';
 import InputComboText from '../common/InputComboText';
 import { actionFunc } from '../../actions';
 

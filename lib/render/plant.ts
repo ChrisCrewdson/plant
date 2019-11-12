@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import { createStore } from 'redux';
+import { Request, Response } from 'express';
+import { StaticRouterContext } from 'react-router';
+
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { deepOrange500 } from 'material-ui/styles/colors';
-import { Request, Response } from 'express';
 
-import { StaticRouterContext } from 'react-router';
 import { ssrRenderPlant } from './plant-render';
 import appReducers from '../../app/reducers';
 import { singlePlant } from '../db/single-plant';

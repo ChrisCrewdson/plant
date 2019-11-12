@@ -1,12 +1,14 @@
 import moment from 'moment';
-import Paper from '@material-ui/core/Paper';
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { History } from 'history';
+
+import Paper from '@material-ui/core/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import utils from '../../libs/utils';
 import NotesRead from '../note/NotesRead';
 import EditDeleteButtons from '../common/EditDeleteButtons';

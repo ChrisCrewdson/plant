@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PropTypes from 'prop-types';
+
 import RemoveConfirm from './RemoveConfirm';
 
 interface EditDeleteButtonsProps {

@@ -1,11 +1,12 @@
 import { Dispatch } from 'redux';
-
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { MemoryRouter } from 'react-router-dom';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import { MemoryRouter } from 'react-router-dom';
+
 import LocationTile from '../../../../app/components/location/LocationTile';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
 
