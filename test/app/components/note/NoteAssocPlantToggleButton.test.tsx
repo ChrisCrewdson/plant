@@ -28,6 +28,7 @@ describe('NoteAssocPlantToggleButton', () => {
   });
 
   test('NoteAssocPlantToggleButton should be rendered', () => {
+    const selectState = 'selected';
     const component = renderer.create(
       <MuiThemeProvider muiTheme={muiTheme}>
         <Provider store={store}>
@@ -36,8 +37,7 @@ describe('NoteAssocPlantToggleButton', () => {
               <NoteAssocPlantToggleButton
                 _id="buttonId"
                 label="Button Label"
-                primary
-                secondary={false}
+                selectState={selectState}
                 style={{ color: 'blue' }}
                 toggleFunc={() => {}}
               />

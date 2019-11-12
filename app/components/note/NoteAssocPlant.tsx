@@ -25,6 +25,13 @@ interface NoteAssocPlantState {
   filter: string;
 }
 
+const getSelectedState = (selected: boolean, isTerminated: boolean) => {
+  if (selected) {
+    return 'selected';
+  }
+  return isTerminated ? 'dead' : 'alive';
+};
+
 export default class NoteAssocPlant extends React.Component {
   props!: NoteAssocPlantProps;
 
@@ -85,14 +92,14 @@ export default class NoteAssocPlant extends React.Component {
    */
   renderPlantButton(plant: UiPlantsValue, primary: boolean) {
     const { _id, title, isTerminated } = plant;
-    const secondary = !primary && !!isTerminated;
+    const selectState = getSelectedState(primary, !!isTerminated);
+
     return (
       <NoteAssocPlantToggleButton
         _id={_id || ''}
         key={_id}
         label={title}
-        primary={primary}
-        secondary={secondary}
+        selectState={selectState}
         style={{ margin: 12 }}
         toggleFunc={this.toggle}
       />
