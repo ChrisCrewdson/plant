@@ -7,7 +7,7 @@ import { produce } from 'immer';
 import { Dispatch } from 'redux';
 
 import Paper from '@material-ui/core/Paper';
-import LinearProgress from 'material-ui/LinearProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import CancelSaveButtons from '../common/CancelSaveButtons';
@@ -183,7 +183,8 @@ export default class NoteEdit extends React.PureComponent {
         height: '20px',
       };
       const { value, max } = uploadProgress;
-      const progress = `Upload progress ${Math.round((value * 100) / max)} %`;
+      const uploadPercent = Math.round((value * 100) / max);
+      const progress = `Upload progress ${uploadPercent} %`;
       return (
         <Paper
           style={paperStyle}
@@ -195,7 +196,11 @@ export default class NoteEdit extends React.PureComponent {
               <h1 style={{ fontSize: 'xx-large' }}>
                 {progress}
               </h1>
-              <LinearProgress style={linearProgressStyle} mode="determinate" value={value} max={max} />
+              <LinearProgress
+                style={linearProgressStyle}
+                value={uploadPercent}
+                variant="determinate"
+              />
             </div>
             )}
           {value === max
