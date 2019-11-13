@@ -1,9 +1,10 @@
 import { produce } from 'immer';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
 
-import Toggle from 'material-ui/Toggle';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { actionFunc } from '../../actions';
 import Errors from '../common/Errors';
@@ -61,9 +62,9 @@ export default class NoteEditMetrics extends React.PureComponent {
     this.dispatchChange(name, value);
   }
 
-  booleanHandler = (e: React.MouseEvent<HTMLInputElement>, isInputChecked: boolean): void => {
-    const { name } = e.currentTarget as { name: MetaMetricKey };
-    this.dispatchChange(name, isInputChecked);
+  booleanHandler = (event: ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+    const { name } = event.currentTarget as { name: MetaMetricKey };
+    this.dispatchChange(name, checked);
   };
 
   /**
@@ -111,14 +112,20 @@ export default class NoteEditMetrics extends React.PureComponent {
   renderToggle(metaMetric: MetaMetric, value: any) {
     const isToggled = value === 'true' || value === true;
     return (
-      <Toggle
-        key={metaMetric.key}
+      <FormControlLabel
+        control={(
+          <Switch
+            checked={isToggled}
+            color="primary"
+            key={metaMetric.key}
+            name={metaMetric.key}
+            onChange={this.booleanHandler}
+            style={{ paddingLeft: '5px', maxWidth: '200px' }}
+          />
+        )}
         label={metaMetric.label}
-        labelPosition="left"
-        name={metaMetric.key}
-        onToggle={this.booleanHandler}
-        style={{ paddingLeft: '5px', maxWidth: '200px' }}
-        toggled={isToggled}
+        labelPlacement="start"
+        style={{ display: 'block' }}
       />
     );
   }

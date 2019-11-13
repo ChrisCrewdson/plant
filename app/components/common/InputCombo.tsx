@@ -30,7 +30,7 @@ export default function inputCombo(props: InputComboProps) {
       color="primary"
       name={namo}
       onChange={booleanHandler}
-      value={value}
+      checked={value}
     />
   );
 }

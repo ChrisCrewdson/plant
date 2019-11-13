@@ -204,6 +204,433 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         </div>
         
       </div>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="firstBlossom"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          First Blossom
+        </span>
+      </label>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="lastBlossom"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          Last Blossom
+        </span>
+      </label>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="firstBud"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          First Bud
+        </span>
+      </label>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="harvestStart"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          Harvest Start
+        </span>
+      </label>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="harvestEnd"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          Harvest End
+        </span>
+      </label>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="leafShedStart"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          Leaf Shed Start
+        </span>
+      </label>
+      <label
+        className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementStart"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <span
+          className="MuiSwitch-root"
+        >
+          <span
+            aria-disabled={false}
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-78 MuiSwitch-switchBase MuiSwitch-colorPrimary"
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "maxWidth": "200px",
+                "paddingLeft": "5px",
+              }
+            }
+            tabIndex={null}
+          >
+            <span
+              className="MuiIconButton-label"
+            >
+              <input
+                checked={false}
+                className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                name="leafShedEnd"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="MuiSwitch-thumb"
+              />
+            </span>
+            <span
+              className="MuiTouchRipple-root"
+            />
+          </span>
+          <span
+            className="MuiSwitch-track"
+          />
+        </span>
+        <span
+          className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          Leaf Shed End
+        </span>
+      </label>
     </div>
   </div>
 </div>
