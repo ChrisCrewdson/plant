@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
 
-import Toggle from 'material-ui/Toggle';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import Divider from '@material-ui/core/Divider';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
@@ -58,9 +59,9 @@ export default class PlantEditTerminated extends React.Component {
     this.dispatchChange(name, value);
   }
 
-  booleanHandler = (e: React.MouseEvent<HTMLInputElement>, isInputChecked: boolean): void => {
-    const { name } = e.currentTarget;
-    this.dispatchChange(name, isInputChecked);
+  booleanHandler = (event: ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+    const { name } = event.currentTarget;
+    this.dispatchChange(name, checked);
   };
 
   dispatchChange(name: string, value: string | boolean): void {
@@ -93,13 +94,18 @@ export default class PlantEditTerminated extends React.Component {
 
     return (
       <div>
-        <Toggle
+        <FormControlLabel
+          control={(
+            <Switch
+              checked={isTerminated}
+              color="primary"
+              name="isTerminated"
+              onChange={this.booleanHandler}
+              style={{ paddingLeft: '5px', maxWidth: '150px' }}
+            />
+            )}
           label="Terminated"
-          labelPosition="left"
-          name="isTerminated"
-          onToggle={this.booleanHandler}
-          style={{ paddingLeft: '5px', maxWidth: '150px' }}
-          toggled={isTerminated}
+          labelPlacement="start"
         />
         {isTerminated
           && (
