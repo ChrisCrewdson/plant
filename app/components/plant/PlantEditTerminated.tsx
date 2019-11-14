@@ -2,10 +2,11 @@ import React, { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
 
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import Divider from '@material-ui/core/Divider';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Switch from '@material-ui/core/Switch';
 
 import InputComboText from '../common/InputComboText';
 import { actionFunc } from '../../actions';
@@ -77,6 +78,7 @@ export default class PlantEditTerminated extends React.Component {
       radioButton: {
         marginBottom: 16,
         width: 'inherit',
+        fontSize: 'large',
       },
     };
 
@@ -119,28 +121,33 @@ export default class PlantEditTerminated extends React.Component {
               placeholder={dateFormat}
               value={terminatedDate}
             />
-            <RadioButtonGroup
-              defaultSelected={terminatedReason}
+            <RadioGroup
               name="terminatedReason"
               onChange={this.onChangeRadio}
+              row
               style={styles.radioGroup}
+              value={terminatedReason}
             >
-              <RadioButton
+              <FormControlLabel
+                control={<Radio />}
                 label="Culled"
                 style={styles.radioButton}
                 value="culled"
               />
-              <RadioButton
+              <FormControlLabel
+                control={<Radio />}
                 label="Died"
                 style={styles.radioButton}
                 value="died"
+
               />
-              <RadioButton
+              <FormControlLabel
+                control={<Radio />}
                 label="Transferred"
                 style={styles.radioButton}
                 value="transferred"
               />
-            </RadioButtonGroup>
+            </RadioGroup>
             <InputComboText
               changeHandler={this.onChange}
               error={errors.terminatedDescription}
