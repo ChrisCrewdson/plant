@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import cyan from '@material-ui/core/colors/cyan';
 import deepOrange from '@material-ui/core/colors/deepOrange';
+
 import App from './components/App';
 import Help from './components/base/Help';
 import Home from './components/base/Home';
@@ -26,16 +27,11 @@ import Metrics from './components/location/metrics/Metrics';
 import Locations from './components/location/Locations';
 import Users from './components/user/Users';
 
-
 const theme = createMuiTheme({
   palette: {
     primary: cyan,
     secondary: deepOrange,
   },
-
-  // status: {
-  //   danger: 'orange',
-  // },
 });
 
 // /location/**location-name**/_location_id - a list of plants at that location

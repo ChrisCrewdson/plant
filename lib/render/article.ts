@@ -2,26 +2,27 @@ import { Request, Response } from 'express';
 import { createStore } from 'redux';
 import { produce } from 'immer';
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { deepOrange500 } from 'material-ui/styles/colors';
+import cyan from '@material-ui/core/colors/cyan';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 import { indexHtml } from '.';
 import { ssrRenderArticle } from './article-render';
 import appReducers from '../../app/reducers';
 
 export const renderArticle = (req: Request, res: Response): void => {
-  const muiTheme = getMuiTheme({
+  const theme = createMuiTheme({
     palette: {
-      accent1Color: deepOrange500,
+      primary: cyan,
+      secondary: deepOrange,
     },
-    userAgent: req.headers['user-agent'],
   });
 
   const store = createStore(appReducers, produce({}, () => ({})));
 
   // Render the component to a string
   const html = ssrRenderArticle({
-    muiTheme,
+    theme,
     store,
   });
 
