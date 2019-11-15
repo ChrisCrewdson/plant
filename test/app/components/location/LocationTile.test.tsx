@@ -3,21 +3,18 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import LocationTile from '../../../../app/components/location/LocationTile';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
-
-const muiTheme = getMuiTheme(lightBaseTheme);
+import { theme } from '../../../helper';
 
 const mockDispatch = (() => {}) as Dispatch<PlantAction<any>>;
 
 describe('LocationTile', () => {
   test('LocationTile should be rendered', () => {
     const component = renderer.create(
-      <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider theme={theme}>
         <MemoryRouter>
           <LocationTile
             _id="mongo-id"

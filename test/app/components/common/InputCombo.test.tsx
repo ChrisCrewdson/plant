@@ -4,17 +4,14 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import InputComboText from '../../../../app/components/common/InputComboText';
 import SelectCombo from '../../../../app/components/common/SelectCombo';
 import store from '../../../../app/store';
 import App from '../../../../app/components/App';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
-
-const muiTheme = getMuiTheme(lightBaseTheme);
+import { theme } from '../../../helper';
 
 describe('InputComboText and SelectCombo', () => {
   const storeDispatch = store.dispatch;
@@ -30,7 +27,7 @@ describe('InputComboText and SelectCombo', () => {
   test('should render Text Input', () => {
     const changeHandler = () => {};
     const component = renderer.create(
-      <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>
@@ -56,7 +53,7 @@ describe('InputComboText and SelectCombo', () => {
       two: '2',
     };
     const component = renderer.create(
-      <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>

@@ -4,16 +4,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import PlantEdit from '../../../../app/components/plant/PlantEdit';
 import store from '../../../../app/store';
 import App from '../../../../app/components/App';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
-
-const muiTheme = getMuiTheme(lightBaseTheme);
+import { theme } from '../../../helper';
 
 describe('PlantEdit', () => {
   const storeDispatch = store.dispatch;
@@ -89,7 +86,7 @@ describe('PlantEdit', () => {
     };
 
     const component = renderer.create(
-      <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <App>
             <MemoryRouter>

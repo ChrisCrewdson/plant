@@ -113,15 +113,6 @@ afterAll(async () => {
   await client.close();
 });
 
-// These modules use 'ref' which causes problems with jest snapshot testing
-// so mock them for all tests.
-jest.mock('material-ui/TextField/EnhancedTextarea');
-jest.mock('material-ui/internal/EnhancedSwitch');
-jest.mock('material-ui/internal/Tooltip');
-// For a Text input with multiLine set to true.
-jest.mock('material-ui/TextField/EnhancedTextarea');
-// jest.mock('react-dropzone', () => () => {});
-
 jest.mock('react-dropzone', () => ({
   default: () => {},
 }));
