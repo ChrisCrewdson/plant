@@ -1,12 +1,15 @@
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { Server } from 'net';
 import { Store } from 'redux';
-
 import _ from 'lodash';
 
 // fetch-cookie wraps nodeFetch and preserves cookies.
 // @ts-ignore - cannot find import
 import fetchCookie from 'fetch-cookie/node-fetch';
+
+import { createMuiTheme } from '@material-ui/core/styles';
+import cyan from '@material-ui/core/colors/cyan';
+import deepOrange from '@material-ui/core/colors/deepOrange';
 
 import * as constants from '../app/libs/constants';
 import { mockLogger } from './mock-logger';
@@ -255,3 +258,10 @@ export const getFakeStore = (): Store => ({
 export const expectMongoId = (values: string[]) => {
   values.forEach((value) => expect(constants.mongoIdRE.test(value)).toBe(true));
 };
+
+export const theme = createMuiTheme({
+  palette: {
+    primary: cyan,
+    secondary: deepOrange,
+  },
+});
