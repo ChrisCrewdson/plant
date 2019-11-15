@@ -7,16 +7,13 @@ import _ from 'lodash';
 // @ts-ignore - cannot find import
 import fetchCookie from 'fetch-cookie/node-fetch';
 
-import { createMuiTheme } from '@material-ui/core/styles';
-import cyan from '@material-ui/core/colors/cyan';
-import deepOrange from '@material-ui/core/colors/deepOrange';
-
 import * as constants from '../app/libs/constants';
 import { mockLogger } from './mock-logger';
 import { getDbInstance } from '../lib/db/mongo';
 
 import { serverServer } from '../lib/server';
 
+export { theme } from '../app/libs/style-helper';
 
 type ServerFunc = (port?: number, mongoConnection?: string) => Promise<import('net').Server>;
 
@@ -258,10 +255,3 @@ export const getFakeStore = (): Store => ({
 export const expectMongoId = (values: string[]) => {
   values.forEach((value) => expect(constants.mongoIdRE.test(value)).toBe(true));
 };
-
-export const theme = createMuiTheme({
-  palette: {
-    primary: cyan,
-    secondary: deepOrange,
-  },
-});

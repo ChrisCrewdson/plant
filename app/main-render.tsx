@@ -6,9 +6,7 @@ import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import cyan from '@material-ui/core/colors/cyan';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import App from './components/App';
 import Help from './components/base/Help';
@@ -26,13 +24,7 @@ import Location from './components/location/Location';
 import Metrics from './components/location/metrics/Metrics';
 import Locations from './components/location/Locations';
 import Users from './components/user/Users';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: cyan,
-    secondary: deepOrange,
-  },
-});
+import { theme } from './libs/style-helper';
 
 // /location/**location-name**/_location_id - a list of plants at that location
 //                       (analogous to the old /plants/**user-name**/_user_id)

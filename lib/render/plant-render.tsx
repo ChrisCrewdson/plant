@@ -5,15 +5,14 @@ import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
-import { MuiTheme } from 'material-ui/styles';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, Theme } from '@material-ui/core/styles';
 
 import Plant from '../../app/components/plant/Plant';
 import App from '../../app/components/App';
 import { PlantAction } from '../types/redux-payloads';
 
 interface SsrRenderPlantOptions {
-  muiTheme: MuiTheme;
+  theme: Theme;
   store: Store<any, PlantAction<any>>;
   context: StaticRouterContext;
   url: string;
@@ -23,7 +22,7 @@ interface SsrRenderPlantOptions {
 
 const ssrRenderPlant = (options: SsrRenderPlantOptions) => {
   const {
-    muiTheme,
+    theme,
     store,
     context,
     url,
@@ -32,7 +31,7 @@ const ssrRenderPlant = (options: SsrRenderPlantOptions) => {
   } = options;
 
   return renderToString(
-    <MuiThemeProvider muiTheme={muiTheme}>
+    <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <App>
           <StaticRouter

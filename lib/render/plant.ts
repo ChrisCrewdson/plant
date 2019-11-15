@@ -3,14 +3,11 @@ import { createStore } from 'redux';
 import { Request, Response } from 'express';
 import { StaticRouterContext } from 'react-router';
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { deepOrange500 } from 'material-ui/styles/colors';
-
 import { ssrRenderPlant } from './plant-render';
 import appReducers from '../../app/reducers';
 import { singlePlant } from '../db/single-plant';
-
 import { indexHtml } from '.';
+import { theme } from '../../app/libs/style-helper';
 
 const moduleName = 'lib/render/plant';
 
@@ -31,13 +28,6 @@ export const renderPlant = async (req: Request, res: Response): Promise<void> =>
       res.send(indexHtml({ req }, false));
       return;
     }
-
-    const muiTheme = getMuiTheme({
-      palette: {
-        accent1Color: deepOrange500,
-      },
-      userAgent: req.headers['user-agent'],
-    });
 
     const initialState = await singlePlant(user, plantId, noteId, logger) || {};
 
@@ -79,7 +69,7 @@ export const renderPlant = async (req: Request, res: Response): Promise<void> =>
 
     // Render the component to a string
     const html = ssrRenderPlant({
-      muiTheme,
+      theme,
       store,
       context,
       url: req.url,
