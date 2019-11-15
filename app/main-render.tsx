@@ -6,10 +6,9 @@ import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { deepOrange500 } from 'material-ui/styles/colors';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import cyan from '@material-ui/core/colors/cyan';
+import deepOrange from '@material-ui/core/colors/deepOrange';
 import App from './components/App';
 import Help from './components/base/Help';
 import Home from './components/base/Home';
@@ -27,12 +26,16 @@ import Metrics from './components/location/metrics/Metrics';
 import Locations from './components/location/Locations';
 import Users from './components/user/Users';
 
-export {};
 
-const muiTheme = getMuiTheme({
+const theme = createMuiTheme({
   palette: {
-    accent1Color: deepOrange500,
+    primary: cyan,
+    secondary: deepOrange,
   },
+
+  // status: {
+  //   danger: 'orange',
+  // },
 });
 
 // /location/**location-name**/_location_id - a list of plants at that location
@@ -78,7 +81,7 @@ const renderMain = function render() {
 
   renderer(
     (
-      <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <App>
             {routes}

@@ -87,7 +87,7 @@ export const indexHtml = (data: ServerSideRenderData, ssr: boolean): string => {
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="theme-color" content="#ffffff">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no">
     <title>${title}</title>
   </head>
 <body>\
