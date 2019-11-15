@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import getIn from 'lodash/get';
 
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 import LocationsManager from '../location/LocationsManager';
 import Base from '../base/Base';
@@ -54,27 +56,30 @@ export default function profile(props: ProfileProps, context: any) {
         <h3>
 Unit of Measurement
         </h3>
-        <RadioButtonGroup
-          defaultSelected={unitOfMeasurement}
+        <RadioGroup
           name="unitOfMeasurement"
+          row
           style={radioGroup}
+          value={unitOfMeasurement}
         >
-          <RadioButton
+          <FormControlLabel
+            control={<Radio />}
             label="Imperial"
             style={radioButton}
             value="imperial"
           />
-          <RadioButton
+          <FormControlLabel
+            control={<Radio />}
             label="Metric"
             style={radioButton}
             value="metric"
           />
-        </RadioButtonGroup>
+        </RadioGroup>
         <LocationsManager
-          locations={locations}
-          locationIds={locationIds}
-          users={users}
           dispatch={dispatch}
+          locationIds={locationIds}
+          locations={locations}
+          users={users}
         />
       </div>
     </Base>
