@@ -136,7 +136,6 @@ export default class NoteAssocPlant extends React.Component {
       uncheckedPlants = this.renderPlantButtons(uncheckedPlantIds, plants, false);
     }
 
-    const iconStyle = { fontSize: '3em' };
     const title = `${expanded ? 'Hide' : 'Show'} Unchecked Plants`;
     const arrow = (
       <Fab
@@ -146,8 +145,8 @@ export default class NoteAssocPlant extends React.Component {
         title={title}
       >
         {expanded
-          ? <ArrowLeft style={iconStyle} />
-          : <ArrowRight style={iconStyle} />}
+          ? <ArrowLeft />
+          : <ArrowRight />}
       </Fab>
     );
 

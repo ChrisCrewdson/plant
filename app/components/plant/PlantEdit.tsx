@@ -234,7 +234,6 @@ class PlantEdit extends React.Component {
           {`${key} - ${errors[key]}`}
         </div>
       ));
-    const iconStyle = { fontSize: '3em' };
 
     return (
       <Paper style={paperStyle} elevation={5}>
@@ -346,7 +345,7 @@ class PlantEdit extends React.Component {
               onClick={this.addGeo}
               title="Add Location"
             >
-              <AddLocationIcon style={iconStyle} />
+              <AddLocationIcon />
             </Fab>
             <InputComboText
               changeHandler={this.onChange}

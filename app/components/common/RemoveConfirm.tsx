@@ -49,7 +49,6 @@ export default class RemoveConfirm extends React.Component {
     const { title, mini, confirmMsg } = this.props;
 
     const size = mini ? 'small' : 'medium';
-    const iconStyle = { fontSize: '3em' };
 
     return (
       <div style={{ textAlign: 'right' }}>
@@ -63,7 +62,7 @@ export default class RemoveConfirm extends React.Component {
           style={{ marginLeft: '10px' }}
           title="Cancel"
         >
-          <ClearIcon style={iconStyle} />
+          <ClearIcon />
         </Fab>
         <Fab
           color="primary"
@@ -72,7 +71,7 @@ export default class RemoveConfirm extends React.Component {
           style={{ marginLeft: '10px' }}
           title={`Delete ${title}`}
         >
-          <DeleteForeverIcon style={iconStyle} />
+          <DeleteForeverIcon />
         </Fab>
       </div>
     );

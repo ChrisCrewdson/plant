@@ -272,7 +272,6 @@ export default class Grid extends React.Component {
     const userCanEdit = true;
 
     const size = 'medium';
-    const iconStyle = { fontSize: '3em' };
 
     const { columns, title } = this.props;
     const {
@@ -366,7 +365,7 @@ export default class Grid extends React.Component {
             size={size}
             title={`Add ${title}`}
           >
-            <AddIcon style={iconStyle} />
+            <AddIcon />
           </Fab>
         </div>
       </Paper>

@@ -154,11 +154,6 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
             className="MuiSvgIcon-root"
             focusable="false"
             role="presentation"
-            style={
-              Object {
-                "fontSize": "3em",
-              }
-            }
             viewBox="0 0 24 24"
           >
             <path

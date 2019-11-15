@@ -26,7 +26,6 @@ export default function addPlantButton(props: AddPlantButtonProps) {
   }
 
   const size = mini ? 'small' : 'medium';
-  const iconStyle = { fontSize: '3em' };
 
   return (
     <Link to="/plant">
@@ -36,7 +35,7 @@ export default function addPlantButton(props: AddPlantButtonProps) {
         style={style}
         title="Add Plant"
       >
-        <AddIcon style={iconStyle} />
+        <AddIcon />
       </Fab>
     </Link>
   );

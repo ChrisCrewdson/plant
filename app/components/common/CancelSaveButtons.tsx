@@ -31,7 +31,6 @@ export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
   } = props;
 
   const size = mini ? 'small' : 'medium';
-  const iconStyle = { fontSize: '3em' };
 
   return (
     <h2 className="vcenter">
@@ -44,7 +43,7 @@ export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
             size={size}
             title="Upload Photo"
           >
-            <AddPhotoIcon style={iconStyle} />
+            <AddPhotoIcon />
           </Fab>
           )}
 
@@ -55,7 +54,7 @@ export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
           style={{ marginLeft: '10px' }}
           title="Cancel"
         >
-          <ClearIcon style={iconStyle} />
+          <ClearIcon />
         </Fab>
 
         <Fab
@@ -65,7 +64,7 @@ export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
           style={{ marginLeft: '10px' }}
           title="Save"
         >
-          <DoneIcon style={iconStyle} />
+          <DoneIcon />
         </Fab>
       </div>
     </h2>

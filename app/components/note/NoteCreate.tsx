@@ -85,7 +85,6 @@ export default class NoteCreate extends React.PureComponent {
     }
 
     const { isNew: createNote } = interimNote;
-    const iconStyle = { fontSize: '3em' };
 
     return (
       <div>
@@ -105,7 +104,7 @@ export default class NoteCreate extends React.PureComponent {
                 color="secondary"
                 title="Create Note"
               >
-                <AddIcon style={iconStyle} />
+                <AddIcon />
               </Fab>
             </div>
           )}

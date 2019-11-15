@@ -47,7 +47,6 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
   }
 
   const size = mini ? 'small' : 'medium';
-  const iconStyle = { fontSize: '3em' };
 
   return (
     <h2 className="vcenter">
@@ -70,7 +69,7 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
               size={size}
               title="Edit"
             >
-              <EditIcon style={iconStyle} />
+              <EditIcon />
             </Fab>
             <Fab
               color="secondary"
@@ -80,7 +79,7 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
               style={{ marginLeft: '10px' }}
               title="Delete"
             >
-              <DeleteIcon style={iconStyle} />
+              <DeleteIcon />
             </Fab>
           </div>
         )}

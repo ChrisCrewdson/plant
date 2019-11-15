@@ -19,7 +19,6 @@ export default function addLocationButton(props: AddPlantButtonProps) {
   }
 
   const size = mini ? 'small' : 'medium';
-  const iconStyle = { fontSize: '3em' };
 
   return (
     <Link to="/location">
@@ -28,7 +27,7 @@ export default function addLocationButton(props: AddPlantButtonProps) {
         size={size}
         style={style}
       >
-        <AddIcon style={iconStyle} />
+        <AddIcon />
       </Fab>
     </Link>
   );

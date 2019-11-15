@@ -108,8 +108,6 @@ export default class PlantItem extends React.PureComponent {
       </Link>
     );
 
-    const iconStyle = { fontSize: '3em' };
-
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {userCanEdit
@@ -120,7 +118,7 @@ export default class PlantItem extends React.PureComponent {
               onClick={this.createNote}
               title="Add Note"
             >
-              <AddIcon style={iconStyle} />
+              <AddIcon />
             </Fab>
           </div>
           )}
