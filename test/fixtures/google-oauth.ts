@@ -14,11 +14,13 @@ export const requests: Record<string, any> = {
       },
     },
     result: {
+      /* eslint-disable @typescript-eslint/camelcase */
       access_token: 'yy99.this-is-access-token',
       expires_in: 3600,
       id_token: 'a-very-long-id-token',
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me',
       token_type: 'Bearer',
+      /* eslint-enable @typescript-eslint/camelcase */
     },
   },
   'www.googleapis.com': {

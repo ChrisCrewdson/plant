@@ -28,12 +28,12 @@ export const noteApi = (app: Application) => {
   // Note CRUD operations
   // Note Upsert
   app.post('/api/note', requireToken, async (req, res) => {
-    const { logger } = req;
+    const { logger, body } = req;
     logger.trace({
       moduleName,
       method: 'POST /api/note',
       msg: 'upsertNote()',
-      req_body: req.body,
+      body,
     });
 
     let transformed: BizNoteNew;
@@ -41,7 +41,7 @@ export const noteApi = (app: Application) => {
       transformed = serverValidateNote(req);
     } catch (validateNoteError) {
       logger.error({
-        moduleName, msg: 'upsertNote /api/note noteValidator', err: validateNoteError, body: req.body,
+        moduleName, msg: 'upsertNote /api/note noteValidator', err: validateNoteError, body,
       });
       return res.status(400).send('Error validating note during upsert. Check logs.');
     }
@@ -252,19 +252,21 @@ export const noteApi = (app: Application) => {
    * Image Note
    */
   async function imageNote(req: Request, res: Response): Promise<Response> {
-    const { logger, user } = req;
+    const {
+      logger, user, body, files: requestFiles,
+    } = req;
     try {
     // req.body: {
     //   note: '{"date":"09/13/2016","note":"ggggg","plantIds":["57cf7efb7157df0000d81f14"],
     //   "userId":"57c74b40a901d8113f7db602","_id":"57d898a2d9ef2e000099f4da"}' }
-    // req.files: [
+    // requestFiles: [
     //   {fieldname: 'file', originalname: '2016-08-28 08.54.26.jpg', encoding: '7bit',
     //     mimetype: 'image/jpeg', buffer: ..., size: 3916869 },
     //   {fieldname: 'file', originalname: '57cf46f4b3deaa59f748927e.jpg', encoding: '7bit',
     //    mimetype: 'image/jpeg', buffer: ..., size: 2718943 }
     //   ]}
 
-      const multerFiles = _.isArray(req.files) ? req.files : [];
+      const multerFiles = _.isArray(requestFiles) ? requestFiles : [];
 
       // 1. Upsert note in db
       // 2. Push files to S3
@@ -272,8 +274,8 @@ export const noteApi = (app: Application) => {
         moduleName,
         msg: 'imageNote',
         user,
-        req_body: req.body,
-        req_files: multerFiles.map((file: any) => _.omit(file, ['buffer'])),
+        body,
+        requestFiles: multerFiles.map((file: any) => _.omit(file, ['buffer'])),
       });
       const userId = user?._id;
       if (!userId) {

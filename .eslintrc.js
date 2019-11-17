@@ -48,14 +48,13 @@ module.exports = {
     'security/detect-object-injection': 0,
     // These carried over from the plant-image-lambda project to accelerate
     // the linting
-    // TODO: Remove these one day
+    // TODO: Remove these one day https://github.com/guyellis/plant/issues/3144
     "@typescript-eslint/explicit-function-return-type": [0],
     "@typescript-eslint/no-var-requires": [0],
     '@typescript-eslint/no-empty-interface': [0],
     '@typescript-eslint/no-explicit-any': [0],
     '@typescript-eslint/class-name-casing': [0],
     '@typescript-eslint/ban-ts-ignore': [0],
-    '@typescript-eslint/camelcase': [0],
     'import/prefer-default-export': [0],
   },
   settings: {
