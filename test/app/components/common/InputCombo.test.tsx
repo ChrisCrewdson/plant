@@ -7,7 +7,6 @@ import { Dispatch } from 'redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import InputComboText from '../../../../app/components/common/InputComboText';
-import SelectCombo from '../../../../app/components/common/SelectCombo';
 import store from '../../../../app/store';
 import App from '../../../../app/components/App';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
@@ -36,31 +35,6 @@ describe('InputComboText and SelectCombo', () => {
                 id="test-id"
                 name="test-name"
                 placeholder="placeholder text"
-                value="test-value"
-              />
-            </MemoryRouter>
-          </App>
-        </Provider>
-      </MuiThemeProvider>);
-    const badgeTotals = component.toJSON();
-    expect(badgeTotals).toMatchSnapshot();
-  });
-
-  test('should render Select Input', () => {
-    const changeHandler = () => {};
-    const options = {
-      one: '1',
-      two: '2',
-    };
-    const component = renderer.create(
-      <MuiThemeProvider theme={theme}>
-        <Provider store={store}>
-          <App>
-            <MemoryRouter>
-              <SelectCombo
-                changeHandler={changeHandler}
-                id="test-id"
-                options={options}
                 value="test-value"
               />
             </MemoryRouter>

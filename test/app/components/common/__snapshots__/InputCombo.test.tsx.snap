@@ -1,58 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputComboText and SelectCombo should render Select Input 1`] = `
-<div
-  className="react-root"
->
-  <div
-    className="MuiInputBase-root MuiInput-root MuiInput-underline"
-    onClick={[Function]}
-    style={
-      Object {
-        "marginLeft": 20,
-      }
-    }
-  >
-    <div
-      aria-haspopup="listbox"
-      aria-labelledby=" test-id"
-      className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input MuiInputBase-inputSelect"
-      id="test-id"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      tabIndex={0}
-    >
-      <span
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "&#8203;",
-          }
-        }
-      />
-    </div>
-    <input
-      onAnimationStart={[Function]}
-      type="hidden"
-      value="test-value"
-    />
-    <svg
-      aria-hidden="true"
-      className="MuiSvgIcon-root MuiSelect-icon"
-      focusable="false"
-      role="presentation"
-      viewBox="0 0 24 24"
-    >
-      <path
-        d="M7 10l5 5 5-5z"
-      />
-    </svg>
-  </div>
-</div>
-`;
-
 exports[`InputComboText and SelectCombo should render Text Input 1`] = `
 <div
   className="react-root"

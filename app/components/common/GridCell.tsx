@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Switch from '@material-ui/core/Switch';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 import InputCombo from './InputCombo';
 import InputComboText from './InputComboText';
-import SelectCombo from './SelectCombo';
 
 export type GridCellInputType = 'select' | 'boolean' | 'text';
 
@@ -56,7 +57,8 @@ export default class GridCell extends React.Component {
   /**
    * Change Handler for Select
    */
-  onChangeSelect(val: string) {
+  onChangeSelect(event: React.ChangeEvent<{ value: unknown }>) {
+    const val = event.target.value as string;
     const {
       editCell, rowId, index,
     } = this.props;
@@ -86,17 +88,25 @@ export default class GridCell extends React.Component {
     // If we're in edit mode for this cell then return an edit component
     // Edit mode is defined as the condition below
     if (editId === rowId) {
-      if (type === 'select') {
+      if (type === 'select' && options) {
         return (
-          <SelectCombo
-            changeHandler={this.onChangeSelect}
-            error={error}
+          <Select
             id={htmlId}
-            options={options}
-            placeholder={title}
-            style={{}}
             value={value}
-          />
+            onChange={this.onChangeSelect}
+            style={{ marginLeft: 20 }}
+          >
+            {
+            Object.keys(options).map((key) => (
+              <MenuItem
+                key={key}
+                value={key}
+              >
+                {options[key]}
+              </MenuItem>
+            ))
+          }
+          </Select>
         );
       }
       if (type === 'text' && typeof value === 'string') {

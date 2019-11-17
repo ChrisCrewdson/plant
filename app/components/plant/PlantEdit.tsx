@@ -14,12 +14,13 @@ import { History } from 'history';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 import PlantEditTerminated from './PlantEditTerminated';
 import utils from '../../libs/utils';
 import CancelSaveButtons from '../common/CancelSaveButtons';
 import InputComboText from '../common/InputComboText';
-import SelectCombo from '../common/SelectCombo';
 import { actionFunc } from '../../actions';
 import * as validators from '../../models';
 
@@ -101,7 +102,8 @@ class PlantEdit extends React.Component {
    * its value
    * @param locationId - MongoId of new value
    */
-  onChangeLocation(locationId: string) {
+  onChangeLocation(event: React.ChangeEvent<{ value: unknown }>) {
+    const locationId = event.target.value as string;
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
       locationId,
@@ -250,16 +252,23 @@ class PlantEdit extends React.Component {
           value={title}
         />
 
-        <SelectCombo
-          changeHandler={this.onChangeLocation}
-          error={errors.locationId}
+        <Select
           id="location"
-          label="Location"
-          options={locationIdTitleMap}
-          placeholder="Which location is this at?"
-          style={{ textAlign: 'left', width: '100%' }}
+          onChange={this.onChangeLocation}
+          style={{ textAlign: 'left', width: '100%', marginLeft: 20 }}
           value={locationId}
-        />
+        >
+          {
+          Object.keys(locationIdTitleMap).map((key) => (
+            <MenuItem
+              key={key}
+              value={key}
+            >
+              {locationIdTitleMap[key]}
+            </MenuItem>
+          ))
+        }
+        </Select>
 
         <InputComboText
           changeHandler={this.onChange}
