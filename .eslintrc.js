@@ -37,9 +37,6 @@ module.exports = {
       'ignorePropertyModificationsFor': ['draft']
     }],
     'no-shadow': [2, {'allow': ['Location']}],
-    'no-restricted-globals': 0, // Bug with tsc 3.7 null chaining and coalescing
-    'no-undef': 0, // Bug with tsc 3.7 null chaining and coalescing
-    '@typescript-eslint/no-use-before-define': 0, // Bug with tsc 3.7 null chaining and coalescing
     'no-underscore-dangle': 0,
     'react/jsx-curly-brace-presence': 0, // TODO: Enable this once 2883 conversion done
     'react/jsx-filename-extension': 0,
@@ -48,7 +45,7 @@ module.exports = {
     'security/detect-object-injection': 0,
     // These carried over from the plant-image-lambda project to accelerate
     // the linting
-    // TODO: Remove these one day https://github.com/guyellis/plant/issues/3144
+    // TODO: Remove these https://github.com/guyellis/plant/issues/3144
     "@typescript-eslint/explicit-function-return-type": [0],
     "@typescript-eslint/no-var-requires": [0],
     '@typescript-eslint/no-empty-interface': [0],
