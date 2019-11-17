@@ -15,14 +15,14 @@ import { serverServer } from '../lib/server';
 
 export { theme } from '../app/libs/style-helper';
 
-type ServerFunc = (port?: number, mongoConnection?: string) => Promise<import('net').Server>;
+type ServerFunc = (port?: number, mongoConnection?: string) => Promise<Server>;
 
 interface HelperData {
   port?: number;
   userId?: string;
   user?: any; // TODO: Change this to the interface that the DB returns
   server?: ServerFunc;
-  app?: import('net').Server;
+  app?: Server;
 }
 
 /**
