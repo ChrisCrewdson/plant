@@ -11,14 +11,14 @@ import { renderArticle as article } from '../render/article';
 /**
  * static index
  */
-function staticIndex(title: string, req: Request, res: Response) {
+function staticIndex(title: string, req: Request, res: Response): void {
   res.send(indexHtml({ title, req }, false));
 }
 
 /**
  * api note routes
  */
-function client(app: Application) {
+function client(app: Application): void {
   const clientRoutes = [
     { route: '/', title: 'Plaaant' },
     { route: '/help', title: 'Plaaant Help' },
@@ -41,7 +41,7 @@ function client(app: Application) {
 /**
  * api note routes
  */
-function server(app: Application) {
+function server(app: Application): void {
   app.get('/plant/:slug/:id', plant);
   app.get('/article/:slug/:id', article);
 }
@@ -49,7 +49,7 @@ function server(app: Application) {
 /**
  * api note routes
  */
-export const clientServerApi = (app: Application) => {
+export const clientServerApi = (app: Application): void => {
   client(app);
   server(app);
 };

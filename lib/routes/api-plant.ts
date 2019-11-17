@@ -13,7 +13,7 @@ const moduleName = 'routes/api-plant';
 /**
  * api plant routes
  */
-export const plantApi = (app: Application) => {
+export const plantApi = (app: Application): void => {
   // Plant CRUD operations
   // Plant Create
   app.post('/api/plant', requireToken, async (req, res) => {

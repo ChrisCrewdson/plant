@@ -8,7 +8,7 @@ const moduleName = 'routes/api-plants';
 /**
  * api note routes
  */
-export const plantsApi = (app: Application) => {
+export const plantsApi = (app: Application): void => {
   /**
    * An anonymous request for all plants at a given location.
    */

@@ -16,6 +16,12 @@ module.exports = {
     //       Because: We don't want NodeJS types used in the React client side code.
     NodeJS: "readonly",
   },
+  overrides: [{
+    files: ['test/**/*.ts', 'test/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': 0,
+    },
+  }],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   parserOptions:  {
     ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features

@@ -9,7 +9,7 @@ const moduleName = 'routes/api-user';
 /**
  * api note routes
  */
-export const userApi = (app: Application) => {
+export const userApi = (app: Application): void => {
   app.get('/api/logout', (req, res) => {
     const { logger } = req;
     logger.trace({ moduleName, method: 'GET /api/logout' });

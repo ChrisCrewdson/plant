@@ -86,13 +86,14 @@ interface UiActionsAcc {
  * the payload and type as an object
  * @param type - The type of the action - element from actionList array
  */
-const createMethod = (type: UiActionType): ActionMethod => (payload) => ({ type, payload });
+const createMethod = (
+  type: UiActionType): ActionMethod => (payload): PlantAction => ({ type, payload });
 
 /**
  * Change a string into proper case
  * @param text - a string to turn into proper case.
  */
-const properCase = (text: string) => text[0].toUpperCase() + text.slice(1).toLowerCase();
+const properCase = (text: string): string => text[0].toUpperCase() + text.slice(1).toLowerCase();
 
 const actions = actionList.reduce(
   (acc: UiActionsAcc, action: UiActionType) => {

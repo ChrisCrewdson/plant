@@ -17,7 +17,7 @@ const shortMap: Record<string, string> = {
 /**
  * Short Url alias for location - start off with hard coding a single one
  */
-const shortUrl = (app: Application) => {
+const shortUrl = (app: Application): void => {
   // The 's' is for short.
   // Idea will be to allow people to add their own short url at some point
   // in the future and this will be a unique field in the location collection

@@ -118,7 +118,7 @@ Promise<Server> => {
     /**
      * Error handler
      */
-    const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
       const { logger = localLogger } = req;
       logger.error({
         msg: 'Uncaught App Error', err, req, res,
@@ -134,11 +134,7 @@ Promise<Server> => {
       /**
        * Server callback
        */
-      const serverCallback = () => {
-        // if (err) {
-        //   localLogger.fatal({ msg: 'Error in server.listen', err });
-        //   return reject(err);
-        // }
+      const serverCallback = (): void => {
         localLogger.info({
           msg: 'Express server started and listening',
           port,

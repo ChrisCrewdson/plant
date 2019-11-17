@@ -10,7 +10,7 @@ const mongo = getDbInstance;
 /**
  * Build the XML for RSS
  */
-function buildXml(notes: DbNoteWithPlants[], httpHost: string) {
+function buildXml(notes: DbNoteWithPlants[], httpHost: string): string {
   const notesXml = notes.map((currNote) => {
     // If multiple plants, just list the name of the first one
     const title = (currNote.plants[0] && currNote.plants[0].title) || '(none)';
@@ -44,7 +44,7 @@ function buildXml(notes: DbNoteWithPlants[], httpHost: string) {
     /**
      * Create an image tag for RSS items
      */
-    const makeImageTag = (img: NoteImage) => `<img src="https://i.plaaant.com/up/orig/${img.id}.${img.ext}" \
+    const makeImageTag = (img: NoteImage): string => `<img src="https://i.plaaant.com/up/orig/${img.id}.${img.ext}" \
 style="max-width: 100%" />`;
     const images = noteImages.map(makeImageTag).join('');
 
@@ -77,7 +77,7 @@ style="max-width: 100%" />`;
 /**
  * Short Url alias for location - start off with hard coding a single one
  */
-export const rss = (app: Application) => {
+export const rss = (app: Application): void => {
   // Set up the RSS route
   app.get('/rss', async (req, res) => {
     const { logger } = req;

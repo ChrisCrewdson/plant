@@ -24,7 +24,7 @@ const moduleName = 'routes/api-note';
 /**
  * api note routes
  */
-export const noteApi = (app: Application) => {
+export const noteApi = (app: Application): void => {
   // Note CRUD operations
   // Note Upsert
   app.post('/api/note', requireToken, async (req, res) => {
@@ -68,9 +68,9 @@ export const noteApi = (app: Application) => {
     /**
      * Send the notes to the client
      */
-    const okay = (notes?: ReadonlyArray<BizNote>) => {
+    const okay = (notes?: ReadonlyArray<BizNote>): void => {
       logger.trace({ moduleName, msg: 'responding with notes:', notes });
-      return res.send(notes || []);
+      res.send(notes || []);
     };
 
     if (plantIds?.length) {
@@ -181,7 +181,7 @@ export const noteApi = (app: Application) => {
   /**
    * Not sure what this does...
    */
-  function fileFilter(req: Express.Request, file: Express.Multer.File, cb: Function) {
+  function fileFilter(req: Express.Request, file: Express.Multer.File, cb: Function): void {
     const { logger } = req;
     const acceptFile = (file.mimetype || '').toLowerCase().startsWith('image/');
     if (!acceptFile) {
