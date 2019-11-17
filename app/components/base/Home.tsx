@@ -50,12 +50,12 @@ export default class Home extends React.Component {
       <div id="hero">
         <section>
           <p>
-            {'Improve the health of your trees and plants...'}
+            Improve the health of your trees and plants...
           </p>
         </section>
         <section>
           <p>
-            {'...measure, compare, and share your awesomeness...'}
+            ...measure, compare, and share your awesomeness...
           </p>
         </section>
         {existingUsers
@@ -64,7 +64,7 @@ export default class Home extends React.Component {
             <Link
               to="/users"
             >
-              {'...explore Farmers and Gardeners...'}
+              ...explore Farmers and Gardeners...
             </Link>
           </section>
           )}
@@ -74,7 +74,7 @@ export default class Home extends React.Component {
             <Link
               to="/locations"
             >
-              {'...explore Orchards, Gardens, Yards and Farms...'}
+              ...explore Orchards, Gardens, Yards and Farms...
             </Link>
           </section>
           )}

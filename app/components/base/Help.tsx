@@ -10,14 +10,14 @@ export default function help() {
 Need Help?
         </h3>
         <p>
-          {'Please ask your questions on '}
+          Please ask your questions on
           <a
             target="_blank"
             href="https://www.facebook.com/groups/fruit.trees.anonymous/"
           >
-            {'Fruit Trees Anonymous'}
+            Fruit Trees Anonymous
           </a>
-          {'.'}
+          .
         </p>
       </div>
     </Base>

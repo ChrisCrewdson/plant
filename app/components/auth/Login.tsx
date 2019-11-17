@@ -8,14 +8,14 @@ export default function login() {
     <Base>
       <div id="hero">
         <div className="home-subheader">
-          {'By logging in or using the site you agree to our '}
+          By logging in or using the site you agree to our
           <a
             href="/terms"
             target="_blank"
           >
-            {'terms & conditions'}
+            terms &amp; conditions
           </a>
-          {'.'}
+          .
         </div>
         <div className="home-subheader">
           <a href="/auth/facebook">
@@ -35,7 +35,7 @@ export default function login() {
           && (
           <div className="home-subheader">
             <a href="/auth/dev">
-              {'Developer Login'}
+              Developer Login
             </a>
           </div>
           )}

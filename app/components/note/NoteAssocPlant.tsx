@@ -167,7 +167,7 @@ export default class NoteAssocPlant extends React.Component {
       <div style={{ textAlign: 'left' }}>
         <Errors errors={errors} />
         <div>
-          {'Associated plants:'}
+          Associated plants:
           {filterInput}
           {checkedPlants}
           {uncheckedPlants}

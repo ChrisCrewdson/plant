@@ -101,7 +101,7 @@ class Plants extends React.Component {
   render() {
     return (
       <div>
-        {'Working on redirecting you to the right place...'}
+        Working on redirecting you to the right place...
       </div>
     );
   }
