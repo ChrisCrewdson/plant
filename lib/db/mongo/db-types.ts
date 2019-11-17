@@ -1,5 +1,31 @@
-import { FacebookOAuthJson } from '../../auth/passport-facebook';
-import { GoogleOAuthJson } from '../../auth/passport-google';
+
+interface GoogleOAuthJson {
+  id: string;
+}
+
+export interface GoogleOAuth {
+  _json: GoogleOAuthJson;
+  displayName: string;
+  /**
+   * Objects look like: { value: string ==> email address }
+   */
+  emails: object[];
+}
+
+interface FacebookOAuthJson {
+  emails: string[]|string;
+  id: string;
+}
+
+interface FacebookOAuthName {
+  givenName: string;
+  familyName: string;
+}
+
+export interface FacebookOAuth {
+  _json: FacebookOAuthJson;
+  name: FacebookOAuthName;
+}
 
 // Generic definitions that apply to multiple models.
 // For specific models see the model-<name>.d.ts file.

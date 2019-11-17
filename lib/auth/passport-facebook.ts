@@ -7,7 +7,7 @@ import fb from '@passport-next/passport-facebook';
 import { getDbInstance } from '../db/mongo';
 
 import { SERVICE_NAME } from '../../app/libs/constants';
-import { UserDetails } from '../db/mongo/db-types';
+import { UserDetails, FacebookOAuth } from '../db/mongo/db-types';
 
 const FacebookStrategy = fb.Strategy;
 
@@ -33,21 +33,6 @@ const profileFields = [
   'updated_time',
   'verified',
 ];
-
-export interface FacebookOAuthJson {
-  emails: string[]|string;
-  id: string;
-}
-
-interface FacebookOAuthName {
-  givenName: string;
-  familyName: string;
-}
-
-interface FacebookOAuth {
-  _json: FacebookOAuthJson;
-  name: FacebookOAuthName;
-}
 
 export function fbPassport(passport: { use: Function}) {
   const { PLANT_FB_ID, PLANT_FB_SECRET } = process.env;

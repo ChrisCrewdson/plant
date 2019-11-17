@@ -1,4 +1,3 @@
-import { UploadedNoteFile } from './routes/api-note';
 
 const firstDirectory = process.env.NODE_ENV === 'production' ? 'up' : 'test';
 

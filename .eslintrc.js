@@ -56,16 +56,20 @@ module.exports = {
     '@typescript-eslint/class-name-casing': [0],
     '@typescript-eslint/ban-ts-ignore': [0],
     '@typescript-eslint/camelcase': [0],
-    'import/no-unresolved': [0],
     'import/prefer-default-export': [0],
   },
-  // settings: {
-  //   "import/parsers": {
-  //     "@typescript-eslint/parser": [".ts", ".tsx", ".js", ".jsx"]
-  //   },
-  //   "import/resolver": {
-  //     // use <root>/tsconfig.json
-  //     typescript: {}
-  //   }
-  // }
+  settings: {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      // use <root>/tsconfig.json
+      typescript: {
+        // always try to resolve types under `<roo/>@types`
+        // directory even it doesn't contain any source code,
+        // like `@types/unist`
+        "alwaysTryTypes": true
+      },
+    },
+  },
 }

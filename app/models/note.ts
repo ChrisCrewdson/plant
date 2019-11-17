@@ -4,7 +4,6 @@ import isArray from 'lodash/isArray';
 import validatejs from 'validate.js';
 import utils from '../libs/utils';
 import * as constants from '../libs/constants';
-import { UploadedNoteFile } from '../../lib/routes/api-note';
 
 const { makeMongoId } = utils;
 
@@ -57,7 +56,7 @@ function transform(attributes: object) {
 /**
  * Validate the parts of the images array
  */
-validatejs.validators.imagesValidate = (value: UploadedNoteFile[]): string | null => {
+validatejs.validators.imagesValidate = (value?: UploadedNoteFile[]): string | null => {
   if (!value) {
     // images is optional so return if not exist
     return null;

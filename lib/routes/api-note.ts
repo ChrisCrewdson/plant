@@ -21,36 +21,6 @@ const mongo = getDbInstance();
 
 const moduleName = 'routes/api-note';
 
-// const { note: noteValidator } = validators;
-
-interface AwsKey {
-  Key: string;
-}
-
-interface UploadFile {
-  multerFile: Express.Multer.File;
-  noteFile: NoteImage;
-}
-
-interface UploadFileData {
-  files: DerivedMulterFile[];
-  noteid: string;
-  userid: string;
-}
-
-export interface UploadedNoteFile {
-  id: string;
-  ext: string;
-  originalname: string;
-  size: number;
-  sizes?: NoteImageSize[];
-}
-
-interface DerivedMulterFile {
-  multerFile: Express.Multer.File;
-  noteFile: UploadedNoteFile;
-}
-
 /**
  * api note routes
  */
