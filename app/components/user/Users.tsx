@@ -9,10 +9,6 @@ import Base from '../base/Base';
 
 const { makeSlug } = utils;
 
-interface UsersProps {
-
-}
-
 export default class Users extends React.Component {
   // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
   context!: PlantContext;
@@ -22,7 +18,7 @@ export default class Users extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor(props: UsersProps) {
+  constructor(props: {}) {
     super(props);
     this.onChange = this.onChange.bind(this);
   }

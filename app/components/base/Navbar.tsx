@@ -7,10 +7,6 @@ import utils from '../../libs/utils';
 import { isLoggedIn } from '../../libs/auth-helper';
 import AddPlantButton from '../common/AddPlantButton';
 
-interface NavbarProps {
-
-}
-
 interface NavbarState {
   user: UiUser;
   interimMap: UiInterim;
@@ -30,7 +26,7 @@ export default class Navbar extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  constructor(props: NavbarProps) {
+  constructor(props: {}) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.logout = this.logout.bind(this);

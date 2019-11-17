@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { actionEnum } from '../actions';
 
 import { initialState } from '../store/user';
-import { PlantAction, LoadLocationsSuccessAction, ChangeActiveLocationIdPayload } from '../../lib/types/redux-payloads';
+import { PlantAction, ChangeActiveLocationIdPayload } from '../../lib/types/redux-payloads';
 
 type RoUiUser = Readonly<UiUser>;
 
@@ -31,7 +31,7 @@ function logoutFailure(state: RoUiUser): RoUiUser {
  * Load Location Success is called after a response from server.
  */
 function loadLocationsSuccess(state: RoUiUser,
-  action: LoadLocationsSuccessAction): RoUiUser {
+  action: PlantAction<UiLocationsValue[]>): RoUiUser {
   // const { payload: locations = [] } = action;
   const { payload: locations } = action;
   if (state.isLoggedIn && !state.activeLocationId) {

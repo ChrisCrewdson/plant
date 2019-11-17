@@ -27,6 +27,7 @@ interface BizLocation extends Omit<DbLocation, '_id' | 'createdBy'> {
   plantIds?: string[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface BizLocationNew extends Omit<BizLocation, '_id'> {}
 
 interface UiLocationsValue extends BizLocation {

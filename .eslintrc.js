@@ -48,7 +48,6 @@ module.exports = {
     // TODO: Remove these https://github.com/guyellis/plant/issues/3144
     "@typescript-eslint/explicit-function-return-type": [0],
     "@typescript-eslint/no-var-requires": [0],
-    '@typescript-eslint/no-empty-interface': [0],
     '@typescript-eslint/no-explicit-any': [0],
     '@typescript-eslint/class-name-casing': [0],
     '@typescript-eslint/ban-ts-ignore': [0],
