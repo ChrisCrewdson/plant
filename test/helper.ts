@@ -124,9 +124,7 @@ export async function startServerAuthenticated(): Promise<HelperData> {
 
   function startServer(app?: Server, server?: ServerFunc): Promise<Server> {
     if (app) {
-      // @ts-ignore - [ts] Type 'Server' is missing the following properties from type
-      // 'Promise<Server>': then, catch, [Symbol.toStringTag], finally [2739]
-      return app;
+      return Promise.resolve(app);
     }
     return server!(port); // eslint-disable-line @typescript-eslint/no-non-null-assertion
   }

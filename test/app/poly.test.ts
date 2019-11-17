@@ -8,13 +8,13 @@ describe('/app/poly', () => {
     document.createElement = () => docElement;
 
     const headAppendChild = document.head.appendChild;
-    // @ts-ignore - faking for testing
-    document.head.appendChild = () => {
+    document.head.appendChild = (() => {
       // At this point the target code will have added the onload
       // prop to the document element.
-      // @ts-ignore - faking for testing
-      docElement.onload();
-    };
+      if (docElement && docElement.onload) {
+        docElement.onload({} as Event);
+      }
+    }) as (newChild: any) => any;
 
     // Run test
     poly((error: any) => {
