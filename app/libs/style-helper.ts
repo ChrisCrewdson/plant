@@ -9,9 +9,6 @@ export const theme = createMuiTheme({
     secondary: deepOrange,
   },
   overrides: {
-    MuiFab: {
-      primary: { color: 'white' },
-    },
     MuiButton: {
       textPrimary: {
         // color: 'white',
@@ -24,9 +21,22 @@ export const theme = createMuiTheme({
       },
       // primary: { color: 'white' },
     },
+    MuiFormControlLabel: {
+      label: {
+        fontSize: '1em',
+      },
+    },
+    MuiFab: {
+      primary: { color: 'white' },
+    },
+    MuiSelect: {
+      root: {
+        fontSize: '2em',
+      },
+    },
     MuiSvgIcon: {
       root: {
-        fontSize: '3em',
+        fontSize: '2em',
       },
     },
   },

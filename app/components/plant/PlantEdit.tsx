@@ -11,7 +11,6 @@ import { produce } from 'immer';
 import { Dispatch } from 'redux';
 import { History } from 'history';
 
-import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
@@ -250,7 +249,6 @@ class PlantEdit extends React.Component {
           placeholder="How do you refer to this plant? (e.g. Washington Navel)"
           value={title}
         />
-        <Divider />
 
         <SelectCombo
           changeHandler={this.onChangeLocation}
@@ -262,7 +260,6 @@ class PlantEdit extends React.Component {
           style={{ textAlign: 'left', width: '100%' }}
           value={locationId}
         />
-        <Divider />
 
         <InputComboText
           changeHandler={this.onChange}
@@ -273,7 +270,6 @@ class PlantEdit extends React.Component {
           placeholder="e.g. Citrus sinensis \'Washington Navel\'"
           value={botanicalName}
         />
-        <Divider />
 
         <InputComboText
           changeHandler={this.onChange}
@@ -284,7 +280,6 @@ class PlantEdit extends React.Component {
           placeholder="e.g. Washington Navel Orange"
           value={commonName}
         />
-        <Divider />
 
         <InputComboText
           changeHandler={this.onChange}
@@ -297,7 +292,6 @@ class PlantEdit extends React.Component {
           style={textAreaStyle}
           value={description}
         />
-        <Divider />
 
         <InputComboText
           changeHandler={this.onChange}
@@ -308,7 +302,6 @@ class PlantEdit extends React.Component {
           placeholder={dateFormat}
           value={purchasedDate}
         />
-        <Divider />
 
         <InputComboText
           changeHandler={this.onChange}
@@ -319,7 +312,6 @@ class PlantEdit extends React.Component {
           placeholder={dateFormat}
           value={plantedDate}
         />
-        <Divider />
 
         <InputComboText
           changeHandler={this.onChange}
@@ -331,7 +323,6 @@ class PlantEdit extends React.Component {
           type="number"
           value={price}
         />
-        <Divider />
 
         <PlantEditTerminated
           dispatch={dispatch}
@@ -357,7 +348,6 @@ class PlantEdit extends React.Component {
               placeholder="Location of this plant"
               value={geoPosDisplay}
             />
-            <Divider />
           </div>
           )}
 
@@ -368,7 +358,6 @@ class PlantEdit extends React.Component {
 There were errors. Please check your input.
             </p>
             {errorDivs}
-            <Divider />
           </div>
           )}
 

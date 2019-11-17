@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable security/detect-unsafe-regex */
+
 const path = require('path');
 const webpack = require('webpack');
 
 const { TARGET } = process.env;
 const ROOT_PATH = path.resolve(__dirname);
 
-/* eslint-disable security/detect-unsafe-regex */
 
 /**
  * @type {import('webpack').Configuration}
@@ -172,5 +173,6 @@ if (TARGET === 'dev') {
 }
 
 /* eslint-enable security/detect-unsafe-regex */
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 module.exports = common;

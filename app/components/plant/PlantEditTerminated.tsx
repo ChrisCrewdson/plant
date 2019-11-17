@@ -74,11 +74,7 @@ export default class PlantEditTerminated extends React.Component {
     const styles = {
       radioGroup: {
         display: 'flex',
-      },
-      radioButton: {
-        marginBottom: 16,
-        width: 'inherit',
-        fontSize: 'large',
+        marginLeft: '20px',
       },
     };
 
@@ -131,20 +127,17 @@ export default class PlantEditTerminated extends React.Component {
               <FormControlLabel
                 control={<Radio />}
                 label="Culled"
-                style={styles.radioButton}
                 value="culled"
               />
               <FormControlLabel
                 control={<Radio />}
                 label="Died"
-                style={styles.radioButton}
                 value="died"
 
               />
               <FormControlLabel
                 control={<Radio />}
                 label="Transferred"
-                style={styles.radioButton}
                 value="transferred"
               />
             </RadioGroup>

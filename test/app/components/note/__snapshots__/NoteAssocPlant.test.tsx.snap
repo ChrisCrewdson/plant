@@ -17,7 +17,9 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
         className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
         style={
           Object {
+            "marginBottom": 20,
             "marginLeft": 20,
+            "marginRight": 20,
           }
         }
       >
@@ -28,7 +30,7 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
           id="note-assoc-plant-filter-label"
           style={
             Object {
-              "fontSize": "14px",
+              "fontSize": "1.5em",
             }
           }
         >
@@ -39,7 +41,7 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
           onClick={[Function]}
           style={
             Object {
-              "fontSize": "14px",
+              "fontSize": "1.5em",
             }
           }
         >

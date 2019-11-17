@@ -114,8 +114,9 @@ export default class PlantItem extends React.PureComponent {
           && (
           <div style={floatingActionButtonStyle}>
             <Fab
-              size="medium"
+              color="primary"
               onClick={this.createNote}
+              size="medium"
               title="Add Note"
             >
               <AddIcon />

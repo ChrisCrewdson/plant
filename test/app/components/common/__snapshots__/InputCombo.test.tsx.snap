@@ -61,7 +61,9 @@ exports[`InputComboText and SelectCombo should render Text Input 1`] = `
     className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
     style={
       Object {
+        "marginBottom": 20,
         "marginLeft": 20,
+        "marginRight": 20,
       }
     }
   >
@@ -71,7 +73,7 @@ exports[`InputComboText and SelectCombo should render Text Input 1`] = `
       onClick={[Function]}
       style={
         Object {
-          "fontSize": "14px",
+          "fontSize": "1.5em",
         }
       }
     >

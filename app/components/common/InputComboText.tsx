@@ -51,8 +51,10 @@ export default function inputComboText(props: InputComboTextProps) {
     changeHandler(e.target.name, e.target.value);
   };
 
-  const fontSize = '14px';
-  const styler = { marginLeft: 20, ...style };
+  const fontSize = '1.5em';
+  const styler = {
+    marginLeft: 20, marginRight: 20, marginBottom: 20, ...style,
+  };
   const error = !!errorText;
 
   // These "sub" styles are for the sub-components that are wrapped
