@@ -45,6 +45,7 @@ exports[`NoteAssocPlant NoteAssocPlant should be rendered 1`] = `
         >
           <input
             aria-invalid={false}
+            autoFocus={false}
             className="MuiInputBase-input MuiInput-input"
             disabled={false}
             id="note-assoc-plant-filter"

@@ -44,6 +44,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         >
           <input
             aria-invalid={false}
+            autoFocus={false}
             className="MuiInputBase-input MuiInput-input"
             disabled={false}
             id="height"
@@ -92,6 +93,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         >
           <input
             aria-invalid={false}
+            autoFocus={false}
             className="MuiInputBase-input MuiInput-input"
             disabled={false}
             id="girth"
@@ -140,6 +142,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         >
           <input
             aria-invalid={false}
+            autoFocus={false}
             className="MuiInputBase-input MuiInput-input"
             disabled={false}
             id="harvestCount"
@@ -188,6 +191,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
         >
           <input
             aria-invalid={false}
+            autoFocus={false}
             className="MuiInputBase-input MuiInput-input"
             disabled={false}
             id="harvestWeight"
@@ -243,6 +247,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="firstBlossom"
                 onChange={[Function]}
                 type="checkbox"
@@ -304,6 +309,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="lastBlossom"
                 onChange={[Function]}
                 type="checkbox"
@@ -365,6 +371,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="firstBud"
                 onChange={[Function]}
                 type="checkbox"
@@ -426,6 +433,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="harvestStart"
                 onChange={[Function]}
                 type="checkbox"
@@ -487,6 +495,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="harvestEnd"
                 onChange={[Function]}
                 type="checkbox"
@@ -548,6 +557,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="leafShedStart"
                 onChange={[Function]}
                 type="checkbox"
@@ -609,6 +619,7 @@ exports[`NoteEditMetrics should render NoteEditMetrics 1`] = `
               <input
                 checked={false}
                 className="PrivateSwitchBase-input-81 MuiSwitch-input"
+                disabled={false}
                 name="leafShedEnd"
                 onChange={[Function]}
                 type="checkbox"
