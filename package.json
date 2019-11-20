@@ -80,7 +80,7 @@
     "@types/node": "12.12.9",
     "@types/node-fetch": "2.5.3",
     "@types/oauth": "0.9.1",
-    "@types/prettier": "1.18.3",
+    "@types/prettier": "1.18.4",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.4",
     "@types/react-redux": "7.1.5",
