@@ -424,7 +424,7 @@ function rebaseLocations(plants: BizPlant[]): BizPlant[] {
 
 const metaMetricsRaw: MetaMetric[] = [{
   key: 'height',
-  label: 'Height (inches only)', // For InputCombo
+  label: 'Height (inches only)', // For Input Component Text
   placeholder: 'Enter height of plant', // Input hint
   type: 'length',
 }, {

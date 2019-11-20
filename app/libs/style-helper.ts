@@ -36,7 +36,7 @@ export const theme = createMuiTheme({
     },
     MuiSvgIcon: {
       root: {
-        fontSize: '2em',
+        fontSize: '3em',
       },
     },
   },

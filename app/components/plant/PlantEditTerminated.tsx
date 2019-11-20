@@ -54,7 +54,7 @@ export default class PlantEditTerminated extends React.Component {
   }
 
   /**
-   * Change Handler for InputCombo
+   * Change Handler for InputComboText
    */
   onChange(name: string, value: string): void {
     this.dispatchChange(name, value);
