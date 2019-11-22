@@ -1,18 +1,11 @@
 {
   "version": "0.2.0",
-  "configurations": [{
+  "configurations": [
+    {
       "name": "Server",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/server.js",
-      "stopOnEntry": false,
-      "args": [],
-      "cwd": "${workspaceRoot}",
-      "preLaunchTask": null,
-      "runtimeExecutable": null,
-      "runtimeArgs": [
-        "--nolazy"
-      ],
+      "runtimeArgs": ["--inspect-brk", "dist/server.js"],
       "env": {
         "LALOG_LEVEL": "trace",
         "NODE_ENV": "development",
@@ -20,9 +13,12 @@
         "PLANT_DB_URL": "127.0.0.1:27017",
         "PLANT_FB_ID": "facebook-app-id",
         "PLANT_FB_SECRET": "facebook-app-secret",
-        "PLANT_TOKEN_SECRET": "json-web-token-secret"
+        "PLANT_TOKEN_SECRET": "json-web-token-secret",
       },
-      "console": "internalConsole",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "preLaunchTask": "build",
       "sourceMaps": true
     }, {
       "name": "TestPad",
