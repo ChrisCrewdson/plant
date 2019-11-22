@@ -107,7 +107,7 @@
     "jest": "24.9.0",
     "jest-circus": "24.9.0",
     "node-fetch": "2.6.0",
-    "nodemon": "2.0.0",
+    "nodemon": "2.0.1",
     "oauth": "0.9.15",
     "pre-commit": "1.2.2",
     "prettier": "1.19.1",
