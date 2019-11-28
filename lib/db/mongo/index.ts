@@ -146,7 +146,7 @@ export class MongoDb {
         }
         const parts = connection.split('/');
         this.db = this.client.db(parts.pop());
-        logger.timeEnd('connect-to-mongo', {
+        logger.timeEnd('connect-to-mongo', 'info', {
           moduleName,
           msg: 'Connection to MongoDB complete',
           connection,

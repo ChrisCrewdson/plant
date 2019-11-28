@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Logger from 'lalog';
+import Logger, { LogFunction, TimeLogFunction, LevelType } from 'lalog';
 
 export const mockLogger: Logger = {
   trace: jest.fn(),
@@ -31,7 +31,7 @@ jest.mock('lalog', () => ({
   getLevel: () => 'info',
 }));
 
-const loggerMockFunction = (errObj?: object, extra?: object) => {
+const loggerMockFunction: LogFunction = (errObj?: object, extra?: object): Promise<any> => {
   if (!_.isObject(errObj)) {
     throw new Error(`First param to lalog logger method is not an object: ${typeof errObj}`);
   }
@@ -39,31 +39,26 @@ const loggerMockFunction = (errObj?: object, extra?: object) => {
     const { res, code } = extra as { res: any; code: string };
     res.status(code).send({ one: 1 });
   }
+  return Promise.resolve();
 };
 
-const loggerTimeEndMockFunction = (label: string, extraLogData?: object) => {
+const loggerTimeEndMockFunction: TimeLogFunction = (
+  label: string, level?: LevelType, extraLogData?: object,
+): Promise<any> => {
   if (typeof label !== 'string') {
-    throw new Error(`First param to lalog timeEnd method is not an string: ${typeof label}`);
+    throw new Error(`1st param to lalog timeEnd method is not an string: ${typeof label}`);
+  }
+  if (level && typeof level !== 'string') {
+    throw new Error(`2nd param to lalog timeEnd method is not an string: ${typeof level}`);
   }
   if (extraLogData && !isObject(extraLogData)) {
-    throw new Error(`Second param to lalog timeEnd method is not an object: ${typeof extraLogData}`);
+    throw new Error(`3rd param to lalog timeEnd method is not an object: ${typeof extraLogData}`);
   }
   if (extraLogData) {
-    loggerMockFunction(extraLogData);
+    return loggerMockFunction(extraLogData);
   }
+  return Promise.resolve();
 };
-
-type LogFunction = (logData: any, response?: any) => Promise<any>;
-declare type TimeLogFunction = (label: string, extraLogDat?: any) => Promise<any>;
-interface TimeEndLog {
-  (label: string, extraLogDat?: any): Promise<any>;
-  trace?: TimeLogFunction;
-  info?: TimeLogFunction;
-  warn?: TimeLogFunction;
-  error?: TimeLogFunction;
-  fatal?: TimeLogFunction;
-  security?: TimeLogFunction;
-}
 
 const getLogMock = () => jest.fn(loggerMockFunction) as unknown as LogFunction;
 
@@ -75,8 +70,7 @@ export const mockLoggerReset = () => {
   mockLogger.error = getLogMock();
   mockLogger.fatal = getLogMock();
   mockLogger.security = getLogMock();
-  mockLogger.timeEnd = jest.fn(loggerTimeEndMockFunction) as unknown as TimeEndLog;
-  mockLogger.timeEnd.error = jest.fn(loggerTimeEndMockFunction) as unknown as TimeLogFunction;
+  mockLogger.timeEnd = jest.fn(loggerTimeEndMockFunction);
   mockLogger.time = jest.fn();
 };
 

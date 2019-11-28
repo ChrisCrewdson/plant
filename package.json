@@ -32,7 +32,7 @@
     "immer": "5.0.0",
     "jquery": "2.x",
     "konva": "4.0.18",
-    "lalog": "0.7.0",
+    "lalog": "0.8.0",
     "lodash": "4.17.15",
     "marked": "0.7.0",
     "method-override": "3.0.0",
