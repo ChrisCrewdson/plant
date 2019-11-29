@@ -100,7 +100,7 @@
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jest": "23.0.5",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.16.0",
+    "eslint-plugin-react": "7.17.0",
     "eslint-plugin-security": "1.4.0",
     "fetch-cookie": "0.7.3",
     "hoist-non-react-statics": "3.3.1",
