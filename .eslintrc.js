@@ -51,9 +51,10 @@ module.exports = {
     // These carried over from the plant-image-lambda project to accelerate
     // the linting
     // TODO: Remove these https://github.com/guyellis/plant/issues/3144
-    "@typescript-eslint/explicit-function-return-type": [0],
-    '@typescript-eslint/no-explicit-any': [0],
     '@typescript-eslint/ban-ts-ignore': [0],
+    '@typescript-eslint/no-empty-function': [0],
+    '@typescript-eslint/no-explicit-any': [0],
+    "@typescript-eslint/explicit-function-return-type": [0],
     'import/prefer-default-export': [0],
   },
   settings: {
