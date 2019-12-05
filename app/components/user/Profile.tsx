@@ -25,7 +25,7 @@ interface ProfileProps {
 // 2. Other user: /profile/slug/<id>
 // Only implementing #1 for now.
 
-export default function profile(props: ProfileProps, context: any) {
+export default function profile(props: ProfileProps, context: {store: PlantStore}) {
   const radioGroup: React.CSSProperties = {
     display: 'flex',
   };
@@ -37,7 +37,7 @@ export default function profile(props: ProfileProps, context: any) {
 
   const { userSettings } = props;
   const { imperial } = userSettings;
-  const { store } = context as {store: PlantStore};
+  const { store } = context;
   const { dispatch } = store;
   const state = store.getState();
   const users = getIn(state, 'users', {});
