@@ -279,10 +279,11 @@ export const noteApi = (app: Application): void => {
       });
       const userId = user?._id;
       if (!userId) {
-        throw new Error('userId is falsy in imageNote()');
+        logger.error({ moduleName, msg: 'Missing user id in request in imageNote', body });
+        return res.status(401).send({ success: false, message: 'No user logged in' });
       }
       if (!req.body.note) {
-        logger.error({ moduleName, msg: 'Missing note in body on image upload', 'req.body': req.body });
+        logger.error({ moduleName, msg: 'Missing note in body on image upload', body });
         return res.status(500).send({ success: false, message: 'Failed to find note in body' });
       }
       let note;
@@ -290,7 +291,7 @@ export const noteApi = (app: Application): void => {
         note = JSON.parse(req.body.note);
       } catch (jsonParseError) {
         logger.error({
-          moduleName, msg: 'Error when parsing note from body in image upload', jsonParseError, 'req.body': req.body,
+          moduleName, msg: 'Error when parsing note from body in image upload', jsonParseError, body,
         });
         return res.status(500).send({ success: false, message: 'Failed to parse note from body' });
       }

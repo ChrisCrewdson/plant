@@ -917,8 +917,18 @@ export class MongoDb {
       const query: FilterQuery<DbNote> = _.pick(convertedNote, ['_id', 'userId']);
       const set: Partial<Readonly<DbNote>> = produce(convertedNote,
         (draft) => { delete draft._id; });
-      await Update.updateNote(db, query, set);
+      const updateResult = await Update.updateNote(db, query, set);
       // results => {n:1, nModified:1, ok:1}
+      if (updateResult.modifiedCount === 0) {
+        logger.warn({
+          method: 'mongo.updateNote',
+          moduleName,
+          msg: 'Zero documents updated in DB',
+          note,
+          query,
+          set,
+        });
+      }
 
       return convertNoteDataForRead(convertedNote as unknown as DbNote);
     } catch (error) {
