@@ -891,6 +891,11 @@ export class MongoDb {
   }
 
   getNotesByPlantId(plantId: string, logger: Logger): Promise<ReadonlyArray<BizNote> | undefined> {
+    // TODO: Remove this log statement once bug is fixed. Issue #3210
+    logger.info({
+      msg: 'What is the value of plantId?',
+      plantId,
+    });
     const query = { plantIds: new ObjectID(plantId) };
     return this.getNotesByQuery(query, logger);
   }
