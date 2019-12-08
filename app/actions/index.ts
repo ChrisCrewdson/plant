@@ -66,9 +66,7 @@ const ActionList = [
  */
 type ActionMethod = (payload?: Record<string, any> | string) => PlantAction;
 
-interface UiActionsFunction {
-  [key: string]: ActionMethod;
-}
+type UiActionsFunction = Record<string, ActionMethod>;
 
 export type UiActionType = typeof ActionList[number];
 

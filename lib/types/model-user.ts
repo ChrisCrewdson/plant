@@ -97,6 +97,4 @@ interface UiUsersValue {
   locationIds: string[];
 }
 
-interface UiUsers {
-  [id: string]: UiUsersValue;
-}
+type UiUsers = Record<string, UiUsersValue>;

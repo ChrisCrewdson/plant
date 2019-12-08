@@ -74,7 +74,7 @@ process.env.PLANT_TOKEN_SECRET = '<fake-token-secret>';
 process.env.PLANT_IMAGE_COMPLETE = 'fake-image-token';
 
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
-function propagateToGlobal(win: { [x: string]: any }) {
+function propagateToGlobal(win: Record<string, any>) {
   Object.keys(win).forEach((key) => {
     if (!globalAny[key]) {
       globalAny[key] = win[key];

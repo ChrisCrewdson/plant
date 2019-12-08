@@ -151,9 +151,7 @@ interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
   userId?: string;
 }
 
-interface BizNoteMap {
-  [id: string]: BizNote;
-}
+type BizNoteMap = Record<string, BizNote>;
 
 interface DbNoteWithPlants extends DbNote {
   /**
@@ -201,9 +199,7 @@ interface UiNotesValue {
   images?: NoteImage[];
 }
 
-interface UiNotes {
-  [id: string]: UiNotesValue;
-}
+type UiNotes = Record<string, UiNotesValue>;
 
 interface ImageCompleteQuery {
   token?: string;

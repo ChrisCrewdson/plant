@@ -81,13 +81,9 @@ interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId' | 'pur
 type UiPlantsValueDateKeys = keyof Pick<UiPlantsValue,
 'plantedDate' | 'purchasedDate' | 'terminatedDate'>;
 
-interface BizPlantMap {
-  [mongoId: string]: BizPlant;
-}
+type BizPlantMap = Record<string, BizPlant>;
 
-interface UiPlants {
-  [mongoId: string]: UiPlantsValue;
-}
+type UiPlants = Record<string, UiPlantsValue>;
 
 interface UiPlantLocation {
   _id: string;
