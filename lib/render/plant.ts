@@ -15,10 +15,32 @@ export const renderPlant = async (req: Request, res: Response): Promise<void> =>
   const { logger } = req;
   try {
     const {
-      user,
+      baseUrl,
+      host,
+      hostname,
+      originalUrl,
       params = {},
+      path,
       query = {},
+      route,
+      url,
+      user,
     } = req;
+
+    // TODO: Remove this log statement once bug is fixed. Issue #3210
+    logger.info({
+      baseUrl,
+      host,
+      hostname,
+      msg: 'Values for vars pulled from req',
+      originalUrl,
+      params,
+      path,
+      query,
+      route,
+      url,
+      user,
+    });
 
     const { id: plantId = '' } = params;
     const { noteid: noteId = '' } = query;

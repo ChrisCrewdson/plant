@@ -30,24 +30,21 @@ describe('/lib/db/mongo/', () => {
   afterAll(() => helper.stopServer());
 
   describe('user', () => {
-    test(
-      'should fail to create a user account if there is no object',
-      async () => {
-        try {
-          const userDetails = null as unknown as UserDetails;
-          await mongo.findOrCreateUser(userDetails, mockLogger);
-        } catch (err) {
-          expect(err).toBeTruthy();
-          expect(err.message).toBe('No facebook.id or google.id:\nnull');
-        }
-        // 2 here,
-        // 2 in beforeAll(),
-        // 6 in helper.startServerAuthenticated from beforeAll.
-        // 8 in calls to logger
-        // 8 in calls to lalog logger
-        expect.assertions(26);
-      },
-    );
+    test('should fail to create a user account if there is no object', async () => {
+      try {
+        const userDetails = (null as unknown) as UserDetails;
+        await mongo.findOrCreateUser(userDetails, mockLogger);
+      } catch (err) {
+        expect(err).toBeTruthy();
+        expect(err.message).toBe('No facebook.id or google.id:\nnull');
+      }
+      // 2 here,
+      // 2 in beforeAll(),
+      // 6 in helper.startServerAuthenticated from beforeAll.
+      // 8 in calls to logger
+      // 8 in calls to lalog logger
+      expect.assertions(26);
+    });
 
     test('should fetch the user created in the before setup', async () => {
       const user = {
@@ -125,9 +122,11 @@ describe('/lib/db/mongo/', () => {
     });
 
     test('should get existing plants', async () => {
-      const results: BizPlant[] = (
-        await mongo.getPlantsByIds([plantId], userId, mockLogger)
-      ) as BizPlant[];
+      const results: BizPlant[] = (await mongo.getPlantsByIds(
+        [plantId],
+        userId,
+        mockLogger,
+      )) as BizPlant[];
       expect(_.isArray(results)).toBeTruthy();
       expect(results).toHaveLength(1);
       if (Array.isArray(results)) {
@@ -150,6 +149,18 @@ describe('/lib/db/mongo/', () => {
 
       const result = await mongo.updatePlant(plantUpdate, userId, mockLogger);
       expect(result).toEqual({ ...plantUpdate, notes: [] });
+    });
+
+    test('should throw if invalid mongoId param for getNotesByPlantId()', async () => {
+      const invalidMongoId = 'invalid';
+      try {
+        await mongo.getNotesByPlantId(invalidMongoId, mockLogger);
+      } catch (err) {
+        expect(err).toMatchInlineSnapshot(
+          '[Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters]',
+        );
+      }
+      expect.assertions(1);
     });
   });
 });

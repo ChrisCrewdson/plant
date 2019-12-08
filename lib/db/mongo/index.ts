@@ -891,13 +891,19 @@ export class MongoDb {
   }
 
   getNotesByPlantId(plantId: string, logger: Logger): Promise<ReadonlyArray<BizNote> | undefined> {
-    // TODO: Remove this log statement once bug is fixed. Issue #3210
-    logger.info({
-      msg: 'What is the value of plantId?',
-      plantId,
-    });
-    const query = { plantIds: new ObjectID(plantId) };
-    return this.getNotesByQuery(query, logger);
+    try {
+      const query = { plantIds: new ObjectID(plantId) };
+      return this.getNotesByQuery(query, logger);
+    } catch (err) {
+      // This catch/log added here to try and address the issue where the plantId was the name
+      // of a font file. Issue #3210
+      logger.error({
+        msg: 'Throw in mongoIndex.getNotesByPlantId()',
+        err,
+        plantId,
+      });
+      throw err;
+    }
   }
 
   getNotesByPlantIds(plantIds: string[], logger: Logger):
