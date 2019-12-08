@@ -95,7 +95,7 @@ export default class NoteEditMetrics extends React.PureComponent {
         label={metaMetric.label}
         name={metaMetric.key}
         placeholder={metaMetric.placeholder}
-        type="number"
+        type="text"
         value={renderValue}
       />
     );
