@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Fab from '@material-ui/core/Fab';
@@ -32,65 +32,34 @@ const getSelectedState = (selected: boolean, isTerminated: boolean) => {
   return isTerminated ? 'dead' : 'alive';
 };
 
-export default class NoteAssocPlant extends React.Component {
-  props!: NoteAssocPlantProps;
+export default function noteAssocPlant(props: NoteAssocPlantProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [filter, setFilter] = useState('');
 
-  // eslint-disable-next-line react/state-in-constructor
-  state: NoteAssocPlantState;
-
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    error: PropTypes.string,
-    plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    plants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  };
-
-  static defaultProps = {
-    error: '',
-  };
-
-  constructor(props: NoteAssocPlantProps) {
-    super(props);
-    // eslint-disable-next-line react/state-in-constructor
-    this.state = {
-      expanded: false,
-      filter: '',
-    };
-    this.expand = this.expand.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.changeHandler = this.changeHandler.bind(this);
-  }
-
-  changeHandler(_: string, value: string) {
-    return this.setState({ filter: value.toLowerCase() });
-  }
+  const changeHandler = (_: string, value: string) => setFilter(value.toLowerCase());
 
   /**
    * Toggles the selected state for the button for an associated plant
    */
-  toggle(plantId: string) {
+  const toggle = (plantId: string) => {
     const {
       plantIds: propPlantIds,
       dispatch,
-    } = this.props;
+    } = props;
     const plantIds = propPlantIds.indexOf(plantId) >= 0
       ? propPlantIds.filter((pId) => pId !== plantId)
       : propPlantIds.concat(plantId);
 
     dispatch(actionFunc.editNoteChange({ plantIds }));
-  }
+  };
 
-  expand() {
-    const { expanded: exp } = this.state;
-    const expanded = !exp;
-    this.setState({ expanded });
-  }
+  const expand = () => setExpanded(!expanded);
 
   /**
    * Renders a button that allows for attaching or removing a plant on
    * a note.
    */
-  renderPlantButton(plant: UiPlantsValue, primary: boolean) {
+  const renderPlantButton = (plant: UiPlantsValue, primary: boolean) => {
     const { _id, title, isTerminated } = plant;
     const selectState = getSelectedState(primary, !!isTerminated);
 
@@ -101,79 +70,87 @@ export default class NoteAssocPlant extends React.Component {
         label={title}
         selectState={selectState}
         style={{ margin: 12 }}
-        toggleFunc={this.toggle}
+        toggleFunc={toggle}
       />
     );
-  }
+  };
 
-  renderPlantButtons(plantIds: ReadonlyArray<string>, plants: Record<string, UiPlantsValue>,
-    selected: boolean) {
-    return plantIds.map((plantId) => {
-      const plant = plants[plantId];
-      if (!plant) {
-        // console.warn(`Missing plant for plantId ${plantId}`);
-        return null;
-      }
-      return this.renderPlantButton(plant, selected);
-    });
-  }
-
-  render() {
-    const { expanded, filter } = this.state;
-    const { plantIds, plants, error } = this.props;
-    // TODO: If the following pattern is to be kept then:
-    // If expanded is true then it might be faster to sort the array once before applying
-    // the filter twice rather than filtering twice and sorting twice.
-    const checkedPlantIds = utils.filterSortPlants(plantIds, plants, filter);
-    const checkedPlants = this.renderPlantButtons(checkedPlantIds, plants, true);
-
-    let uncheckedPlants = null;
-    if (expanded) {
-      const uncheckedIds = Object.keys(plants).filter(
-        (plantId) => plantIds.indexOf(plantId) === -1);
-      const uncheckedPlantIds = utils.filterSortPlants(uncheckedIds, plants, filter);
-
-      uncheckedPlants = this.renderPlantButtons(uncheckedPlantIds, plants, false);
+  const renderPlantButtons = (
+    plantIds: ReadonlyArray<string>, plants: Record<string, UiPlantsValue>, selected: boolean,
+  ) => plantIds.map((plantId) => {
+    const plant = plants[plantId];
+    if (!plant) {
+      // console.warn(`Missing plant for plantId ${plantId}`);
+      return null;
     }
+    return renderPlantButton(plant, selected);
+  });
 
-    const title = `${expanded ? 'Hide' : 'Show'} Unchecked Plants`;
-    const arrow = (
-      <Fab
-        size="medium"
-        onClick={this.expand}
-        color="secondary"
-        title={title}
-      >
-        {expanded
-          ? <ArrowLeft />
-          : <ArrowRight />}
-      </Fab>
-    );
+  const { plantIds, plants, error } = props;
+  // TODO: If the following pattern is to be kept then:
+  // If expanded is true then it might be faster to sort the array once before applying
+  // the filter twice rather than filtering twice and sorting twice.
+  const checkedPlantIds = utils.filterSortPlants(plantIds, plants, filter);
+  const checkedPlants = renderPlantButtons(checkedPlantIds, plants, true);
 
-    const filterInput = (
-      <InputComboText
-        id="note-assoc-plant-filter"
-        changeHandler={this.changeHandler}
-        label="Filter"
-        placeholder="Filter..."
-        value={filter}
-        name="filter"
-      />
-    );
+  let uncheckedPlants = null;
+  if (expanded) {
+    const uncheckedIds = Object.keys(plants).filter(
+      (plantId) => plantIds.indexOf(plantId) === -1);
+    const uncheckedPlantIds = utils.filterSortPlants(uncheckedIds, plants, filter);
 
-    const errors = error ? [error] : [];
-
-    return (
-      <div style={{ textAlign: 'left' }}>
-        <Errors errors={errors} />
-        <div>
-          Associated plants:
-          {filterInput}
-          {checkedPlants}
-          {uncheckedPlants}
-          {arrow}
-        </div>
-      </div>
-    );
+    uncheckedPlants = renderPlantButtons(uncheckedPlantIds, plants, false);
   }
+
+  const title = `${expanded ? 'Hide' : 'Show'} Unchecked Plants`;
+  const arrow = (
+    <Fab
+      size="medium"
+      onClick={expand}
+      color="secondary"
+      title={title}
+    >
+      {expanded
+        ? <ArrowLeft />
+        : <ArrowRight />}
+    </Fab>
+  );
+
+  const filterInput = (
+    <InputComboText
+      id="note-assoc-plant-filter"
+      changeHandler={changeHandler}
+      label="Filter"
+      placeholder="Filter..."
+      value={filter}
+      name="filter"
+    />
+  );
+
+  const errors = error ? [error] : [];
+
+  return (
+    <div style={{ textAlign: 'left' }}>
+      <Errors errors={errors} />
+      <div>
+          Associated plants:
+        {filterInput}
+        {checkedPlants}
+        {uncheckedPlants}
+        {arrow}
+      </div>
+    </div>
+  );
 }
+
+
+noteAssocPlant.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  plants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+
+noteAssocPlant.defaultProps = {
+  error: '',
+};

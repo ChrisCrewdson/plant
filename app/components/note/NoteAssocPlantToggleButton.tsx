@@ -22,7 +22,7 @@ interface NoteAssocPlantToggleButtonProps {
 }
 
 /**
- * The 3 colors that I settled on for associated a note with plants are:
+ * The 3 colors that I settled on for associating a note with plants are:
  * Selected - primary color - blue - this means that the plant is tagged on this note
  * Alive - default color - transparent/white - the plant is not tagged and is alive
  * Dead - secondary color - red/pink/orange - the plant is dead and not tagged.
