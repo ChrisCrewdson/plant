@@ -21,7 +21,6 @@ import LayoutMap from './components/layout/LayoutMap';
 import store from './store';
 import Terms from './components/info/Terms';
 import Location from './components/location/Location';
-import Metrics from './components/location/metrics/Metrics';
 import Locations from './components/location/Locations';
 import Users from './components/user/Users';
 import { theme } from './libs/style-helper';
@@ -43,7 +42,6 @@ const routes = (
       <Route path="/locations" exact component={Locations} />
       <Route path="/locations/:slug/:id" component={Locations} />
       <Route path="/login" component={Login} />
-      <Route path="/metrics/:slug/:id" component={Metrics} />
       <Route path="/plant" exact component={Plant} />
       <Route path="/plant/:slug/:id" component={Plant} />
       <Route path="/plants/:slug/:id" component={Plants} />
