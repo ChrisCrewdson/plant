@@ -22,33 +22,11 @@ interface NoteCreateProps {
   locationId: string;
 }
 
-export default class NoteCreate extends React.PureComponent {
-  props!: NoteCreateProps;
-
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    userCanEdit: PropTypes.bool.isRequired,
-    interimNote: PropTypes.shape({
-      note: PropTypes.string,
-      isNew: PropTypes.bool,
-    }).isRequired,
-    plant: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-    }).isRequired,
-    plants: PropTypes.shape({}).isRequired,
-    locationId: PropTypes.string.isRequired,
-  };
-
-  constructor(props: NoteCreateProps) {
-    super(props);
-
-    this.createNote = this.createNote.bind(this);
-  }
-
-  createNote() {
+export default function noteCreate(props: NoteCreateProps) {
+  const createNote = () => {
     const {
       plant, locationId, plants: plantsObj, dispatch,
-    } = this.props;
+    } = props;
 
     const plants = Object.keys(plantsObj).reduce((acc: UiPlants, plantId) => {
       const p = plantsObj[plantId];
@@ -69,46 +47,59 @@ export default class NoteCreate extends React.PureComponent {
     };
 
     dispatch(actionFunc.editNoteOpen({ note, plant }));
+  };
+
+  const {
+    dispatch,
+    interimNote,
+    locationId,
+    plants,
+    userCanEdit,
+  } = props;
+
+  if (!userCanEdit) {
+    return null;
   }
 
-  render() {
-    const {
-      dispatch,
-      interimNote,
-      locationId,
-      plants,
-      userCanEdit,
-    } = this.props;
+  const { isNew } = interimNote;
 
-    if (!userCanEdit) {
-      return null;
-    }
-
-    const { isNew: createNote } = interimNote;
-
-    return (
-      <div>
-        {createNote
-          ? (
-            <NoteEdit
-              dispatch={dispatch}
-              interimNote={interimNote}
-              plants={plants}
-              locationId={locationId}
-            />
-          )
-          : (
-            <div style={{ textAlign: 'right' }}>
-              <Fab
-                onClick={this.createNote}
-                color="secondary"
-                title="Create Note"
-              >
-                <AddIcon />
-              </Fab>
-            </div>
-          )}
-      </div>
-    );
-  }
+  return (
+    <div>
+      {isNew
+        ? (
+          <NoteEdit
+            dispatch={dispatch}
+            interimNote={interimNote}
+            plants={plants}
+            locationId={locationId}
+          />
+        )
+        : (
+          <div style={{ textAlign: 'right' }}>
+            <Fab
+              onClick={createNote}
+              color="secondary"
+              title="Create Note"
+            >
+              <AddIcon />
+            </Fab>
+          </div>
+        )}
+    </div>
+  );
 }
+
+
+noteCreate.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
+  interimNote: PropTypes.shape({
+    note: PropTypes.string,
+    isNew: PropTypes.bool,
+  }).isRequired,
+  plant: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
+  plants: PropTypes.shape({}).isRequired,
+  locationId: PropTypes.string.isRequired,
+};
