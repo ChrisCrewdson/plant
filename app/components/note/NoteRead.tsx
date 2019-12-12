@@ -21,9 +21,6 @@ interface NoteReadProps {
   plant: UiPlantsValue;
 }
 
-// interface NoteReadState {
-//   showDeleteConfirmation: boolean;
-// }
 const buildImageUrl = (size: ImageSizeName, image: NoteImage) => {
   const { id, ext } = image;
   const folder = process.env.NODE_ENV === 'production' ? 'up' : 'test';
@@ -56,14 +53,12 @@ const buildImageSrcSet = (image: NoteImage) => {
 
 export default function noteRead(props: NoteReadProps) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  // this.state = { showDeleteConfirmation: false };
 
   /**
    * Called after user clicks on delete
    */
   const checkDelete = () => {
     setShowDeleteConfirmation(true);
-    // this.setState({ showDeleteConfirmation: true });
   };
 
   /**
@@ -139,10 +134,6 @@ export default function noteRead(props: NoteReadProps) {
     margin: 20,
     display: 'inline-block',
   };
-
-  // const {
-  //   showDeleteConfirmation,
-  // } = this.state;
 
   const {
     userCanEdit,

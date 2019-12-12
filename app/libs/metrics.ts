@@ -129,7 +129,9 @@ function calculateMetrics(acc: MetricNote[], note: UiNotesValue, noteId: string,
  * @param notes - An Immutable map of notes
  * @returns - A collection of objects that can be rendered on a Plant's page
  */
-export function notesToMetricNotes(sortedNoteIds: string[], notes: UiNotes): MetricNote[] {
+export function notesToMetricNotes(
+  sortedNoteIds: ReadonlyArray<string>, notes: UiNotes,
+): MetricNote[] {
   let lastNoteDate: Moment;
   const metrics: MetricItem[] = [];
 

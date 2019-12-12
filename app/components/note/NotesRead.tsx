@@ -22,146 +22,113 @@ interface NotesReadProps {
   userCanEdit: boolean;
 }
 
-interface NotesReadState {
-  sortedIds?: string[];
-}
+export default function notesRead(props: NotesReadProps) {
+  const {
+    dispatch,
+    interim,
+    locationId,
+    notes,
+    plant,
+    plants,
+    userCanEdit,
+  } = props;
+  const { notes: noteIds = [] } = plant;
 
-export default class NotesRead extends React.PureComponent {
-  // eslint-disable-next-line react/state-in-constructor
-  state: NotesReadState;
+  const sortedIds = noteIds.length
+    ? utils.sortNotes(noteIds, notes)
+    : [];
 
-  props!: NotesReadProps;
 
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    interim: PropTypes.shape({
-      note: PropTypes.object,
-    }).isRequired,
-    locationId: PropTypes.string.isRequired,
-    notes: PropTypes.shape({
-      // _id: PropTypes.string.required,
-    }).isRequired,
-    plant: PropTypes.shape({
-      notes: PropTypes.array,
-    }).isRequired,
-    plants: PropTypes.shape({
-      notes: PropTypes.array,
-    }).isRequired,
-    userCanEdit: PropTypes.bool.isRequired,
+  const interimNote = ((interim && interim.note
+      && interim.note.note) || {}) as UiInterimNote;
+  const { isNew, _id: interimNoteId } = interimNote;
+
+  if (interimNoteId && userCanEdit && !isNew) {
+    return (
+      <NoteEdit
+        dispatch={dispatch}
+        interimNote={interimNote}
+        plants={plants}
+        locationId={locationId}
+      />
+    );
+  }
+
+  if (!sortedIds || !sortedIds.length) {
+    return null;
+  }
+
+  const paperStyle: React.CSSProperties = {
+    backgroundColor: '#ddd',
+    display: 'inline-block',
+    margin: 20,
+    padding: 20,
+    width: '100%',
   };
 
-  constructor(props: NotesReadProps) {
-    super(props);
-    // eslint-disable-next-line react/state-in-constructor
-    this.state = {};
-  }
-
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
-    this.sortNotes();
-  }
-
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps: NotesReadProps) {
-    this.sortNotes(nextProps);
-  }
-
-  sortNotes(props = this.props) {
-    const { notes, plant } = props;
-    const { notes: noteIds = [] } = plant;
-
-    if (!noteIds.length) {
-      return;
-    }
-
-    const sortedIds = utils.sortNotes(noteIds, notes);
-    this.setState({ sortedIds });
-  }
-
-  render() {
+  const metricNotes = notesToMetricNotes(sortedIds, notes);
+  const renderedNotes = metricNotes.map((metricNote) => {
     const {
-      dispatch,
-      interim,
-      locationId,
-      notes,
-      plant,
-      plants,
-      userCanEdit,
-    } = this.props;
+      noteId, note, sinceLast, change, type: noteType,
+    } = metricNote;
 
-    const interimNote = ((interim && interim.note
-      && interim.note.note) || {}) as UiInterimNote;
-    const { isNew, _id: interimNoteId } = interimNote;
-
-    if (interimNoteId && userCanEdit && !isNew) {
-      return (
-        <NoteEdit
-          dispatch={dispatch}
-          interimNote={interimNote}
-          plants={plants}
-          locationId={locationId}
-        />
-      );
-    }
-
-    const { sortedIds } = this.state;
-    if (!sortedIds || !sortedIds.length) {
+    if (noteType === 'note') {
+      if (note) {
+        return (
+          <NoteRead
+            dispatch={dispatch}
+            userCanEdit={userCanEdit}
+            key={noteId}
+            note={note}
+            plant={plant}
+          />
+        );
+      }
       return null;
     }
 
-    const paperStyle: React.CSSProperties = {
-      backgroundColor: '#ddd',
-      display: 'inline-block',
-      margin: 20,
-      padding: 20,
-      width: '100%',
-    };
+    switch (metricNote.type) {
+      case 'since':
+        return (
+          <Paper key={`${noteId}-sincelast`} style={paperStyle} elevation={5}>
+            {sinceLast}
+          </Paper>
+        );
+      case 'metric':
+        return (
+          <Paper key={`${noteId}-change`} style={paperStyle} elevation={5}>
+            <Markdown markdown={change} />
+          </Paper>
+        );
+      case 'unfound':
+        return (<CircularProgress key={noteId} />);
+      default:
+        throw new Error(`Unknown note render type ${metricNote.type}`);
+    }
+  });
 
-    const metricNotes = notesToMetricNotes(sortedIds, notes);
-    const renderedNotes = metricNotes.map((metricNote) => {
-      const {
-        noteId, note, sinceLast, change, type: noteType,
-      } = metricNote;
-
-      if (noteType === 'note') {
-        if (note) {
-          return (
-            <NoteRead
-              dispatch={dispatch}
-              userCanEdit={userCanEdit}
-              key={noteId}
-              note={note}
-              plant={plant}
-            />
-          );
-        }
-        return null;
-      }
-
-      switch (metricNote.type) {
-        case 'since':
-          return (
-            <Paper key={`${noteId}-sincelast`} style={paperStyle} elevation={5}>
-              {sinceLast}
-            </Paper>
-          );
-        case 'metric':
-          return (
-            <Paper key={`${noteId}-change`} style={paperStyle} elevation={5}>
-              <Markdown markdown={change} />
-            </Paper>
-          );
-        case 'unfound':
-          return (<CircularProgress key={noteId} />);
-        default:
-          throw new Error(`Unknown note render type ${metricNote.type}`);
-      }
-    });
-
-    return (
-      <div>
-        {renderedNotes}
-      </div>
-    );
-  }
+  return (
+    <div>
+      {renderedNotes}
+    </div>
+  );
 }
+
+
+notesRead.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  interim: PropTypes.shape({
+    note: PropTypes.object,
+  }).isRequired,
+  locationId: PropTypes.string.isRequired,
+  notes: PropTypes.shape({
+    // _id: PropTypes.string.required,
+  }).isRequired,
+  plant: PropTypes.shape({
+    notes: PropTypes.array,
+  }).isRequired,
+  plants: PropTypes.shape({
+    notes: PropTypes.array,
+  }).isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
+};
