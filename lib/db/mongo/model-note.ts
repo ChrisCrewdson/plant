@@ -143,7 +143,7 @@ interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
    * At the time of writing this I think that date is sometimes a string. In the note.test.js
    * file there are validation tests that confirms that it's not a string.
    */
-  date?: number;
+  date?: string;
   errors?: Record<string, string>;
   isNew?: boolean;
   plant?: UiPlantsValue;

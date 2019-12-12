@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
 import { PlantAction, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
+import utils from '../libs/utils';
 
 type RoNotes = Readonly<UiNotes>;
 
@@ -19,7 +20,7 @@ function upsertNoteRequestSuccess(
     draft[_id] = {
       ...note,
       _id,
-      date,
+      date: utils.dateToInt(date),
       userId,
     };
   });

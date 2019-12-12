@@ -217,6 +217,8 @@ describe('/app/reducers/plants', () => {
       note: {
         _id: 'n5',
         plantIds: ['p1', 'p2'],
+        userId: 'fake user id',
+        date: 20170101,
       },
     };
 
@@ -250,6 +252,8 @@ describe('/app/reducers/plants', () => {
       note: {
         _id: 'n5',
         plantIds: ['p2'],
+        userId: 'fake user id',
+        date: 20170101,
       },
     };
 
@@ -296,6 +300,8 @@ describe('/app/reducers/plants', () => {
       note: {
         _id: 'n5',
         plantIds: ['p1'],
+        userId: 'fake user id',
+        date: 20170101,
       },
     };
     const current = produce(expected, (draft) => draft);

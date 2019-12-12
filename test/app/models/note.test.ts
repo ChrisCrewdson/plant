@@ -9,7 +9,7 @@ const { note: noteValidator } = validators;
 describe('/app/models/note', () => {
   describe('basic validation', () => {
     test('should pass minimum validation', () => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: '5c77545608a6cd11fdb0ca86',
         date: 20160101,
         plantIds: ['5c77545608a6cd11fdb0ca87'],
@@ -30,7 +30,7 @@ describe('/app/models/note', () => {
         date: 'Not a Number',
         plantIds: ['9ec5c8ffcf885bf'], // Not a MongoId in array
         note: {}, // not a string
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
 
       const noteCopy = _.cloneDeep(note);
 
@@ -47,12 +47,13 @@ describe('/app/models/note', () => {
       const note = {
         _id: '5c2aefa2da47a52adc1c4651',
         date: 20160101,
-        plantIds: ['5c2aefa687358b2af50246d6'],
-        note: 'some text',
         fakeName1: 'Common Name',
         fakeName2: 'Description',
+        note: 'some text',
         plantId: 'fake plant id',
-      } as UiInterimNote;
+        plantIds: ['5c2aefa687358b2af50246d6'],
+        userId: 'fake user id',
+      } as BizNote;
 
       const noteCopy = _.cloneDeep(note);
 
@@ -64,11 +65,11 @@ describe('/app/models/note', () => {
     });
 
     test('should add _id if it is a new record', () => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         date: 20160101,
         plantIds: ['5c2aefa687358b2af50246d6'],
         note: 'some text',
-      };
+      } as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
@@ -83,11 +84,12 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is empty', (done) => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: '5c2aefa687358b2af50246d6',
         date: 20160101,
-        plantIds: [],
         note: 'some text',
+        plantIds: [],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -106,7 +108,7 @@ describe('/app/models/note', () => {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -120,12 +122,12 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if plantIds is not an array', (done) => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         note: 'some text',
         plantIds: makeMongoId(),
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -153,12 +155,13 @@ describe('/app/models/note', () => {
     };
 
     test('should pass with an empty images array', () => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [],
         note: 'some text',
         plantIds: [makeMongoId()],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -172,12 +175,13 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images', () => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [image],
         note: 'some text',
         plantIds: [makeMongoId()],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -190,12 +194,13 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images and an empty note', () => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [image],
         note: '',
         plantIds: [makeMongoId()],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -208,11 +213,12 @@ describe('/app/models/note', () => {
     });
 
     test('should pass with valid images and a missing note', () => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [image],
         plantIds: [makeMongoId()],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -230,7 +236,7 @@ describe('/app/models/note', () => {
         images: makeMongoId(),
         note: 'some text',
         plantIds: [makeMongoId()],
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -250,7 +256,7 @@ describe('/app/models/note', () => {
         images: [{ ...image, id: 123 }],
         note: 'some text',
         plantIds: [makeMongoId()],
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -264,12 +270,13 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images ext is not a string', (done) => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [{ ...image, id: '123' }],
         note: 'some text',
         plantIds: [makeMongoId()],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -290,7 +297,7 @@ describe('/app/models/note', () => {
         images: [{ ...image, originalname: 123 }],
         note: 'some text',
         plantIds: [makeMongoId()],
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       try {
@@ -310,7 +317,7 @@ describe('/app/models/note', () => {
         images: [{ ...image, size: '123' }],
         note: 'some text',
         plantIds: ['5c2af2b712d4132fa1e69d38'],
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       const transformed = noteValidator(note);
@@ -320,12 +327,13 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images ext is longer than 20', (done) => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [{ ...image, ext: '123456789012345678901' }],
         note: 'some text',
         plantIds: [makeMongoId()],
+        userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
 
@@ -340,13 +348,13 @@ describe('/app/models/note', () => {
     });
 
     test('should fail if images has extra props', (done) => {
-      const note: UiInterimNote = {
+      const note: BizNote = {
         _id: makeMongoId(),
         date: 20160101,
         images: [{ ...image, extra: 'jpg' }],
         note: 'some text',
         plantIds: [makeMongoId()],
-      } as unknown as UiInterimNote;
+      } as unknown as BizNote;
       const noteCopy = _.cloneDeep(note);
 
       try {

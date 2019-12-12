@@ -123,7 +123,7 @@ const intParser = (value: number | string): number => {
  * Don't need a userId if we're in the client, this will get added on the server
  * to prevent tampering with the logged in user.
  */
-export const note = (atts: UiInterimNote): UiInterimNote => {
+export const note = (atts: BizNote): BizNote => {
   const constraints = {
     _id: { format: constants.mongoIdRE, presence: true },
     date: { intDateValidate: { presence: true, name: 'Date' } },
@@ -133,7 +133,7 @@ export const note = (atts: UiInterimNote): UiInterimNote => {
     note: { length: { minimum: 0, maximum: 5000 }, presence: false },
   };
 
-  let attributes = cloneDeep(atts) as UiInterimNote;
+  let attributes = cloneDeep(atts) as BizNote;
   attributes._id = attributes._id || makeMongoId();
 
   if (isArray(attributes.images)) {
@@ -158,5 +158,5 @@ export const note = (atts: UiInterimNote): UiInterimNote => {
   if (flatErrors) {
     throw flatErrors;
   }
-  return transformed as UiInterimNote; // TODO: Remove once conversion to TS complete
+  return transformed as BizNote; // TODO: Remove once conversion to TS complete
 };

@@ -19,7 +19,7 @@ export interface DeletePlantRequestPayload {
 }
 
 export interface UpsertNoteRequestPayload {
-  note: UiInterimNote;
+  note: BizNote;
   files?: File[];
 }
 

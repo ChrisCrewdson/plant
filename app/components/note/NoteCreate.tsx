@@ -25,25 +25,30 @@ interface NoteCreateProps {
 export default function noteCreate(props: NoteCreateProps) {
   const createNote = () => {
     const {
-      plant, locationId, plants: plantsObj, dispatch,
+      // plant, locationId, plants: plantsObj, dispatch,
+      plant, dispatch,
     } = props;
 
-    const plants = Object.keys(plantsObj).reduce((acc: UiPlants, plantId) => {
-      const p = plantsObj[plantId];
-      if (p.locationId === locationId) {
-        acc[plantId] = p;
-      }
-      return acc;
-    }, {});
+    // const plants = Object.keys(plantsObj).reduce((acc: UiPlants, plantId) => {
+    //   const p = plantsObj[plantId];
+    //   if (p.locationId === locationId) {
+    //     acc[plantId] = p;
+    //   }
+    //   return acc;
+    // }, {});
 
-    const note = {
+    if (!plant._id) {
+      throw new Error(`Missing plant._id ${plant._id}`);
+    }
+
+    const note: UiInterimNote = {
       _id: utils.makeMongoId(),
       date: moment().format('MM/DD/YYYY'),
       isNew: true,
       note: '',
       plantIds: [plant._id],
       errors: {},
-      plants,
+      // plants,
     };
 
     dispatch(actionFunc.editNoteOpen({ note, plant }));

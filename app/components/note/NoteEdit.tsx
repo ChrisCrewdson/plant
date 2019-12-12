@@ -69,7 +69,7 @@ export default class NoteEdit extends React.PureComponent {
     dispatch: PropTypes.func.isRequired,
     interimNote: PropTypes.shape({
       _id: PropTypes.string,
-      date: PropTypes.number,
+      date: PropTypes.string,
       errors: PropTypes.shape({
         date: PropTypes.string,
         length: PropTypes.number,
@@ -143,10 +143,11 @@ export default class NoteEdit extends React.PureComponent {
     const {
       dispatch, interimNote: propInterimNote, postSaveSuccess,
     } = this.props;
-    const interimNote: Readonly<UiInterimNote> = produce(propInterimNote, (draft) => {
-      draft._id = draft._id || utils.makeMongoId();
-      draft.date = utils.dateToInt(draft.date);
-    });
+    const interimNote: Readonly<BizNote> = produce<BizNote>(
+      propInterimNote as unknown as BizNote, (draft: BizNote) => {
+        draft._id = draft._id || utils.makeMongoId();
+        draft.date = utils.dateToInt(draft.date);
+      });
 
     try {
       const note = noteValidator(interimNote);
