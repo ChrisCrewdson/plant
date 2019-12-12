@@ -117,7 +117,6 @@ export default function noteEditMetrics(props: NoteEditMetricProps) {
   const renderedMetrics = metaMetrics.map((metaMetric) => {
     const { key } = metaMetric;
     const value = metrics[key];
-    // const renderValue = (value || value === 0) ? value : '';
     return renderMetric(metaMetric, value);
   });
 

@@ -224,34 +224,18 @@ function wrapValidateLocationWeather(data: GridRowValidate): string[] {
   );
 }
 
-export default class LocationsManager extends React.Component {
-  props!: LocationsManagerProps;
+export default function locationsManager(props: LocationsManagerProps) {
+  const { locationIds, locations, users } = props;
 
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    locationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    locations: PropTypes.shape({}).isRequired,
-    users: PropTypes.shape({}).isRequired,
-  };
-
-  constructor(props: LocationsManagerProps) {
-    super(props);
-    this.upsertLocationMember = this.upsertLocationMember.bind(this);
-    this.deleteLocationMember = this.deleteLocationMember.bind(this);
-
-    this.upsertLocationWeather = this.upsertLocationWeather.bind(this);
-    this.deleteLocationWeather = this.deleteLocationWeather.bind(this);
-
-    userColumns[0].options = Object.keys(props.users).reduce(
-      (acc: Record<string, string>, userId) => {
-        const { _id, name } = props.users[userId];
-        acc[_id] = name;
-        return acc;
-      },
-      {},
-    );
-    userColumns[0].options['<select>'] = '<select>';
-  }
+  userColumns[0].options = Object.keys(users).reduce(
+    (acc: Record<string, string>, userId) => {
+      const { _id, name } = users[userId];
+      acc[_id] = name;
+      return acc;
+    },
+    {},
+  );
+  userColumns[0].options['<select>'] = '<select>';
 
   /**
    * To insert/update a user for a location we need 3 things on the client side:
@@ -259,8 +243,8 @@ export default class LocationsManager extends React.Component {
    * On the server we also need the logged-in user to verify that they are an
    * owner of that location and therefore authorized.
    */
-  upsertLocationMember({ row, meta }: LocationsManagerRowUpdate) {
-    const { dispatch } = this.props;
+  const upsertLocationMember = ({ row, meta }: LocationsManagerRowUpdate) => {
+    const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [userId, role] = row.values;
     const action = actionEnum.UPSERT_LOCATION_MEMBER;
@@ -272,10 +256,10 @@ export default class LocationsManager extends React.Component {
       action,
     };
     dispatch(actionFunc.modifyLocationRequest(payload));
-  }
+  };
 
-  upsertLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
-    const { dispatch } = this.props;
+  const upsertLocationWeather = ({ row, meta }: LocationsManagerRowUpdate) => {
+    const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [stationId, name, enabled] = row.values;
     const action = actionEnum.UPSERT_LOCATION_WEATHER;
@@ -288,69 +272,72 @@ export default class LocationsManager extends React.Component {
       action,
     };
     dispatch(actionFunc.modifyLocationRequest(payload));
-  }
+  };
 
-  deleteLocationMember({ row, meta }: LocationsManagerRowUpdate) {
-    const { dispatch } = this.props;
+  const deleteLocationMember = ({ row, meta }: LocationsManagerRowUpdate) => {
+    const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [userId] = row.values;
     const action = actionEnum.DELETE_LOCATION_MEMBER;
 
     const payload = { locationId, userId, action };
     dispatch(actionFunc.modifyLocationRequest(payload));
-  }
+  };
 
-  deleteLocationWeather({ row, meta }: LocationsManagerRowUpdate) {
-    const { dispatch } = this.props;
+  const deleteLocationWeather = ({ row, meta }: LocationsManagerRowUpdate) => {
+    const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [stationId] = row.values;
     const action = actionEnum.DELETE_LOCATION_WEATHER;
 
     const payload = { locationId, stationId, action };
     dispatch(actionFunc.modifyLocationRequest(payload));
-  }
+  };
 
-  render() {
-    const paperStyle = {
-      padding: 20,
-      width: '100%',
-      margin: 20,
-      display: 'inline-block',
-    };
+  const paperStyle = {
+    padding: 20,
+    width: '100%',
+    margin: 20,
+    display: 'inline-block',
+  };
 
-    const { locationIds, locations } = this.props;
-
-    return (
-      <div>
-        {locationIds.map((locationId) => {
-          const location = locations[locationId];
-          return (
-            <Paper key={location._id} style={paperStyle} elevation={24}>
-              <h3>{`${location.title}`}</h3>
-              <Grid
-                columns={userColumns}
-                delete={this.deleteLocationMember}
-                insert={this.upsertLocationMember}
-                meta={{ location }}
-                rows={getMembers(location.members)}
-                title="Users"
-                update={this.upsertLocationMember}
-                validate={wrapValidateLocationMember}
-              />
-              <Grid
-                columns={weatherColumns}
-                delete={this.deleteLocationWeather}
-                insert={this.upsertLocationWeather}
-                meta={{ location }}
-                rows={getStations(location.stations)}
-                title="Weather Stations"
-                update={this.upsertLocationWeather}
-                validate={wrapValidateLocationWeather}
-              />
-            </Paper>
-          );
-        })}
-      </div>
-    );
-  }
+  return (
+    <div>
+      {locationIds.map((locationId) => {
+        const location = locations[locationId];
+        return (
+          <Paper key={location._id} style={paperStyle} elevation={24}>
+            <h3>{`${location.title}`}</h3>
+            <Grid
+              columns={userColumns}
+              delete={deleteLocationMember}
+              insert={upsertLocationMember}
+              meta={{ location }}
+              rows={getMembers(location.members)}
+              title="Users"
+              update={upsertLocationMember}
+              validate={wrapValidateLocationMember}
+            />
+            <Grid
+              columns={weatherColumns}
+              delete={deleteLocationWeather}
+              insert={upsertLocationWeather}
+              meta={{ location }}
+              rows={getStations(location.stations)}
+              title="Weather Stations"
+              update={upsertLocationWeather}
+              validate={wrapValidateLocationWeather}
+            />
+          </Paper>
+        );
+      })}
+    </div>
+  );
 }
+
+locationsManager.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  locationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  locations: PropTypes.shape({}).isRequired,
+  users: PropTypes.shape({}).isRequired,
+};

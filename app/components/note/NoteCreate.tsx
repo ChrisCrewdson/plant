@@ -25,17 +25,8 @@ interface NoteCreateProps {
 export default function noteCreate(props: NoteCreateProps) {
   const createNote = () => {
     const {
-      // plant, locationId, plants: plantsObj, dispatch,
       plant, dispatch,
     } = props;
-
-    // const plants = Object.keys(plantsObj).reduce((acc: UiPlants, plantId) => {
-    //   const p = plantsObj[plantId];
-    //   if (p.locationId === locationId) {
-    //     acc[plantId] = p;
-    //   }
-    //   return acc;
-    // }, {});
 
     if (!plant._id) {
       throw new Error(`Missing plant._id ${plant._id}`);
@@ -48,7 +39,6 @@ export default function noteCreate(props: NoteCreateProps) {
       note: '',
       plantIds: [plant._id],
       errors: {},
-      // plants,
     };
 
     dispatch(actionFunc.editNoteOpen({ note, plant }));

@@ -125,13 +125,17 @@ export default class Navbar extends React.Component {
       user = {} as UiUser,
       interimMap = {},
     } = this.state || {};
-    const displayName = user.name || '';
+    const { name: userName, _id: userId } = user;
+    // if (!userName) {
+    //   console.warn('No name found on user object', user);
+    // }
+    const displayName = userName || 'placeholder-user-name';
     const { store } = this.context;
 
     const loggedIn = isLoggedIn(store);
     const notEditing = !Object.keys(interimMap).length;
 
-    const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${user._id}`;
+    const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${userId}`;
 
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
