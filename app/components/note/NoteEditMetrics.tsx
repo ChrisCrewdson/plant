@@ -117,12 +117,12 @@ export default class NoteEditMetrics extends React.PureComponent {
           <Switch
             checked={isToggled}
             color="primary"
-            key={metaMetric.key}
             name={metaMetric.key}
             onChange={this.booleanHandler}
             style={{ paddingLeft: '5px', maxWidth: '200px' }}
           />
         )}
+        key={metaMetric.key}
         label={metaMetric.label}
         labelPlacement="start"
         style={{ display: 'block' }}
