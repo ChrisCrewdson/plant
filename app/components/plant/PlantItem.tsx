@@ -21,28 +21,9 @@ interface PlantItemProps {
   userCanEdit: boolean;
 }
 
-export default class PlantItem extends React.PureComponent {
-  props!: PlantItemProps;
-
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    userCanEdit: PropTypes.bool.isRequired,
-    plant: PropTypes.shape({
-      _id: PropTypes.string,
-      botanicalName: PropTypes.string,
-      isTerminated: PropTypes.bool,
-      notesRequested: PropTypes.bool,
-      title: PropTypes.string,
-    }).isRequired,
-  };
-
-  constructor(props: PlantItemProps) {
-    super(props);
-    this.createNote = this.createNote.bind(this);
-  }
-
-  createNote() {
-    const { plant, dispatch } = this.props;
+export default function plantItem(props: PlantItemProps) {
+  const createNote = () => {
+    const { plant, dispatch } = props;
     const plantIds = [plant._id];
 
     const note = {
@@ -68,63 +49,73 @@ export default class PlantItem extends React.PureComponent {
       note,
       plant,
     }));
+  };
+
+  const {
+    userCanEdit,
+    plant,
+  } = props;
+
+  const {
+    _id, title, isTerminated, botanicalName,
+  } = plant;
+
+  const floatingActionButtonStyle = {
+    marginLeft: '10px',
+    width: '50px',
+    // 0 = don't grow, 0 = don't shrink, 50px = start at this size
+    flex: '0 0 50px',
+  };
+
+  const linkStyle = {
+    margin: '20px',
+  };
+  if (isTerminated === true) {
+    // @ts-ignore - Fix this later by defining a style type for this
+    linkStyle.color = 'red';
   }
 
-  render() {
-    const {
-      userCanEdit,
-      plant,
-    } = this.props;
+  const fullTitle = `${title}${botanicalName ? ` (${botanicalName})` : ''}`;
+  const link = `/plant/${makeSlug(title)}/${_id}`;
+  const renderLink = (
+    <Link
+      style={linkStyle}
+      to={link}
+    >
+      <span>
+        {fullTitle}
+      </span>
+    </Link>
+  );
 
-    const {
-      _id, title, isTerminated, botanicalName,
-    } = plant;
-
-    const floatingActionButtonStyle = {
-      marginLeft: '10px',
-      width: '50px',
-      // 0 = don't grow, 0 = don't shrink, 50px = start at this size
-      flex: '0 0 50px',
-    };
-
-    const linkStyle = {
-      margin: '20px',
-    };
-    if (isTerminated === true) {
-      // @ts-ignore - Fix this later by defining a style type for this
-      linkStyle.color = 'red';
-    }
-
-    const fullTitle = `${title}${botanicalName ? ` (${botanicalName})` : ''}`;
-    const link = `/plant/${makeSlug(title)}/${_id}`;
-    const renderLink = (
-      <Link
-        style={linkStyle}
-        to={link}
-      >
-        <span>
-          {fullTitle}
-        </span>
-      </Link>
-    );
-
-    return (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {userCanEdit
-          && (
-          <div style={floatingActionButtonStyle}>
-            <Fab
-              color="primary"
-              onClick={this.createNote}
-              size="medium"
-              title="Add Note"
-            >
-              <AddIcon />
-            </Fab>
-          </div>
-          )}
-        {renderLink}
-      </div>
-    );
-  }
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      {userCanEdit
+        && (
+        <div style={floatingActionButtonStyle}>
+          <Fab
+            color="primary"
+            onClick={createNote}
+            size="medium"
+            title="Add Note"
+          >
+            <AddIcon />
+          </Fab>
+        </div>
+        )}
+      {renderLink}
+    </div>
+  );
 }
+
+plantItem.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
+  plant: PropTypes.shape({
+    _id: PropTypes.string,
+    botanicalName: PropTypes.string,
+    isTerminated: PropTypes.bool,
+    notesRequested: PropTypes.bool,
+    title: PropTypes.string,
+  }).isRequired,
+};
