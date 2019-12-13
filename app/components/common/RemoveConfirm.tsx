@@ -13,67 +13,57 @@ interface RemoveConfirmProps {
   title?: string;
 }
 
-export default class RemoveConfirm extends React.Component {
-  props!: RemoveConfirmProps;
+export default function removeConfirm(props: RemoveConfirmProps) {
+  const {
+    title, mini, confirmMsg, confirmFn, deleteData,
+  } = props;
 
-  static propTypes = {
-    confirmFn: PropTypes.func.isRequired,
-    confirmMsg: PropTypes.string.isRequired,
-    deleteData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    mini: PropTypes.bool.isRequired,
-    title: PropTypes.string,
-  };
-
-  static defaultProps = {
-    deleteData: {},
-    title: '',
-  };
-
-  constructor(props: RemoveConfirmProps) {
-    super(props);
-    this.reallyDelete = this.reallyDelete.bind(this);
-    this.cancelDelete = this.cancelDelete.bind(this);
-  }
-
-  reallyDelete() {
-    const { confirmFn, deleteData } = this.props;
+  const reallyDelete = () => {
     confirmFn(true, deleteData);
-  }
+  };
 
-  cancelDelete() {
-    const { confirmFn, deleteData } = this.props;
+  const cancelDelete = () => {
     confirmFn(false, deleteData);
-  }
+  };
 
-  render() {
-    const { title, mini, confirmMsg } = this.props;
+  const size = mini ? 'small' : 'medium';
 
-    const size = mini ? 'small' : 'medium';
-
-    return (
-      <div style={{ textAlign: 'right' }}>
-        <strong className="lead">
-          {confirmMsg}
-        </strong>
-        <Fab
-          color="secondary"
-          onClick={this.cancelDelete}
-          size={size}
-          style={{ marginLeft: '10px' }}
-          title="Cancel"
-        >
-          <ClearIcon />
-        </Fab>
-        <Fab
-          color="primary"
-          onClick={this.reallyDelete}
-          size={size}
-          style={{ marginLeft: '10px' }}
-          title={`Delete ${title}`}
-        >
-          <DeleteForeverIcon />
-        </Fab>
-      </div>
-    );
-  }
+  return (
+    <div style={{ textAlign: 'right' }}>
+      <strong className="lead">
+        {confirmMsg}
+      </strong>
+      <Fab
+        color="secondary"
+        onClick={cancelDelete}
+        size={size}
+        style={{ marginLeft: '10px' }}
+        title="Cancel"
+      >
+        <ClearIcon />
+      </Fab>
+      <Fab
+        color="primary"
+        onClick={reallyDelete}
+        size={size}
+        style={{ marginLeft: '10px' }}
+        title={`Delete ${title}`}
+      >
+        <DeleteForeverIcon />
+      </Fab>
+    </div>
+  );
 }
+
+removeConfirm.propTypes = {
+  confirmFn: PropTypes.func.isRequired,
+  confirmMsg: PropTypes.string.isRequired,
+  deleteData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  mini: PropTypes.bool.isRequired,
+  title: PropTypes.string,
+};
+
+removeConfirm.defaultProps = {
+  deleteData: {},
+  title: '',
+};
