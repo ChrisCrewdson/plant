@@ -1,7 +1,7 @@
 // User grid editor
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
@@ -47,121 +47,72 @@ interface GridProps {
   validate: (data: GridRowValidate) => string[];
 }
 
-// TODO: This is probably a subset of GridProps - if so construct that way
-interface GridState {
-  rows?: GridPropsRow[];
-  errors?: string[];
-  newRow?: boolean;
-  editId?: string;
-  deleteId?: string;
-}
+export default function grid(props: GridProps) {
+  const {
+    columns,
+    delete: removeRow,
+    insert,
+    meta,
+    rows,
+    title,
+    update,
+    validate,
+  } = props;
 
-export default class Grid extends React.Component {
-  props!: GridProps;
-
-  // eslint-disable-next-line react/state-in-constructor
-  state: GridState;
-
-  static propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.shape({
-      options: PropTypes.object,
-      title: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      width: PropTypes.number.isRequired,
-    })).isRequired,
-    delete: PropTypes.func.isRequired,
-    insert: PropTypes.func.isRequired,
-    meta: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    rows: PropTypes.arrayOf(PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      values: PropTypes.array.isRequired,
-    })),
-    title: PropTypes.string.isRequired,
-    update: PropTypes.func.isRequired,
-    validate: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    rows: [],
-    meta: {},
-  };
-
-  constructor(props: GridProps) {
-    super(props);
-    this.addNewRow = this.addNewRow.bind(this);
-    this.cancelEdit = this.cancelEdit.bind(this);
-    this.checkDelete = this.checkDelete.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
-    this.editCell = this.editCell.bind(this);
-    this.editRow = this.editRow.bind(this);
-    this.saveEdit = this.saveEdit.bind(this);
-    // We need to keep a reference of these rows because this component is going
-    // to manager the editing and state of the rows from here onwards.
-    // eslint-disable-next-line react/state-in-constructor
-    this.state = {
-      rows: props.rows,
-    };
-  }
+  // We need to keep a reference of these rows because this component is going
+  // to manage the editing and state of the rows from here onwards.
+  const [stateRows, setStateRows] = useState(rows);
+  const [deleteId, setDeleteId] = useState('');
+  const [editId, setEditId] = useState('');
+  const [errors, setErrors] = useState([] as string[]);
+  const [newRow, setNewRow] = useState(false);
 
   /**
-     * The delete button on a row was clicked. Set a flag to switch the Edit/Delete
-     * button pair to Cancel/Delete button pair to confirm the delete action.
-     * @param deleteData - data needed to identify row to be deleted
-     */
-  checkDelete(deleteData: { id: string }) {
-    const { id: deleteId } = deleteData;
-    this.setState({
-      deleteId,
-    });
-  }
+   * The delete button on a row was clicked. Set a flag to switch the Edit/Delete
+   * button pair to Cancel/Delete button pair to confirm the delete action.
+   * @param deleteData - data needed to identify row to be deleted
+   */
+  const checkDelete = (deleteData: { id: string }) => {
+    const { id } = deleteData;
+    setDeleteId(id);
+  };
 
   /**
-     * The "Confirm Delete" or "Cancel Delete" was clicked. Either delete the row or restore
-     * the Edit/Delete button pair.
-     * @param yes - True if delete was confirmed. False if cancel was clicked
-     * @param deleteData  - data needed to identify row to be deleted
-     */
-  confirmDelete(yes: boolean, deleteData: {id: string}): void {
+   * The "Confirm Delete" or "Cancel Delete" was clicked. Either delete the row or restore
+   * the Edit/Delete button pair.
+   * @param yes - True if delete was confirmed. False if cancel was clicked
+   * @param deleteData  - data needed to identify row to be deleted
+   */
+  const confirmDelete = (yes: boolean, deleteData: {id: string}): void => {
     if (yes) {
-      const { meta, delete: removeRow } = this.props;
-      const { rows } = this.state;
-      if (!rows || !rows.length) {
+      if (!stateRows || !stateRows.length) {
         return;
       }
       const { id } = deleteData;
-      const row = rows.find(({ _id }) => _id === id);
+      const row = stateRows.find(({ _id }) => _id === id);
       removeRow({ row, meta });
-      this.setState({
-        rows: rows.filter(({ _id }) => _id !== id),
-      });
+      setStateRows(stateRows.filter(({ _id }) => _id !== id));
     } else {
-      this.setState({ deleteId: '' });
+      setDeleteId('');
     }
-  }
+  };
 
   /**
-     * Toggle a row from View (read-only) Mode to Edit Mode
-     * @param editData - holds rowId of the row being switch to edit mode
-     */
-  editRow(editData: {id: string}) {
-    this.setState({
-      editId: editData.id,
-    });
-  }
+   * Toggle a row from View (read-only) Mode to Edit Mode
+   * @param editData - holds rowId of the row being switch to edit mode
+   */
+  const editRow = (editData: {id: string}) => {
+    setEditId(editData.id);
+  };
 
   /**
-     * Change the value in a row/column in the rows collection.
-     * aka edit a cell in the grid
-     * @param rowId - UUID of the row being edited
-     * @param colIndex - Integer index of column being edited
-     * @param value - New value for the cell
-     */
-  editCell(rowId: string, colIndex: number, value: string | boolean): void {
-    const {
-      errors = [] as string[],
-      rows: stateRows,
-    } = this.state;
-
+   * Change the value in a row/column in the rows collection.
+   * aka edit a cell in the grid
+   * @param rowId - UUID of the row being edited
+   * @param colIndex - Integer index of column being edited
+   * @param value - New value for the cell
+   */
+  const editCell = (rowId: string, colIndex: number, value: string | boolean): void => {
     if (errors[colIndex]) {
       // If we've edited this cell and it previously had an error associated
       // then clear that error
@@ -172,7 +123,7 @@ export default class Grid extends React.Component {
       return;
     }
 
-    const rows = stateRows.map((row) => {
+    const newRows = stateRows.map((row) => {
       if (row._id === rowId) {
         const values = row.values.map((currentValue, index) => {
           if (colIndex === index) {
@@ -184,62 +135,59 @@ export default class Grid extends React.Component {
       }
       return row;
     });
-    this.setState({ rows, errors });
-  }
+    setStateRows(newRows);
+    setErrors(errors);
+  };
 
   /**
-     * If we're canceling the editing of a new row then we want to completely
-     * remove that row. If we're editing an existing row then we want to restore
-     * the values from the props to that row in the state.
-     */
-  cancelEdit() {
-    const { editId, newRow = false, rows: stateRows } = this.state;
+   * If we're canceling the editing of a new row then we want to completely
+   * remove that row. If we're editing an existing row then we want to restore
+   * the values from the props to that row in the state.
+   */
+  const cancelEdit = () => {
+    if (!stateRows || !stateRows.length) {
+      return;
+    }
+    if (newRow) {
+      const newRows = stateRows.filter((row) => (row._id !== editId));
+      setStateRows(newRows);
+    } else {
+      if (!rows) {
+        return;
+      }
+      const propRow = rows.find((row) => row._id === editId);
+      const newRows = stateRows.map((row) => (propRow && row._id === propRow._id ? propRow : row));
+      setStateRows(newRows);
+    }
+    setNewRow(false);
+    setEditId('');
+  };
+
+  const saveEdit = () => {
     if (!stateRows) {
       return;
     }
-    let rows;
-    if (newRow) {
-      rows = stateRows.filter((row) => (row._id !== editId));
+    const row = stateRows.find((r) => r._id === editId);
+    const newErrors = validate({ row, meta, isNew: newRow });
+    if (newErrors.some((error) => !!error)) {
+      setErrors(newErrors);
     } else {
-      const { rows: propRows } = this.props;
-      if (!propRows) {
-        return;
-      }
-      const propRow = propRows.find((row) => row._id === editId);
-      rows = stateRows.map((row) => (propRow && row._id === propRow._id ? propRow : row));
-    }
-    this.setState({ editId: '', rows, newRow: false });
-  }
-
-  saveEdit() {
-    const { rows, editId, newRow: isNew } = this.state;
-    if (!rows) {
-      return;
-    }
-    const {
-      meta, validate, insert, update,
-    } = this.props;
-    const row = rows.find((r) => r._id === editId);
-    const errors = validate({ row, meta, isNew });
-    if (errors.some((error) => !!error)) {
-      this.setState({ errors });
-    } else {
-      if (isNew) {
+      if (newRow) {
         insert({ row, meta });
       } else {
         update({ row, meta });
       }
-      this.setState({ editId: '', newRow: false });
+      setEditId('');
+      setNewRow(false);
     }
-  }
+  };
 
-  addNewRow() {
-    const { columns: cols } = this.props;
-    const editId = utils.makeMongoId();
+  const addNewRow = () => {
+    const mongoId = utils.makeMongoId();
 
     const row: GridPropsRow = {
-      _id: editId,
-      values: cols.map(({ type, options }) => {
+      _id: mongoId,
+      values: columns.map(({ type, options }) => {
         switch (type) {
           case 'text':
             return '';
@@ -254,68 +202,60 @@ export default class Grid extends React.Component {
         }
       }),
     };
-    const { rows: stateRows } = this.state;
     if (!stateRows) {
       return;
     }
-    const rows = stateRows.concat(row);
-    this.setState({ rows, editId, newRow: true });
-  }
+    const newRows = stateRows.concat(row);
+    setStateRows(newRows);
+    setEditId(mongoId);
+    setNewRow(true);
+  };
 
-  render() {
-    const paperStyle = {
-      padding: 20,
-      marginBottom: 25,
-    };
+  const paperStyle = {
+    padding: 20,
+    marginBottom: 25,
+  };
 
-    // TODO: Shouldn't this value be pulled from somewhere?
-    const userCanEdit = true;
+  // TODO: Shouldn't this value be pulled from somewhere?
+  const userCanEdit = true;
 
-    const size = 'medium';
+  const size = 'medium';
 
-    const { columns, title } = this.props;
-    const {
-      rows,
-      deleteId, // If has a value then in process of confirming delete of this row
-      editId, // If has value then currently editing this row
-      errors = [],
-    } = this.state;
+  const headerCellStyle = { fontSize: 16 };
+  const bodyCellStyle = { fontSize: 14 };
 
-    const headerCellStyle = { fontSize: 16 };
-    const bodyCellStyle = { fontSize: 14 };
-
-    return (
-      <Paper
-        elevation={24}
-        style={paperStyle}
-      >
-        <h5>
-          {title}
-        </h5>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {
+  return (
+    <Paper
+      elevation={24}
+      style={paperStyle}
+    >
+      <h5>
+        {title}
+      </h5>
+      <Table>
+        <TableHead>
+          <TableRow>
+            {
                   columns.map((column) => (
                     <TableCell key={column.title} style={headerCellStyle}>
                       {column.title}
                     </TableCell>
                   ))
                 }
-              <TableCell key="action" style={headerCellStyle}>
+            <TableCell key="action" style={headerCellStyle}>
   Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-                && rows.map((row) => (
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {stateRows
+                && stateRows.map((row) => (
                   <TableRow key={row._id}>
                     {
                       row.values.map((value, index) => (
                         <TableCell key={columns[index].title} style={bodyCellStyle}>
                           <GridCell
-                            editCell={this.editCell}
+                            editCell={editCell}
                             editId={editId}
                             error={errors[index] || ''}
                             index={index}
@@ -332,17 +272,17 @@ export default class Grid extends React.Component {
                       {editId === row._id
                         ? (
                           <CancelSaveButtons
-                            clickCancel={this.cancelEdit}
-                            clickSave={this.saveEdit}
+                            clickCancel={cancelEdit}
+                            clickSave={saveEdit}
                             mini
                             showButtons
                           />
                         )
                         : (
                           <EditDeleteButtons
-                            clickDelete={this.checkDelete}
-                            clickEdit={this.editRow}
-                            confirmDelete={this.confirmDelete}
+                            clickDelete={checkDelete}
+                            clickEdit={editRow}
+                            confirmDelete={confirmDelete}
                             confirmMsg="Really?"
                             deleteData={{ id: row._id }}
                             deleteTitle=""
@@ -355,20 +295,44 @@ export default class Grid extends React.Component {
                     </TableCell>
                   </TableRow>
                 ))}
-          </TableBody>
-        </Table>
-        <div style={{ textAlign: 'right' }}>
-          <Fab
-            color="primary"
-            disabled={!!editId}
-            onClick={this.addNewRow}
-            size={size}
-            title={`Add ${title}`}
-          >
-            <AddIcon />
-          </Fab>
-        </div>
-      </Paper>
-    );
-  }
+        </TableBody>
+      </Table>
+      <div style={{ textAlign: 'right' }}>
+        <Fab
+          color="primary"
+          disabled={!!editId}
+          onClick={addNewRow}
+          size={size}
+          title={`Add ${title}`}
+        >
+          <AddIcon />
+        </Fab>
+      </div>
+    </Paper>
+  );
 }
+
+
+grid.propTypes = {
+  columns: PropTypes.arrayOf(PropTypes.shape({
+    options: PropTypes.object,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
+  })).isRequired,
+  delete: PropTypes.func.isRequired,
+  insert: PropTypes.func.isRequired,
+  meta: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  rows: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    values: PropTypes.array.isRequired,
+  })),
+  title: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
+  validate: PropTypes.func.isRequired,
+};
+
+grid.defaultProps = {
+  rows: [],
+  meta: {},
+};
