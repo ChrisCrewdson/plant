@@ -14,7 +14,6 @@ import Home from './components/base/Home';
 import Login from './components/auth/Login';
 import Plant from './components/plant/Plant';
 import Article from './components/article/Article';
-import Plants from './components/plant/Plants';
 import Privacy from './components/info/Privacy';
 import Profile from './components/user/Profile';
 import LayoutMap from './components/layout/LayoutMap';
@@ -44,7 +43,6 @@ const routes = (
       <Route path="/login" component={Login} />
       <Route path="/plant" exact component={Plant} />
       <Route path="/plant/:slug/:id" component={Plant} />
-      <Route path="/plants/:slug/:id" component={Plants} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/profile" component={Profile} />
       <Route path="/terms" component={Terms} />
