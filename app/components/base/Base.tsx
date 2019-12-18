@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function base(props: any) {
+export default function base(props: any): JSX.Element {
   const { children } = props;
   return (
     <div className="page">

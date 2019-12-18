@@ -1,7 +1,7 @@
 import React from 'react';
 import Base from '../base/Base';
 
-export default function login() {
+export default function login(): JSX.Element {
   const devLogin = process.env.NODE_ENV !== 'production';
   /* eslint-disable react/jsx-no-target-blank */
   return (

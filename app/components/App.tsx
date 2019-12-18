@@ -17,7 +17,7 @@ export default class App extends React.Component {
   };
 
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     const { users = {}, locations = {} } = store.getState();
 
@@ -36,7 +36,7 @@ export default class App extends React.Component {
     }
   }
 
-  render() {
+  render(): JSX.Element {
     const { children } = this.props;
     return (
       <div className="react-root">

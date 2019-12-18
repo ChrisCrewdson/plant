@@ -49,7 +49,7 @@ validatejs.validators.plantIdsValidate = (value: string[], options: PlantIdsVali
   return null;
 };
 
-function transform(attributes: object) {
+function transform(attributes: object): object {
   return attributes;
 }
 

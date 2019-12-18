@@ -24,7 +24,9 @@ interface IntDateValidateOptions {
  * something like 17000101 to 20201231. Not sure why we'd
  * have dates beyond the current day...
  */
-validatejs.validators.intDateValidate = (value: number, options: IntDateValidateOptions) => {
+validatejs.validators.intDateValidate = (
+  value: number, options: IntDateValidateOptions,
+): string|null => {
   if (Number.isNaN(value)) {
     // console.warn(`Date validate expected ${value} to not be NaN`);
     return `^${options.name} must be a valid date in the format MM/DD/YYYY`;
