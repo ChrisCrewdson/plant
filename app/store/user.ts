@@ -12,10 +12,10 @@ let user: UiUser;
 /**
  * setup the subscription
  */
-export function setupSubscribe(store: Store<PlantStateTree, PlantAction>) {
+export function setupSubscribe(store: Store<PlantStateTree, PlantAction>): void {
   let currentValue = user || produce({}, (draft) => draft);
 
-  function handleChange() {
+  function handleChange(): void {
     const previousValue = currentValue;
     currentValue = store.getState().user;
 
@@ -29,7 +29,7 @@ export function setupSubscribe(store: Store<PlantStateTree, PlantAction>) {
   store.subscribe(handleChange);
 }
 
-export function initialState() {
+export function initialState(): UiUser {
   if (!user) {
     try {
       const localStorageUser = localStorage.getItem('user');

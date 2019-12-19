@@ -47,7 +47,7 @@ interface GridProps {
   validate: (data: GridRowValidate) => string[];
 }
 
-export default function grid(props: GridProps) {
+export default function grid(props: GridProps): JSX.Element {
   const {
     columns,
     delete: removeRow,
@@ -72,7 +72,7 @@ export default function grid(props: GridProps) {
    * button pair to Cancel/Delete button pair to confirm the delete action.
    * @param deleteData - data needed to identify row to be deleted
    */
-  const checkDelete = (deleteData: { id: string }) => {
+  const checkDelete = (deleteData: { id: string }): void => {
     const { id } = deleteData;
     setDeleteId(id);
   };
@@ -101,7 +101,7 @@ export default function grid(props: GridProps) {
    * Toggle a row from View (read-only) Mode to Edit Mode
    * @param editData - holds rowId of the row being switch to edit mode
    */
-  const editRow = (editData: {id: string}) => {
+  const editRow = (editData: {id: string}): void => {
     setEditId(editData.id);
   };
 
@@ -144,7 +144,7 @@ export default function grid(props: GridProps) {
    * remove that row. If we're editing an existing row then we want to restore
    * the values from the props to that row in the state.
    */
-  const cancelEdit = () => {
+  const cancelEdit = (): void => {
     if (!stateRows || !stateRows.length) {
       return;
     }
@@ -163,7 +163,7 @@ export default function grid(props: GridProps) {
     setEditId('');
   };
 
-  const saveEdit = () => {
+  const saveEdit = (): void => {
     if (!stateRows) {
       return;
     }
@@ -182,7 +182,7 @@ export default function grid(props: GridProps) {
     }
   };
 
-  const addNewRow = () => {
+  const addNewRow = (): void => {
     const mongoId = utils.makeMongoId();
 
     const row: GridPropsRow = {

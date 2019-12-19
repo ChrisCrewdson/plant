@@ -214,7 +214,7 @@ export class MongoDb {
         };
       }
 
-      const userFromSocialMedia = async () => {
+      const userFromSocialMedia = async (): Promise<BizUser> => {
         if (!queryBySocialMedia) {
           throw new Error('One of facebook or google must be defined on userDetails');
         }
@@ -231,7 +231,7 @@ export class MongoDb {
       };
 
       // 4. If user not found then try find by email
-      const userFromEmail = async () => {
+      const userFromEmail = async (): Promise<false | Readonly<any> | null> => {
         if (!userDetails.email) {
           return null;
         }

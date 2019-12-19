@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import MaterialCore from '@material-ui/core';
 
-type NoteAssocPlantToggleButtonType =
+export type NoteAssocPlantToggleButtonType =
   'selected' |
   'alive' |
   'dead';

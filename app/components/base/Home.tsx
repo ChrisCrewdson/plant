@@ -21,24 +21,24 @@ export default class Home extends React.Component {
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.updateState();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     this.updateState();
   }
 
-  updateState() {
+  updateState(): void {
     const { store } = this.context;
     const { users, locations } = store.getState();
     this.setState({ users, locations });
@@ -92,7 +92,7 @@ Login to get started
     );
   }
 
-  renderUsers() {
+  renderUsers(): JSX.Element {
     const { store } = this.context;
     const { users = {}, locations = {} } = store.getState();
     const usersCount = Object.keys(users).length;
@@ -100,7 +100,7 @@ Login to get started
     return this.anonHome(!!usersCount, !!locationsCount);
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <Base>
         <div>

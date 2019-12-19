@@ -9,7 +9,7 @@ interface InputComboProps {
   value: boolean;
 }
 
-export default function inputCombo(props: InputComboProps) {
+export default function inputCombo(props: InputComboProps): JSX.Element | null {
   const {
     booleanChangeHandler,
     name: namo,

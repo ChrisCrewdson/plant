@@ -18,12 +18,14 @@ interface LocationTileProps {
   title: string;
 }
 
-function onLinkClick(_id: string, dispatch: Dispatch<PlantAction<ChangeActiveLocationIdPayload>>) {
+function onLinkClick(
+  _id: string, dispatch: Dispatch<PlantAction<ChangeActiveLocationIdPayload>>,
+): void {
   const payload: ChangeActiveLocationIdPayload = { _id };
   dispatch(actionFunc.changeActiveLocationId(payload));
 }
 
-export default function locationTile(props: LocationTileProps) {
+export default function locationTile(props: LocationTileProps): JSX.Element {
   const {
     _id,
     dispatch,
@@ -44,7 +46,7 @@ export default function locationTile(props: LocationTileProps) {
       <Link
         style={{ margin: '20px' }}
         to={link}
-        onClick={() => { onLinkClick(_id, dispatch); }}
+        onClick={(): any => { onLinkClick(_id, dispatch); }}
       >
         <span>
           {locationTitle}

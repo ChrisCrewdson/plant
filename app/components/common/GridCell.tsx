@@ -24,7 +24,7 @@ interface GridCellProps {
   value: string|boolean;
 }
 
-export default function gridCell(props: GridCellProps) {
+export default function gridCell(props: GridCellProps): JSX.Element | null {
   const {
     editCell,
     editId,
@@ -40,16 +40,16 @@ export default function gridCell(props: GridCellProps) {
   /**
    * Change Handler for Select
    */
-  const onChangeSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const onChangeSelect = (event: React.ChangeEvent<{ value: unknown }>): void => {
     const val = event.target.value as string;
     editCell(rowId, index, val);
   };
 
-  const onChangeText = (name: string, val: string) => {
+  const onChangeText = (name: string, val: string): void => {
     editCell(rowId, index, val);
   };
 
-  const onChangeBoolean = (name: string, val: boolean) => {
+  const onChangeBoolean = (name: string, val: boolean): void => {
     editCell(rowId, index, val);
   };
 

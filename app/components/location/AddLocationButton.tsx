@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { AddPlantButtonProps } from '../common/AddPlantButton';
 
-export default function addLocationButton(props: AddPlantButtonProps) {
+export default function addLocationButton(props: AddPlantButtonProps): JSX.Element | null {
   const {
     mini,
     show,

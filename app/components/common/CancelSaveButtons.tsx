@@ -14,7 +14,7 @@ interface CancelSaveButtonsProps {
   mini?: boolean;
 }
 
-export default function cancelSaveButtons(props: CancelSaveButtonsProps) {
+export default function cancelSaveButtons(props: CancelSaveButtonsProps): JSX.Element | null {
   const {
     showButtons,
   } = props;

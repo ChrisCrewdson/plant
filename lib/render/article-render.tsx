@@ -13,7 +13,7 @@ interface SsrRenderArticleOptions {
   store: Store<any, PlantAction<any>>;
 }
 
-const ssrRenderArticle = (options: SsrRenderArticleOptions) => {
+const ssrRenderArticle = (options: SsrRenderArticleOptions): string => {
   const {
     theme,
     store,

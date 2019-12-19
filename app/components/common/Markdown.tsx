@@ -7,7 +7,7 @@ interface MarkdownProps {
   markdown: string;
 }
 
-export default function markdown(props: MarkdownProps) {
+export default function markdown(props: MarkdownProps): JSX.Element {
   const { markdown: md } = props;
   const mkn = { __html: marked(md || '') };
   // eslint-disable-next-line react/no-danger

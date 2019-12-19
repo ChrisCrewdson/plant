@@ -14,7 +14,7 @@ export interface AddPlantButtonProps {
   style?: object;
 }
 
-export default function addPlantButton(props: AddPlantButtonProps) {
+export default function addPlantButton(props: AddPlantButtonProps): JSX.Element | null {
   const {
     mini,
     show = false,

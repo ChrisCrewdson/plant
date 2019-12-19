@@ -13,16 +13,16 @@ interface RemoveConfirmProps {
   title?: string;
 }
 
-export default function removeConfirm(props: RemoveConfirmProps) {
+export default function removeConfirm(props: RemoveConfirmProps): JSX.Element {
   const {
     title, mini, confirmMsg, confirmFn, deleteData,
   } = props;
 
-  const reallyDelete = () => {
+  const reallyDelete = (): void => {
     confirmFn(true, deleteData);
   };
 
-  const cancelDelete = () => {
+  const cancelDelete = (): void => {
     confirmFn(false, deleteData);
   };
 

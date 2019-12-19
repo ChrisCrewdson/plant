@@ -20,7 +20,7 @@ interface SsrRenderPlantOptions {
   searchParams: Map<string, any>;
 }
 
-const ssrRenderPlant = (options: SsrRenderPlantOptions) => {
+const ssrRenderPlant = (options: SsrRenderPlantOptions): string => {
   const {
     theme,
     store,

@@ -60,7 +60,7 @@ const server500 = (res: Response): Response => res.status(500).send({ success: f
 /**
  * api locations routes
  */
-export const locationsApi = (app: Application) => {
+export const locationsApi = (app: Application): void => {
   /**
    * getLocationById
    */

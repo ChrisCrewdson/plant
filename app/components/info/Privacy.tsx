@@ -173,7 +173,7 @@ below.
 Last Edited on 2019-04-07
 `;
 
-export default function privacy() {
+export default function privacy(): JSX.Element {
   const paperStyle = {
     padding: 20,
     width: '100%',

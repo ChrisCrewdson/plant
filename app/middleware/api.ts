@@ -10,7 +10,7 @@ import { actionEnum, actionFunc } from '../actions';
 import { ajax, AjaxOptions } from './ajax';
 import { PlantAction, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
 
-function logoutRequest(store: Store /* , action */) {
+function logoutRequest(store: Store /* , action */): void {
   const options: AjaxOptions = {
     url: '/api/logout',
     success: actionFunc.logoutSuccess,
@@ -20,14 +20,14 @@ function logoutRequest(store: Store /* , action */) {
   ajax(store, options);
 }
 
-function createPlant(store: Store, action: any, next: Function) {
-  function success(ajaxResult: object) {
+function createPlant(store: Store, action: any, next: Function): void {
+  function success(ajaxResult: object): PlantAction<any> {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
     return actionFunc.createPlantSuccess(ajaxResult);
   }
 
-  function failure(ajaxResult: object) {
+  function failure(ajaxResult: object): PlantAction<any> {
     store.dispatch(actionFunc.editPlantChange({
       errors: {
         general: ajaxResult.toString(),
@@ -64,7 +64,7 @@ interface SaveFilesRequestOptions {
  * webkitRelativePath:""
  */
 function saveFilesRequest(store: Store, action: PlantAction<UpsertNoteRequestPayload>,
-  opts: SaveFilesRequestOptions, next: Function) {
+  opts: SaveFilesRequestOptions, next: Function): void {
   const { payload } = action;
 
   const data = new FormData();
@@ -98,16 +98,16 @@ function saveFilesRequest(store: Store, action: PlantAction<UpsertNoteRequestPay
 // files: An optional array of files
 // note: The note being created
 function upsertNoteRequest(
-  store: Store, action: PlantAction<UpsertNoteRequestPayload>, next: Function) {
+  store: Store, action: PlantAction<UpsertNoteRequestPayload>, next: Function): void {
   const { payload } = action;
 
-  function success(ajaxResult: UpsertNoteRequestPayload) {
+  function success(ajaxResult: UpsertNoteRequestPayload): PlantAction<any> {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editNoteClose());
     return actionFunc.upsertNoteSuccess(ajaxResult);
   }
 
-  function failure(ajaxResult: object) {
+  function failure(ajaxResult: object): PlantAction<any> {
     store.dispatch(actionFunc.editNoteChange({
       errors: {
         general: ajaxResult.toString(),
@@ -132,14 +132,14 @@ function upsertNoteRequest(
   }
 }
 
-function updatePlant(store: Store, action: PlantAction, next: Function) {
-  function success(ajaxResult: object) {
+function updatePlant(store: Store, action: PlantAction, next: Function): any {
+  function success(ajaxResult: object): PlantAction<any> {
     // This will cause the edit note window to close
     store.dispatch(actionFunc.editPlantClose());
     return actionFunc.updatePlantSuccess(ajaxResult);
   }
 
-  function failure(ajaxResult: object) {
+  function failure(ajaxResult: object): PlantAction<any> {
     store.dispatch(actionFunc.editPlantChange({
       errors: {
         general: ajaxResult.toString(),
@@ -159,7 +159,7 @@ function updatePlant(store: Store, action: PlantAction, next: Function) {
   return next(action);
 }
 
-function deletePlantRequest(store: Store, action: PlantAction, next: Function) {
+function deletePlantRequest(store: Store, action: PlantAction, next: Function): void {
   const { plantId } = action.payload || {};
   if (plantId) {
     const options = {
@@ -173,7 +173,7 @@ function deletePlantRequest(store: Store, action: PlantAction, next: Function) {
   next(action);
 }
 
-function deleteNoteRequest(store: Store, action: PlantAction<string>, next: Function) {
+function deleteNoteRequest(store: Store, action: PlantAction<string>, next: Function): void {
   const options: AjaxOptions = {
     type: 'DELETE',
     url: `/api/note/${action.payload}`,
@@ -184,7 +184,7 @@ function deleteNoteRequest(store: Store, action: PlantAction<string>, next: Func
   next(action);
 }
 
-function loadPlantRequest(store: Store, action: PlantAction) {
+function loadPlantRequest(store: Store, action: PlantAction): void {
   const { _id } = action.payload || {};
 
   if (_id) {
@@ -200,7 +200,7 @@ function loadPlantRequest(store: Store, action: PlantAction) {
 // Get all the plants a user has created
 // action.payload is a locationId
 function loadPlantsRequest(
-  store: Store, action: PlantAction<ReadonlyArray<BizPlant>>, next: Function) {
+  store: Store, action: PlantAction<ReadonlyArray<BizPlant>>, next: Function): void {
   const locationId = action.payload;
   const options: AjaxOptions = {
     url: `/api/plants/${locationId}`,
@@ -212,7 +212,7 @@ function loadPlantsRequest(
 }
 
 // Get a specific user
-function loadUserRequest(store: Store, action: PlantAction) {
+function loadUserRequest(store: Store, action: PlantAction): void {
   const userId = action.payload;
   const options: AjaxOptions = {
     url: `/api/user/${userId}`,
@@ -225,7 +225,7 @@ function loadUserRequest(store: Store, action: PlantAction) {
 // Load all the users.
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
-function loadUsersRequest(store: Store) {
+function loadUsersRequest(store: Store): void {
   const options: AjaxOptions = {
     url: '/api/users',
     success: actionFunc.loadUsersSuccess,
@@ -237,7 +237,7 @@ function loadUsersRequest(store: Store) {
 // Load all the locations.
 // At some point in the future we'll want paging but for now grab all of them
 // action.payload at this point is undefined
-function loadLocationsRequest(store: Store) {
+function loadLocationsRequest(store: Store): void {
   const options: AjaxOptions = {
     url: '/api/locations',
     success: actionFunc.loadLocationsSuccess,
@@ -252,7 +252,7 @@ function loadLocationsRequest(store: Store) {
 // noteIds: an array of noteIds
 // plantIds: an array of plantIds
 function loadNotesRequest(store: Store, action: PlantAction<LoadNotesRequestPayload>,
-  next: Function) {
+  next: Function): void {
   const { plantIds, noteIds } = action.payload || {};
 
   if (!noteIds && !plantIds) {
@@ -275,7 +275,7 @@ function loadNotesRequest(store: Store, action: PlantAction<LoadNotesRequestPayl
 
 // Get all the plants listed
 // action.payload is an array of plantIds
-function loadUnloadedPlantsRequest(store: Store, action: PlantAction) {
+function loadUnloadedPlantsRequest(store: Store, action: PlantAction): void {
   if (!action.payload || !action.payload.length) {
     // eslint-disable-next-line no-console
     console.error('No plantIds on payload, action:', action);
@@ -304,7 +304,7 @@ interface ModifyLocationRequestAction {
  * Entry point for inserting/updating/deleting a part of a location document.
  */
 function modifyLocationRequest(store: Store<any, AnyAction> | null,
-  action: ModifyLocationRequestAction, next: Function) {
+  action: ModifyLocationRequestAction, next: Function): any {
   if (!store) {
     return next(action);
   }
@@ -340,7 +340,9 @@ export const apis: Record<string, Function> = {
   [actionEnum.UPSERT_NOTE_REQUEST]: upsertNoteRequest,
 };
 
-export const api = (store: Store): Function => (next: Dispatch) => (action: PlantAction<any>) => {
+export const api = (store: Store): Function => (
+  next: Dispatch,
+) => (action: PlantAction<any>): any => {
   if (apis[action.type]) {
     return apis[action.type](store, action, next);
   }

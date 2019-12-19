@@ -20,7 +20,7 @@ interface EditDeleteButtonsProps {
   showDeleteConfirmation: boolean;
 }
 
-export default function editDeleteButtons(props: EditDeleteButtonsProps) {
+export default function editDeleteButtons(props: EditDeleteButtonsProps): JSX.Element | null {
   const {
     clickDelete,
     clickEdit,
@@ -38,11 +38,11 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps) {
     return null;
   }
 
-  function onClickDelete() {
+  function onClickDelete(): void {
     clickDelete(deleteData);
   }
 
-  function onClickEdit() {
+  function onClickEdit(): void {
     clickEdit(deleteData);
   }
 
