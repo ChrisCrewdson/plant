@@ -13,7 +13,7 @@ import './stylesheets/main.css';
  * Previously there wasn't a version associated with localStorage so we default
  * a zero if the 'version' key is missing.
  */
-function updateLocalStorage() {
+function updateLocalStorage(): void {
   const VERSION_KEY = 'version';
   const CURRENT_VERSION = '1';
   const UNVERSIONED = '0';

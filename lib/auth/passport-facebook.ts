@@ -34,7 +34,7 @@ const profileFields = [
   'verified',
 ];
 
-export function fbPassport(passport: { use: Function}) {
+export function fbPassport(passport: { use: Function}): void {
   const { PLANT_FB_ID, PLANT_FB_SECRET } = process.env;
 
   if (!PLANT_FB_ID) {

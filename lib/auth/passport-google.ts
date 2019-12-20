@@ -20,7 +20,7 @@ const localLogger = Logger.create({
 
 const GoogleStrategy = passportGoogle.Strategy;
 
-export function googlePassport(passport: { use: Function }) {
+export function googlePassport(passport: { use: Function }): void {
   const { PLANT_GOOGLE_ID, PLANT_GOOGLE_SECRET } = process.env;
   if (!PLANT_GOOGLE_ID) {
     localLogger.error({

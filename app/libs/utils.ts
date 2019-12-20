@@ -25,7 +25,7 @@ type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
 
 const { gisMultiplier } = constants;
 
-function makeMongoId() {
+function makeMongoId(): string {
   return new ObjectID().toString();
 }
 
@@ -221,7 +221,7 @@ function sortItems(prop: string, itemIds: ReadonlyArray<string>,
     return itemIds;
   }
 
-  const sorter = (a: string, b: string) => {
+  const sorter = (a: string, b: string): number => {
     const itemA = items[a];
     const itemB = items[b];
     if (itemA && itemB) {
@@ -573,7 +573,7 @@ function showFeature(user: { _id: string }): boolean {
  * @param userSuppliedValue - the value supplied by the user
  * @param internalValue - internal value we compare against
  */
-function constantEquals(userSuppliedValue: string | undefined, internalValue: string) {
+function constantEquals(userSuppliedValue: string | undefined, internalValue: string): boolean {
   if (typeof userSuppliedValue !== 'string' || typeof internalValue !== 'string') {
     return false;
   }

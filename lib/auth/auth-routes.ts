@@ -11,7 +11,7 @@ const moduleName = 'routes/auth';
 /**
  * api locations routes
  */
-export function auth(app: Application) {
+export function auth(app: Application): void {
   app.get('/auth/facebook', passport.authenticate('facebook'));
   app.get('/auth/google', passport.authenticate('google', {
     scope: 'email',
@@ -27,7 +27,7 @@ export function auth(app: Application) {
        * Passport Auth Callback
        */
       const passportAuthCallback = (passportAuthenticateError: Error,
-        user: object, info: object) => {
+        user: object, info: object): any => {
         if (passportAuthenticateError) {
           logger.error({
             moduleName,
@@ -47,7 +47,7 @@ export function auth(app: Application) {
           return res.status(401).json({ error: 'Failed to authenticate user.' });
         }
 
-        const loginCallback = (err2: Error) => {
+        const loginCallback = (err2: Error): void | Promise<any> => {
           if (err2) {
             return logger.error({
               moduleName,

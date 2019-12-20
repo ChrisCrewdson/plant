@@ -6,7 +6,7 @@ import { PlantAction, ChangeActiveLocationIdPayload } from '../../lib/types/redu
 
 type RoUiUser = Readonly<UiUser>;
 
-function logoutRequest(state: RoUiUser) {
+function logoutRequest(state: RoUiUser): Readonly<UiUser> {
   return produce(state, (draft) => {
     draft.status = 'logout';
     draft.isLoggedIn = false;

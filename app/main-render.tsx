@@ -52,7 +52,7 @@ const routes = (
   </BrowserRouter>
 );
 
-const renderMain = function render() {
+const renderMain = function render(): void {
   const content = document.getElementById('wrapper');
 
   // @ts-ignore - __SSR__ is something we add on the server

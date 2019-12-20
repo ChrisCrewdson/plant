@@ -20,7 +20,7 @@ export interface AjaxOptions {
 /**
  * Make the AJAX call to the server
  */
-function jqueryAjax(options: JQueryAjaxSettings) {
+function jqueryAjax(options: JQueryAjaxSettings): JQueryXHR {
   return $.ajax(options);
 }
 
@@ -53,7 +53,7 @@ function clearPending(options: JQueryAjaxSettings): void {
   }
 }
 
-export const ajax = (store: Store, options: AjaxOptions) => {
+export const ajax = (store: Store, options: AjaxOptions): void => {
   if (!options.url || !isFunction(options.success) || !isFunction(options.failure)) {
     // console.error('Invalid options for ajax:', options);
   }
@@ -86,7 +86,7 @@ export const ajax = (store: Store, options: AjaxOptions) => {
   /**
    * Provides a way to show the user the progress on the upload
    */
-  function progressHandlingFunction(e: ProgressEvent) {
+  function progressHandlingFunction(e: ProgressEvent): void {
     if (e.lengthComputable) {
       const uploadProgress = { value: e.loaded, max: e.total, note: options.note };
       if (options.progress) {
@@ -108,7 +108,7 @@ export const ajax = (store: Store, options: AjaxOptions) => {
     ajaxOptions.cache = false;
 
     // Custom XMLHttpRequest
-    ajaxOptions.xhr = function xhrUpload() {
+    ajaxOptions.xhr = function xhrUpload(): any {
       const xhr = $.ajaxSettings.xhr();
       if (xhr.upload) { // Check if upload property exists
         xhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
