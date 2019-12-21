@@ -21,8 +21,8 @@ interface PlantItemProps {
   userCanEdit: boolean;
 }
 
-export default function plantItem(props: PlantItemProps) {
-  const createNote = () => {
+export default function plantItem(props: PlantItemProps): JSX.Element {
+  const createNote = (): void => {
     const { plant, dispatch } = props;
     const plantIds = [plant._id];
 

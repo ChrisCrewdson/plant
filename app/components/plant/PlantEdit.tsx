@@ -92,7 +92,7 @@ class PlantEdit extends React.Component {
     this.state = { pageTitle };
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantClose());
   }
@@ -102,7 +102,7 @@ class PlantEdit extends React.Component {
    * its value
    * @param locationId - MongoId of new value
    */
-  onChangeLocation(event: React.ChangeEvent<{ value: unknown }>) {
+  onChangeLocation(event: React.ChangeEvent<{ value: unknown }>): void {
     const locationId = event.target.value as string;
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
@@ -110,19 +110,19 @@ class PlantEdit extends React.Component {
     }));
   }
 
-  onChange(name: string, value: string) {
+  onChange(name: string, value: string): void {
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantChange({
       [name]: value,
     }));
   }
 
-  cancel() {
+  cancel(): void {
     const { dispatch } = (this.props);
     dispatch(actionFunc.editPlantClose());
   }
 
-  addGeo() {
+  addGeo(): void {
     if (utils.hasGeo()) {
       utils.getGeo({}, (err, loc) => {
         if (err) {
@@ -137,7 +137,7 @@ class PlantEdit extends React.Component {
     }
   }
 
-  save(e: React.MouseEvent<{}, MouseEvent>) {
+  save(e: React.MouseEvent<{}, MouseEvent>): void {
     const {
       interimPlant, user, dispatch, history,
     } = (this.props);
@@ -171,7 +171,7 @@ class PlantEdit extends React.Component {
     e.stopPropagation();
   }
 
-  render() {
+  render(): JSX.Element {
     const {
       interimPlant, user, users, locations, dispatch,
     } = (this.props);

@@ -16,7 +16,7 @@ interface PlantEditTerminatedProps {
   interimPlant: UiPlantsValue;
 }
 
-export default function plantEditTerminated(props: PlantEditTerminatedProps) {
+export default function plantEditTerminated(props: PlantEditTerminatedProps): JSX.Element {
   const {
     interimPlant: {
       errors = {},

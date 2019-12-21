@@ -83,8 +83,9 @@ function crunchChangeNumbers(metric: MetricChangePair, prop: MetricItemMetricTyp
   return `The ${prop} has changed by ${valueDelta} inches over the last ${dateDelta} days.`;
 }
 
-function calculateMetrics(acc: MetricNote[], note: UiNotesValue, noteId: string,
-  metrics: MetricItem[]) {
+function calculateMetrics(
+  acc: MetricNote[], note: UiNotesValue, noteId: string, metrics: MetricItem[],
+): void {
   const { metrics: noteMetrics } = note;
   if (noteMetrics) {
     const { height, girth } = noteMetrics;

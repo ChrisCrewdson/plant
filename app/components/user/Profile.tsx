@@ -25,7 +25,7 @@ interface ProfileProps {
 // 2. Other user: /profile/slug/<id>
 // Only implementing #1 for now.
 
-export default function profile(props: ProfileProps, context: {store: PlantStore}) {
+export default function profile(props: ProfileProps, context: {store: PlantStore}): JSX.Element {
   const radioGroup: React.CSSProperties = {
     display: 'flex',
   };

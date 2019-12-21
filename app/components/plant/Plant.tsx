@@ -91,7 +91,7 @@ class Plant extends React.Component {
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     this.initState(true);
@@ -106,22 +106,22 @@ class Plant extends React.Component {
 - can call this.setState() here (will not trigger additional render)
 */
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps: PlantProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: PlantProps): void {
     this.initState(true, nextProps);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     this.forceUpdate();
     // this.initState(false);
   }
 
-  initState(first: boolean, initProps?: PlantProps) {
+  initState(first: boolean, initProps?: PlantProps): void {
     const props: PlantProps = initProps || this.props || {};
     const { store } = this.context;
     const { user, users, plants } = store.getState();
@@ -178,7 +178,7 @@ class Plant extends React.Component {
     }
   }
 
-  render() {
+  render(): JSX.Element {
     const { store } = this.context;
     const { match = {}, params = {} } = this.props;
     const {

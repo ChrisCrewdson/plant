@@ -39,7 +39,7 @@ interface LocationState {
 }
 
 class Location extends React.Component {
-  static addPlantButton(userCanEdit: boolean) {
+  static addPlantButton(userCanEdit: boolean): JSX.Element {
     return (
       <div style={{ float: 'right', marginBottom: '60px' }}>
         <AddPlantButton
@@ -81,7 +81,7 @@ class Location extends React.Component {
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     const { locations = {} } = store.getState();
     const { match: { params } } = this.props;
@@ -95,13 +95,13 @@ class Location extends React.Component {
     this.unsubscribe = store.subscribe(this.onChange);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     const { store } = this.context;
     const {
       interim,
@@ -120,12 +120,12 @@ class Location extends React.Component {
     this.setState(state);
   }
 
-  postSaveSuccessCreateNote() {
+  postSaveSuccessCreateNote(): void {
     const { store } = this.context;
     store.dispatch(actionFunc.editNoteClose());
   }
 
-  static renderTitle(location: UiLocationsValue) {
+  static renderTitle(location: UiLocationsValue): JSX.Element {
     return (
       <h2 style={{ textAlign: 'center' }}>
         {`${location.title} - Plant List`}
@@ -133,7 +133,7 @@ class Location extends React.Component {
     );
   }
 
-  static renderWaiting(location: UiLocationsValue) {
+  static renderWaiting(location: UiLocationsValue): JSX.Element {
     return (
       <Base>
         <div>
@@ -146,7 +146,7 @@ class Location extends React.Component {
     );
   }
 
-  static renderNoPlants(location: UiLocationsValue, userCanEdit: boolean) {
+  static renderNoPlants(location: UiLocationsValue, userCanEdit: boolean): JSX.Element {
     return (
       <Base>
         <div>
@@ -165,7 +165,7 @@ No plants added yet...
     );
   }
 
-  render() {
+  render(): JSX.Element {
     const { store } = this.context;
     const {
       filter = '',

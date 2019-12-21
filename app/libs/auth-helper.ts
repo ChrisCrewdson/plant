@@ -1,7 +1,7 @@
 import getIn from 'lodash/get';
 import { Store } from 'redux';
 
-export function isLoggedIn(store: Store) {
+export function isLoggedIn(store: Store): boolean {
   const { user } = store.getState();
   const { isLoggedIn: loggedIn = false } = user || {};
   return !!(user && loggedIn);
@@ -12,8 +12,9 @@ export function isLoggedIn(store: Store) {
  * @param loggedInUserId - the id of the user that is logged in
  * @param location - an Object of the location
  */
-export function canEdit(loggedInUserId: (string | null) | undefined,
-  location: UiLocationsValue | null) {
+export function canEdit(
+  loggedInUserId: (string | null) | undefined, location: UiLocationsValue | null,
+): boolean {
   if (!loggedInUserId || !location) {
     return false;
   }

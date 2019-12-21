@@ -6,7 +6,7 @@ interface NoteReadMetricsProps {
   note: UiNotesValue;
 }
 
-export default function noteReadMetrics(props: NoteReadMetricsProps) {
+export default function noteReadMetrics(props: NoteReadMetricsProps): JSX.Element | null {
   const { note: { metrics } } = props;
   if (!metrics) {
     return null;

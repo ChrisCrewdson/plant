@@ -21,14 +21,14 @@ interface NoteReadProps {
   plant: UiPlantsValue;
 }
 
-const buildImageUrl = (size: ImageSizeName, image: NoteImage) => {
+const buildImageUrl = (size: ImageSizeName, image: NoteImage): string => {
   const { id, ext } = image;
   const folder = process.env.NODE_ENV === 'production' ? 'up' : 'test';
   const { PLANT_IMAGE_CACHE: imageCache = '' } = process.env;
   return `//${imageCache}i.plaaant.com/${folder}/${size}/${id}${ext && ext.length ? '.' : ''}${ext}`;
 };
 
-const buildImageSrc = (image: NoteImage) => {
+const buildImageSrc = (image: NoteImage): string => {
   const sizes = image.sizes || [];
   const size = sizes && sizes.length
     ? sizes[sizes.length - 1].name
@@ -36,7 +36,7 @@ const buildImageSrc = (image: NoteImage) => {
   return buildImageUrl(size, image);
 };
 
-const buildImageSrcSet = (image: NoteImage) => {
+const buildImageSrcSet = (image: NoteImage): string => {
   // If the cache is live then don't set a value for srcset
   if (process.env.PLANT_IMAGE_CACHE) {
     return '';
@@ -51,20 +51,20 @@ const buildImageSrcSet = (image: NoteImage) => {
   return '';
 };
 
-export default function noteRead(props: NoteReadProps) {
+export default function noteRead(props: NoteReadProps): JSX.Element {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   /**
    * Called after user clicks on delete
    */
-  const checkDelete = () => {
+  const checkDelete = (): void => {
     setShowDeleteConfirmation(true);
   };
 
   /**
    * Called after user confirms or cancels a delete action
    */
-  const confirmDelete = (yes: boolean) => {
+  const confirmDelete = (yes: boolean): void => {
     if (yes) {
       const { dispatch, note: { _id } } = props;
       dispatch(actionFunc.deleteNoteRequest(_id));
@@ -73,7 +73,7 @@ export default function noteRead(props: NoteReadProps) {
     }
   };
 
-  const editNote = () => {
+  const editNote = (): void => {
     const { note: propNote, dispatch } = props;
     const note = {
       ...propNote,
@@ -84,7 +84,7 @@ export default function noteRead(props: NoteReadProps) {
     dispatch(actionFunc.editNoteOpen({ plant, note }));
   };
 
-  const renderImage = (image: NoteImage) => {
+  const renderImage = (image: NoteImage): JSX.Element => {
     const imageStyle = {
       maxWidth: '100%',
       padding: '1%',
@@ -101,7 +101,10 @@ export default function noteRead(props: NoteReadProps) {
     );
   };
 
-  const renderImages = ({ images, showImages, _id }: UiNotesValue) => {
+
+  const renderImages = (
+    { images, showImages, _id }: UiNotesValue,
+  ): JSX.Element | JSX.Element[] | null => {
     if (images && images.length) {
       if (showImages) {
         return images.map((image) => renderImage(image));
@@ -111,12 +114,15 @@ export default function noteRead(props: NoteReadProps) {
 
       const { dispatch } = props;
       const buttonStyle = { fontSize: 'medium' };
+      const mouseUpButtonFunction = (): void => {
+        dispatch(actionFunc.showNoteImages(_id));
+      };
 
       return (
         <div>
           <Button
             color="primary"
-            onMouseUp={() => dispatch(actionFunc.showNoteImages(_id))}
+            onMouseUp={mouseUpButtonFunction}
             style={buttonStyle}
             variant="contained"
           >

@@ -90,7 +90,7 @@ class PlantRead extends React.PureComponent {
     }
   }
 
-  edit() {
+  edit(): void {
     const { plant: propsPlant, dispatch } = this.props;
     const dateFields: UiPlantsValueDateKeys[] = ['plantedDate', 'purchasedDate', 'terminatedDate'];
     const plant = produce(propsPlant, (draft) => {
@@ -104,17 +104,17 @@ class PlantRead extends React.PureComponent {
     dispatch(actionFunc.editPlantOpen({ plant, meta: { isNew: false } }));
   }
 
-  checkDelete() {
+  checkDelete(): void {
     this.setState({ showDeleteConfirmation: true });
   }
 
-  showImages() {
+  showImages(): void {
     const { plant, dispatch } = this.props;
     const noteIds = (plant && plant.notes) || [];
     dispatch(actionFunc.showNoteImages(noteIds));
   }
 
-  confirmDelete(yes: boolean) {
+  confirmDelete(yes: boolean): void {
     if (yes) {
       const {
         plant: {
@@ -146,7 +146,7 @@ class PlantRead extends React.PureComponent {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  plantedDateTitle() {
+  plantedDateTitle(): string | null {
     const { plant: { plantedDate } } = this.props;
     if (plantedDate) {
       const date = utils.intToMoment(plantedDate);
@@ -158,7 +158,7 @@ class PlantRead extends React.PureComponent {
     return null;
   }
 
-  renderDetails() {
+  renderDetails(): JSX.Element | null {
     const { plant } = this.props;
     if (!plant) {
       return null;
@@ -227,7 +227,7 @@ class PlantRead extends React.PureComponent {
     return <Markdown markdown={basicTitles.join('\n\n') || ''} />;
   }
 
-  render() {
+  render(): JSX.Element {
     const paperStyle = {
       display: 'inline-block',
       margin: 20,

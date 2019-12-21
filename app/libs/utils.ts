@@ -286,12 +286,17 @@ ReadonlyArray<string> {
   return sortPlants(filteredPlantIds, plants);
 }
 
+interface PlantStats {
+  total: number;
+  alive: number;
+}
+
 /**
  * Plant stats
  * @param plantIds
  * @param plants
  */
-function plantStats(plantIds: string[], plants: Record<string, any>) {
+function plantStats(plantIds: string[], plants: Record<string, any>): PlantStats {
   return {
     total: plantIds.length,
     alive: plantIds.reduce((acc, plantId) => {

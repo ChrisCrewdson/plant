@@ -6,7 +6,8 @@ import { PlantAction } from '../../lib/types/redux-payloads';
 
 /* eslint-disable no-console */
 export const logger = (
-  store: Store): Function => (next: Dispatch) => (action: PlantAction<any>) => {
+  store: Store,
+): Function => (next: Dispatch) => (action: PlantAction<any>): PlantAction<any> => {
   console.group(action.type);
   console.info('dispatching', action);
   const result = next(action);

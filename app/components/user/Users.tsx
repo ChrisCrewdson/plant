@@ -24,20 +24,20 @@ export default class Users extends React.Component {
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.onChange();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     const { store } = this.context;
     const state = store.getState();
     const { users, locations } = state;
@@ -45,13 +45,13 @@ export default class Users extends React.Component {
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
-  unsubscribe() {}
+  unsubscribe(): void {}
 
   /**
    * Render the users
    * @param user - user is from the users collection and not the loggedIn user
    */
-  renderUser(user: UiUsersValue) {
+  renderUser(user: UiUsersValue): JSX.Element {
     const { _id, name: userName, locationIds } = user;
     let link = `/locations/${makeSlug(userName)}/${_id}`;
 
@@ -82,7 +82,7 @@ export default class Users extends React.Component {
     );
   }
 
-  renderUsers() {
+  renderUsers(): JSX.Element[] | null {
     const { store } = this.context;
     const { users } = store.getState();
     const userIds = Object.keys(users);
@@ -92,7 +92,7 @@ export default class Users extends React.Component {
     return null;
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <Base>
         <div>
