@@ -85,7 +85,19 @@ const weatherColumns: GridColumn[] = [
   },
 ];
 
-const getMembers = (members: Record<string, Role>) => Object.keys(members || {}).map((_id) => {
+interface Members {
+  _id: string;
+  values: [string, Role];
+}
+
+interface Stations {
+  _id: string;
+  values: [string, string, boolean];
+}
+
+const getMembers = (
+  members: Record<string, Role>,
+): Members[] => Object.keys(members || {}).map((_id) => {
   const role = members[_id];
   return {
     _id,
@@ -93,7 +105,7 @@ const getMembers = (members: Record<string, Role>) => Object.keys(members || {})
   };
 });
 
-const getStations = (stations: Record<string, LocationStation>) => Object
+const getStations = (stations: Record<string, LocationStation>): Stations[] => Object
   .keys(stations || {}).map((_id) => {
     const { name, enabled } = stations[_id];
     return {
@@ -192,7 +204,7 @@ function wrapValidateLocationMember(data: GridRowValidate): string[] {
   );
 }
 
-function validateLocationWeather(data: LocationsWeatherRowUpdate) {
+function validateLocationWeather(data: LocationsWeatherRowUpdate): string[] {
   const { row, meta, isNew } = data;
   const { values } = row;
   const [stationId, name] = values;
@@ -224,7 +236,7 @@ function wrapValidateLocationWeather(data: GridRowValidate): string[] {
   );
 }
 
-export default function locationsManager(props: LocationsManagerProps) {
+export default function locationsManager(props: LocationsManagerProps): JSX.Element {
   const { locationIds, locations, users } = props;
 
   userColumns[0].options = Object.keys(users).reduce(
@@ -243,7 +255,7 @@ export default function locationsManager(props: LocationsManagerProps) {
    * On the server we also need the logged-in user to verify that they are an
    * owner of that location and therefore authorized.
    */
-  const upsertLocationMember = ({ row, meta }: LocationsManagerRowUpdate) => {
+  const upsertLocationMember = ({ row, meta }: LocationsManagerRowUpdate): void => {
     const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [userId, role] = row.values;
@@ -258,7 +270,7 @@ export default function locationsManager(props: LocationsManagerProps) {
     dispatch(actionFunc.modifyLocationRequest(payload));
   };
 
-  const upsertLocationWeather = ({ row, meta }: LocationsManagerRowUpdate) => {
+  const upsertLocationWeather = ({ row, meta }: LocationsManagerRowUpdate): void => {
     const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [stationId, name, enabled] = row.values;
@@ -274,7 +286,7 @@ export default function locationsManager(props: LocationsManagerProps) {
     dispatch(actionFunc.modifyLocationRequest(payload));
   };
 
-  const deleteLocationMember = ({ row, meta }: LocationsManagerRowUpdate) => {
+  const deleteLocationMember = ({ row, meta }: LocationsManagerRowUpdate): void => {
     const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [userId] = row.values;
@@ -284,7 +296,7 @@ export default function locationsManager(props: LocationsManagerProps) {
     dispatch(actionFunc.modifyLocationRequest(payload));
   };
 
-  const deleteLocationWeather = ({ row, meta }: LocationsManagerRowUpdate) => {
+  const deleteLocationWeather = ({ row, meta }: LocationsManagerRowUpdate): void => {
     const { dispatch } = props;
     const locationId = meta?.location?._id;
     const [stationId] = row.values;

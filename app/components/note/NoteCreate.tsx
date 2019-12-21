@@ -22,8 +22,8 @@ interface NoteCreateProps {
   locationId: string;
 }
 
-export default function noteCreate(props: NoteCreateProps) {
-  const createNote = () => {
+export default function noteCreate(props: NoteCreateProps): JSX.Element | null {
+  const createNote = (): void => {
     const {
       plant, dispatch,
     } = props;

@@ -18,7 +18,7 @@ interface NoteEditMetricProps {
   error: string;
 }
 
-export default function noteEditMetrics(props: NoteEditMetricProps) {
+export default function noteEditMetrics(props: NoteEditMetricProps): JSX.Element {
   /**
    * Handle multiple change value types
    */
@@ -50,7 +50,7 @@ export default function noteEditMetrics(props: NoteEditMetricProps) {
     dispatchChange(name, checked);
   };
 
-  const renderLength = (metaMetric: MetaMetric, value: any) => {
+  const renderLength = (metaMetric: MetaMetric, value: any): JSX.Element => {
     const renderValue = (value || value === 0) ? value.toString() : '';
     return (
       <InputComboText
@@ -66,11 +66,15 @@ export default function noteEditMetrics(props: NoteEditMetricProps) {
     );
   };
 
-  const renderCount = (metaMetric: MetaMetric, value: any) => renderLength(metaMetric, value);
+  const renderCount = (
+    metaMetric: MetaMetric, value: any,
+  ): JSX.Element => renderLength(metaMetric, value);
 
-  const renderWeight = (metaMetric: MetaMetric, value: any) => renderLength(metaMetric, value);
+  const renderWeight = (
+    metaMetric: MetaMetric, value: any,
+  ): JSX.Element => renderLength(metaMetric, value);
 
-  const renderToggle = (metaMetric: MetaMetric, value: any) => {
+  const renderToggle = (metaMetric: MetaMetric, value: any): JSX.Element => {
     const isToggled = value === 'true' || value === true;
     return (
       <FormControlLabel

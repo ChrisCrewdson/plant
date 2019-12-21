@@ -91,7 +91,7 @@ export default class NoteEdit extends React.PureComponent {
   };
 
   static defaultProps = {
-    postSaveSuccess: () => {},
+    postSaveSuccess: (): void => {},
   };
 
   constructor(props: NoteEditProps) {
@@ -104,7 +104,7 @@ export default class NoteEdit extends React.PureComponent {
     this.saveFiles = this.saveFiles.bind(this);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     const { dispatch } = this.props;
     dispatch(actionFunc.editNoteClose());
   }
@@ -112,14 +112,14 @@ export default class NoteEdit extends React.PureComponent {
   /**
    * Change Handler
    */
-  onChange(name: string, value: string) {
+  onChange(name: string, value: string): void {
     const { dispatch } = this.props;
     dispatch(actionFunc.editNoteChange({
       [name]: value,
     }));
   }
 
-  onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
+  onDrop(acceptedFiles: File[], rejectedFiles: File[]): void {
     if (rejectedFiles && rejectedFiles.length) {
       // eslint-disable-next-line no-console
       console.warn('Some files were rejected', rejectedFiles);
@@ -130,16 +130,16 @@ export default class NoteEdit extends React.PureComponent {
   /**
    * @type {React.MouseEventHandler<{}>}
    */
-  onOpenClick() {
+  onOpenClick(): void {
     this.dropzone.open();
   }
 
-  cancel() {
+  cancel(): void {
     const { dispatch } = this.props;
     dispatch(actionFunc.editNoteClose());
   }
 
-  saveNote(files?: File[]) {
+  saveNote(files?: File[]): void {
     const {
       dispatch, interimNote: propInterimNote, postSaveSuccess,
     } = this.props;
@@ -159,7 +159,7 @@ export default class NoteEdit extends React.PureComponent {
     }
   }
 
-  saveFiles(files: File[]) {
+  saveFiles(files: File[]): void {
     this.saveNote(files);
   }
 
@@ -169,7 +169,7 @@ export default class NoteEdit extends React.PureComponent {
     e.stopPropagation();
   }
 
-  render() {
+  render(): JSX.Element {
     const {
       dispatch,
       interimNote,
