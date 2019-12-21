@@ -27,7 +27,7 @@ export interface InputComboTextProps {
 /**
  * A very light wrapper around the MaterialUI TextField component
  */
-export default function inputComboText(props: InputComboTextProps) {
+export default function inputComboText(props: InputComboTextProps): JSX.Element {
   const {
     changeHandler,
     disabled = false,

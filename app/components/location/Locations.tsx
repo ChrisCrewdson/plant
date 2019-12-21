@@ -46,36 +46,36 @@ class Locations extends React.Component {
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
 
     this.updateState();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     this.updateState();
   }
 
-  updateState() {
+  updateState(): void {
     const { store } = this.context;
     const { locations, users } = store.getState();
     this.setState({ locations, users });
   }
 
-  isOwner(user?: UiUsersValue) {
+  isOwner(user?: UiUsersValue): boolean {
     const { store } = this.context;
     const { user: authUser } = store.getState();
     return !!(user && authUser && authUser._id === user._id);
   }
 
-  static renderTitle(title?: string) {
+  static renderTitle(title?: string): JSX.Element {
     return (
       <h2 style={{ textAlign: 'center' }}>
         {`${title || 'Location Does Not Have a Name'}`}
@@ -83,7 +83,7 @@ class Locations extends React.Component {
     );
   }
 
-  renderLocation(location: UiLocationsValue) {
+  renderLocation(location: UiLocationsValue): JSX.Element | null {
     if (!location) {
       return null;
     }
@@ -103,7 +103,7 @@ class Locations extends React.Component {
     );
   }
 
-  renderNoLocations(user?: UiUsersValue) {
+  renderNoLocations(user?: UiUsersValue): JSX.Element {
     return (
       <div>
         {Locations.renderTitle(user && user.name)}
@@ -120,7 +120,7 @@ No locations added yet...
     );
   }
 
-  renderLocations() {
+  renderLocations(): JSX.Element | (JSX.Element | null)[] | null {
     // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
     const { store } = this.context;
 
@@ -163,7 +163,7 @@ No locations added yet...
       .map(this.renderLocation);
   }
 
-  render() {
+  render(): JSX.Element {
     const style = {
       marginTop: '20px',
     };

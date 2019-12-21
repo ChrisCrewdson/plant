@@ -33,26 +33,26 @@ export default class Navbar extends React.Component {
   }
 
   // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount(): void {
     const { store } = this.context;
     this.unsubscribe = store.subscribe(this.onChange);
     const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     const { store } = this.context;
     const { user = {}, interim: interimMap } = store.getState();
     this.setState({ user, interimMap });
   }
 
-  logout() {
+  logout(): void {
     const { store } = this.context;
     store.dispatch(actionFunc.logoutRequest());
   }
@@ -67,7 +67,7 @@ export default class Navbar extends React.Component {
   // User has multiple locations: "My Plants" links to /locations/user-slug/user-id
   //   (Allows user to pick a location)
   //   (Just put a placeholder here for now)
-  makeMyPlantsMenu(loggedIn: boolean) {
+  makeMyPlantsMenu(loggedIn: boolean): JSX.Element | null {
     if (!loggedIn) {
       return null;
     }
@@ -120,7 +120,7 @@ export default class Navbar extends React.Component {
   // }
 
 
-  render() {
+  render(): JSX.Element {
     const {
       user = {} as UiUser,
       interimMap = {},

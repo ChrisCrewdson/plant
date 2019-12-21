@@ -16,6 +16,11 @@ import * as gis from '../../libs/gis';
 import { actionFunc } from '../../actions';
 import Base from '../base/Base';
 
+interface PlantLocations {
+  canvasHeight: number;
+  plants: JSX.Element[];
+}
+
 export default class LayoutMap extends React.Component {
   // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
   context!: PlantContext;
@@ -76,13 +81,13 @@ export default class LayoutMap extends React.Component {
     this.unsubscribe = store.subscribe(this.onChange);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
 
-  onChange() {
+  onChange(): void {
     const { store } = this.context;
 
     const {
@@ -98,13 +103,13 @@ export default class LayoutMap extends React.Component {
     this.setState(state);
   }
 
-  handleClick() {
+  handleClick(): void {
     this.setState({
       color: 'orange',
     });
   }
 
-  renderTitle() {
+  renderTitle(): JSX.Element {
     const { store } = this.context;
     const { match } = this.props;
     const { params = {} } = match || {};
@@ -121,7 +126,7 @@ export default class LayoutMap extends React.Component {
     );
   }
 
-  renderPlantLocation(plant: UiPlantLocation) {
+  renderPlantLocation(plant: UiPlantLocation): JSX.Element {
     /*
     var circle = new Konva.Circle({
       x: stage.getWidth() / 2,
@@ -176,7 +181,7 @@ export default class LayoutMap extends React.Component {
     );
   }
 
-  renderPlantLocations(width: number) {
+  renderPlantLocations(width: number): PlantLocations | null {
     if (width < 30) {
       // console.error('Width is less than 30');
       return null;
@@ -220,7 +225,7 @@ export default class LayoutMap extends React.Component {
     return null;
   }
 
-  render() {
+  render(): JSX.Element {
     const canvasWidth = 1000;
     const plantLocations = this.renderPlantLocations(canvasWidth);
 

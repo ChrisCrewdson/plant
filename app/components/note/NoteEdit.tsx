@@ -290,9 +290,9 @@ There were errors. Please check your input.
         <Dropzone
           onDrop={this.onDrop}
           accept="image/*"
-          ref={(node) => { this.dropzone = node; }}
+          ref={(node): void => { this.dropzone = node; }}
         >
-          {({ getRootProps, getInputProps, isDragActive }) => {
+          {({ getRootProps, getInputProps, isDragActive }): JSX.Element => {
             let styles = { ...dropZoneStyle };
             styles = isDragActive ? { ...styles, ...dropZoneActiveStyle } : styles;
             return (
