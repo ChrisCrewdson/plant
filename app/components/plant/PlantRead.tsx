@@ -224,6 +224,11 @@ class PlantRead extends React.PureComponent {
       }
     }
 
+    const price = utils.formatPrice(plant.price);
+    if (price) {
+      basicTitles.push(`Price: ${price}`);
+    }
+
     return <Markdown markdown={basicTitles.join('\n\n') || ''} />;
   }
 

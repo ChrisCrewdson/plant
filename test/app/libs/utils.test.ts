@@ -86,7 +86,9 @@ describe('/app/libs/utils', () => {
         utils.dateToInt(date);
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
-        expect(e.message).toBe('dateToInt([object Object]) for typeof date: object');
+        expect(e.message).toBe(
+          'dateToInt([object Object]) for typeof date: object',
+        );
         done();
       }
     });
@@ -134,7 +136,7 @@ describe('/app/libs/utils', () => {
 
   describe('filterPlants', () => {
     test('that plants are filtered', () => {
-      const plantIds = produce({}, () => (['p-1', 'p-2', 'p-3']));
+      const plantIds = produce({}, () => ['p-1', 'p-2', 'p-3']);
       const plants = {
         'p-1': {
           title: 'GoLden',
@@ -147,7 +149,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('that plants are not filtered if no filter text', () => {
-      const plantIds = produce({}, () => (['p-1', 'p-2', 'p-3']));
+      const plantIds = produce({}, () => ['p-1', 'p-2', 'p-3']);
       const plants = {
         'p-1': {
           title: 'GoLden',
@@ -162,16 +164,20 @@ describe('/app/libs/utils', () => {
 
   describe('rebaseLocations', () => {
     test('should rebase the locations', () => {
-      const plants = [{
-        _id: '1',
-        loc: { coordinates: [5.5, 10.1] },
-      }, {
-        _id: '2',
-        loc: { coordinates: [15.15, 35.35] },
-      }, {
-        _id: '3',
-        loc: { coordinates: [10.1, 4.4] },
-      }] as unknown as BizPlant[];
+      const plants = ([
+        {
+          _id: '1',
+          loc: { coordinates: [5.5, 10.1] },
+        },
+        {
+          _id: '2',
+          loc: { coordinates: [15.15, 35.35] },
+        },
+        {
+          _id: '3',
+          loc: { coordinates: [10.1, 4.4] },
+        },
+      ] as unknown) as BizPlant[];
       const rebased = utils.rebaseLocations(plants);
       if (!rebased[0].loc || !rebased[1].loc || !rebased[2].loc) {
         throw new Error(`rebased loc is falsy ${rebased}`);
@@ -191,7 +197,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should return undefined if plants is undefined', () => {
-      const plants = undefined as unknown as BizPlant[];
+      const plants = (undefined as unknown) as BizPlant[];
       const actual = utils.rebaseLocations(plants);
       expect(actual).toBeUndefined();
     });
@@ -249,19 +255,16 @@ describe('/app/libs/utils', () => {
       expect(utils.constantEquals('12', '123')).toBe(false);
     });
     test('should fail if 1st param is not a string', () => {
-      const userSuppliedValue = 123 as unknown as string;
+      const userSuppliedValue = (123 as unknown) as string;
       expect(utils.constantEquals(userSuppliedValue, '123')).toBe(false);
     });
     test('should fail if 2nd param is not a string', () => {
-      const internalValue = 123 as unknown as string;
+      const internalValue = (123 as unknown) as string;
       expect(utils.constantEquals('123', internalValue)).toBe(false);
     });
-    test(
-      'should fail if 1st and 2nd params are equal length and not the same',
-      () => {
-        expect(utils.constantEquals('123', '124')).toBe(false);
-      },
-    );
+    test('should fail if 1st and 2nd params are equal length and not the same', () => {
+      expect(utils.constantEquals('123', '124')).toBe(false);
+    });
     test('should pass if 1st and 2nd are equal', () => {
       expect(utils.constantEquals('123', '123')).toBe(true);
     });
@@ -284,26 +287,26 @@ describe('/app/libs/utils', () => {
     };
 
     test('should return plantIds if array is empty', () => {
-      const plantIds = produce({}, () => ([]));
+      const plantIds = produce({}, () => []);
       const p = {} as Record<string, any>;
       expect(utils.sortPlants(plantIds, p)).toBe(plantIds);
     });
 
     test('should return an array if param is falsy', () => {
-      const plantIds = null as unknown as ReadonlyArray<string>;
+      const plantIds = (null as unknown) as ReadonlyArray<string>;
       const p = {} as Record<string, any>;
       expect(utils.sortPlants(plantIds, p)).toEqual([]);
     });
 
     test('should sort plants', () => {
-      const plantIds = produce({}, () => (['4', '1', '3', '2']));
+      const plantIds = produce({}, () => ['4', '1', '3', '2']);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       expect(sortedPlantIds).not.toBe(plantIds);
     });
 
     test('should not need to sort plants', () => {
-      const plantIds = produce({}, () => (['1', '2', '3', '4']));
+      const plantIds = produce({}, () => ['1', '2', '3', '4']);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -312,7 +315,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should not need to sort plants with missing plants at end', () => {
-      const plantIds = produce({}, () => (['1', '2', '3', '4', '5', '5', '5']));
+      const plantIds = produce({}, () => ['1', '2', '3', '4', '5', '5', '5']);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -321,7 +324,16 @@ describe('/app/libs/utils', () => {
     });
 
     test('should sort plants with missing plants', () => {
-      const plantIds = produce({}, () => (['4', '7', '6', '2', '6', '3', '1', '9']));
+      const plantIds = produce({}, () => [
+        '4',
+        '7',
+        '6',
+        '2',
+        '6',
+        '3',
+        '1',
+        '9',
+      ]);
       const sortedPlantIds = utils.sortPlants(plantIds, plants);
       expect(sortedPlantIds).toMatchSnapshot();
       const expectedOrder = ['1', '2', '3', '4', '7', '6', '6', '9'];
@@ -349,26 +361,26 @@ describe('/app/libs/utils', () => {
     };
 
     test('should return noteIds if array is empty', () => {
-      const noteIds = produce({}, () => ([]));
-      const n = undefined as unknown as Record<string, any>;
+      const noteIds = produce({}, () => []);
+      const n = (undefined as unknown) as Record<string, any>;
       expect(utils.sortNotes(noteIds, n)).toBe(noteIds);
     });
 
     test('should return an array if param is falsy', () => {
-      const noteIds = undefined as unknown as ReadonlyArray<string>;
-      const n = undefined as unknown as Record<string, any>;
+      const noteIds = (undefined as unknown) as ReadonlyArray<string>;
+      const n = (undefined as unknown) as Record<string, any>;
       expect(utils.sortNotes(noteIds, n)).toEqual([]);
     });
 
     test('should sort notes', () => {
-      const noteIds = produce({}, () => (['4', '1', '3', '2']));
+      const noteIds = produce({}, () => ['4', '1', '3', '2']);
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       expect(sortedNoteIds).not.toBe(noteIds);
     });
 
     test('should not need to sort notes', () => {
-      const noteIds = produce({}, () => (['1', '2', '3', '4']));
+      const noteIds = produce({}, () => ['1', '2', '3', '4']);
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -377,7 +389,7 @@ describe('/app/libs/utils', () => {
     });
 
     test('should not need to sort notes with missing notes at end', () => {
-      const noteIds = produce({}, () => (['1', '2', '3', '4', '5', '5', '5']));
+      const noteIds = produce({}, () => ['1', '2', '3', '4', '5', '5', '5']);
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -386,7 +398,16 @@ describe('/app/libs/utils', () => {
     });
 
     test('should sort notes with missing notes', () => {
-      const noteIds = produce({}, () => (['4', '7', '6', '2', '6', '3', '1', '9']));
+      const noteIds = produce({}, () => [
+        '4',
+        '7',
+        '6',
+        '2',
+        '6',
+        '3',
+        '1',
+        '9',
+      ]);
       const sortedNoteIds = utils.sortNotes(noteIds, notes);
       expect(sortedNoteIds).toMatchSnapshot();
       // It should have returned the same object because it did
@@ -443,13 +464,14 @@ describe('/app/libs/utils', () => {
 
   describe('getGeo', () => {
     test('that getGeo returns an error if not supported', (done) => {
-      utils.getGeo({},
-        (err: Error | PositionError | null) => {
-          expect(err).toBeInstanceOf(Error);
-          const error = err as Error;
-          expect(error.message).toBe('This device does not have geolocation available');
-          done();
-        });
+      utils.getGeo({}, (err: Error | PositionError | null) => {
+        expect(err).toBeInstanceOf(Error);
+        const error = err as Error;
+        expect(error.message).toBe(
+          'This device does not have geolocation available',
+        );
+        done();
+      });
     });
 
     test('that getGeo returns a result', (done) => {
@@ -475,18 +497,16 @@ describe('/app/libs/utils', () => {
 
       // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
       window.navigator.geolocation = {
-        getCurrentPosition:
-        (cb: PositionCallback) => {
+        getCurrentPosition: (cb: PositionCallback) => {
           cb(fakePosition);
         },
       };
 
-      utils.getGeo({},
-        (err: any, geo: any) => {
-          expect(err).toBeFalsy();
-          expect(geo).toEqual(expected);
-          done();
-        });
+      utils.getGeo({}, (err: any, geo: any) => {
+        expect(err).toBeFalsy();
+        expect(geo).toEqual(expected);
+        done();
+      });
     });
 
     test('should return a fake timeout error', (done) => {
@@ -500,16 +520,18 @@ describe('/app/libs/utils', () => {
 
       // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
       window.navigator.geolocation = {
-        getCurrentPosition: (cb: PositionCallback, errCb: PositionErrorCallback) => {
+        getCurrentPosition: (
+          cb: PositionCallback,
+          errCb: PositionErrorCallback,
+        ) => {
           errCb(positionError);
         },
       };
 
-      utils.getGeo({},
-        (err: Error | PositionError | null) => {
-          expect(err).toBe(positionError);
-          done();
-        });
+      utils.getGeo({}, (err: Error | PositionError | null) => {
+        expect(err).toBe(positionError);
+        done();
+      });
     });
   });
 
@@ -523,25 +545,86 @@ describe('/app/libs/utils', () => {
 
   describe('showFeature', () => {
     test('should not show feature if no user', () => {
-      const user = undefined as unknown as { _id: string };
+      const user = (undefined as unknown) as { _id: string };
       expect(utils.showFeature(user)).toBe(false);
     });
 
     test('should not show feature if user._id is missing', () => {
-      const user = {} as unknown as { _id: string };
+      const user = ({} as unknown) as { _id: string };
       expect(utils.showFeature(user)).toBe(false);
     });
 
     test('should not show feature if user._id is not listed', () => {
-      expect(utils.showFeature({
-        _id: '1',
-      })).toBe(false);
+      expect(
+        utils.showFeature({
+          _id: '1',
+        }),
+      ).toBe(false);
     });
 
     test('should show feature if user._id is listed', () => {
-      expect(utils.showFeature({
-        _id: '57b4e90d9f0e4e114b44bcf8',
-      })).toBe(true);
+      expect(
+        utils.showFeature({
+          _id: '57b4e90d9f0e4e114b44bcf8',
+        }),
+      ).toBe(true);
+    });
+  });
+
+  describe('formatNumber', () => {
+    test('should format USD currency in US Locale', () => {
+      expect(utils.formatNumber(2.2, true)).toMatchInlineSnapshot('"$2.20"');
+    });
+    test('should format USD currency in German Locale', () => {
+      expect(utils.formatNumber(2.2, true, 'de')).toMatchInlineSnapshot(
+        '"2,20 $"',
+      );
+    });
+
+    test('should format number in US Locale', () => {
+      expect(utils.formatNumber(2.2, false)).toMatchInlineSnapshot('"2.20"');
+    });
+    test('should format number in German Locale', () => {
+      expect(utils.formatNumber(2.2, false, 'de')).toMatchInlineSnapshot(
+        '"2,20"',
+      );
+    });
+
+    test('should format long USD currency in US Locale', () => {
+      expect(utils.formatNumber(2222222222.2, true)).toMatchInlineSnapshot(
+        '"$2,222,222,222.20"',
+      );
+    });
+    test('should format long USD currency in German Locale', () => {
+      expect(
+        utils.formatNumber(2222222222.2, true, 'de'),
+      ).toMatchInlineSnapshot('"2.222.222.222,20 $"');
+    });
+
+    test('should format long number in US Locale', () => {
+      expect(utils.formatNumber(2222222222.2, false)).toMatchInlineSnapshot(
+        '"2,222,222,222.20"',
+      );
+    });
+    test('should format long number in German Locale', () => {
+      expect(
+        utils.formatNumber(2222222222.2, false, 'de'),
+      ).toMatchInlineSnapshot('"2.222.222.222,20"');
+    });
+  });
+
+  describe('formatPrice', () => {
+    test('Empty string', () => {
+      expect(utils.formatPrice('')).toBe('');
+    });
+    test('Number string', () => {
+      expect(utils.formatPrice('1234.5')).toBe('$1,234.50');
+    });
+    test('Number', () => {
+      expect(utils.formatPrice(1234.5)).toBe('$1,234.50');
+    });
+    test('Undefined param', () => {
+      expect(utils.formatPrice()).toBe('');
     });
   });
 });

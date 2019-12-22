@@ -594,11 +594,50 @@ function constantEquals(userSuppliedValue: string | undefined, internalValue: st
   return !mismatch;
 }
 
+const getNavigatorLanguage = (): string | string[] => {
+  if (navigator.languages && navigator.languages.length) {
+    return navigator.languages as string[];
+  }
+
+  return navigator.language || 'en';
+};
+
+const formatNumber = (value: number, isCurrency: boolean, locale?: string | string[]): string => {
+  const style = isCurrency ? 'currency' : 'decimal';
+  const locales = locale ?? getNavigatorLanguage();
+
+  const options: Intl.NumberFormatOptions = {
+    minimumFractionDigits: 2,
+    style,
+    useGrouping: true,
+  };
+  if (isCurrency) {
+    options.currency = 'USD';
+  }
+  return new Intl.NumberFormat(locales, options).format(value);
+};
+
+const formatPrice = (price?: string | number): string => {
+  if (typeof price === 'string') {
+    if (price.length === 0) {
+      return '';
+    }
+    const value = parseFloat(price);
+    return formatNumber(value, true);
+  }
+  if (typeof price === 'number') {
+    return formatNumber(price, true);
+  }
+  return '';
+};
+
 const utils = {
   constantEquals,
   dateToInt,
   filterPlants,
   filterSortPlants,
+  formatNumber,
+  formatPrice,
   getGeo,
   hasGeo,
   intToDate,
