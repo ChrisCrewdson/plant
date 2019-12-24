@@ -22,8 +22,6 @@ export interface MetaMetric {
   type: MetaMetricType;
 }
 
-type GeoCallback = (err: PositionError|Error|null, geo?: Geo) => void;
-
 const { gisMultiplier } = constants;
 
 function makeMongoId(): string {
@@ -339,9 +337,9 @@ function hasGeo(): boolean {
 /**
  * Gets the current geo location
  */
-function getGeo(optionsParam: PositionOptions, cb: GeoCallback): void {
+async function getCurrentGeoPosition(optionsParam: PositionOptions): Promise<Geo> {
   if (!hasGeo()) {
-    return cb(new Error('This device does not have geolocation available'));
+    throw new Error('This device does not have geolocation available');
   }
 
   const options: PositionOptions = {
@@ -350,21 +348,21 @@ function getGeo(optionsParam: PositionOptions, cb: GeoCallback): void {
     ...optionsParam,
   };
 
-  return getGlobalThis().navigator.geolocation.getCurrentPosition(
-    (position) => {
-    // { type: "Point", coordinates: [ 40, 5 ] }
-    // position: {coords: {latitude: 11.1, longitude: 22.2}}
-      const geoJson: Geo = {
-        type: 'Point',
-        coordinates: [
-          position.coords.longitude,
-          position.coords.latitude,
-        ],
-      };
-      return cb(null, geoJson);
-    }, (err) => {
-      cb(err);
-    }, options);
+  return new Promise((resolve, reject) => {
+    getGlobalThis().navigator.geolocation.getCurrentPosition(
+      (position) => {
+      // { type: "Point", coordinates: [ 40, 5 ] }
+      // position: {coords: {latitude: 11.1, longitude: 22.2}}
+        const geoJson: Geo = {
+          type: 'Point',
+          coordinates: [
+            position.coords.longitude,
+            position.coords.latitude,
+          ],
+        };
+        return resolve(geoJson);
+      }, (err) => reject(err), options);
+  });
 }
 
 
@@ -643,7 +641,7 @@ const utils = {
   filterSortPlants,
   formatNumber,
   formatPrice,
-  getGeo,
+  getCurrentGeoPosition,
   getGlobalThis,
   hasGeo,
   intToDate,

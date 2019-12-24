@@ -465,19 +465,21 @@ describe('/app/libs/utils', () => {
     });
   });
 
-  describe('getGeo', () => {
-    test('that getGeo returns an error if not supported', (done) => {
-      utils.getGeo({}, (err: Error | PositionError | null) => {
+  describe('getCurrentGeoPosition', () => {
+    test('that getCurrentGeoPosition returns an error if not supported', async () => {
+      try {
+        await utils.getCurrentGeoPosition({});
+      } catch (err) {
         expect(err).toBeInstanceOf(Error);
         const error = err as Error;
         expect(error.message).toBe(
           'This device does not have geolocation available',
         );
-        done();
-      });
+      }
+      expect.assertions(2);
     });
 
-    test('that getGeo returns a result', (done) => {
+    test('that getCurrentGeoPosition returns a result', async () => {
       const expected = {
         type: 'Point',
         coordinates: [1, 2],
@@ -505,14 +507,11 @@ describe('/app/libs/utils', () => {
         },
       } as Geolocation;
 
-      utils.getGeo({}, (err: any, geo: any) => {
-        expect(err).toBeFalsy();
-        expect(geo).toEqual(expected);
-        done();
-      });
+      const geo = await utils.getCurrentGeoPosition({});
+      expect(geo).toEqual(expected);
     });
 
-    test('should return a fake timeout error', (done) => {
+    test('should return a fake timeout error', async () => {
       const positionError: PositionError = {
         code: 3, // TIMEOUT
         message: 'Timeout',
@@ -532,10 +531,12 @@ describe('/app/libs/utils', () => {
       } as Geolocation;
 
 
-      utils.getGeo({}, (err: Error | PositionError | null) => {
+      try {
+        await utils.getCurrentGeoPosition({});
+      } catch (err) {
         expect(err).toBe(positionError);
-        done();
-      });
+      }
+      expect.assertions(1);
     });
   });
 

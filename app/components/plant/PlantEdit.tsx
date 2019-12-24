@@ -122,18 +122,14 @@ class PlantEdit extends React.Component {
     dispatch(actionFunc.editPlantClose());
   }
 
-  addGeo(): void {
-    if (utils.hasGeo()) {
-      utils.getGeo({}, (err, loc) => {
-        if (err) {
-          // console.error(err);
-        } else {
-          const { dispatch } = (this.props);
-          dispatch(actionFunc.editPlantChange({ loc }));
-        }
-      });
-    } else {
-      // console.error('No geo service found on device');
+  async addGeo(): Promise<void> {
+    try {
+      const loc = await utils.getCurrentGeoPosition({});
+      const { dispatch } = (this.props);
+      dispatch(actionFunc.editPlantChange({ loc }));
+    } catch (ex) {
+      // continue because okay if geo is not supported
+      // TODO: Add a message in UI for the user when it's not supported
     }
   }
 
