@@ -23,6 +23,9 @@ import Location from './components/location/Location';
 import Locations from './components/location/Locations';
 import Users from './components/user/Users';
 import { theme } from './libs/style-helper';
+import utils from './libs/utils';
+
+const { getGlobalThis } = utils;
 
 // /location/**location-name**/_location_id - a list of plants at that location
 //                       (analogous to the old /plants/**user-name**/_user_id)
@@ -54,14 +57,14 @@ const routes = (
 
 const renderMain = function render(): void {
   const content = document.getElementById('wrapper');
+  const globThis = getGlobalThis() as { __SSR__?: boolean };
 
-  // @ts-ignore - __SSR__ is something we add on the server
-  const { __SSR__: serverRendered } = window;
-  const renderer = serverRendered
+  const { __SSR__ } = globThis;
+  const renderer = __SSR__
     ? ReactDOM.hydrate
     : ReactDOM.render;
-  // @ts-ignore - __SSR__ is something we add on the server
-  window.__SSR__ = false;
+
+  globThis.__SSR__ = false;
 
   renderer(
     (

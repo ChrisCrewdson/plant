@@ -7,8 +7,11 @@ import * as createOptions from '../lib/db/mongo/schema';
 import { requests } from './fixtures/google-oauth';
 import { mockLogger } from './mock-logger';
 import { getDbInstance } from '../lib/db/mongo';
+import utils from '../app/libs/utils';
 
-const globalAny: Global = global;
+const { getGlobalThis } = utils;
+
+const globalAny = getGlobalThis();
 
 const googleOAuth = requests;
 const mongo = getDbInstance;
@@ -60,8 +63,9 @@ beforeAll(async () => {
  * warning(false, 'React depends on requestAnimationFrame. Make sure that you load a ' +
  * 'polyfill in older browsers. http://fb.me/react-polyfills');
  */
-globalAny.requestAnimationFrame = (callback: Function) => {
+globalAny.requestAnimationFrame = (callback: FrameRequestCallback): number => {
   setTimeout(callback, 0);
+  return 0;
 };
 
 process.env.PLANT_DB_NAME = 'plant-automated-testing';
@@ -75,9 +79,10 @@ process.env.PLANT_IMAGE_COMPLETE = 'fake-image-token';
 
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
 function propagateToGlobal(win: Record<string, any>) {
+  const globAny = globalAny as unknown as Global;
   Object.keys(win).forEach((key) => {
-    if (!globalAny[key]) {
-      globalAny[key] = win[key];
+    if (!globAny[key]) {
+      globAny[key] = win[key];
     }
   });
 }
@@ -87,8 +92,9 @@ function propagateToGlobal(win: Record<string, any>) {
 // Store this DOM and the window in global scope ready for React to access
 document.body.innerHTML = '<!doctype html><html><body></body></html>';
 
-globalAny.window = document.defaultView as Window;
+globalAny.window = document.defaultView as (Window & typeof globalAny);
 
+// @ts-ignore
 globalAny.window.FormData = function appender() {
   this.append = () => {};
 };

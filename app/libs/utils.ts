@@ -4,6 +4,7 @@ import isDate from 'lodash/isDate';
 import isNumber from 'lodash/isNumber';
 import slug from 'slugify';
 import { produce } from 'immer';
+import globalThat from 'globalthis';
 
 import * as constants from './constants';
 
@@ -324,11 +325,15 @@ function transformErrors(errors?: Record<string, string[]>):
     }, {});
 }
 
+const shimmedGlobal = globalThat.shim();
+type GlobalThis = typeof shimmedGlobal;
+const getGlobalThis = (): GlobalThis => shimmedGlobal;
+
 /**
  * Tests to see if JS runtime (window) supports Geo Location
  */
 function hasGeo(): boolean {
-  return !!(window && window.navigator && window.navigator.geolocation);
+  return !!(getGlobalThis()?.navigator?.geolocation);
 }
 
 /**
@@ -345,7 +350,7 @@ function getGeo(optionsParam: PositionOptions, cb: GeoCallback): void {
     ...optionsParam,
   };
 
-  return window.navigator.geolocation.getCurrentPosition(
+  return getGlobalThis().navigator.geolocation.getCurrentPosition(
     (position) => {
     // { type: "Point", coordinates: [ 40, 5 ] }
     // position: {coords: {latitude: 11.1, longitude: 22.2}}
@@ -639,6 +644,7 @@ const utils = {
   formatNumber,
   formatPrice,
   getGeo,
+  getGlobalThis,
   hasGeo,
   intToDate,
   intToMoment,

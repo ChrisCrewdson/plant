@@ -34,6 +34,10 @@ interface Window {
   // FormData: Function;
 }
 
+type Mutable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
+
 interface Global extends NodeJS.Global {
   [key: string]: any;
   // window: Window;

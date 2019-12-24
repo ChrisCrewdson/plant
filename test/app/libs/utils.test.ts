@@ -3,6 +3,9 @@ import { produce } from 'immer';
 import utils, { PlantFromBodyPayload } from '../../../app/libs/utils';
 import * as constants from '../../../app/libs/constants';
 
+const { getGlobalThis } = utils;
+type MutableNavigator = Mutable<Navigator>;
+
 describe('/app/libs/utils', () => {
   describe('slugs', () => {
     test('should create a slug', () => {
@@ -450,14 +453,14 @@ describe('/app/libs/utils', () => {
 
   describe('hasGeo', () => {
     test('that window.navigator.geolocation exists', () => {
-      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
-      window.navigator.geolocation = true;
+      const globThis = getGlobalThis();
+      (globThis.navigator as MutableNavigator).geolocation = {} as Geolocation;
       expect(utils.hasGeo()).toBe(true);
     });
 
     test('that window.navigator.geolocation does not exists', () => {
-      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
-      window.navigator.geolocation = undefined;
+      const globThis = getGlobalThis();
+      delete (globThis.navigator as MutableNavigator).geolocation;
       expect(utils.hasGeo()).toBe(false);
     });
   });
@@ -495,12 +498,12 @@ describe('/app/libs/utils', () => {
         timestamp: 1,
       };
 
-      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
-      window.navigator.geolocation = {
+      const globThis = getGlobalThis();
+      (globThis.navigator as MutableNavigator).geolocation = {
         getCurrentPosition: (cb: PositionCallback) => {
           cb(fakePosition);
         },
-      };
+      } as Geolocation;
 
       utils.getGeo({}, (err: any, geo: any) => {
         expect(err).toBeFalsy();
@@ -518,15 +521,16 @@ describe('/app/libs/utils', () => {
         TIMEOUT: 3,
       };
 
-      // @ts-ignore - Cannot assign to 'geolocation' because it is a read-only property.ts(2540)
-      window.navigator.geolocation = {
+      const globThis = getGlobalThis();
+      (globThis.navigator as MutableNavigator).geolocation = {
         getCurrentPosition: (
           cb: PositionCallback,
           errCb: PositionErrorCallback,
         ) => {
           errCb(positionError);
         },
-      };
+      } as Geolocation;
+
 
       utils.getGeo({}, (err: Error | PositionError | null) => {
         expect(err).toBe(positionError);
