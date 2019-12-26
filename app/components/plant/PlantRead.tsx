@@ -1,10 +1,8 @@
 import moment from 'moment';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-// import { withRouter } from 'react-router-dom';
 import { produce } from 'immer';
 import { Dispatch } from 'redux';
-// import { History } from 'history';
 import { useHistory } from 'react-router-dom';
 
 import Paper from '@material-ui/core/Paper';
@@ -15,11 +13,12 @@ import NotesRead from '../note/NotesRead';
 import EditDeleteButtons from '../common/EditDeleteButtons';
 import { actionFunc } from '../../actions';
 import Markdown from '../common/Markdown';
+import { PlantAction } from '../../../lib/types/redux-payloads';
 
 const dateFormat = 'DD-MMM-YYYY';
 
 interface PlantReadProps {
-  dispatch: Dispatch;
+  dispatch: Dispatch<PlantAction>;
   interim: UiInterim;
   locations: UiLocations;
   notes: UiNotes;
@@ -38,8 +37,6 @@ export default function plantRead(props: PlantReadProps): JSX.Element {
       dispatch(actionFunc.loadNotesRequest({
         plantIds: [_id],
       }));
-    } else {
-      // console.error('PlantRead: plant object does not have _id', plant);
     }
   }
 
@@ -59,7 +56,6 @@ export default function plantRead(props: PlantReadProps): JSX.Element {
 
   const checkDelete = (): void => {
     setShowDeleteConfirmation(true);
-    // this.setState({ showDeleteConfirmation: true });
   };
 
   const showImages = (): void => {
@@ -90,16 +86,12 @@ export default function plantRead(props: PlantReadProps): JSX.Element {
         // Transition to /location/:slug/:id
         const locationUrl = utils.makeLocationUrl(location);
         history.push(locationUrl);
-      } else {
-        // console.warn('Could not find location for locationId', plant.locationId);
       }
     } else {
       setShowDeleteConfirmation(false);
-      // this.setState({ showDeleteConfirmation: false });
     }
   };
 
-  // eslint-disable-next-line class-methods-use-this
   const plantedDateTitle = (): string | null => {
     const { plant: { plantedDate } } = props;
     if (plantedDate) {
@@ -141,7 +133,6 @@ export default function plantRead(props: PlantReadProps): JSX.Element {
 
     const plantedDateTitleText = plantedDateTitle();
     if (plantedDateTitleText) {
-      // eslint-disable-next-line function-paren-newline
       basicTitles.push(plantedDateTitleText);
     }
 
@@ -152,28 +143,25 @@ export default function plantRead(props: PlantReadProps): JSX.Element {
         ? utils.intToMoment(terminatedDate)
         : null;
 
-      // eslint-disable-next-line function-paren-newline
       basicTitles.push(
-        `This plant was terminated${dateTerminated ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`);
+        `This plant was terminated${dateTerminated ? ` on ${dateTerminated.format(dateFormat)}` : ''}.`,
+      );
 
       const { plantedDate } = plant;
       if (plantedDate && dateTerminated) {
         const datePlanted = utils.intToMoment(plantedDate);
         if (datePlanted.isBefore(dateTerminated)) {
-          // eslint-disable-next-line function-paren-newline
           basicTitles.push(`${datePlanted.from(dateTerminated, true)} after it was planted.`);
         }
       }
 
       const { terminatedReason } = plant;
       if (terminatedReason) {
-        // eslint-disable-next-line function-paren-newline
         basicTitles.push(`Reason: ${terminatedReason}`);
       }
 
       const { terminatedDescription } = plant;
       if (terminatedDescription) {
-      // eslint-disable-next-line function-paren-newline
         basicTitles.push(`(${terminatedDescription})`);
       }
     }
@@ -259,13 +247,10 @@ Plant not found or still loading...
 }
 
 plantRead.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
-  // history: PropTypes.shape({
-  //   push: PropTypes.func.isRequired,
-  // }).isRequired,
+  dispatch: PropTypes.func.isRequired,
   interim: PropTypes.shape({
   }).isRequired,
-  // userCanEdit: PropTypes.bool.isRequired,
+  userCanEdit: PropTypes.bool.isRequired,
   notes: PropTypes.shape({
   }).isRequired,
   locations: PropTypes.shape({
