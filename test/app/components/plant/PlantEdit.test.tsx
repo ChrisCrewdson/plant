@@ -67,23 +67,25 @@ describe('PlantEdit', () => {
   test.skip('should render a PlantEdit', () => {
     const interimPlant = {
       isNew: true,
-    };
+    } as UiPlantsValue;
 
     const user = {
       _id: 'u-1',
       activeLocationId: 'l-1',
-    };
+    } as UiUser;
 
     const users = {
       'u-1': {
         locationIds: ['l-1', 'l-2'],
       },
-    };
+    } as unknown as UiUsers;
 
     const locations = {
       'l-1': {},
       'l-2': {},
-    };
+    } as unknown as UiLocations;
+
+    const dispatch = (() => {}) as Dispatch<PlantAction>;
 
     const component = renderer.create(
       <MuiThemeProvider theme={theme}>
@@ -91,7 +93,7 @@ describe('PlantEdit', () => {
           <App>
             <MemoryRouter>
               <PlantEdit
-                dispatch={() => {}}
+                dispatch={dispatch}
                 interimPlant={interimPlant}
                 user={user}
                 users={users}

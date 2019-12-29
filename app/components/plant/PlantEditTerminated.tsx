@@ -10,9 +10,10 @@ import Switch from '@material-ui/core/Switch';
 
 import InputComboText from '../common/InputComboText';
 import { actionFunc } from '../../actions';
+import { PlantAction } from '../../../lib/types/redux-payloads';
 
 interface PlantEditTerminatedProps {
-  dispatch: Dispatch;
+  dispatch: Dispatch<PlantAction>;
   interimPlant: UiPlantsValue;
 }
 
