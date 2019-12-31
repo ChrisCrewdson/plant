@@ -1,7 +1,8 @@
-// Used to add a note to a plant
+// Used to add a note to a plant or edit
+// an existing note
 
-import React from 'react';
-import Dropzone from 'react-dropzone';
+import React, { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 import PropTypes from 'prop-types';
 import { produce } from 'immer';
 import { Dispatch } from 'redux';
@@ -38,18 +39,23 @@ const textFieldStyle: React.CSSProperties = {
   textAlign: 'left',
 };
 
-const dropZoneStyle: React.CSSProperties = {
-  backgroundColor: 'beige',
-  borderColor: 'khaki',
+const dropZoneStyleBase: React.CSSProperties = {
   borderStyle: 'solid',
   borderWidth: '3px',
   height: '40px',
   width: '100%',
 };
 
+const dropZoneInactiveStyle: React.CSSProperties = {
+  backgroundColor: 'beige',
+  borderColor: 'khaki',
+  ...dropZoneStyleBase,
+};
+
 const dropZoneActiveStyle: React.CSSProperties = {
   backgroundColor: 'darkseagreen',
   borderColor: 'tan',
+  ...dropZoneStyleBase,
 };
 
 interface NoteEditProps {
@@ -60,260 +66,223 @@ interface NoteEditProps {
   locationId: string;
 }
 
-export default class NoteEdit extends React.PureComponent {
-  props!: NoteEditProps;
-
-  dropzone: any;
-
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    interimNote: PropTypes.shape({
-      _id: PropTypes.string,
-      date: PropTypes.string,
-      errors: PropTypes.shape({
-        date: PropTypes.string,
-        length: PropTypes.number,
-        metrics: PropTypes.string,
-        note: PropTypes.string,
-        plantIds: PropTypes.string,
-      }),
-      note: PropTypes.string,
-      plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-      uploadProgress: PropTypes.shape({
-        max: PropTypes.number,
-        value: PropTypes.number,
-      }),
-    }).isRequired,
-    locationId: PropTypes.string.isRequired,
-    plants: PropTypes.shape({
-    }).isRequired,
-    postSaveSuccess: PropTypes.func,
-  };
-
-  static defaultProps = {
-    postSaveSuccess: (): void => {},
-  };
-
-  constructor(props: NoteEditProps) {
-    super(props);
-    this.cancel = this.cancel.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.onOpenClick = this.onOpenClick.bind(this);
-    this.save = this.save.bind(this);
-    this.saveFiles = this.saveFiles.bind(this);
-  }
-
-  componentWillUnmount(): void {
-    const { dispatch } = this.props;
-    dispatch(actionFunc.editNoteClose());
-  }
+export default function noteEdit(props: NoteEditProps): JSX.Element {
+  const {
+    dispatch,
+    interimNote,
+    locationId,
+    plants,
+    postSaveSuccess,
+  } = props;
 
   /**
    * Change Handler
    */
-  onChange(name: string, value: string): void {
-    const { dispatch } = this.props;
+  const onChange = (name: string, value: string): void => {
     dispatch(actionFunc.editNoteChange({
       [name]: value,
     }));
-  }
+  };
 
-  onDrop(acceptedFiles: File[], rejectedFiles: File[]): void {
-    if (rejectedFiles && rejectedFiles.length) {
-      // eslint-disable-next-line no-console
-      console.warn('Some files were rejected', rejectedFiles);
-    }
-    this.saveFiles(acceptedFiles);
-  }
-
-  /**
-   * @type {React.MouseEventHandler<{}>}
-   */
-  onOpenClick(): void {
-    this.dropzone.open();
-  }
-
-  cancel(): void {
-    const { dispatch } = this.props;
-    dispatch(actionFunc.editNoteClose());
-  }
-
-  saveNote(files?: File[]): void {
-    const {
-      dispatch, interimNote: propInterimNote, postSaveSuccess,
-    } = this.props;
-    const interimNote: Readonly<BizNote> = produce<BizNote>(
-      propInterimNote as unknown as BizNote, (draft: BizNote) => {
+  const saveNote = (files?: File[]): void => {
+    const updatedInterimNote: Readonly<BizNote> = produce<BizNote>(
+      interimNote as unknown as BizNote, (draft: BizNote) => {
         draft._id = draft._id || utils.makeMongoId();
         draft.date = utils.dateToInt(draft.date);
       });
 
     try {
-      const note = noteValidator(interimNote);
+      const note = noteValidator(updatedInterimNote);
       const payload: UpsertNoteRequestPayload = { note, files };
       dispatch(actionFunc.upsertNoteRequest(payload));
       postSaveSuccess();
     } catch (errors) {
       dispatch(actionFunc.editNoteChange({ errors }));
     }
-  }
+  };
 
-  saveFiles(files: File[]): void {
-    this.saveNote(files);
-  }
+  const saveFiles = (files: File[]): void => {
+    saveNote(files);
+  };
 
-  save(e: React.MouseEvent<{}>): void {
-    this.saveNote();
+  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]): void => {
+    if (rejectedFiles && rejectedFiles.length) {
+      // eslint-disable-next-line no-console
+      console.warn('Some files were rejected', rejectedFiles);
+    }
+    saveFiles(acceptedFiles);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const cancel = (): void => {
+    dispatch(actionFunc.editNoteClose());
+  };
+
+  const save = (e: React.MouseEvent<{}>): void => {
+    saveNote();
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
 
-  render(): JSX.Element {
-    const {
-      dispatch,
-      interimNote,
-      locationId,
-      plants,
-    } = this.props;
-    const { uploadProgress } = interimNote;
+  const { uploadProgress } = interimNote;
 
-    if (uploadProgress) {
-      const linearProgressStyle = {
-        width: '100%',
-        height: '20px',
-      };
-      const { value, max } = uploadProgress;
-      const uploadPercent = Math.round((value * 100) / max);
-      const progress = `Upload progress ${uploadPercent} %`;
-      return (
-        <Paper
-          style={paperStyle}
-          elevation={5}
-        >
-          {value !== max
-            && (
-            <div>
-              <h1 style={{ fontSize: 'xx-large' }}>
-                {progress}
-              </h1>
-              <LinearProgress
-                style={linearProgressStyle}
-                value={uploadPercent}
-                variant="determinate"
-              />
-            </div>
-            )}
-          {value === max
-            && (
-            <div style={{ display: 'flex', fontSize: 'xx-large', justifyContent: 'space-between' }}>
-              <h1>
-Upload complete... Finishing up... Hang on...
-              </h1>
-              <CircularProgress />
-            </div>
-            )}
-        </Paper>
-      );
-    }
-
-    const {
-      date = '', errors = {}, note = '', plantIds,
-    } = interimNote;
-
-    // TODO: Next line (reduce) should happen in NoteAssocPlant and not here because
-    // then NoteAssocPlant can be a PureComponent
-    const plantsAtLocation = Object.keys(plants).reduce((acc: UiPlants, plantId) => {
-      const plant = plants[plantId];
-      const { locationId: locId } = plant;
-      if (locId === locationId) {
-        acc[plantId] = plant;
-      }
-      return acc;
-    }, {});
-
-    const associatedPlants = (
-      <NoteAssocPlant
-        dispatch={dispatch}
-        error={errors.plantIds}
-        plantIds={plantIds}
-        plants={plantsAtLocation}
-      />
-    );
-
-    /* eslint-disable react/jsx-props-no-spreading */
+  if (uploadProgress) {
+    const linearProgressStyle = {
+      width: '100%',
+      height: '20px',
+    };
+    const { value, max } = uploadProgress;
+    const uploadPercent = Math.round((value * 100) / max);
+    const progress = `Upload progress ${uploadPercent} %`;
     return (
       <Paper
         style={paperStyle}
         elevation={5}
       >
-
-        <InputComboText
-          changeHandler={this.onChange}
-          error={errors.date}
-          label="Date"
-          id="note-date"
-          name="date"
-          placeholder="MM/DD/YYYY"
-          style={textFieldStyle}
-          value={date}
-        />
-
-        <InputComboText
-          changeHandler={this.onChange}
-          error={errors.note}
-          label="Note"
-          id="note-text"
-          multiLine
-          name="note"
-          placeholder="What has happened since your last note?"
-          style={textAreaStyle}
-          value={note}
-        />
-
-        {!!errors.length
+        {value !== max
           && (
           <div>
-            <p className="text-danger col-xs-12">
-There were errors. Please check your input.
-            </p>
+            <h1 style={{ fontSize: 'xx-large' }}>
+              {progress}
+            </h1>
+            <LinearProgress
+              style={linearProgressStyle}
+              value={uploadPercent}
+              variant="determinate"
+            />
           </div>
           )}
-
-        <CancelSaveButtons
-          clickAddPhoto={this.onOpenClick}
-          clickSave={this.save}
-          clickCancel={this.cancel}
-          showButtons
-        />
-
-        <Dropzone
-          onDrop={this.onDrop}
-          accept="image/*"
-          ref={(node): void => { this.dropzone = node; }}
-        >
-          {({ getRootProps, getInputProps, isDragActive }): JSX.Element => {
-            let styles = { ...dropZoneStyle };
-            styles = isDragActive ? { ...styles, ...dropZoneActiveStyle } : styles;
-            return (
-              <div {...getRootProps()} style={styles}>
-                <input {...getInputProps()} />
-                <div>Drop images here or tap to select images to upload.</div>
-              </div>
-            );
-          }}
-        </Dropzone>
-
-        {associatedPlants}
-
-        <NoteEditMetrics
-          dispatch={dispatch}
-          error={errors.metrics}
-          interimNote={interimNote}
-        />
-
+        {value === max
+          && (
+          <div style={{ display: 'flex', fontSize: 'xx-large', justifyContent: 'space-between' }}>
+            <h1>
+Upload complete... Finishing up... Hang on...
+            </h1>
+            <CircularProgress />
+          </div>
+          )}
       </Paper>
     );
-    /* eslint-enable react/jsx-props-no-spreading */
   }
+
+  const {
+    date = '', errors = {}, note = '', plantIds,
+  } = interimNote;
+
+  // TODO: Next line (reduce) should happen in NoteAssocPlant and not here because
+  // then NoteAssocPlant can be a PureComponent
+  const plantsAtLocation = Object.keys(plants).reduce((acc: UiPlants, plantId) => {
+    const plant = plants[plantId];
+    const { locationId: locId } = plant;
+    if (locId === locationId) {
+      acc[plantId] = plant;
+    }
+    return acc;
+  }, {});
+
+  const associatedPlants = (
+    <NoteAssocPlant
+      dispatch={dispatch}
+      error={errors.plantIds}
+      plantIds={plantIds}
+      plants={plantsAtLocation}
+    />
+  );
+
+  const dropZoneStyle = isDragActive ? dropZoneActiveStyle : dropZoneInactiveStyle;
+
+  /* eslint-disable react/jsx-props-no-spreading */
+  return (
+    <Paper
+      style={paperStyle}
+      elevation={5}
+    >
+
+      <InputComboText
+        changeHandler={onChange}
+        error={errors.date}
+        label="Date"
+        id="note-date"
+        name="date"
+        placeholder="MM/DD/YYYY"
+        style={textFieldStyle}
+        value={date}
+      />
+
+      <InputComboText
+        changeHandler={onChange}
+        error={errors.note}
+        label="Note"
+        id="note-text"
+        multiLine
+        name="note"
+        placeholder="What has happened since your last note?"
+        style={textAreaStyle}
+        value={note}
+      />
+
+      {!!errors.length
+        && (
+        <div>
+          <p className="text-danger col-xs-12">
+There were errors. Please check your input.
+          </p>
+        </div>
+        )}
+
+      <CancelSaveButtons
+        clickSave={save}
+        clickCancel={cancel}
+        showButtons
+      />
+
+      <div {...getRootProps()} style={dropZoneStyle}>
+        <input {...getInputProps()} />
+        {
+          isDragActive
+            ? <div>Drop images here ...</div>
+            : <div>Drag images here or tap to select images to upload.</div>
+        }
+      </div>
+
+      {associatedPlants}
+
+      <NoteEditMetrics
+        dispatch={dispatch}
+        error={errors.metrics}
+        interimNote={interimNote}
+      />
+
+    </Paper>
+  );
+  /* eslint-enable react/jsx-props-no-spreading */
 }
+
+noteEdit.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  interimNote: PropTypes.shape({
+    _id: PropTypes.string,
+    date: PropTypes.string,
+    errors: PropTypes.shape({
+      date: PropTypes.string,
+      length: PropTypes.number,
+      metrics: PropTypes.string,
+      note: PropTypes.string,
+      plantIds: PropTypes.string,
+    }),
+    note: PropTypes.string,
+    plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    uploadProgress: PropTypes.shape({
+      max: PropTypes.number,
+      value: PropTypes.number,
+    }),
+  }).isRequired,
+  locationId: PropTypes.string.isRequired,
+  plants: PropTypes.shape({
+  }).isRequired,
+  postSaveSuccess: PropTypes.func,
+};
+
+noteEdit.defaultProps = {
+  postSaveSuccess: (): void => {},
+};
