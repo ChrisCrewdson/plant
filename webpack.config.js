@@ -13,8 +13,9 @@ const ROOT_PATH = path.resolve(__dirname);
  */
 const common = {
   output: {
-    path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
