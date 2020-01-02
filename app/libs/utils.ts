@@ -598,11 +598,20 @@ function constantEquals(userSuppliedValue: string | undefined, internalValue: st
 }
 
 const getNavigatorLanguage = (): string | string[] => {
-  if (navigator.languages && navigator.languages.length) {
-    return navigator.languages as string[];
-  }
+  const defaultLanguage = 'en';
+  try {
+    if (!navigator) {
+      return defaultLanguage;
+    }
 
-  return navigator.language || 'en';
+    if (navigator.languages && navigator.languages.length) {
+      return navigator.languages as string[];
+    }
+
+    return navigator.language || defaultLanguage;
+  } catch {
+    return defaultLanguage;
+  }
 };
 
 const formatNumber = (value: number, isCurrency: boolean, locale?: string | string[]): string => {

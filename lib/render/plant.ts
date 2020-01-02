@@ -138,7 +138,12 @@ export const renderPlant = async (req: Request, res: Response): Promise<void> =>
     };
     res.send(indexHtml(data, true));
   } catch (error) {
-    logger.error({ moduleName, msg: 'Unexpected error in SSR of Plant', err: error });
+    logger.error({
+      moduleName,
+      msg: 'Unexpected error in SSR of Plant',
+      errMsg: error.message,
+      err: error,
+    });
     res.status(404).send(indexHtml({ req }, false));
   }
 };
