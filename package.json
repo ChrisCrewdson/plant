@@ -103,6 +103,7 @@
     "eslint-plugin-jest": "23.3.0",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.17.0",
+    "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-security": "1.4.0",
     "fetch-cookie": "0.7.3",
     "hoist-non-react-statics": "3.3.1",

@@ -28,8 +28,9 @@ module.exports = {
     sourceType:  'module',  // Allows for the use of imports
   },
   'plugins': [
+    'jest',
+    'react-hooks',
     'security',
-    'jest'
   ],
   'rules': {
     'function-paren-newline': [0],
@@ -54,8 +55,10 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': [0],
     '@typescript-eslint/no-empty-function': [0],
     '@typescript-eslint/no-explicit-any': [0],
-    "@typescript-eslint/explicit-function-return-type": [2],
+    '@typescript-eslint/explicit-function-return-type': [2],
     'import/prefer-default-export': [0],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   },
   settings: {
     "import/parsers": {

@@ -47,7 +47,7 @@ interface GridProps {
   validate: (data: GridRowValidate) => string[];
 }
 
-export default function grid(props: GridProps): JSX.Element {
+export default function Grid(props: GridProps): JSX.Element {
   const {
     columns,
     delete: removeRow,
@@ -313,7 +313,7 @@ export default function grid(props: GridProps): JSX.Element {
 }
 
 
-grid.propTypes = {
+Grid.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({
     options: PropTypes.object,
     title: PropTypes.string.isRequired,
@@ -332,7 +332,7 @@ grid.propTypes = {
   validate: PropTypes.func.isRequired,
 };
 
-grid.defaultProps = {
+Grid.defaultProps = {
   rows: [],
   meta: {},
 };

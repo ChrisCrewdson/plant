@@ -36,7 +36,7 @@ interface PlantEditProps {
   users: UiUsers;
 }
 
-export default function plantEdit(props: PlantEditProps): JSX.Element {
+export default function PlantEdit(props: PlantEditProps): JSX.Element {
   const history = useHistory();
 
   const {
@@ -310,7 +310,7 @@ There were errors. Please check your input.
   );
 }
 
-plantEdit.propTypes = {
+PlantEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimPlant: PropTypes.shape({
     botanicalName: PropTypes.string,

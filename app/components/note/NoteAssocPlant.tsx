@@ -34,7 +34,7 @@ const getSelectedState = (
   return isTerminated ? 'dead' : 'alive';
 };
 
-export default function noteAssocPlant(props: NoteAssocPlantProps): JSX.Element {
+export default function NoteAssocPlant(props: NoteAssocPlantProps): JSX.Element {
   const [expanded, setExpanded] = useState(false);
   const [filter, setFilter] = useState('');
 
@@ -146,13 +146,13 @@ export default function noteAssocPlant(props: NoteAssocPlantProps): JSX.Element 
 }
 
 
-noteAssocPlant.propTypes = {
+NoteAssocPlant.propTypes = {
   dispatch: PropTypes.func.isRequired,
   error: PropTypes.string,
   plantIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   plants: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-noteAssocPlant.defaultProps = {
+NoteAssocPlant.defaultProps = {
   error: '',
 };

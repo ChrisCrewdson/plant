@@ -51,7 +51,7 @@ const buildImageSrcSet = (image: NoteImage): string => {
   return '';
 };
 
-export default function noteRead(props: NoteReadProps): JSX.Element {
+export default function NoteRead(props: NoteReadProps): JSX.Element {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   /**
@@ -181,7 +181,7 @@ export default function noteRead(props: NoteReadProps): JSX.Element {
   );
 }
 
-noteRead.propTypes = {
+NoteRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
   note: PropTypes.shape({

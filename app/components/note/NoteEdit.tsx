@@ -66,7 +66,7 @@ interface NoteEditProps {
   locationId: string;
 }
 
-export default function noteEdit(props: NoteEditProps): JSX.Element {
+export default function NoteEdit(props: NoteEditProps): JSX.Element {
   const {
     dispatch,
     interimNote,
@@ -101,6 +101,9 @@ export default function noteEdit(props: NoteEditProps): JSX.Element {
     }
   };
 
+  // TODO: Disabled while adding the react-hooks plugin lint rule
+  //       Come back and fix this
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const saveFiles = (files: File[]): void => {
     saveNote(files);
   };
@@ -111,6 +114,9 @@ export default function noteEdit(props: NoteEditProps): JSX.Element {
       console.warn('Some files were rejected', rejectedFiles);
     }
     saveFiles(acceptedFiles);
+  // TODO: Disabled while adding the react-hooks plugin lint rule
+  //       Come back and fix this
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -258,7 +264,7 @@ There were errors. Please check your input.
   /* eslint-enable react/jsx-props-no-spreading */
 }
 
-noteEdit.propTypes = {
+NoteEdit.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interimNote: PropTypes.shape({
     _id: PropTypes.string,
@@ -283,6 +289,6 @@ noteEdit.propTypes = {
   postSaveSuccess: PropTypes.func,
 };
 
-noteEdit.defaultProps = {
+NoteEdit.defaultProps = {
   postSaveSuccess: (): void => {},
 };

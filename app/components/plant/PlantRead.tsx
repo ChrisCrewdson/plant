@@ -27,7 +27,7 @@ interface PlantReadProps {
   userCanEdit: boolean;
 }
 
-export default function plantRead(props: PlantReadProps): JSX.Element {
+export default function PlantRead(props: PlantReadProps): JSX.Element {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const history = useHistory();
 
@@ -246,7 +246,7 @@ Plant not found or still loading...
   );
 }
 
-plantRead.propTypes = {
+PlantRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interim: PropTypes.shape({
   }).isRequired,
