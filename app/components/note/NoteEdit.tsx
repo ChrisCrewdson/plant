@@ -1,7 +1,7 @@
 // Used to add a note to a plant or edit
 // an existing note
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import PropTypes from 'prop-types';
 import { produce } from 'immer';
@@ -101,23 +101,17 @@ export default function NoteEdit(props: NoteEditProps): JSX.Element {
     }
   };
 
-  // TODO: Disabled while adding the react-hooks plugin lint rule
-  //       Come back and fix this
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const saveFiles = (files: File[]): void => {
     saveNote(files);
   };
 
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]): void => {
+  const onDrop = (acceptedFiles: File[], rejectedFiles: File[]): void => {
     if (rejectedFiles && rejectedFiles.length) {
       // eslint-disable-next-line no-console
       console.warn('Some files were rejected', rejectedFiles);
     }
     saveFiles(acceptedFiles);
-  // TODO: Disabled while adding the react-hooks plugin lint rule
-  //       Come back and fix this
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const cancel = (): void => {
