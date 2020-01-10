@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as validators from '../../../app/models';
 import * as constants from '../../../app/libs/constants';
 import utils from '../../../app/libs/utils';
-import { BizNote, NoteImage } from '../../../lib/db/mongo/model-note';
+import { BizNote, NoteImage, NoteMetric } from '../../../lib/db/mongo/model-note';
 
 const { makeMongoId } = utils;
 const { note: noteValidator } = validators;
@@ -143,7 +143,62 @@ describe('/app/models/note', () => {
   });
 
   describe('metric validation', () => {
+    test('should validate numbers and booleans', () => {
+      const note: BizNote = {
+        _id: '5e180098d3574ce77dfc2d01',
+        date: 20160101,
+        note: 'some text',
+        plantIds: ['5e180098d3574ce77dfc2d02'],
+        userId: 'fake user id',
+        metrics: {
+          firstBlossom: true,
+          firstBud: true,
+          girth: 1.1,
+          harvestCount: 5,
+          harvestEnd: true,
+          harvestStart: true,
+          harvestWeight: 5,
+          height: 5.5,
+          lastBlossom: true,
+          leafShedEnd: true,
+          leafShedStart: true,
+        },
+      };
+      const noteCopy = _.cloneDeep(note);
 
+      const transformed = noteValidator(note);
+      expect(transformed).toMatchSnapshot();
+      expect(noteCopy).toEqual(note);
+    });
+
+    test('should convert strings to numbers', () => {
+      const metrics = {
+        firstBlossom: true,
+        firstBud: true,
+        girth: '1.1',
+        harvestCount: '5',
+        harvestEnd: true,
+        harvestStart: true,
+        harvestWeight: '5',
+        height: '5.5',
+        lastBlossom: true,
+        leafShedEnd: true,
+        leafShedStart: true,
+      } as unknown as NoteMetric;
+      const note: BizNote = {
+        _id: '5e180098d3574ce77dfc2d01',
+        date: 20160101,
+        note: 'some text',
+        plantIds: ['5e180098d3574ce77dfc2d02'],
+        userId: 'fake user id',
+        metrics,
+      };
+      const noteCopy = _.cloneDeep(note);
+
+      const transformed = noteValidator(note);
+      expect(transformed).toMatchSnapshot();
+      expect(noteCopy).toEqual(note);
+    });
   });
 
   describe('note.model/images validation', () => {
@@ -165,7 +220,6 @@ describe('/app/models/note', () => {
         userId: 'fake user id',
       };
       const noteCopy = _.cloneDeep(note);
-
 
       const transformed = noteValidator(note);
       expect(Object.keys(transformed)).toHaveLength(5);

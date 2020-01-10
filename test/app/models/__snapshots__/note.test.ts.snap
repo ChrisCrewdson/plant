@@ -42,6 +42,54 @@ Object {
 }
 `;
 
+exports[`/app/models/note metric validation should convert strings to numbers 1`] = `
+Object {
+  "_id": "5e180098d3574ce77dfc2d01",
+  "date": 20160101,
+  "metrics": Object {
+    "firstBlossom": true,
+    "firstBud": true,
+    "girth": 1.1,
+    "harvestCount": 5,
+    "harvestEnd": true,
+    "harvestStart": true,
+    "harvestWeight": 5,
+    "height": 5.5,
+    "lastBlossom": true,
+    "leafShedEnd": true,
+    "leafShedStart": true,
+  },
+  "note": "some text",
+  "plantIds": Array [
+    "5e180098d3574ce77dfc2d02",
+  ],
+}
+`;
+
+exports[`/app/models/note metric validation should validate numbers and booleans 1`] = `
+Object {
+  "_id": "5e180098d3574ce77dfc2d01",
+  "date": 20160101,
+  "metrics": Object {
+    "firstBlossom": true,
+    "firstBud": true,
+    "girth": 1.1,
+    "harvestCount": 5,
+    "harvestEnd": true,
+    "harvestStart": true,
+    "harvestWeight": 5,
+    "height": 5.5,
+    "lastBlossom": true,
+    "leafShedEnd": true,
+    "leafShedStart": true,
+  },
+  "note": "some text",
+  "plantIds": Array [
+    "5e180098d3574ce77dfc2d02",
+  ],
+}
+`;
+
 exports[`/app/models/note note.model/images validation should convert image size if it is a string number 1`] = `
 Object {
   "_id": "5c2af2b712d4132fa1e69d39",

@@ -44,19 +44,19 @@ export interface NoteImage {
 /**
  * These are the properties in the metrics object that have number values
  */
-export const NoteMetricNumberProps = [
+export const noteMetricNumberProps = [
   'height',
   'girth',
   'harvestCount',
   'harvestWeight',
 ] as const;
-type NoteMetricNumberPropsType = typeof NoteMetricNumberProps[number];
-type NoteMetricNumber = Record<NoteMetricNumberPropsType, number>;
+type NoteMetricNumberPropsType = typeof noteMetricNumberProps[number];
+export type NoteMetricNumber = Record<NoteMetricNumberPropsType, number>;
 
 /**
  * These are the properties in the metrics object that have boolean values
  */
-const NoteMetricBoolProps = [
+const noteMetricBoolProps = [
   'firstBlossom',
   'lastBlossom',
   'firstBud',
@@ -65,7 +65,7 @@ const NoteMetricBoolProps = [
   'leafShedStart',
   'leafShedEnd',
 ] as const;
-type NoteMetricBoolPropsType = typeof NoteMetricBoolProps[number];
+type NoteMetricBoolPropsType = typeof noteMetricBoolProps[number];
 type NoteMetricBool = Record<NoteMetricBoolPropsType, boolean>;
 
 export type NoteMetric = NoteMetricNumber & NoteMetricBool;
