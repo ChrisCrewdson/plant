@@ -25,6 +25,9 @@ import {
   dbUserToBizUser,
   dbUsersToBizUsers,
 } from './converters';
+import {
+  DbNote, BizNoteNew, BizNote, DbNoteWithPlants, NoteImageUpdateData,
+} from './model-note';
 
 const dbHelper = Helper;
 

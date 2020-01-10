@@ -1,5 +1,6 @@
 import { Db } from 'mongodb';
 import { DbCollectionName, DbShapes } from './db-types';
+import { DbNote } from './model-note';
 
 const read = async (db: Db, collection: DbCollectionName,
   query: object, options: object): Promise<DbShapes | null> => {

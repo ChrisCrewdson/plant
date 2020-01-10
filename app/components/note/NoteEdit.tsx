@@ -19,6 +19,7 @@ import NoteAssocPlant from './NoteAssocPlant';
 import NoteEditMetrics from './NoteEditMetrics';
 import * as validators from '../../models';
 import { PlantAction, UpsertNoteRequestPayload } from '../../../lib/types/redux-payloads';
+import { BizNote, UiInterimNote } from '../../../lib/db/mongo/model-note';
 
 const { note: noteValidator } = validators;
 

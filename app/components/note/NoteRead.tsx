@@ -13,6 +13,7 @@ import utils from '../../libs/utils';
 import Markdown from '../common/Markdown';
 import NoteReadMetrics from './NoteReadMetrics';
 import { PlantAction } from '../../../lib/types/redux-payloads';
+import { UiNotesValue, ImageSizeName, NoteImage } from '../../../lib/db/mongo/model-note';
 
 interface NoteReadProps {
   dispatch: Dispatch<PlantAction<any>>;

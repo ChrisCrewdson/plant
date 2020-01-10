@@ -2,6 +2,7 @@ import { Request } from 'express';
 // SSV = Server Side Validation
 import * as validators from '../../app/models';
 import utils from '../../app/libs/utils';
+import { UiInterimNote, BizNoteNew } from '../db/mongo/model-note';
 
 const { note: noteValidator } = validators;
 

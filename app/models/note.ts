@@ -4,6 +4,8 @@ import isArray from 'lodash/isArray';
 import validatejs from 'validate.js';
 import utils from '../libs/utils';
 import * as constants from '../libs/constants';
+import { BizNote } from '../../lib/db/mongo/model-note';
+import { UploadedNoteFile } from '../../lib/types/model-note';
 
 const { makeMongoId } = utils;
 
@@ -150,6 +152,22 @@ export const note = (atts: BizNote): BizNote => {
     });
     attributes = { ...attributes, images };
   }
+
+  // const noteMetricNumberProps: NoteMetricNumberPropsType = [
+  //   'height',
+  //   'girth',
+  //   'harvestCount',
+  //   'harvestWeight',
+  // ] as const;
+
+  // const { metrics } = attributes;
+  // if (metrics) {
+  //   NoteMetricNumberProps.forEach((notMetricNumberProp) => {
+  //     if (typeof metrics.girth === 'string') {
+  //       metrics.girth = parseFloat(metrics.girth);
+  //     }
+  //   });
+  // }
 
   const cleaned = validatejs.cleanAttributes(cloneDeep(attributes), constraints);
   const transformed = transform(cleaned);

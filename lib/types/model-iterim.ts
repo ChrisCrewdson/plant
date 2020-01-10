@@ -1,3 +1,5 @@
+import { UiInterimNote } from '../db/mongo/model-note';
+
 // The interim model is a data structure that is passed
 // around in the UI only.
 // It's purpose is to hold data that communicates changes
@@ -24,23 +26,16 @@ This state is WIP
 }
 */
 
-/*
-In TypeScript, just as in ECMAScript 2015, any file containing a top-level import or export
-is considered a module. Conversely, a file without any top-level import or export declarations
-is treated as a script whose contents are available in the global scope (and therefore to
-modules as well).
-*/
-
-interface UiInterimNoteContainer {
+export interface UiInterimNoteContainer {
   note: UiInterimNote;
   plant: UiPlantsValue;
 }
 
-interface UiInterimPlantContainer {
+export interface UiInterimPlantContainer {
   plant: UiPlantsValue;
 }
 
-interface UiInterim {
+export interface UiInterim {
   note?: UiInterimNoteContainer;
   plant?: UiInterimPlantContainer;
   /**

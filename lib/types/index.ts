@@ -9,13 +9,6 @@ type NonEmptyList<T> = T[] & { 0: T };
 // Now included with Typescript 3.5+
 // type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
-/*
-In TypeScript, just as in ECMAScript 2015, any file containing a top-level import or export
-is considered a module. Conversely, a file without any top-level import or export declarations
-is treated as a script whose contents are available in the global scope (and therefore to
-modules as well).
-*/
-
 type GeoType = 'Point';
 
 interface GeoCoords {

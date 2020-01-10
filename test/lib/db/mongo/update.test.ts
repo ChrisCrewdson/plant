@@ -1,6 +1,7 @@
 import { getDbInstance } from '../../../../lib/db/mongo';
 import utils from '../../../../app/libs/utils';
 import { mockLogger } from '../../../mock-logger';
+import { BizNote, NoteImageSize } from '../../../../lib/db/mongo/model-note';
 
 const mongo = getDbInstance();
 

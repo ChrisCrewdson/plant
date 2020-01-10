@@ -10,6 +10,16 @@ import * as constants from '../../app/libs/constants';
 import { serverValidateNote } from '../validation/ssv-note';
 import utils from '../../app/libs/utils';
 import { makeS3KeyFromImage } from '../utils';
+import {
+  BizNote,
+  BizNoteNew,
+  ImageCompleteBody,
+  ImageCompleteQuery,
+  ImageSizeName,
+  NoteImage,
+  NoteImageUpdateData,
+} from '../db/mongo/model-note';
+import { AwsKey, DerivedMulterFile, UploadFileData } from '../types/model-note';
 
 interface ImageCompleteRequest {
   logger: Logger;

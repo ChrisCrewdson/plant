@@ -14,6 +14,8 @@ import EditDeleteButtons from '../common/EditDeleteButtons';
 import { actionFunc } from '../../actions';
 import Markdown from '../common/Markdown';
 import { PlantAction } from '../../../lib/types/redux-payloads';
+import { UiNotes } from '../../../lib/db/mongo/model-note';
+import { UiInterim } from '../../../lib/types/model-iterim';
 
 const dateFormat = 'DD-MMM-YYYY';
 

@@ -12,6 +12,7 @@ import utils from '../../libs/utils';
 import NoteEdit from './NoteEdit';
 import { actionFunc } from '../../actions';
 import { PlantAction } from '../../../lib/types/redux-payloads';
+import { UiInterimNote } from '../../../lib/db/mongo/model-note';
 
 interface NoteCreateProps {
   dispatch: Dispatch<PlantAction<any>>;

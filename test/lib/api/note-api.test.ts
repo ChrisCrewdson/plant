@@ -3,6 +3,7 @@ import { getDbInstance } from '../../../lib/db/mongo';
 import utils from '../../../app/libs/utils';
 import * as constants from '../../../app/libs/constants';
 import { mockLogger } from '../../mock-logger';
+import { BizNote } from '../../../lib/db/mongo/model-note';
 
 const mongo = getDbInstance();
 

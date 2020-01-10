@@ -1,6 +1,7 @@
 import { ObjectID } from 'mongodb';
 import { produce } from 'immer';
 import utils from '../../../app/libs/utils';
+import { BizNote, BizNoteNew, DbNote } from './model-note';
 
 export const convertPlantDataTypesForSaving = (
   plantIn: Readonly<BizPlant> | Readonly<UiPlantsValue>):

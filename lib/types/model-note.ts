@@ -1,14 +1,16 @@
-interface AwsKey {
+import { NoteImageSize } from '../db/mongo/model-note';
+
+export interface AwsKey {
   Key: string;
 }
 
-interface UploadFileData {
+export interface UploadFileData {
   files: DerivedMulterFile[];
   noteid: string;
   userid: string;
 }
 
-interface UploadedNoteFile {
+export interface UploadedNoteFile {
   id: string;
   ext: string;
   originalname: string;
@@ -16,7 +18,7 @@ interface UploadedNoteFile {
   sizes?: NoteImageSize[];
 }
 
-interface DerivedMulterFile {
+export interface DerivedMulterFile {
   multerFile: Express.Multer.File;
   noteFile: UploadedNoteFile;
 }

@@ -11,6 +11,7 @@ import store from '../../../../app/store';
 import App from '../../../../app/components/App';
 import { PlantAction } from '../../../../lib/types/redux-payloads';
 import { theme } from '../../../helper';
+import { UiInterimNote } from '../../../../lib/db/mongo/model-note';
 
 describe('NoteEditMetrics', () => {
   const storeDispatch = store.dispatch;

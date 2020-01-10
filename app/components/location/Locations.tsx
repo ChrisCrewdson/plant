@@ -10,6 +10,7 @@ import Base from '../base/Base';
 import AddLocationButton from './AddLocationButton';
 import LocationTile from './LocationTile';
 import { LocationProps } from './Location';
+import { PlantContext } from '../../../lib/types/react-common';
 
 class Locations extends React.Component {
   props!: LocationProps;

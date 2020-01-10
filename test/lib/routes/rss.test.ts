@@ -2,6 +2,7 @@ import { Application } from 'express';
 import bson from 'bson';
 
 import { rss } from '../../../lib/routes/rss';
+import { DbNoteWithPlants } from '../../../lib/db/mongo/model-note';
 
 
 const { ObjectID } = bson;

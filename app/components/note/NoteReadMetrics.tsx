@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import utils from '../../libs/utils';
+import { UiNotesValue } from '../../../lib/db/mongo/model-note';
 
 interface NoteReadMetricsProps {
   note: UiNotesValue;

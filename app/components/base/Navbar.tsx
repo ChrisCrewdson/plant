@@ -6,6 +6,8 @@ import { actionFunc } from '../../actions';
 import utils from '../../libs/utils';
 import { isLoggedIn } from '../../libs/auth-helper';
 import AddPlantButton from '../common/AddPlantButton';
+import { UiInterim } from '../../../lib/types/model-iterim';
+import { PlantContext } from '../../../lib/types/react-common';
 
 interface NavbarState {
   user: UiUser;

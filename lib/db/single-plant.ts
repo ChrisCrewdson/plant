@@ -1,5 +1,6 @@
 import Logger from 'lalog';
 import { getDbInstance } from './mongo';
+import { BizNoteMap } from './mongo/model-note';
 
 // Get all the data from the DB for a single plant to be able
 // to render it on the server

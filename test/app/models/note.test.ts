@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as validators from '../../../app/models';
 import * as constants from '../../../app/libs/constants';
 import utils from '../../../app/libs/utils';
+import { BizNote, NoteImage } from '../../../lib/db/mongo/model-note';
 
 const { makeMongoId } = utils;
 const { note: noteValidator } = validators;

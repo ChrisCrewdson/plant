@@ -1,3 +1,5 @@
+import { ImageSizeName } from '../../lib/db/mongo/model-note';
+
 // A file for constants used on both the client and server
 
 export const imageSizeNames: ImageSizeName[] = ['orig', 'xl', 'lg', 'md', 'sm', 'thumb'];

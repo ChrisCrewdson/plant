@@ -11,6 +11,8 @@ import { notesToMetricNotes } from '../../libs/metrics';
 import utils from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
 import Markdown from '../common/Markdown';
+import { UiNotes, UiInterimNote } from '../../../lib/db/mongo/model-note';
+import { UiInterim } from '../../../lib/types/model-iterim';
 
 interface NotesReadProps {
   dispatch: Dispatch<PlantAction<any>>;

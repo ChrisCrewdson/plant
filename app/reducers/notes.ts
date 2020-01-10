@@ -2,6 +2,9 @@ import { produce } from 'immer';
 import { actionEnum } from '../actions';
 import { PlantAction, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
 import utils from '../libs/utils';
+import {
+  UiNotes, UiInterimNote, BizNote, UiNotesValue,
+} from '../../lib/db/mongo/model-note';
 
 type RoNotes = Readonly<UiNotes>;
 

@@ -1,3 +1,4 @@
+import { DbNote } from './model-note';
 
 interface GoogleOAuthJson {
   id: string;

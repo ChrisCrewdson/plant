@@ -2,6 +2,7 @@ import marked from 'marked';
 import { Application } from 'express';
 import { getDbInstance } from '../db/mongo';
 import utils from '../../app/libs/utils';
+import { DbNoteWithPlants, NoteImage } from '../db/mongo/model-note';
 
 const { makeSlug, intToMoment } = utils;
 

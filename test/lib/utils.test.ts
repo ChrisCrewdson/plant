@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 
 import { makeS3KeyFromImage } from '../../lib/utils';
+import { UploadedNoteFile } from '../../lib/types/model-note';
 
 describe('utils', () => {
   describe('makeS3KeyFromImage', () => {

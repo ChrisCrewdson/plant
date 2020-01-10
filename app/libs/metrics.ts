@@ -2,6 +2,9 @@
 import { isNumber } from 'lodash';
 import { Moment } from 'moment';
 import utils from './utils';
+import {
+  MetricNote, UiNotesValue, MetricItemMetricTypes, MetricChangePair, UiNotes, MetricItem,
+} from '../../lib/db/mongo/model-note';
 /**
  * Create the object that represents the component that goes between notes describing
  * what has happened between the notes.

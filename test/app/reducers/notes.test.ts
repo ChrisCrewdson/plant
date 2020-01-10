@@ -2,6 +2,7 @@ import { produce } from 'immer';
 import { notes } from '../../../app/reducers/notes';
 import { actionFunc } from '../../../app/actions';
 import { UpsertNoteRequestPayload } from '../../../lib/types/redux-payloads';
+import { BizNote } from '../../../lib/db/mongo/model-note';
 
 function checkReducer(
   actionName: string, state: any, payload: string | object | undefined | any[], expected: any) {

@@ -3,6 +3,7 @@ import {
 } from 'mongodb';
 import { Helper } from './helper';
 import { DbCollectionName, DbShape } from './db-types';
+import { NoteImageSize, DbNote } from './model-note';
 
 /*
 MongoDB Driver v3.x changes to:

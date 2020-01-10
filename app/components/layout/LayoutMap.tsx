@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import * as gis from '../../libs/gis';
 import { actionFunc } from '../../actions';
 import Base from '../base/Base';
+import { PlantContext } from '../../../lib/types/react-common';
 
 interface PlantLocations {
   canvasHeight: number;

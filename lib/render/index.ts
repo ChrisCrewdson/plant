@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { Request } from 'express';
+import { PlantStateTree } from '../types/react-common';
 
 interface OpenGraphMeta {
   property: string;

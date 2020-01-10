@@ -2,6 +2,7 @@
 // This file holds the specialized typings that apply to this project for Redux operations.
 
 import { Action } from 'redux';
+import { BizNote } from '../db/mongo/model-note';
 
 /**
  * The Actions in Plant have 2 props:

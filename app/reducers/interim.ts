@@ -6,6 +6,8 @@ import { isNumber } from 'lodash';
 import { AnyAction } from 'redux';
 import { actionEnum } from '../actions';
 import { PlantAction } from '../../lib/types/redux-payloads';
+import { UiInterim, UiInterimNoteContainer, UiInterimPlantContainer } from '../../lib/types/model-iterim';
+import { UiInterimNote } from '../../lib/db/mongo/model-note';
 
 function editNoteOpen(state: Readonly<UiInterim>,
   action: PlantAction<UiInterimNoteContainer>): UiInterim {

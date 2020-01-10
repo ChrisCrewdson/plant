@@ -10,6 +10,7 @@ import { logger } from '../middleware/logger';
 import { setupSubscribe as userSubscribe } from './user';
 import { PlantAction } from '../../lib/types/redux-payloads';
 import utils from '../libs/utils';
+import { PlantStateTree } from '../../lib/types/react-common';
 
 const { getGlobalThis } = utils;
 const middleware = [api] as Middleware<any, any, any>[];

@@ -1,6 +1,7 @@
 import { Store } from 'redux';
 import { produce } from 'immer';
 import { PlantAction } from '../../lib/types/redux-payloads';
+import { PlantStateTree } from '../../lib/types/react-common';
 
 // Purpose: Keep localStorage up-to-date with changes in the user object.
 

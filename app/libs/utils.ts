@@ -7,6 +7,7 @@ import { produce } from 'immer';
 import globalThat from 'globalthis';
 
 import * as constants from './constants';
+import { MetaMetricKey, BizNote } from '../../lib/db/mongo/model-note';
 
 
 type MetaMetricType =

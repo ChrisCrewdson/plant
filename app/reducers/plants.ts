@@ -2,6 +2,7 @@ import uniq from 'lodash/uniq';
 import { produce } from 'immer';
 import { actionEnum } from '../actions';
 import { PlantAction, DeletePlantRequestPayload, UpsertNoteRequestPayload } from '../../lib/types/redux-payloads';
+import { BizNote } from '../../lib/db/mongo/model-note';
 
 /**
  * This is a helper function for when the action.payload holds a new plant

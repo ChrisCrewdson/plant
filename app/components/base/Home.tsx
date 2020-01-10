@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Base from './Base';
 import { isLoggedIn } from '../../libs/auth-helper';
+import { PlantContext } from '../../../lib/types/react-common';
 
 export default class Home extends React.Component {
   // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.

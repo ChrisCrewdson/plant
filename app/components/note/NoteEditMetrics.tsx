@@ -11,6 +11,7 @@ import Errors from '../common/Errors';
 import InputComboText from '../common/InputComboText';
 import utils, { MetaMetric } from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
+import { UiInterimNote, MetaMetricKey, NoteMetric } from '../../../lib/db/mongo/model-note';
 
 interface NoteEditMetricProps {
   dispatch: Dispatch<PlantAction<any>>;

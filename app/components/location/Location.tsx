@@ -15,6 +15,9 @@ import { actionFunc } from '../../actions';
 import NoteCreate from '../note/NoteCreate';
 import utils from '../../libs/utils';
 import AddPlantButton from '../common/AddPlantButton';
+import { UiInterimNote } from '../../../lib/db/mongo/model-note';
+import { PlantContext } from '../../../lib/types/react-common';
+import { UiInterim } from '../../../lib/types/model-iterim';
 
 
 interface LocationPropsMatchParams {

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import utils from '../../libs/utils';
 import Base from '../base/Base';
+import { PlantContext } from '../../../lib/types/react-common';
 
 const { makeSlug } = utils;
 

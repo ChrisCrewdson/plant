@@ -11,6 +11,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 import LocationsManager from '../location/LocationsManager';
 import Base from '../base/Base';
+import { PlantStore } from '../../../lib/types/react-common';
 
 interface ProfilePropsUserSettings {
   imperial: boolean;

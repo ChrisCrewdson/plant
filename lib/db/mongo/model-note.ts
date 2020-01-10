@@ -1,11 +1,5 @@
-/*
-In TypeScript, just as in ECMAScript 2015, any file containing a top-level import or export
-is considered a module. Conversely, a file without any top-level import or export declarations
-is treated as a script whose contents are available in the global scope (and therefore to
-modules as well).
-*/
 
-type ImageSizeName =
+export type ImageSizeName =
   'orig' |
   'xl' |
   'lg' |
@@ -13,7 +7,7 @@ type ImageSizeName =
   'sm' |
   'thumb';
 
-interface NoteImageSize {
+export interface NoteImageSize {
   /**
    * name of the size, e.g. thumb, sm, md, lg, xl
    */
@@ -24,7 +18,7 @@ interface NoteImageSize {
   width: number;
 }
 
-interface NoteImage {
+export interface NoteImage {
   /**
    * MongoId that corresponds to the name of the file in S3
    */
@@ -50,7 +44,7 @@ interface NoteImage {
 /**
  * These are the properties in the metrics object that have number values
  */
-const NoteMetricNumberProps = [
+export const NoteMetricNumberProps = [
   'height',
   'girth',
   'harvestCount',
@@ -74,9 +68,9 @@ const NoteMetricBoolProps = [
 type NoteMetricBoolPropsType = typeof NoteMetricBoolProps[number];
 type NoteMetricBool = Record<NoteMetricBoolPropsType, boolean>;
 
-type NoteMetric = NoteMetricNumber & NoteMetricBool;
+export type NoteMetric = NoteMetricNumber & NoteMetricBool;
 
-type MetaMetricKey = keyof NoteMetric;
+export type MetaMetricKey = keyof NoteMetric;
 
 /**
  * These are the object types that can be rendered in a list of Notes.
@@ -89,7 +83,7 @@ type MetaMetricKey = keyof NoteMetric;
  */
 type MetricNoteTypes = 'since' | 'unfound' | 'note' | 'metric';
 
-interface MetricNote {
+export interface MetricNote {
   noteId: string;
   note?: UiNotesValue;
   sinceLast?: string;
@@ -97,20 +91,20 @@ interface MetricNote {
   type: MetricNoteTypes;
 }
 
-type MetricItemMetricTypes = 'height' | 'girth';
+export type MetricItemMetricTypes = 'height' | 'girth';
 
-interface MetricItem {
+export interface MetricItem {
   date: import('moment').Moment;
   height?: number;
   girth?: number;
 }
 
-interface MetricChangePair {
+export interface MetricChangePair {
   prev: MetricItem;
   last: MetricItem;
 }
 
-interface DbNote {
+export interface DbNote {
   _id: import('mongodb').ObjectID;
   /**
    * Apart from the _id the date is the only other field that's
@@ -140,7 +134,7 @@ interface DbNote {
   userId: import('mongodb').ObjectID;
 }
 
-interface BizNote extends Omit<DbNote, '_id' | 'plantIds' | 'userId'> {
+export interface BizNote extends Omit<DbNote, '_id' | 'plantIds' | 'userId'> {
   _id: string;
   plantIds: string[];
   /**
@@ -152,7 +146,7 @@ interface BizNote extends Omit<DbNote, '_id' | 'plantIds' | 'userId'> {
   userId: string;
 }
 
-interface BizNoteNew extends Omit<BizNote, '_id' | 'showImages'> {
+export interface BizNoteNew extends Omit<BizNote, '_id' | 'showImages'> {
   _id?: string;
 }
 
@@ -162,7 +156,7 @@ interface UiInterimUploadProgress {
   note?: UiNotesValue;
 }
 
-interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
+export interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
   /**
    * At the time of writing this I think that date is sometimes a string. In the note.test.js
    * file there are validation tests that confirms that it's not a string.
@@ -175,9 +169,9 @@ interface UiInterimNote extends Omit<BizNoteNew, 'date' | 'userId'> {
   userId?: string;
 }
 
-type BizNoteMap = Record<string, BizNote>;
+export type BizNoteMap = Record<string, BizNote>;
 
-interface DbNoteWithPlants extends DbNote {
+export interface DbNoteWithPlants extends DbNote {
   /**
    * An array of plant objects from the plant table that are associated
    * with the note. Should be same number of elements in this array
@@ -207,7 +201,7 @@ interface DbNoteWithPlants extends DbNote {
 //   errors: string[];
 // }
 
-interface UiNotesValue {
+export interface UiNotesValue {
   _id: string;
   date: number;
   // meta: UiNotesMeta;
@@ -223,9 +217,9 @@ interface UiNotesValue {
   images?: NoteImage[];
 }
 
-type UiNotes = Record<string, UiNotesValue>;
+export type UiNotes = Record<string, UiNotesValue>;
 
-interface ImageCompleteQuery {
+export interface ImageCompleteQuery {
   token?: string;
 }
 
@@ -239,12 +233,12 @@ interface ImageCompleteMetadata {
   originalname: string;
 }
 
-interface ImageCompleteBody {
+export interface ImageCompleteBody {
   sizes: NoteImageSize[];
   metadata: ImageCompleteMetadata;
 }
 
-interface NoteImageUpdateData {
+export interface NoteImageUpdateData {
   /**
    * NoteId
    */
