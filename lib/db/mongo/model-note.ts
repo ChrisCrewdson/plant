@@ -47,22 +47,46 @@ interface NoteImage {
   sizes: NoteImageSize[];
 }
 
-interface NoteMetric {
-  height: number;
-  girth: number;
-  harvestCount: number;
-  harvestWeight: number;
-  firstBlossom: boolean;
-  lastBlossom: boolean;
-  firstBud: boolean;
-  harvestStart: boolean;
-  harvestEnd: boolean;
-  leafShedStart: boolean;
-  leafShedEnd: boolean;
-}
+/**
+ * These are the properties in the metrics object that have number values
+ */
+const NoteMetricNumberProps = [
+  'height',
+  'girth',
+  'harvestCount',
+  'harvestWeight',
+] as const;
+type NoteMetricNumberPropsType = typeof NoteMetricNumberProps[number];
+type NoteMetricNumber = Record<NoteMetricNumberPropsType, number>;
+
+/**
+ * These are the properties in the metrics object that have boolean values
+ */
+const NoteMetricBoolProps = [
+  'firstBlossom',
+  'lastBlossom',
+  'firstBud',
+  'harvestStart',
+  'harvestEnd',
+  'leafShedStart',
+  'leafShedEnd',
+] as const;
+type NoteMetricBoolPropsType = typeof NoteMetricBoolProps[number];
+type NoteMetricBool = Record<NoteMetricBoolPropsType, boolean>;
+
+type NoteMetric = NoteMetricNumber & NoteMetricBool;
 
 type MetaMetricKey = keyof NoteMetric;
 
+/**
+ * These are the object types that can be rendered in a list of Notes.
+ * So when React is rendering a Plant with its Notes there will be computed
+ * notes spliced in with the user entered Notes.
+ * since: A measure of the time "since" the last note.
+ * unfound: A reference to a Note that was not found in the Note collection (bug/error)
+ * note: A user entered note stored in the DB's Note collection
+ * metric: A derived object based on metric changes between two user entered Notes.
+ */
 type MetricNoteTypes = 'since' | 'unfound' | 'note' | 'metric';
 
 interface MetricNote {
