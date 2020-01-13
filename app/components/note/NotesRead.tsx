@@ -12,7 +12,7 @@ import utils from '../../libs/utils';
 import { PlantAction } from '../../../lib/types/redux-payloads';
 import Markdown from '../common/Markdown';
 import { UiNotes, UiInterimNote } from '../../../lib/db/mongo/model-note';
-import { UiInterim } from '../../../lib/types/model-iterim';
+import { UiInterim } from '../../../lib/types/model-interim';
 
 interface NotesReadProps {
   dispatch: Dispatch<PlantAction<any>>;

@@ -17,7 +17,7 @@ import utils from '../../libs/utils';
 import AddPlantButton from '../common/AddPlantButton';
 import { UiInterimNote } from '../../../lib/db/mongo/model-note';
 import { PlantContext } from '../../../lib/types/react-common';
-import { UiInterim } from '../../../lib/types/model-iterim';
+import { UiInterim } from '../../../lib/types/model-interim';
 
 
 interface LocationPropsMatchParams {

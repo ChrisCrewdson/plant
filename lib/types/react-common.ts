@@ -1,5 +1,5 @@
 import { UiNotes } from '../db/mongo/model-note';
-import { UiInterim } from './model-iterim';
+import { UiInterim } from './model-interim';
 
 export type PlantStore = import('redux').Store<PlantStateTree>;
 
