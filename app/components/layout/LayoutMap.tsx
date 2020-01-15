@@ -1,123 +1,55 @@
-import { RouteComponentProps } from 'react-router';
-
 // Used to show the physical layout (a map) of plants at a Location
 // Currently under development - was used at one point but no longer functional.
 // Needs to be reworked.
 // Url: ?
 
-import React from 'react';
-
+import { RouteComponentProps } from 'react-router';
+import React, { useState } from 'react';
 import {
   Layer, Text as KonvaText, Circle, Stage, Group,
 } from 'react-konva';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 
 import * as gis from '../../libs/gis';
 import { actionFunc } from '../../actions';
 import Base from '../base/Base';
-import { PlantContext } from '../../../lib/types/react-common';
+import { PlantStateTree } from '../../../lib/types/react-common';
 
 interface PlantLocations {
   canvasHeight: number;
   plants: JSX.Element[];
 }
 
-export default class LayoutMap extends React.Component {
-  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
-  context!: PlantContext;
+export default function LayoutMap(props: RouteComponentProps): JSX.Element {
+  const [color, setColor] = useState('green');
+  const dispatch = useDispatch();
+  const users = useSelector((state: PlantStateTree) => state.users);
+  const plants = useSelector((state: PlantStateTree) => state.plants);
 
-  props!: RouteComponentProps;
-
-  unsubscribe!: Function;
-
-  static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        slug: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-  };
-
-  static contextTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    store: PropTypes.object.isRequired,
-  };
-
-  constructor(props: RouteComponentProps) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.renderPlantLocation = this.renderPlantLocation.bind(this);
-    const { store } = this.context;
-    const {
-      plants,
-      users,
-    } = store.getState();
-
-    this.setState({
-      color: 'green',
-      plants,
-      users,
-    });
-
-    const { match } = props;
+  const { match } = props;
+  // @ts-ignore - fix this - file not in use right now
+  if (match.params && match.params.id) {
     // @ts-ignore - fix this - file not in use right now
-    if (match.params && match.params.id) {
-    // @ts-ignore - fix this - file not in use right now
-      const { id: userId } = match.params;
-      const user = users[userId] || {};
-      // This is the user id for this page.
-      // @ts-ignore - plantIds does not exist on user. Because this component is not currently
-      // functioning will wait to fix this. The plantIds should be based on location and not
-      // user.
-      if (!user.plantIds) {
-        store.dispatch(actionFunc.loadPlantsRequest(userId));
-      }
-    }
-    this.state = {
-      plants,
-      users,
-    };
-    this.unsubscribe = store.subscribe(this.onChange);
-  }
-
-  componentWillUnmount(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
+    const { id: userId } = match.params;
+    const user = users[userId] || {};
+    // This is the user id for this page.
+    // @ts-ignore - plantIds does not exist on user. Because this component is not currently
+    // functioning will wait to fix this. The plantIds should be based on location and not
+    // user.
+    if (!user.plantIds) {
+      dispatch(actionFunc.loadPlantsRequest(userId));
     }
   }
 
-  onChange(): void {
-    const { store } = this.context;
+  const handleClick = (): void => {
+    setColor('orange');
+  };
 
-    const {
-      plants,
-      users,
-    } = store.getState();
-
-    const state = {
-      plants,
-      users,
-    };
-
-    this.setState(state);
-  }
-
-  handleClick(): void {
-    this.setState({
-      color: 'orange',
-    });
-  }
-
-  renderTitle(): JSX.Element {
-    const { store } = this.context;
-    const { match } = this.props;
+  const renderTitle = (): JSX.Element => {
     const { params = {} } = match || {};
     // @ts-ignore - fix this - file not in use right now
     const { id: userId } = params;
-
-    const { users } = store.getState();
 
     const userName = (users && users[userId] && users[userId].name) || '';
     return (
@@ -125,10 +57,9 @@ export default class LayoutMap extends React.Component {
         {`${userName} Layout Map`}
       </h2>
     );
-  }
+  };
 
-  renderPlantLocation(plant: UiPlantLocation): JSX.Element {
-    /*
+  /*
     var circle = new Konva.Circle({
       x: stage.getWidth() / 2,
       y: stage.getHeight() / 2,
@@ -155,46 +86,38 @@ export default class LayoutMap extends React.Component {
       fontFamily: 'Calibri',
       fill: 'green'
     });
-     */
-    /*
-        */
-    // @ts-ignore - fix this - file not in use right now
-    const { color } = this.state;
-    return (
-      <Group key={plant._id}>
-        <KonvaText
-          x={plant.x - 10}
-          y={plant.y}
-          text={plant.title}
-          fontSize={10}
-          fontFamily="Calibri"
-          fill="red"
-        />
-        <Circle
-          fill={color}
-          onClick={this.handleClick}
-          radius={5}
-          shadowBlur={10}
-          x={plant.x}
-          y={plant.y}
-        />
-      </Group>
-    );
-  }
+  */
+  const renderPlantLocation = (plant: UiPlantLocation): JSX.Element => (
+    <Group key={plant._id}>
+      <KonvaText
+        x={plant.x - 10}
+        y={plant.y}
+        text={plant.title}
+        fontSize={10}
+        fontFamily="Calibri"
+        fill="red"
+      />
+      <Circle
+        fill={color}
+        onClick={handleClick}
+        radius={5}
+        shadowBlur={10}
+        x={plant.x}
+        y={plant.y}
+      />
+    </Group>
+  );
 
-  renderPlantLocations(width: number): PlantLocations | null {
+  const renderPlantLocations = (width: number): PlantLocations | null => {
     if (width < 30) {
       // console.error('Width is less than 30');
       return null;
     }
-    const { match } = this.props;
-    const { store } = this.context;
     const params = match && match.params;
     // @ts-ignore - fix this - file not in use right now
     if (params && params.id) {
     // @ts-ignore - fix this - file not in use right now
       const { id: userId } = params;
-      const { plants, users } = store.getState();
       const user = users[userId];
       if (!user) {
         return null;
@@ -203,7 +126,6 @@ export default class LayoutMap extends React.Component {
       const userPlants = Object.keys(plants).reduce((acc: UiPlants, plantId) => {
         const plant = plants[plantId];
         if (plant.userId === userId && plant.loc) {
-          // @ts-ignore - fix this - file not in use right now
           acc[plantId] = plant;
         }
         return acc;
@@ -216,7 +138,7 @@ export default class LayoutMap extends React.Component {
       const scaledPlants = gis.scaleToCanvas(userPlants, width);
       const renderedPlants = Object
         .keys(scaledPlants.plants)
-        .map((scaledPlant) => this.renderPlantLocation(scaledPlants.plants[scaledPlant]));
+        .map((scaledPlant) => renderPlantLocation(scaledPlants.plants[scaledPlant]));
 
       return {
         canvasHeight: scaledPlants.canvasHeight,
@@ -224,33 +146,41 @@ export default class LayoutMap extends React.Component {
       };
     }
     return null;
-  }
+  };
 
-  render(): JSX.Element {
-    const canvasWidth = 1000;
-    const plantLocations = this.renderPlantLocations(canvasWidth);
+  const canvasWidth = 1000;
+  const plantLocations = renderPlantLocations(canvasWidth);
 
-    return (
-      <Base>
-        <div>
-          {this.renderTitle()}
-          {plantLocations
-            ? (
-              <Stage width={canvasWidth} height={plantLocations.canvasHeight}>
-                <Layer>
-                  {plantLocations.plants}
-                </Layer>
-              </Stage>
-            )
-            : (
-              <h3 style={{ textAlign: 'center' }}>
-                <div style={{ marginTop: '100px' }}>
+  return (
+    <Base>
+      <div>
+        {renderTitle()}
+        {plantLocations
+          ? (
+            <Stage width={canvasWidth} height={plantLocations.canvasHeight}>
+              <Layer>
+                {plantLocations.plants}
+              </Layer>
+            </Stage>
+          )
+          : (
+            <h3 style={{ textAlign: 'center' }}>
+              <div style={{ marginTop: '100px' }}>
 No plants have been mapped yet...
-                </div>
-              </h3>
-            )}
-        </div>
-      </Base>
-    );
-  }
+              </div>
+            </h3>
+          )}
+      </div>
+    </Base>
+  );
 }
+// }
+
+LayoutMap.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      slug: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};

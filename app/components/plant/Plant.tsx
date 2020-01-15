@@ -5,13 +5,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import getIn from 'lodash/get';
 import { Location } from 'history';
 import { match as matcher } from 'react-router';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { useSelector, useDispatch } from 'react-redux';
 import { canEdit } from '../../libs/auth-helper';
 import utils from '../../libs/utils';
 import { actionFunc } from '../../actions';
@@ -19,7 +19,7 @@ import Base from '../base/Base';
 import PlantEdit from './PlantEdit';
 import PlantRead from './PlantRead';
 import NoteCreate from '../note/NoteCreate';
-import { PlantContext } from '../../../lib/types/react-common';
+import { PlantStateTree } from '../../../lib/types/react-common';
 
 const { makeMongoId } = utils;
 
@@ -44,207 +44,111 @@ interface PlantProps {
   searchParams?: PlantPropsSearchParams;
 }
 
-class Plant extends React.Component {
-  props!: PlantProps;
+export default function Plant(props: PlantProps): JSX.Element {
+  const dispatch = useDispatch();
+  const locations = useSelector((state: PlantStateTree) => state.locations);
+  const user = useSelector((state: PlantStateTree) => state.user);
+  const users = useSelector((state: PlantStateTree) => state.users);
+  const plants = useSelector((state: PlantStateTree) => state.plants);
+  const interim = useSelector((state: PlantStateTree) => state.interim);
+  const notes = useSelector((state: PlantStateTree) => state.notes) || {};
 
-  unsubscribe!: Function;
+  const interimNote = getIn(interim, ['note', 'note'], {});
+  const interimPlant = getIn(interim, ['plant', 'plant']);
 
-  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
-  context!: PlantContext;
-
-  static propTypes = {
-    // eslint-disable-next-line react/no-unused-prop-types
-    location: PropTypes.shape({
-      hash: PropTypes.string,
-      pathname: PropTypes.string,
-      search: PropTypes.string, // this has query params
-    }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        id: PropTypes.string,
-      }),
-    }),
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-    // eslint-disable-next-line react/no-unused-prop-types
-    searchParams: PropTypes.shape({
-      get: PropTypes.func.isRequired,
-    }),
-  };
-
-  static contextTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    store: PropTypes.object.isRequired,
-  };
-
-  static defaultProps = {
-    match: {
-      params: {},
-    },
-    params: {},
-    searchParams: null,
-  };
-
-  constructor(props: PlantProps) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
+  if (interimPlant) {
+    return (
+      <PlantEdit
+        dispatch={dispatch}
+        interimPlant={interimPlant}
+        locations={locations}
+        user={user}
+        users={users}
+      />
+    );
   }
 
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount(): void {
-    const { store } = this.context;
-    this.unsubscribe = store.subscribe(this.onChange);
-    this.initState(true);
-  }
+  const {
+    match, params = {}, location: propsLocation, searchParams,
+  } = props;
+  const plantId = params.id || (match && match.params && match.params.id);
 
-  /*
-- Start of cycle #2
-- invoked when component is receiving new props
-- not called in cycle #1
-- this.props is old props
-- parameter to this function is nextProps
-- can call this.setState() here (will not trigger additional render)
-*/
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps: PlantProps): void {
-    this.initState(true, nextProps);
-  }
+  const search = (propsLocation && propsLocation.search) || '';
+  // TODO: This is not available on server:
+  const paramsMap = searchParams || new URLSearchParams(search);
+  const noteId: string | undefined = paramsMap.get('noteid');
 
-  componentWillUnmount(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
+  if (noteId) {
+    // If there's a noteid on the query params then this is a link
+    // to a particular note so we want to show the images in this note
+    // automatically.
+    // const { notes = {} } = store.getState();
+    const note = notes[noteId] || {};
+    if (!note.showImages) {
+      dispatch(actionFunc.showNoteImages(noteId));
     }
   }
 
-  onChange(): void {
-    this.forceUpdate();
-    // this.initState(false);
-  }
-
-  initState(first: boolean, initProps?: PlantProps): void {
-    const props: PlantProps = initProps || this.props || {};
-    const { store } = this.context;
-    const { user, users, plants } = store.getState();
-
-    const {
-      match, params = {}, location, searchParams,
-    } = props;
-    const _id = params.id || (match && match.params && match.params.id);
-
-    // console.log('Plant.initState match', match);
-    // console.log('Plant.initState location', location);
-
-    const search = (location && location.search) || '';
-    // TODO: This is not available on server:
-    const paramsMap = searchParams || new URLSearchParams(search);
-    const noteId: string | undefined = paramsMap.get('noteid');
-
-    if (noteId) {
-      // If there's a noteid on the query params then this is a link
-      // to a particular note so we want to show the images in this note
-      // automatically.
-      const { notes = {} } = store.getState();
-      const note = notes[noteId] || {};
-      if (!note.showImages) {
-        store.dispatch(actionFunc.showNoteImages(noteId));
-      }
+  // let plant;
+  if (plantId) {
+    const plant = plants[plantId];
+    if (!plant) {
+      dispatch(actionFunc.loadPlantRequest({ _id: plantId }));
     }
+  } else {
+    const { _id: userId = '', activeLocationId } = user;
 
-    let plant;
-    if (_id) {
-      plant = plants[_id];
-      if (!plant && first) {
-        store.dispatch(actionFunc.loadPlantRequest({ _id }));
-      }
-    } else {
-      const { _id: userId = '', activeLocationId } = user;
+    const locationIds = (users[userId] && users[userId].locationIds) || []; // as string[];
 
-      const locationIds = (users[userId] && users[userId].locationIds) || []; // as string[];
-
-      // activeLocationId is the one that you last viewed which might not be
-      // one that you own/manage. Only set locationId to this if it's one that
-      // is in the locationIds list.
-      const locationId = (locationIds.some(
-        (locId) => locId === activeLocationId) && activeLocationId)
+    // activeLocationId is the one that you last viewed which might not be
+    // one that you own/manage. Only set locationId to this if it's one that
+    // is in the locationIds list.
+    const locationId = (locationIds.some(
+      (locId) => locId === activeLocationId) && activeLocationId)
         || locationIds[0];
 
-      store.dispatch(actionFunc.editPlantOpen({
-        plant: {
-          _id: makeMongoId(),
-          isNew: true,
-          locationId,
-        },
-      }));
-    }
+    dispatch(actionFunc.editPlantOpen({
+      plant: {
+        _id: makeMongoId(),
+        isNew: true,
+        locationId,
+      },
+    }));
+    // return null;
   }
 
-  render(): JSX.Element {
-    const { store } = this.context;
-    const { match = {}, params = {} } = this.props;
-    const {
-      interim,
-      locations = {},
-      notes,
-      plants,
-      user,
-      users,
-    } = store.getState();
+  const plant = plants[plantId];
 
-    const interimNote = getIn(interim, ['note', 'note'], {});
-    const interimPlant = getIn(interim, ['plant', 'plant']);
-
-    if (interimPlant) {
-      return (
-        <PlantEdit
-          dispatch={store.dispatch}
-          interimPlant={interimPlant}
-          locations={locations}
-          user={user}
-          users={users}
-        />
-      );
-    }
-
-    // @ts-ignore
-    const plantId = params.id || (match.params && match.params.id);
-    if (!plantId) {
-      // eslint-disable-next-line no-console
-      console.error('Plant.render: plantId is falsy', this.props);
-    }
-
-    const plant = plants[plantId];
-
-    if (!plant) {
-      return (
-        <Base>
-          <CircularProgress />
-        </Base>
-      );
-    }
-
-    const { locationId } = (interimPlant || plant);
-    const location = locations[locationId];
-    const loggedInUserId = user && user._id;
-    const userCanEdit = canEdit(loggedInUserId, location);
-
+  if (!plant) {
     return (
       <Base>
+        <CircularProgress />
+      </Base>
+    );
+  }
+
+  const { locationId } = (interimPlant || plant);
+  const location = locations[locationId];
+  const loggedInUserId = user && user._id;
+  const userCanEdit = canEdit(loggedInUserId, location);
+
+  return (
+    <Base>
+      <div>
         <div>
-          <div>
-            <PlantRead
-              dispatch={store.dispatch}
-              interim={interim}
-              userCanEdit={userCanEdit}
-              locations={locations}
-              notes={notes}
-              plant={plant}
-              plants={plants}
-            />
-            {plant && plant.title
+          <PlantRead
+            dispatch={dispatch}
+            interim={interim}
+            userCanEdit={userCanEdit}
+            locations={locations}
+            notes={notes}
+            plant={plant}
+            plants={plants}
+          />
+          {plant && plant.title
             && (
             <NoteCreate
-              dispatch={store.dispatch}
+              dispatch={dispatch}
               interimNote={interimNote}
               userCanEdit={userCanEdit}
               plant={plant}
@@ -252,12 +156,35 @@ class Plant extends React.Component {
               locationId={locationId}
             />
             )}
-          </div>
         </div>
-      </Base>
-    );
-  }
+      </div>
+    </Base>
+  );
 }
 
-// @ts-ignore - TODO: Solve withRouter() param and tsc
-export default withRouter(Plant);
+Plant.propTypes = {
+  location: PropTypes.shape({
+    hash: PropTypes.string,
+    pathname: PropTypes.string,
+    search: PropTypes.string, // this has query params
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }),
+  params: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+  searchParams: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+  }),
+};
+
+Plant.defaultProps = {
+  match: {
+    params: {},
+  },
+  params: {},
+  searchParams: null,
+};

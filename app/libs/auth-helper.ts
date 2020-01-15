@@ -1,10 +1,15 @@
 import getIn from 'lodash/get';
 import { Store } from 'redux';
 
+export function isUserLoggedIn(user?: UiUser): boolean {
+  const { isLoggedIn: loggedIn = false } = user || {};
+  return !!loggedIn;
+}
+
+// TODO: This method should be removed soon
 export function isLoggedIn(store: Store): boolean {
   const { user } = store.getState();
-  const { isLoggedIn: loggedIn = false } = user || {};
-  return !!(user && loggedIn);
+  return isUserLoggedIn(user);
 }
 
 /**

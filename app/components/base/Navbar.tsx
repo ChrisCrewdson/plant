@@ -1,63 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { useSelector, useDispatch } from 'react-redux';
 import { actionFunc } from '../../actions';
 import utils from '../../libs/utils';
-import { isLoggedIn } from '../../libs/auth-helper';
+import { isUserLoggedIn } from '../../libs/auth-helper';
 import AddPlantButton from '../common/AddPlantButton';
-import { UiInterim } from '../../../lib/types/model-interim';
-import { PlantContext } from '../../../lib/types/react-common';
+import { PlantStateTree } from '../../../lib/types/react-common';
 
-interface NavbarState {
-  user: UiUser;
-  interimMap: UiInterim;
-}
+export default function Navbar(): JSX.Element {
+  const dispatch = useDispatch();
+  const user = useSelector((state: PlantStateTree) => state.user) || {};
+  const interimMap = useSelector((state: PlantStateTree) => state.interim);
+  const locations = useSelector((state: PlantStateTree) => state.locations);
 
-export default class Navbar extends React.Component {
-  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
-  context!: PlantContext;
-
-  unsubscribe!: Function;
-
-  // eslint-disable-next-line react/state-in-constructor
-  state!: NavbarState;
-
-  static contextTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    store: PropTypes.object.isRequired,
+  const logout = (): void => {
+    dispatch(actionFunc.logoutRequest());
   };
-
-  constructor(props: {}) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-    this.logout = this.logout.bind(this);
-  }
-
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillMount(): void {
-    const { store } = this.context;
-    this.unsubscribe = store.subscribe(this.onChange);
-    const { user = {}, interim: interimMap } = store.getState();
-    this.setState({ user, interimMap });
-  }
-
-  componentWillUnmount(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-  }
-
-  onChange(): void {
-    const { store } = this.context;
-    const { user = {}, interim: interimMap } = store.getState();
-    this.setState({ user, interimMap });
-  }
-
-  logout(): void {
-    const { store } = this.context;
-    store.dispatch(actionFunc.logoutRequest());
-  }
 
   // When to show the "My Plants" menu and what action to take:
   // User is logged in: Always show "My Plants"
@@ -69,14 +28,10 @@ export default class Navbar extends React.Component {
   // User has multiple locations: "My Plants" links to /locations/user-slug/user-id
   //   (Allows user to pick a location)
   //   (Just put a placeholder here for now)
-  makeMyPlantsMenu(loggedIn: boolean): JSX.Element | null {
+  const makeMyPlantsMenu = (loggedIn: boolean): JSX.Element | null => {
     if (!loggedIn) {
       return null;
     }
-
-    const {
-      user = {} as UiUser,
-    } = this.state || {};
 
     const locationId = user.activeLocationId
       || (user.locationIds && user.locationIds.length && user.locationIds[0])
@@ -86,8 +41,6 @@ export default class Navbar extends React.Component {
       // console.warn('Navbar.makeMyPlantsMenu: No default locationId found for user:', user);
       return null;
     }
-    const { store } = this.context;
-    const { locations = {} } = store.getState();
     const location = locations[locationId];
     if (!location) {
       // console.warn('Navbar.makeMyPlantsMenu no location. user, locations:', user, locations);
@@ -106,65 +59,42 @@ export default class Navbar extends React.Component {
         </Link>
       </li>
     );
-  }
+  };
 
-  // makeLayoutMenu(loggedIn) {
-  //   const location = this.getLocation(loggedIn);
-  //   if(!location) {
-  //     return null;
-  //   }
+  const { name: userName, _id: userId } = user;
+  const displayName = userName || 'placeholder-user-name';
 
-  //   return (
-  //     <li>
-  //       <Link to={utils.makeLayoutUrl(location)}>Layout Map</Link>
-  //     </li>
-  //   );
-  // }
+  const loggedIn = isUserLoggedIn(user);
+  const notEditing = !Object.keys(interimMap).length;
 
+  const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${userId}`;
 
-  render(): JSX.Element {
-    const {
-      user = {} as UiUser,
-      interimMap = {},
-    } = this.state || {};
-    const { name: userName, _id: userId } = user;
-    // if (!userName) {
-    //   console.warn('No name found on user object', user);
-    // }
-    const displayName = userName || 'placeholder-user-name';
-    const { store } = this.context;
-
-    const loggedIn = isLoggedIn(store);
-    const notEditing = !Object.keys(interimMap).length;
-
-    const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${userId}`;
-
-    return (
-      <nav className="navbar navbar-default navbar-fixed-top">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#plant-navbar-collapse" aria-expanded="false">
-              <span className="sr-only">
+  return (
+    <nav className="navbar navbar-default navbar-fixed-top">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#plant-navbar-collapse" aria-expanded="false">
+            <span className="sr-only">
 Toggle navigation
-              </span>
-              <span className="icon-bar" />
-              <span className="icon-bar" />
-              <span className="icon-bar" />
-            </button>
-            <Link to="/" className="navbar-brand">
+            </span>
+            <span className="icon-bar" />
+            <span className="icon-bar" />
+            <span className="icon-bar" />
+          </button>
+          <Link to="/" className="navbar-brand">
 Plant
-            </Link>
-            <AddPlantButton
-              mini
-              show={!!(loggedIn && notEditing)}
-              style={{ marginTop: '5px' }}
-            />
-          </div>
+          </Link>
+          <AddPlantButton
+            mini
+            show={!!(loggedIn && notEditing)}
+            style={{ marginTop: '5px' }}
+          />
+        </div>
 
-          <div className="collapse navbar-collapse" id="plant-navbar-collapse">
-            <ul className="nav navbar-nav navbar-right">
-              {this.makeMyPlantsMenu(loggedIn)}
-              {loggedIn
+        <div className="collapse navbar-collapse" id="plant-navbar-collapse">
+          <ul className="nav navbar-nav navbar-right">
+            {makeMyPlantsMenu(loggedIn)}
+            {loggedIn
                 && (
                 <li className="dropdown">
                   <a
@@ -192,14 +122,14 @@ Profile
                       </Link>
                     </li>
                     <li>
-                      <a href="/" onClick={this.logout} title="Logout">
+                      <a href="/" onClick={logout} title="Logout">
 Logout
                       </a>
                     </li>
                   </ul>
                 </li>
                 )}
-              {!loggedIn
+            {!loggedIn
                 && (
                 <li>
                   <Link to="/login">
@@ -207,15 +137,14 @@ Login
                   </Link>
                 </li>
                 )}
-              <li>
-                <Link to="/help" title="help">
+            <li>
+              <Link to="/help" title="help">
 Help
-                </Link>
-              </li>
-            </ul>
-          </div>
+              </Link>
+            </li>
+          </ul>
         </div>
-      </nav>
-    );
-  }
+      </div>
+    </nav>
+  );
 }

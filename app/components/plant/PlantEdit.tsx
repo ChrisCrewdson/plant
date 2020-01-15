@@ -65,6 +65,7 @@ export default function PlantEdit(props: PlantEditProps): JSX.Element {
   };
 
   const cancel = (): void => {
+    history.goBack();
     dispatch(actionFunc.editPlantClose());
   };
 

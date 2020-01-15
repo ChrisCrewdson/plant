@@ -1,48 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { actionFunc } from '../actions';
-import { PlantContext } from '../../lib/types/react-common';
+import { PlantStateTree } from '../../lib/types/react-common';
 
-export default class App extends React.Component {
-  // TODO: When tsc 3.7+ is in use remove the ! to see hint text on how to change this.
-  context!: PlantContext;
+export default function App(props: any): JSX.Element {
+  const dispatch = useDispatch();
+  const { children } = props;
 
-  static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    children: PropTypes.object.isRequired,
-  };
+  const users = useSelector((state: PlantStateTree) => state.users);
+  const locations = useSelector((state: PlantStateTree) => state.locations);
 
-  static contextTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    store: PropTypes.object.isRequired,
-  };
-
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount(): void {
-    const { store } = this.context;
-    const { users = {}, locations = {} } = store.getState();
-
-    // TODO: This will cause a problem for a non-initialized site
-    // that has zero users and zero locations as these values
-    // will be 0 which is falsy.
-    const usersCount = Object.keys(users).length;
-    const locationsCount = Object.keys(locations).length;
-
-    if (!usersCount) {
-      store.dispatch(actionFunc.loadUsersRequest());
-    }
-
-    if (!locationsCount) {
-      store.dispatch(actionFunc.loadLocationsRequest());
-    }
+  // TODO: This will cause a problem for a non-initialized site
+  // that has zero users and zero locations as these values
+  // will be 0 which is falsy.
+  const usersCount = Object.keys(users).length;
+  const locationsCount = Object.keys(locations).length;
+  if (!usersCount) {
+    dispatch(actionFunc.loadUsersRequest());
   }
 
-  render(): JSX.Element {
-    const { children } = this.props;
-    return (
-      <div className="react-root">
-        {children}
-      </div>
-    );
+  if (!locationsCount) {
+    dispatch(actionFunc.loadLocationsRequest());
   }
+
+  return (
+    <div className="react-root">
+      {children}
+    </div>
+  );
 }
+
+App.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.object.isRequired,
+};
