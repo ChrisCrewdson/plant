@@ -9,7 +9,6 @@ in learning about.
 
 Plant is a website app to help you manage growing trees and plant.
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/guyellis/plant.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/guyellis/plant.svg)](https://travis-ci.org/guyellis/plant)
 [![Dependency Status](https://david-dm.org/guyellis/plant.svg)](https://david-dm.org/guyellis/plant)
 [![Code Climate](https://codeclimate.com/github/guyellis/plant/badges/gpa.svg)](https://codeclimate.com/github/guyellis/plant)
