@@ -45,13 +45,11 @@ export const UserPlantsMenu = (props: UserPlantsMenuProps): JSX.Element | null =
   const plantListAt = `Plant List at ${locationTitle}`;
 
   return (
-    <li>
-      <Link
-        to={utils.makeLocationUrl(location)}
-        title={plantListAt}
-      >
-        {plantListAt}
-      </Link>
-    </li>
+    <Link
+      to={utils.makeLocationUrl(location)}
+      title={plantListAt}
+    >
+      {plantListAt}
+    </Link>
   );
 };

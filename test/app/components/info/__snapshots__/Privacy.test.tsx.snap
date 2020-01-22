@@ -53,6 +53,7 @@ exports[`Privacy Privacy should be rendered 1`] = `
           <ul
             className="nav navbar-nav navbar-right"
           >
+            <li />
             <li>
               <a
                 href="/login"

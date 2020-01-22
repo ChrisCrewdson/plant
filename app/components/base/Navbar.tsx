@@ -26,6 +26,23 @@ export default function Navbar(): JSX.Element {
 
   const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${userId}`;
 
+  const userPlantsMenu = (): JSX.Element => {
+    const userMenu = (
+      <UserPlantsMenu
+        loggedIn={loggedIn}
+        user={user}
+      />
+    );
+    if (!userMenu) {
+      return userMenu;
+    }
+    return (
+      <li>
+        {userMenu}
+      </li>
+    );
+  };
+
   return (
     <nav className="navbar navbar-default navbar-fixed-top">
       <div className="container-fluid">
@@ -50,10 +67,7 @@ Plant
 
         <div className="collapse navbar-collapse" id="plant-navbar-collapse">
           <ul className="nav navbar-nav navbar-right">
-            <UserPlantsMenu
-              loggedIn={loggedIn}
-              user={user}
-            />
+            {userPlantsMenu()}
             {loggedIn
                 && (
                 <li className="dropdown">

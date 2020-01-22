@@ -3,7 +3,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import getIn from 'lodash/get';
+import { useDispatch, useSelector } from 'react-redux';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
@@ -11,7 +11,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 import LocationsManager from '../location/LocationsManager';
 import Base from '../base/Base';
-import { PlantStore } from '../../../lib/types/react-common';
+import { PlantStateTree } from '../../../lib/types/react-common';
 
 interface ProfilePropsUserSettings {
   imperial: boolean;
@@ -26,7 +26,7 @@ interface ProfileProps {
 // 2. Other user: /profile/slug/<id>
 // Only implementing #1 for now.
 
-export default function profile(props: ProfileProps, context: {store: PlantStore}): JSX.Element {
+export default function Profile(props: ProfileProps): JSX.Element {
   const radioGroup: React.CSSProperties = {
     display: 'flex',
   };
@@ -38,13 +38,13 @@ export default function profile(props: ProfileProps, context: {store: PlantStore
 
   const { userSettings } = props;
   const { imperial } = userSettings;
-  const { store } = context;
-  const { dispatch } = store;
-  const state = store.getState();
-  const users = getIn(state, 'users', {});
-  const locations = getIn(state, 'locations', {});
-  const userId = (state.user && state.user._id) || '';
-  const locationIds = (state.users && state.users[userId] && state.users[userId].locationIds) || [];
+  const dispatch = useDispatch();
+  const locations = useSelector((state: PlantStateTree) => state.locations);
+  const user = useSelector((state: PlantStateTree) => state.user);
+  const users = useSelector((state: PlantStateTree) => state.users);
+
+  const userId = (user && user._id) || '';
+  const locationIds = (users && users[userId] && users[userId].locationIds) || [];
 
   const unitOfMeasurement = imperial ? 'imperial' : 'metric';
 
@@ -87,19 +87,14 @@ Unit of Measurement
   );
 }
 
-profile.propTypes = {
+Profile.propTypes = {
   userSettings: PropTypes.shape({
     imperial: PropTypes.bool,
   }),
 };
 
-profile.defaultProps = {
+Profile.defaultProps = {
   userSettings: {
     imperial: true,
   },
-};
-
-profile.contextTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  store: PropTypes.object.isRequired,
 };
