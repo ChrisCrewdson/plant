@@ -1,15 +1,43 @@
 import React from 'react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { actionFunc } from '../../actions';
-import utils from '../../libs/utils';
-import { isUserLoggedIn } from '../../libs/auth-helper';
-import AddPlantButton from '../common/AddPlantButton';
 import { PlantStateTree } from '../../../lib/types/react-common';
+import { actionFunc } from '../../actions';
+import AddPlantButton from '../common/AddPlantButton';
+import { isUserLoggedIn } from '../../libs/auth-helper';
 import { UserPlantsMenu } from './navbar/user-location-link';
+import utils from '../../libs/utils';
 
-export default function Navbar(): JSX.Element {
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}),
+);
+
+const appBarLinkItem = {
+  marginRight: '10px',
+};
+
+// const tempStyle = {
+//   marginTop: '50px',
+// };
+
+export default function MenuAppBar(): JSX.Element {
   const dispatch = useDispatch();
   const user = useSelector((state: PlantStateTree) => state.user) || {};
   const interimMap = useSelector((state: PlantStateTree) => state.interim);
@@ -18,107 +46,101 @@ export default function Navbar(): JSX.Element {
     dispatch(actionFunc.logoutRequest());
   };
 
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (): void => {
+    setAnchorEl(null);
+  };
+
   const { name: userName, _id: userId } = user;
   const displayName = userName || 'placeholder-user-name';
 
   const loggedIn = isUserLoggedIn(user);
   const notEditing = !Object.keys(interimMap).length;
-
   const locationsUrl = `/locations/${utils.makeSlug(displayName)}/${userId}`;
 
-  const userPlantsMenu = (): JSX.Element => {
-    const userMenu = (
-      <UserPlantsMenu
-        loggedIn={loggedIn}
-        user={user}
-      />
-    );
-    if (!userMenu) {
-      return userMenu;
-    }
-    return (
-      <li>
-        {userMenu}
-      </li>
-    );
-  };
-
   return (
-    <nav className="navbar navbar-default navbar-fixed-top">
-      <div className="container-fluid">
-        <div className="navbar-header">
-          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#plant-navbar-collapse" aria-expanded="false">
-            <span className="sr-only">
-Toggle navigation
-            </span>
-            <span className="icon-bar" />
-            <span className="icon-bar" />
-            <span className="icon-bar" />
-          </button>
-          <Link to="/" className="navbar-brand">
-Plant
-          </Link>
-          <AddPlantButton
-            mini
-            show={!!(loggedIn && notEditing)}
-            style={{ marginTop: '5px' }}
-          />
-        </div>
-
-        <div className="collapse navbar-collapse" id="plant-navbar-collapse">
-          <ul className="nav navbar-nav navbar-right">
-            {userPlantsMenu()}
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h4" className={classes.title}>
+            <Link to="/" style={appBarLinkItem}>
+              Plant
+            </Link>
+            <AddPlantButton
+              mini
+              show={!!(loggedIn && notEditing)}
+              style={{ marginTop: '5px' }}
+            />
+          </Typography>
+          <Typography variant="h4">
+            <UserPlantsMenu
+              loggedIn={loggedIn}
+              user={user}
+            />
             {loggedIn
-                && (
-                <li className="dropdown">
-                  <a
-                    href="/"
-                    className="dropdown-toggle"
-                    data-toggle="dropdown"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    title={displayName}
-                  >
-                    {displayName}
-                    {' '}
-                    <span className="caret" />
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <Link to={locationsUrl}>
-Your Locations
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/profile">
-Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <a href="/" onClick={logout} title="Logout">
-Logout
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                )}
+              && (
+              <span>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Link to={locationsUrl}>
+                      Your Locations
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/profile">
+                      Profile
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={logout}>
+                    <Link to="/">
+                      Logout
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </span>
+              )}
             {!loggedIn
-                && (
-                <li>
-                  <Link to="/login">
-Login
-                  </Link>
-                </li>
-                )}
-            <li>
-              <Link to="/help" title="help">
-Help
+              && (
+              <Link to="/login" style={appBarLinkItem}>
+                    Login
               </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+              )}
+            <Link to="/help" title="help">
+                Help
+            </Link>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }

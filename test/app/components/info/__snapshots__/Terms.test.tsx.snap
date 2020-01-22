@@ -7,74 +7,55 @@ exports[`Terms Terms should be rendered 1`] = `
   <div
     className="page"
   >
-    <nav
-      className="navbar navbar-default navbar-fixed-top"
+    <div
+      className="makeStyles-root-1"
     >
-      <div
-        className="container-fluid"
+      <header
+        className="MuiPaper-root MuiAppBar-root MuiAppBar-positionStatic MuiAppBar-colorPrimary MuiPaper-elevation4"
       >
         <div
-          className="navbar-header"
+          className="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
         >
-          <button
-            aria-expanded="false"
-            className="navbar-toggle collapsed"
-            data-target="#plant-navbar-collapse"
-            data-toggle="collapse"
-            type="button"
+          <h4
+            className="MuiTypography-root makeStyles-title-3 MuiTypography-h4"
           >
-            <span
-              className="sr-only"
+            <a
+              href="/"
+              onClick={[Function]}
+              style={
+                Object {
+                  "marginRight": "10px",
+                }
+              }
             >
-              Toggle navigation
-            </span>
-            <span
-              className="icon-bar"
-            />
-            <span
-              className="icon-bar"
-            />
-            <span
-              className="icon-bar"
-            />
-          </button>
-          <a
-            className="navbar-brand"
-            href="/"
-            onClick={[Function]}
+              Plant
+            </a>
+          </h4>
+          <h4
+            className="MuiTypography-root MuiTypography-h4"
           >
-            Plant
-          </a>
+            <a
+              href="/login"
+              onClick={[Function]}
+              style={
+                Object {
+                  "marginRight": "10px",
+                }
+              }
+            >
+              Login
+            </a>
+            <a
+              href="/help"
+              onClick={[Function]}
+              title="help"
+            >
+              Help
+            </a>
+          </h4>
         </div>
-        <div
-          className="collapse navbar-collapse"
-          id="plant-navbar-collapse"
-        >
-          <ul
-            className="nav navbar-nav navbar-right"
-          >
-            <li />
-            <li>
-              <a
-                href="/login"
-                onClick={[Function]}
-              >
-                Login
-              </a>
-            </li>
-            <li>
-              <a
-                href="/help"
-                onClick={[Function]}
-                title="help"
-              >
-                Help
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+      </header>
+    </div>
     <div
       id="main"
     >
