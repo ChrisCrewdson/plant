@@ -105,7 +105,7 @@
     "fetch-cookie": "0.7.3",
     "hoist-non-react-statics": "3.3.1",
     "jest": "24.9.0",
-    "jest-circus": "24.9.0",
+    "jest-circus": "25.1.0",
     "node-fetch": "2.6.0",
     "nodemon": "2.0.2",
     "oauth": "0.9.15",
