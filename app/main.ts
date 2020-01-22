@@ -2,8 +2,6 @@ import { renderMain } from './main-render';
 import { poly } from './poly';
 
 import 'jquery';
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
 import 'konva';
 import 'typeface-roboto';
 import './stylesheets/main.css';
