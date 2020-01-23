@@ -33,7 +33,7 @@ const colors: Record<NoteAssocPlantToggleButtonType, MaterialCore.PropTypes.Colo
   selected: 'primary',
 };
 
-export default function noteAssocPlantToggleButton(
+export default function NoteAssocPlantToggleButton(
   props: NoteAssocPlantToggleButtonProps,
 ): JSX.Element {
   const toggle = (): void => {
@@ -63,7 +63,7 @@ export default function noteAssocPlantToggleButton(
   );
 }
 
-noteAssocPlantToggleButton.propTypes = {
+NoteAssocPlantToggleButton.propTypes = {
   _id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   selectState: PropTypes.string.isRequired,

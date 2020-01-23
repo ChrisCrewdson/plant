@@ -7,7 +7,7 @@ interface NoteReadMetricsProps {
   note: UiNotesValue;
 }
 
-export default function noteReadMetrics(props: NoteReadMetricsProps): JSX.Element | null {
+export default function NoteReadMetrics(props: NoteReadMetricsProps): JSX.Element | null {
   const { note: { metrics } } = props;
   if (!metrics) {
     return null;
@@ -54,7 +54,7 @@ Metrics:
   );
 }
 
-noteReadMetrics.propTypes = {
+NoteReadMetrics.propTypes = {
   note: PropTypes.shape({
     metrics: PropTypes.object,
   }).isRequired,

@@ -24,7 +24,7 @@ interface NotesReadProps {
   userCanEdit: boolean;
 }
 
-export default function notesRead(props: NotesReadProps): JSX.Element | null {
+export default function NotesRead(props: NotesReadProps): JSX.Element | null {
   const {
     dispatch,
     interim,
@@ -117,7 +117,7 @@ export default function notesRead(props: NotesReadProps): JSX.Element | null {
 }
 
 
-notesRead.propTypes = {
+NotesRead.propTypes = {
   dispatch: PropTypes.func.isRequired,
   interim: PropTypes.shape({
     note: PropTypes.object,

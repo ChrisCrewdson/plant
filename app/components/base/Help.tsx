@@ -1,7 +1,7 @@
 import React from 'react';
 import Base from './Base';
 
-export default function help(): JSX.Element {
+export default function Help(): JSX.Element {
   /* eslint-disable react/jsx-no-target-blank */
   return (
     <Base>

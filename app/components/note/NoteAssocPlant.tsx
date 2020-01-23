@@ -20,11 +20,6 @@ interface NoteAssocPlantProps {
   plants: Record<string, UiPlantsValue>;
 }
 
-interface NoteAssocPlantState {
-  expanded: boolean;
-  filter: string;
-}
-
 const getSelectedState = (
   selected: boolean, isTerminated: boolean,
 ): NoteAssocPlantToggleButtonType => {

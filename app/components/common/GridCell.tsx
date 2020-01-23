@@ -24,7 +24,7 @@ interface GridCellProps {
   value: string|boolean;
 }
 
-export default function gridCell(props: GridCellProps): JSX.Element | null {
+export default function GridCell(props: GridCellProps): JSX.Element | null {
   const {
     editCell,
     editId,
@@ -135,7 +135,7 @@ export default function gridCell(props: GridCellProps): JSX.Element | null {
   );
 }
 
-gridCell.propTypes = {
+GridCell.propTypes = {
   editCell: PropTypes.func.isRequired,
   editId: PropTypes.string,
   error: PropTypes.string.isRequired,
@@ -150,7 +150,7 @@ gridCell.propTypes = {
   ]).isRequired,
 };
 
-gridCell.defaultProps = {
+GridCell.defaultProps = {
   editId: '',
   options: {},
 };

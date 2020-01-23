@@ -57,7 +57,7 @@ const markdown = `**911 Operator:** 911 - what's your emergency?
 
 ...CLICK…`;
 
-export default function article(): JSX.Element {
+export default function Article(): JSX.Element {
   const style = {
     marginBottom: '50px',
     marginLeft: '25px',

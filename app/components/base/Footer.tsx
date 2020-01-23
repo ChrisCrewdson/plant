@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function footer(): JSX.Element {
+export default function Footer(): JSX.Element {
   return (
     <nav className="navbar navbar-default navbar-fixed-bottom">
       <div className="container-fluid">

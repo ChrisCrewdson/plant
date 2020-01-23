@@ -27,7 +27,7 @@ export interface InputComboTextProps {
 /**
  * A very light wrapper around the MaterialUI TextField component
  */
-export default function inputComboText(props: InputComboTextProps): JSX.Element {
+export default function InputComboText(props: InputComboTextProps): JSX.Element {
   const {
     changeHandler,
     disabled = false,
@@ -90,7 +90,7 @@ export default function inputComboText(props: InputComboTextProps): JSX.Element 
   );
 }
 
-inputComboText.propTypes = {
+InputComboText.propTypes = {
   changeHandler: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   error: PropTypes.string,
@@ -110,7 +110,7 @@ inputComboText.propTypes = {
   type: PropTypes.string,
 };
 
-inputComboText.defaultProps = {
+InputComboText.defaultProps = {
   disabled: false,
   error: '',
   fullWidth: true,

@@ -20,7 +20,7 @@ interface EditDeleteButtonsProps {
   showDeleteConfirmation: boolean;
 }
 
-export default function editDeleteButtons(props: EditDeleteButtonsProps): JSX.Element | null {
+export default function EditDeleteButtons(props: EditDeleteButtonsProps): JSX.Element | null {
   const {
     clickDelete,
     clickEdit,
@@ -46,7 +46,7 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps): JSX.El
     clickEdit(deleteData);
   }
 
-  const size = mini ? 'small' : 'medium';
+  const size = mini ? 'medium' : 'large';
 
   return (
     <h2 className="vcenter">
@@ -87,7 +87,7 @@ export default function editDeleteButtons(props: EditDeleteButtonsProps): JSX.El
   );
 }
 
-editDeleteButtons.propTypes = {
+EditDeleteButtons.propTypes = {
   clickDelete: PropTypes.func.isRequired,
   clickEdit: PropTypes.func.isRequired,
   confirmDelete: PropTypes.func.isRequired,
@@ -100,7 +100,7 @@ editDeleteButtons.propTypes = {
   showDeleteConfirmation: PropTypes.bool.isRequired,
 };
 
-editDeleteButtons.defaultProps = {
+EditDeleteButtons.defaultProps = {
   confirmMsg: 'Really delete? (This cannot be undone.)',
   deleteData: {},
   disabled: false,

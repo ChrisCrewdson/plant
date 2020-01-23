@@ -14,7 +14,7 @@ interface CancelSaveButtonsProps {
   mini?: boolean;
 }
 
-export default function cancelSaveButtons(props: CancelSaveButtonsProps): JSX.Element | null {
+export default function CancelSaveButtons(props: CancelSaveButtonsProps): JSX.Element | null {
   const {
     showButtons,
   } = props;
@@ -71,7 +71,7 @@ export default function cancelSaveButtons(props: CancelSaveButtonsProps): JSX.El
   );
 }
 
-cancelSaveButtons.propTypes = {
+CancelSaveButtons.propTypes = {
   clickAddPhoto: PropTypes.func,
   clickCancel: PropTypes.func.isRequired,
   clickSave: PropTypes.func.isRequired,
@@ -79,7 +79,7 @@ cancelSaveButtons.propTypes = {
   mini: PropTypes.bool,
 };
 
-cancelSaveButtons.defaultProps = {
+CancelSaveButtons.defaultProps = {
   clickAddPhoto: null,
   mini: false,
 };

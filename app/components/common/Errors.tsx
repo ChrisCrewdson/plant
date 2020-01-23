@@ -6,7 +6,7 @@ interface ErrorHelperProps {
   errors: string[] | string;
 }
 
-export default function errorHelper(props: ErrorHelperProps): JSX.Element | null {
+export default function ErrorHelper(props: ErrorHelperProps): JSX.Element | null {
   let { errors } = props;
   if (!errors || !errors.length) {
     return null;
@@ -29,13 +29,13 @@ export default function errorHelper(props: ErrorHelperProps): JSX.Element | null
   );
 }
 
-errorHelper.propTypes = {
+ErrorHelper.propTypes = {
   errors: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.string,
   ]),
 };
 
-errorHelper.defaultProps = {
+ErrorHelper.defaultProps = {
   errors: [],
 };

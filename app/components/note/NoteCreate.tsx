@@ -23,7 +23,7 @@ interface NoteCreateProps {
   locationId: string;
 }
 
-export default function noteCreate(props: NoteCreateProps): JSX.Element | null {
+export default function NoteCreate(props: NoteCreateProps): JSX.Element | null {
   const createNote = (): void => {
     const {
       plant, dispatch,
@@ -86,7 +86,7 @@ export default function noteCreate(props: NoteCreateProps): JSX.Element | null {
 }
 
 
-noteCreate.propTypes = {
+NoteCreate.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
   interimNote: PropTypes.shape({

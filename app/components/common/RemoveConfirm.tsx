@@ -13,7 +13,7 @@ interface RemoveConfirmProps {
   title?: string;
 }
 
-export default function removeConfirm(props: RemoveConfirmProps): JSX.Element {
+export default function RemoveConfirm(props: RemoveConfirmProps): JSX.Element {
   const {
     title, mini, confirmMsg, confirmFn, deleteData,
   } = props;
@@ -55,7 +55,7 @@ export default function removeConfirm(props: RemoveConfirmProps): JSX.Element {
   );
 }
 
-removeConfirm.propTypes = {
+RemoveConfirm.propTypes = {
   confirmFn: PropTypes.func.isRequired,
   confirmMsg: PropTypes.string.isRequired,
   deleteData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -63,7 +63,7 @@ removeConfirm.propTypes = {
   title: PropTypes.string,
 };
 
-removeConfirm.defaultProps = {
+RemoveConfirm.defaultProps = {
   deleteData: {},
   title: '',
 };

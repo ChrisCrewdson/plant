@@ -14,7 +14,7 @@ export interface AddPlantButtonProps {
   style?: object;
 }
 
-export default function addPlantButton(props: AddPlantButtonProps): JSX.Element | null {
+export default function AddPlantButton(props: AddPlantButtonProps): JSX.Element | null {
   const {
     mini,
     show = false,
@@ -42,7 +42,7 @@ export default function addPlantButton(props: AddPlantButtonProps): JSX.Element 
 }
 
 /* eslint-disable react/no-unused-prop-types */
-addPlantButton.propTypes = {
+AddPlantButton.propTypes = {
   mini: PropTypes.bool,
   show: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
@@ -50,7 +50,7 @@ addPlantButton.propTypes = {
 };
 /* eslint-enable react/no-unused-prop-types */
 
-addPlantButton.defaultProps = {
+AddPlantButton.defaultProps = {
   mini: false,
   style: {},
 };

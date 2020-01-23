@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { AddPlantButtonProps } from '../common/AddPlantButton';
 
-export default function addLocationButton(props: AddPlantButtonProps): JSX.Element | null {
+export default function AddLocationButton(props: AddPlantButtonProps): JSX.Element | null {
   const {
     mini,
     show,
@@ -33,13 +33,13 @@ export default function addLocationButton(props: AddPlantButtonProps): JSX.Eleme
   );
 }
 
-addLocationButton.propTypes = {
+AddLocationButton.propTypes = {
   mini: PropTypes.bool,
   show: PropTypes.bool.isRequired,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
-addLocationButton.defaultProps = {
+AddLocationButton.defaultProps = {
   mini: false,
   style: {},
 };

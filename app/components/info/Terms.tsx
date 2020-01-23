@@ -126,7 +126,7 @@ These terms and conditions constitute the entire agreement between you and Plaaa
 These terms and conditions will be governed by and construed in accordance with United States Law, and any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the courts of Arizona.
 `;
 
-export default function terms(): JSX.Element {
+export default function Terms(): JSX.Element {
   const paperStyle = {
     padding: 20,
     width: '100%',

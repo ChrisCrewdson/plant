@@ -21,7 +21,7 @@ interface PlantItemProps {
   userCanEdit: boolean;
 }
 
-export default function plantItem(props: PlantItemProps): JSX.Element {
+export default function PlantItem(props: PlantItemProps): JSX.Element {
   const createNote = (): void => {
     const { plant, dispatch } = props;
     const plantIds = [plant._id];
@@ -108,7 +108,7 @@ export default function plantItem(props: PlantItemProps): JSX.Element {
   );
 }
 
-plantItem.propTypes = {
+PlantItem.propTypes = {
   dispatch: PropTypes.func.isRequired,
   userCanEdit: PropTypes.bool.isRequired,
   plant: PropTypes.shape({

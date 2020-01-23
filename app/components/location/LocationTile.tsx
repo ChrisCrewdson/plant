@@ -25,7 +25,7 @@ function onLinkClick(
   dispatch(actionFunc.changeActiveLocationId(payload));
 }
 
-export default function locationTile(props: LocationTileProps): JSX.Element {
+export default function LocationTile(props: LocationTileProps): JSX.Element {
   const {
     _id,
     dispatch,
@@ -56,7 +56,7 @@ export default function locationTile(props: LocationTileProps): JSX.Element {
   );
 }
 
-locationTile.propTypes = {
+LocationTile.propTypes = {
   _id: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   numPlants: PropTypes.number.isRequired,

@@ -19,7 +19,7 @@ interface NoteEditMetricProps {
   error: string;
 }
 
-export default function noteEditMetrics(props: NoteEditMetricProps): JSX.Element {
+export default function NoteEditMetrics(props: NoteEditMetricProps): JSX.Element {
   /**
    * Handle multiple change value types
    */
@@ -135,7 +135,7 @@ export default function noteEditMetrics(props: NoteEditMetricProps): JSX.Element
   );
 }
 
-noteEditMetrics.propTypes = {
+NoteEditMetrics.propTypes = {
   dispatch: PropTypes.func.isRequired,
   error: PropTypes.string,
   interimNote: PropTypes.shape({
@@ -143,6 +143,6 @@ noteEditMetrics.propTypes = {
   }).isRequired,
 };
 
-noteEditMetrics.defaultProps = {
+NoteEditMetrics.defaultProps = {
   error: '',
 };

@@ -236,7 +236,7 @@ function wrapValidateLocationWeather(data: GridRowValidate): string[] {
   );
 }
 
-export default function locationsManager(props: LocationsManagerProps): JSX.Element {
+export default function LocationsManager(props: LocationsManagerProps): JSX.Element {
   const { locationIds, locations, users } = props;
 
   userColumns[0].options = Object.keys(users).reduce(
@@ -347,7 +347,7 @@ export default function locationsManager(props: LocationsManagerProps): JSX.Elem
   );
 }
 
-locationsManager.propTypes = {
+LocationsManager.propTypes = {
   dispatch: PropTypes.func.isRequired,
   locationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   locations: PropTypes.shape({}).isRequired,

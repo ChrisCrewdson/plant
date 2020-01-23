@@ -57,7 +57,7 @@ exports[`NotesRead should render a NotesRead 1`] = `
           }
         >
           <button
-            className="MuiButtonBase-root MuiFab-root MuiFab-sizeMedium MuiFab-primary"
+            className="MuiButtonBase-root MuiFab-root MuiFab-primary"
             disabled={false}
             onBlur={[Function]}
             onClick={[Function]}
@@ -95,7 +95,7 @@ exports[`NotesRead should render a NotesRead 1`] = `
             />
           </button>
           <button
-            className="MuiButtonBase-root MuiFab-root MuiFab-sizeMedium MuiFab-secondary"
+            className="MuiButtonBase-root MuiFab-root MuiFab-secondary"
             disabled={false}
             onBlur={[Function]}
             onClick={[Function]}

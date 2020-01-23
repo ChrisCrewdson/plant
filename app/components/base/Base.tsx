@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function base(props: any): JSX.Element {
+export default function Base(props: any): JSX.Element {
   const { children } = props;
   return (
     <div className="page">
@@ -16,7 +16,7 @@ export default function base(props: any): JSX.Element {
   );
 }
 
-base.propTypes = {
+Base.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   children: PropTypes.object.isRequired,
 };
