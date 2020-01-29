@@ -50,13 +50,26 @@ function makeSlug(text: string): string {
 interface MakeUrlOptions {
   title: string;
   _id: string;
+  /**
+   * The `base` is a combination of the schema and domain that will
+   * optionally precede the path in the construction of the Url.
+   */
+  base?: string;
 }
 
 /**
  * Make a url with a trailing id
  */
-function makeUrl(first: string, { title, _id }: MakeUrlOptions): string {
-  return `/${first}/${makeSlug(title)}/${_id}`;
+function makeUrl(first: string, { title, _id, base }: MakeUrlOptions): string {
+  const path = `/${first}/${makeSlug(title)}/${_id}`;
+  if (base) {
+    return `${base}${path}`;
+  }
+  return path;
+}
+
+function makePlantUrl(plant: MakeUrlOptions): string {
+  return makeUrl('plant', plant);
 }
 
 /**
@@ -661,6 +674,7 @@ const utils = {
   makeLocationUrl,
   makeMongoId,
   makeMongoIdObject,
+  makePlantUrl,
   makeSlug,
   metaMetrics,
   metaMetricsGetByKey,

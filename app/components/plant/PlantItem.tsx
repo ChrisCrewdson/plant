@@ -13,8 +13,6 @@ import AddIcon from '@material-ui/icons/Add';
 import utils from '../../libs/utils';
 import { actionFunc } from '../../actions';
 
-const { makeSlug } = utils;
-
 interface PlantItemProps {
   dispatch: Dispatch;
   plant: UiPlantsValue;
@@ -76,7 +74,7 @@ export default function PlantItem(props: PlantItemProps): JSX.Element {
   }
 
   const fullTitle = `${title}${botanicalName ? ` (${botanicalName})` : ''}`;
-  const link = `/plant/${makeSlug(title)}/${_id}`;
+  const link = utils.makePlantUrl({ title, _id: _id || '' });
   const renderLink = (
     <Link
       style={linkStyle}

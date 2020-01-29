@@ -183,14 +183,43 @@ export default function Location(props: LocationProps): JSX.Element {
     />
   );
 
+  // TODO: Search codebase for this and put in a config.
+  const base = 'https://plaaant.com';
+  const downloadCsv = (): void => {
+    const plants = Object.values(allLoadedPlants)
+      .filter((plant) => plant.locationId === location._id);
+    const lines = plants.map((plant) => {
+      const { title, _id = '' } = plant;
+      const link = utils.makePlantUrl({ title, _id, base });
+      return `"${plant.title}","${plant.plantedDate || ''}","${link}"`;
+    });
+
+    lines.unshift('"Title","PlantedDate","Link"');
+    const csv = lines.join('\n');
+    const href = URL.createObjectURL(new Blob([csv], { type: 'application/csv' }));
+
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = href;
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'plants.csv';
+    hiddenElement.click();
+  };
+
   const stats = (
     <div>
-      <p>
-        {`Total: ${plantStats.total}`}
-      </p>
-      <p>
-        {`Alive: ${plantStats.alive}`}
-      </p>
+      <div style={{ float: 'left' }}>
+        <p>
+          {`Total: ${plantStats.total}`}
+        </p>
+        <p>
+          {`Alive: ${plantStats.alive}`}
+        </p>
+      </div>
+      <div style={{ float: 'right' }}>
+        <a href={window.location.href} onClick={(): any => { downloadCsv(); }}>
+          Download CSV
+        </a>
+      </div>
     </div>
   );
 
