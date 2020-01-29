@@ -26,6 +26,16 @@ describe('/app/libs/utils', () => {
       const url = utils.makeLayoutUrl({ title: 'I Am A Title', _id: 'l-1' });
       expect(url).toBe('/layout/i-am-a-title/l-1');
     });
+
+    test('that makePlantUrl creates a url', () => {
+      const url = utils.makePlantUrl({ title: 'I Am A Title', _id: 'l-1' });
+      expect(url).toBe('/plant/i-am-a-title/l-1');
+    });
+
+    test('that makePlantUrl uses base property if present', () => {
+      const url = utils.makePlantUrl({ title: 'I Am A Title', _id: 'l-1', base: 'i-am-base' });
+      expect(url).toBe('i-am-base/plant/i-am-a-title/l-1');
+    });
   });
 
   describe('mongo', () => {
@@ -121,6 +131,23 @@ describe('/app/libs/utils', () => {
     test('should create a String from an Integer date', () => {
       const actual = utils.intToString(20160101);
       expect(actual).toBe('01/01/2016');
+    });
+  });
+
+  describe('makeDashDate', () => {
+    test('should put dashes in a number date', () => {
+      const actual = utils.makeDashDate(20161122);
+      expect(actual).toBe('2016-11-22');
+    });
+
+    test('should put dashes in a string date', () => {
+      const actual = utils.makeDashDate('20161122');
+      expect(actual).toBe('2016-11-22');
+    });
+
+    test('should get empty string for missing date', () => {
+      const actual = utils.makeDashDate();
+      expect(actual).toBe('');
     });
   });
 

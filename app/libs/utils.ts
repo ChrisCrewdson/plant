@@ -127,6 +127,18 @@ function intToMoment(date: number | string): Moment {
 }
 
 /**
+ * Change a date in the format of YYYYMMDD to YYYY-MM-DD
+ * @param maybeDate - a date in the format of YYYYMMDD
+ */
+const makeDashDate = (maybeDate?: string | number): string => {
+  if (!maybeDate) {
+    return '';
+  }
+  const date = maybeDate.toString();
+  return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
+};
+
+/**
  * Convert number date to string date
  */
 function intToString(date: number | string): string {
@@ -670,6 +682,7 @@ const utils = {
   intToDate,
   intToMoment,
   intToString,
+  makeDashDate,
   makeLayoutUrl,
   makeLocationUrl,
   makeMongoId,

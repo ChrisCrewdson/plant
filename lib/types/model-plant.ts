@@ -68,6 +68,9 @@ interface UiPlantsValue extends Omit<BizPlant, '_id' | 'notes' | 'userId' | 'pur
   userId?: string;
   purchasedDate?: number | string;
   terminatedDate?: number | string;
+  /**
+   * Number or string formatted as YYYYMMDD
+   */
   plantedDate?: number | string;
 }
 

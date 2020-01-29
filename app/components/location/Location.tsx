@@ -191,7 +191,8 @@ export default function Location(props: LocationProps): JSX.Element {
     const lines = plants.map((plant) => {
       const { title, _id = '' } = plant;
       const link = utils.makePlantUrl({ title, _id, base });
-      return `"${plant.title}","${plant.plantedDate || ''}","${link}"`;
+      const dashDate = utils.makeDashDate(plant.plantedDate);
+      return `"${plant.title}","${dashDate}","${link}"`;
     });
 
     lines.unshift('"Title","PlantedDate","Link"');
